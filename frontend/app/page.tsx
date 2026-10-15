@@ -1,4 +1,3 @@
-import { api } from '@/lib/api';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/home/HeroSection';
@@ -13,15 +12,7 @@ import RentalDivisionSection from '@/components/home/RentalDivisionSection';
 import BlogSection from '@/components/home/BlogSection';
 import ScrollAnimation from '@/components/ScrollAnimation';
 
-export default async function HomePage() {
-  // Fetch categories server-side
-  let categories: any[] = [];
-  try {
-    const categoriesRes = await api.categories();
-    categories = categoriesRes.data || [];
-  } catch (err) {
-    // Falls back to static defaults in component
-  }
+export default function HomePage() {
 
   return (
     <>
@@ -42,7 +33,7 @@ export default async function HomePage() {
         <IndustriesSection />
 
         {/* Product Categories (Thousands of Industrial Products. One Reliable Supplier.) */}
-        <CategoriesSection categories={categories} />
+        <CategoriesSection />
 
         {/* Operational Excellence Built on Trust */}
         <TrustBannerSection />
