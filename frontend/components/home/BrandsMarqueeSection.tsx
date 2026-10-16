@@ -29,30 +29,16 @@ export default function BrandsMarqueeSection() {
   return (
     <section
       style={{
-        padding: '32px 0 36px',
-        backgroundColor: '#FAF7F2',
-        borderTop: '1px solid #ECE7DE',
-        borderBottom: '1px solid #ECE7DE',
+        padding: '36px 0',
+        backgroundColor: '#ffffff',
+        borderTop: '1px solid #f1f5f9',
+        borderBottom: '1px solid #f1f5f9',
         overflow: 'hidden',
         position: 'relative',
         fontFamily: "'Poppins', sans-serif",
       }}
       aria-label="Partner Brand Logos"
     >
-      <div style={{ textAlign: 'center', marginBottom: '18px' }}>
-        <span
-          style={{
-            fontSize: '0.72rem',
-            fontWeight: 700,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: '#64748b',
-          }}
-        >
-          TRUSTED GLOBAL BRANDS &amp; MANUFACTURERS
-        </span>
-      </div>
-
       {/* Marquee Train Track */}
       <div className="marquee-wrapper" style={{ overflow: 'hidden', position: 'relative', width: '100%' }}>
         {/* Left & Right Fade Gradients */}
@@ -61,9 +47,9 @@ export default function BrandsMarqueeSection() {
             position: 'absolute',
             top: 0,
             left: 0,
-            width: '80px',
+            width: '90px',
             height: '100%',
-            background: 'linear-gradient(90deg, #FAF7F2 0%, transparent 100%)',
+            background: 'linear-gradient(90deg, #ffffff 0%, transparent 100%)',
             zIndex: 3,
             pointerEvents: 'none',
           }}
@@ -73,9 +59,9 @@ export default function BrandsMarqueeSection() {
             position: 'absolute',
             top: 0,
             right: 0,
-            width: '80px',
+            width: '90px',
             height: '100%',
-            background: 'linear-gradient(270deg, #FAF7F2 0%, transparent 100%)',
+            background: 'linear-gradient(270deg, #ffffff 0%, transparent 100%)',
             zIndex: 3,
             pointerEvents: 'none',
           }}
@@ -92,25 +78,25 @@ export default function BrandsMarqueeSection() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '8px 24px',
+                padding: '10px 32px',
                 flexShrink: 0,
                 textDecoration: 'none',
-                filter: 'grayscale(100%) opacity(0.72)',
+                opacity: 0.88,
                 transition: 'all 0.25s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.filter = 'grayscale(0%) opacity(1)';
+                e.currentTarget.style.opacity = '1';
                 e.currentTarget.style.transform = 'scale(1.08)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.filter = 'grayscale(100%) opacity(0.72)';
+                e.currentTarget.style.opacity = '0.88';
                 e.currentTarget.style.transform = 'scale(1)';
               }}
             >
               <div
                 style={{
-                  height: '32px',
-                  width: '100px',
+                  height: '52px',
+                  width: '145px',
                   position: 'relative',
                   display: 'flex',
                   alignItems: 'center',
@@ -120,11 +106,11 @@ export default function BrandsMarqueeSection() {
                 <Image
                   src={brand.logo}
                   alt={brand.name}
-                  width={100}
-                  height={32}
+                  width={145}
+                  height={52}
                   style={{
-                    maxHeight: '30px',
-                    maxWidth: '95px',
+                    maxHeight: '48px',
+                    maxWidth: '140px',
                     width: 'auto',
                     height: 'auto',
                     objectFit: 'contain',
@@ -142,6 +128,11 @@ export default function BrandsMarqueeSection() {
           display: flex;
           align-items: center;
           user-select: none;
+        }
+
+        .marquee-item::after {
+          content: none !important;
+          display: none !important;
         }
 
         .marquee-train {

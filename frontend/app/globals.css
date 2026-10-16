@@ -1102,9 +1102,8 @@ textarea.form-control {
 }
 
 .marquee-item::after {
-  content: '◆';
-  color: var(--clr-primary);
-  font-size: 0.5rem;
+  content: none;
+  display: none;
 }
 
 @keyframes marquee {
