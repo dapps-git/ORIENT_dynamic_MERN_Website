@@ -11,14 +11,12 @@ export default function HeroSection() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: "url('/hero-bg.jpg')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
         padding: '120px 24px 80px',
         color: '#ffffff',
+        overflow: 'hidden',
       }}
     >
+
       <div
         className="container"
         style={{
@@ -83,9 +81,9 @@ export default function HeroSection() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              backgroundColor: '#20b512',
+              backgroundColor: '#0056b3',
               color: '#ffffff',
-              border: '1.5px solid #20b512',
+              border: '1.5px solid #0056b3',
               padding: '10px 24px',
               borderRadius: '0px',
               fontWeight: 600,
@@ -95,16 +93,16 @@ export default function HeroSection() {
               fontFamily: "'Poppins', sans-serif",
               textDecoration: 'none',
               transition: 'all 0.25s ease',
-              boxShadow: '0 4px 14px rgba(32, 181, 18, 0.3)',
+              boxShadow: '0 4px 14px rgba(0, 86, 179, 0.35)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#19990e';
-              e.currentTarget.style.borderColor = '#19990e';
+              e.currentTarget.style.backgroundColor = '#004085';
+              e.currentTarget.style.borderColor = '#004085';
               e.currentTarget.style.transform = 'translateY(-2px)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#20b512';
-              e.currentTarget.style.borderColor = '#20b512';
+              e.currentTarget.style.backgroundColor = '#0056b3';
+              e.currentTarget.style.borderColor = '#0056b3';
               e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
@@ -150,6 +148,21 @@ export default function HeroSection() {
 
 
 
+      <style>{`
+        .hero-main {
+          background-image: url('/hero-bg.jpg');
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+        }
+        @media (max-width: 768px) {
+          .hero-main {
+            background-image: url('/hero-bg-mobile.jpg') !important;
+            background-position: center bottom !important;
+            background-size: cover !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Suspense } from 'react';
 import FloatingContact from '@/components/FloatingContact';
+import PageLoader from '@/components/PageLoader';
 
 export const metadata: Metadata = {
   title: 'Orient Energy — Industrial Supply & Engineering Solutions in Saudi Arabia',
@@ -27,6 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <Suspense fallback={null}>
+          <PageLoader />
+        </Suspense>
         {children}
         <FloatingContact />
       </body>

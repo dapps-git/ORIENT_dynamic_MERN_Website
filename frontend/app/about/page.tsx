@@ -197,6 +197,151 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Section 1.5: Our Showroom, Facilities & Inventory Gallery */}
+        <section style={{ padding: '10px 0 75px', backgroundColor: '#ffffff' }}>
+          <div className="container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '0 24px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '34px' }}>
+              <div
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: '#2e3191',
+                  marginBottom: '8px',
+                }}
+              >
+                OUR FACILITIES &amp; SHOWROOM
+              </div>
+              <h3
+                style={{
+                  fontFamily: '"Cormorant Garamond", Amiri, serif',
+                  fontSize: 'clamp(1.9rem, 2.8vw, 2.45rem)',
+                  fontWeight: 600,
+                  color: '#111827',
+                  margin: 0,
+                }}
+              >
+                Experience Our Showroom &amp; Warehousing Stockyard
+              </h3>
+            </div>
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1.35fr 1fr 1fr',
+                gap: '22px',
+              }}
+              className="about-facility-gallery"
+            >
+              {/* Photo 1: Storefront */}
+              <div
+                style={{
+                  position: 'relative',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)',
+                  border: '1px solid #e2e8f0',
+                  aspectRatio: '16/9',
+                }}
+              >
+                <Image
+                  src="/about/storefront.png"
+                  alt="Orient Energy Showroom Facility — Al Khobar"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                  style={{ objectFit: 'cover' }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: 'linear-gradient(180deg, transparent 0%, rgba(10, 15, 29, 0.85) 100%)',
+                    padding: '24px 18px 14px',
+                    color: '#ffffff',
+                  }}
+                >
+                  <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                    Main Showroom &amp; Retail Facility — Al Khobar
+                  </div>
+                </div>
+              </div>
+
+              {/* Photo 2: Showroom Counter */}
+              <div
+                style={{
+                  position: 'relative',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)',
+                  border: '1px solid #e2e8f0',
+                  aspectRatio: '16/10',
+                }}
+              >
+                <Image
+                  src="/about/showroom-counter.png"
+                  alt="Orient Energy Customer Reception & Procurement Center"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 28vw"
+                  style={{ objectFit: 'cover' }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: 'linear-gradient(180deg, transparent 0%, rgba(10, 15, 29, 0.85) 100%)',
+                    padding: '24px 18px 14px',
+                    color: '#ffffff',
+                  }}
+                >
+                  <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                    Procurement &amp; Technical Support Center
+                  </div>
+                </div>
+              </div>
+
+              {/* Photo 3: Warehouse inventory fittings */}
+              <div
+                style={{
+                  position: 'relative',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.08)',
+                  border: '1px solid #e2e8f0',
+                  aspectRatio: '16/10',
+                }}
+              >
+                <Image
+                  src="/about/warehouse-fittings.png"
+                  alt="Industrial Valves, Piping & Fitting Warehouse"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 28vw"
+                  style={{ objectFit: 'cover' }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    background: 'linear-gradient(180deg, transparent 0%, rgba(10, 15, 29, 0.85) 100%)',
+                    padding: '24px 18px 14px',
+                    color: '#ffffff',
+                  }}
+                >
+                  <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>
+                    Extensive Piping &amp; Flanges Inventory
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Section 2: Mission & Our Vision (2 Solid Navy Blue Cards) */}
         <section style={{ padding: '15px 0 85px', backgroundColor: '#ffffff' }}>
           <div

@@ -5,6 +5,7 @@ import AboutSection from '@/components/home/AboutSection';
 import CapabilitiesSection from '@/components/home/CapabilitiesSection';
 import IndustriesSection from '@/components/home/IndustriesSection';
 import CategoriesSection from '@/components/home/CategoriesSection';
+import BrandsMarqueeSection from '@/components/home/BrandsMarqueeSection';
 import TrustBannerSection from '@/components/home/TrustBannerSection';
 import WhyChooseSection from '@/components/home/WhyChooseSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
@@ -34,6 +35,9 @@ export default function HomePage() {
 
         {/* Product Categories (Thousands of Industrial Products. One Reliable Supplier.) */}
         <CategoriesSection />
+
+        {/* Partner Brands Logo Passing Train */}
+        <BrandsMarqueeSection />
 
         {/* Operational Excellence Built on Trust */}
         <TrustBannerSection />

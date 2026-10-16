@@ -237,31 +237,28 @@ h1, h2, h3, h4, h5, h6,
   left: 0;
   right: 0;
   z-index: 1000;
-  height: 82px;
+  height: 66px;
   display: flex;
   align-items: center;
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom: 1px solid transparent !important;
-  box-shadow: none !important;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.navbar.scrolled {
-  height: 72px;
-  background: rgba(22, 27, 34, 0.8) !important;
-  backdrop-filter: blur(18px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36) !important;
+.navbar.navbar--curved,
+.navbar.navbar--curved.scrolled {
+  background: #FAF7F2 !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid #ECE7DE !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  height: 66px !important;
 }
 
 .nav-link {
   font-family: 'Poppins', sans-serif !important;
   font-size: 0.85rem !important;
-  font-weight: 400 !important;
-  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 500 !important;
+  color: #555e6d !important;
   text-decoration: none !important;
   white-space: nowrap !important;
   display: inline-flex !important;
@@ -277,12 +274,12 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .nav-link:hover {
-  color: #20b512 !important;
+  color: #111827 !important;
 }
 
 .nav-link.active {
-  color: #20b512 !important;
-  font-weight: 500 !important;
+  color: #111827 !important;
+  font-weight: 700 !important;
 }
 
 .navbar__inner {
