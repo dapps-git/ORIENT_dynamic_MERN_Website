@@ -75,7 +75,34 @@ export default function CapabilitiesSection() {
         fontFamily: "'Poppins', sans-serif",
       }}
     >
-      <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px' }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: '15%',
+          left: '5%',
+          width: '380px',
+          height: '380px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(46, 49, 145, 0.08) 0%, transparent 70%)',
+          filter: 'blur(50px)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          right: '5%',
+          width: '420px',
+          height: '420px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(32, 181, 18, 0.08) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px', position: 'relative', zIndex: 1 }}>
         {/* Section Header */}
         <div style={{ textAlign: 'center', marginBottom: '52px' }}>
           <div
@@ -106,13 +133,13 @@ export default function CapabilitiesSection() {
           </h2>
         </div>
 
-        {/* 4 Cards Grid */}
+        {/* 4 Cards Grid - Glassy Glassmorphism Style */}
         <div
           className="capabilities-cards-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '22px',
+            gap: '24px',
             alignItems: 'stretch',
           }}
         >
@@ -121,37 +148,63 @@ export default function CapabilitiesSection() {
               key={i}
               className="capability-card"
               style={{
-                backgroundColor: '#2e3191',
-                borderRadius: '0px',
+                background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.82) 0%, rgba(243, 247, 255, 0.58) 100%)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                borderRadius: '16px',
+                border: '1.5px solid rgba(255, 255, 255, 0.85)',
                 padding: '38px 24px 34px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                boxShadow: '0 8px 24px rgba(46, 49, 145, 0.16)',
+                transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow:
+                  '0 12px 32px -4px rgba(46, 49, 145, 0.08), inset 0 1px 2px 0 rgba(255, 255, 255, 0.95), 0 1px 3px 0 rgba(0, 0, 0, 0.04)',
+                position: 'relative',
+                overflow: 'hidden',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-6px)';
-                e.currentTarget.style.boxShadow = '0 16px 36px rgba(46, 49, 145, 0.28)';
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow =
+                  '0 22px 45px -4px rgba(46, 49, 145, 0.16), 0 0 0 1.5px rgba(32, 181, 18, 0.35), inset 0 1px 2px rgba(255, 255, 255, 1)';
+                e.currentTarget.style.borderColor = 'rgba(32, 181, 18, 0.4)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(46, 49, 145, 0.16)';
+                e.currentTarget.style.boxShadow =
+                  '0 12px 32px -4px rgba(46, 49, 145, 0.08), inset 0 1px 2px 0 rgba(255, 255, 255, 0.95), 0 1px 3px 0 rgba(0, 0, 0, 0.04)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.85)';
               }}
             >
-              {/* Circular White Icon Badge */}
+              {/* Subtle Glass Sheen Top Reflection */}
               <div
                 style={{
-                  width: '62px',
-                  height: '62px',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '45%',
+                  background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 100%)',
+                  pointerEvents: 'none',
+                }}
+              />
+
+              {/* Circular Floating Glass Badge */}
+              <div
+                style={{
+                  width: '64px',
+                  height: '64px',
                   borderRadius: '50%',
-                  backgroundColor: '#ffffff',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #edf2fe 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: '26px',
-                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)',
+                  boxShadow: '0 8px 20px rgba(46, 49, 145, 0.12), inset 0 1px 2px #ffffff',
+                  border: '1.5px solid rgba(255, 255, 255, 0.9)',
                   flexShrink: 0,
+                  position: 'relative',
+                  zIndex: 2,
                 }}
               >
                 {cap.icon}
@@ -161,12 +214,14 @@ export default function CapabilitiesSection() {
               <h3
                 style={{
                   fontFamily: '"Cormorant Garamond", Amiri, serif',
-                  fontSize: '1.24rem',
+                  fontSize: '1.28rem',
                   fontWeight: 600,
-                  color: '#ffffff',
+                  color: '#111827',
                   lineHeight: 1.3,
                   marginBottom: '14px',
                   letterSpacing: '0.01em',
+                  position: 'relative',
+                  zIndex: 2,
                 }}
               >
                 {cap.title}
@@ -178,9 +233,11 @@ export default function CapabilitiesSection() {
                   fontFamily: "'Poppins', sans-serif",
                   fontSize: '0.84rem',
                   fontWeight: 400,
-                  color: 'rgba(255, 255, 255, 0.9)',
-                  lineHeight: 1.65,
+                  color: '#475569',
+                  lineHeight: 1.7,
                   margin: 0,
+                  position: 'relative',
+                  zIndex: 2,
                 }}
               >
                 {cap.desc}
