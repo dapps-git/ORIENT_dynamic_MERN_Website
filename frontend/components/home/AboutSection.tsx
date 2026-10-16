@@ -6,11 +6,13 @@ export default function AboutSection() {
     <section
       id="about"
       style={{
-        padding: '75px 0 85px',
-        background: 'linear-gradient(108deg, #077943 0%, #0d5c48 42%, #144454 100%)',
+        padding: '85px 0 95px',
+        background: '#FAF7F2',
         position: 'relative',
-        color: '#ffffff',
+        color: '#111827',
         fontFamily: "'Poppins', sans-serif",
+        borderTop: '1px solid #ECE7DE',
+        borderBottom: '1px solid #ECE7DE',
       }}
     >
       <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px' }}>
@@ -30,13 +32,24 @@ export default function AboutSection() {
               style={{
                 fontSize: '0.75rem',
                 fontWeight: 700,
-                letterSpacing: '0.12em',
+                letterSpacing: '0.14em',
                 textTransform: 'uppercase',
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: '#0b7a3d',
                 marginBottom: '12px',
                 fontFamily: "'Poppins', sans-serif",
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
               }}
             >
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '24px',
+                  height: '2px',
+                  backgroundColor: '#0b7a3d',
+                }}
+              />
               ABOUT US
             </div>
 
@@ -44,23 +57,23 @@ export default function AboutSection() {
             <h2
               style={{
                 fontFamily: '"Cormorant Garamond", Amiri, serif',
-                fontSize: 'clamp(1.95rem, 2.7vw, 2.5rem)',
+                fontSize: 'clamp(2.1rem, 2.9vw, 2.7rem)',
                 fontWeight: 600,
                 lineHeight: 1.2,
-                color: '#ffffff',
-                marginBottom: '18px',
+                color: '#111827',
+                marginBottom: '20px',
               }}
             >
-              About <span style={{ color: '#25c257' }}>Orient Energy</span>
+              About <span style={{ color: '#0b7a3d' }}>Orient Energy</span>
             </h2>
 
             {/* Paragraph 1 */}
             <p
               style={{
-                fontSize: '0.83rem',
-                lineHeight: 1.65,
-                color: 'rgba(255, 255, 255, 0.95)',
-                marginBottom: '16px',
+                fontSize: '0.86rem',
+                lineHeight: 1.75,
+                color: '#262626',
+                marginBottom: '18px',
                 fontFamily: "'Poppins', sans-serif",
               }}
             >
@@ -72,9 +85,9 @@ export default function AboutSection() {
             {/* Paragraph 2 */}
             <p
               style={{
-                fontSize: '0.83rem',
-                lineHeight: 1.65,
-                color: 'rgba(255, 255, 255, 0.95)',
+                fontSize: '0.86rem',
+                lineHeight: 1.75,
+                color: '#262626',
                 margin: 0,
                 fontFamily: "'Poppins', sans-serif",
               }}
@@ -93,10 +106,10 @@ export default function AboutSection() {
               {/* Paragraph 3 */}
               <p
                 style={{
-                  fontSize: '0.83rem',
-                  lineHeight: 1.65,
-                  color: 'rgba(255, 255, 255, 0.95)',
-                  marginBottom: '16px',
+                  fontSize: '0.86rem',
+                  lineHeight: 1.75,
+                  color: '#262626',
+                  marginBottom: '18px',
                   fontFamily: "'Poppins', sans-serif",
                 }}
               >
@@ -111,10 +124,10 @@ export default function AboutSection() {
               {/* Paragraph 4 */}
               <p
                 style={{
-                  fontSize: '0.83rem',
-                  lineHeight: 1.65,
-                  color: 'rgba(255, 255, 255, 0.95)',
-                  marginBottom: '26px',
+                  fontSize: '0.86rem',
+                  lineHeight: 1.75,
+                  color: '#262626',
+                  marginBottom: '28px',
                   fontFamily: "'Poppins', sans-serif",
                 }}
               >
@@ -123,7 +136,9 @@ export default function AboutSection() {
                 making us a comprehensive supply partner for industries across
                 Saudi Arabia.
                 <br />
-                At every stage, our focus remains clear:
+                <span style={{ display: 'inline-block', marginTop: '10px', fontWeight: 600, color: '#111827' }}>
+                  At every stage, our focus remains clear:
+                </span>
                 <br />
                 Delivering the right products, at the right time, with the right
                 technical support.
@@ -137,29 +152,29 @@ export default function AboutSection() {
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '10px',
                   backgroundColor: '#08144b',
-                  border: '1.5px solid rgba(255, 255, 255, 0.25)',
+                  border: '1.5px solid #08144b',
                   color: '#ffffff',
-                  padding: '12px 28px',
+                  padding: '13px 30px',
                   borderRadius: '0px',
                   fontWeight: 600,
                   fontSize: '0.82rem',
-                  letterSpacing: '0.06em',
+                  letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   fontFamily: "'Poppins', sans-serif",
                   textDecoration: 'none',
                   transition: 'all 0.25s ease',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
+                  boxShadow: '0 4px 16px rgba(8, 20, 75, 0.18)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#20b512';
-                  e.currentTarget.style.borderColor = '#20b512';
+                  e.currentTarget.style.backgroundColor = '#0b7a3d';
+                  e.currentTarget.style.borderColor = '#0b7a3d';
                   e.currentTarget.style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.backgroundColor = '#08144b';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+                  e.currentTarget.style.borderColor = '#08144b';
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
