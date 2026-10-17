@@ -198,18 +198,47 @@ export default function ProductsCatalogClient() {
               >
                 {/* Division Title and Descriptions (matching screenshots) */}
                 <div style={{ marginBottom: '28px' }}>
-                  <h2
-                    style={{
-                      fontFamily: '"Cormorant Garamond", Amiri, serif',
-                      fontSize: 'clamp(1.9rem, 2.8vw, 2.6rem)',
-                      fontWeight: 600,
-                      color: '#111827',
-                      lineHeight: 1.25,
-                      marginBottom: '16px',
-                    }}
-                  >
-                    {division.headline}
-                  </h2>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
+                    <h2
+                      style={{
+                        fontFamily: '"Cormorant Garamond", Amiri, serif',
+                        fontSize: 'clamp(1.9rem, 2.8vw, 2.6rem)',
+                        fontWeight: 600,
+                        color: '#111827',
+                        lineHeight: 1.25,
+                        margin: 0,
+                      }}
+                    >
+                      <Link
+                        href={`/products/${division.id}`}
+                        style={{ color: '#111827', textDecoration: 'none' }}
+                      >
+                        {division.headline}
+                      </Link>
+                    </h2>
+
+                    <Link
+                      href={`/products/${division.id}`}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '8px 18px',
+                        backgroundColor: '#FAF7F2',
+                        border: '1px solid #ECE7DE',
+                        borderRadius: '9999px',
+                        fontSize: '0.82rem',
+                        fontWeight: 600,
+                        color: '#2e3191',
+                        textDecoration: 'none',
+                        flexShrink: 0,
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <span>Open Division Page</span>
+                      <span>&rarr;</span>
+                    </Link>
+                  </div>
 
                   {division.description.map((para, pIdx) => (
                     <p

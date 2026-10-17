@@ -18,18 +18,18 @@ const SECTORS_DROPDOWN = [
 ];
 
 const PRODUCTS_DROPDOWN = [
-  { label: 'Mechanical Supply Division', href: '/products#mechanical-division' },
-  { label: 'Welding Division', href: '/products#welding-division' },
-  { label: 'Electrical Division', href: '/products#electrical-division' },
-  { label: 'Lifting & Material Handling', href: '/products#lifting-material-handling' },
-  { label: 'Power System', href: '/products#power-system' },
-  { label: 'Auxiliary Systems', href: '/products#auxiliary-systems' },
-  { label: 'Marine Division', href: '/products#marine-division' },
-  { label: 'Steel & Structural Materials Division', href: '/products#steel-structural-materials-division' },
-  { label: 'Coatings & Surface Protection Division', href: '/products#coatings-surface-protection' },
-  { label: 'Pumps & Motors', href: '/products#pumps-motors' },
-  { label: 'Fasteners Division', href: '/products#fasteners-division' },
-  { label: 'Substructure', href: '/products#substructure' },
+  { label: 'Mechanical Supply Division', href: '/products/mechanical-division' },
+  { label: 'Welding Division', href: '/products/welding-division' },
+  { label: 'Electrical Division', href: '/products/electrical-division' },
+  { label: 'Lifting & Material Handling', href: '/products/lifting-material-handling' },
+  { label: 'Power System', href: '/products/power-system' },
+  { label: 'Auxiliary Systems', href: '/products/auxiliary-systems' },
+  { label: 'Marine Division', href: '/products/marine-division' },
+  { label: 'Steel & Structural Materials Division', href: '/products/steel-structural-materials-division' },
+  { label: 'Coatings & Surface Protection Division', href: '/products/coatings-surface-protection' },
+  { label: 'Pumps & Motors', href: '/products/pumps-motors' },
+  { label: 'Fasteners Division', href: '/products/fasteners-division' },
+  { label: 'Substructure', href: '/products/substructure' },
 ];
 
 function NavbarInner() {
