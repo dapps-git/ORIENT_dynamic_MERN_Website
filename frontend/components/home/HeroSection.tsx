@@ -1,7 +1,24 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+const DESKTOP_SLIDES = [
+  '/hero-bg.jpg',
+  '/hero-bg-refinery-sunset.jpg',
+  '/ima.webp',
+];
+
 export default function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Slideshow every 3 seconds on laptop/desktop
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % DESKTOP_SLIDES.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section
       className="hero-main"
@@ -16,6 +33,54 @@ export default function HeroSection() {
         overflow: 'hidden',
       }}
     >
+      {/* Laptop / Desktop Slideshow Background Layers */}
+      <div className="hero-desktop-slides">
+        {DESKTOP_SLIDES.map((slide, idx) => (
+          <div
+            key={slide}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `url('${slide}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat',
+              imageRendering: '-webkit-optimize-contrast',
+              opacity: currentSlide === idx ? 1 : 0,
+              transition: 'opacity 1s ease-in-out',
+              zIndex: 0,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Mobile Background Layer (Uses portrait sunset image) */}
+      <div
+        className="hero-mobile-bg"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: "url('/hero-bg-mobile-sunset.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+          imageRendering: '-webkit-optimize-contrast',
+          zIndex: 0,
+          display: 'none',
+        }}
+      />
+
+      {/* Cinematic Contrast Overlay to eliminate glare and ensure crystal-clear image depth */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(180deg, rgba(8, 20, 36, 0.44) 0%, rgba(8, 20, 36, 0.62) 100%)',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
 
       <div
         className="container"
@@ -29,7 +94,7 @@ export default function HeroSection() {
           alignItems: 'center',
         }}
       >
-        {/* Main Heading - Reduced refined size */}
+        {/* Main Heading - Refined elegant size */}
         <h1
           style={{
             fontFamily: '"Cormorant Garamond", Amiri, serif',
@@ -46,7 +111,7 @@ export default function HeroSection() {
           Powering Saudi Arabia&apos;s Industrial Future With Reliable Supply &amp; Engineering Solutions
         </h1>
 
-        {/* Subtitle description - Reduced refined size */}
+        {/* Subtitle description */}
         <p
           style={{
             fontFamily: "'Poppins', sans-serif",
@@ -74,7 +139,7 @@ export default function HeroSection() {
             flexWrap: 'wrap',
           }}
         >
-          {/* CTA Buttons - Reduced, Sleek Square & Outline Style */}
+          {/* CTA Buttons */}
           <Link
             href="/contact"
             style={{
@@ -146,20 +211,47 @@ export default function HeroSection() {
         </div>
       </div>
 
+      {/* Slideshow Dots Indicator */}
+      <div
+        className="hero-indicators"
+        style={{
+          position: 'absolute',
+          bottom: '26px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: '10px',
+          zIndex: 3,
+        }}
+      >
+        {DESKTOP_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentSlide(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            style={{
+              width: currentSlide === i ? '28px' : '8px',
+              height: '7px',
+              borderRadius: '4px',
+              backgroundColor: currentSlide === i ? '#ffffff' : 'rgba(255, 255, 255, 0.45)',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              transition: 'all 0.35s ease',
+              outline: 'none',
+            }}
+          />
+        ))}
+      </div>
 
-
-      <style>{`
-        .hero-main {
-          background-image: url('/hero-bg.jpg');
-          background-size: cover;
-          background-position: center center;
-          background-repeat: no-repeat;
-        }
+      <style jsx>{`
         @media (max-width: 768px) {
-          .hero-main {
-            background-image: url('/hero-bg-mobile.jpg') !important;
-            background-position: center bottom !important;
-            background-size: cover !important;
+          .hero-desktop-slides,
+          .hero-indicators {
+            display: none !important;
+          }
+          .hero-mobile-bg {
+            display: block !important;
           }
         }
       `}</style>

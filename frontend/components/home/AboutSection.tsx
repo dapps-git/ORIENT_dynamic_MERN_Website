@@ -1,13 +1,15 @@
 'use client';
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function AboutSection() {
+  const [expandedMobile, setExpandedMobile] = useState<boolean>(false);
+
   return (
     <section
       id="about"
       style={{
-        padding: '85px 0 95px',
+        padding: '75px 0 85px',
         background: '#FAF7F2',
         position: 'relative',
         color: '#111827',
@@ -26,7 +28,7 @@ export default function AboutSection() {
           }}
           className="about-theme-grid"
         >
-          {/* Left Column */}
+          {/* Left Column (Always Visible) */}
           <div>
             {/* Tag */}
             <div
@@ -83,7 +85,7 @@ export default function AboutSection() {
               and the wider Middle East.
             </p>
 
-            {/* Paragraph 2 */}
+            {/* Paragraph 2 (Mobile cuts off here until Read More is clicked) */}
             <p
               style={{
                 fontSize: '0.86rem',
@@ -99,10 +101,33 @@ export default function AboutSection() {
               and a commitment to quality, we help businesses minimize downtime,
               improve efficiency, and successfully execute projects of every scale.
             </p>
+
+            {/* Mobile Read More / Read Less Toggle Button */}
+            <div className="about-mobile-toggle-wrap">
+              <button
+                type="button"
+                onClick={() => setExpandedMobile(!expandedMobile)}
+                className="about-mobile-readmore-btn"
+                aria-expanded={expandedMobile}
+              >
+                <span>{expandedMobile ? 'Read Less' : 'Read More'}</span>
+                <span className={`readmore-icon ${expandedMobile ? 'expanded' : ''}`}>
+                  &darr;
+                </span>
+              </button>
+            </div>
           </div>
 
-          {/* Right Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+          {/* Right Column (On Mobile, toggled by Read More) */}
+          <div
+            className={`about-right-col ${expandedMobile ? 'mobile-expanded' : ''}`}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              height: '100%',
+            }}
+          >
             <div>
               {/* Paragraph 3 */}
               <p
@@ -146,7 +171,7 @@ export default function AboutSection() {
               </p>
             </div>
 
-            {/* Discover More Button - Square Premium Style */}
+            {/* Discover More Button */}
             <div>
               <Link
                 href="/about"
@@ -168,16 +193,7 @@ export default function AboutSection() {
                   transition: 'all 0.25s ease',
                   boxShadow: '0 4px 16px rgba(8, 20, 75, 0.18)',
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#0b7a3d';
-                  e.currentTarget.style.borderColor = '#0b7a3d';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#08144b';
-                  e.currentTarget.style.borderColor = '#08144b';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
+                className="about-discover-btn"
               >
                 Discover More
                 <span style={{ fontSize: '1rem', lineHeight: 1 }}>&rarr;</span>
@@ -187,11 +203,80 @@ export default function AboutSection() {
         </div>
       </div>
 
-      <style>{`
+      <style jsx>{`
+        .about-mobile-toggle-wrap {
+          display: none;
+          margin-top: 20px;
+        }
+
+        .about-mobile-readmore-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background-color: #0b7a3d;
+          color: #ffffff;
+          padding: 8px 18px;
+          border: none;
+          border-radius: 9999px;
+          font-size: 0.78rem;
+          font-weight: 600;
+          font-family: 'Poppins', sans-serif;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(11, 122, 61, 0.25);
+          transition: background-color 0.2s ease, transform 0.15s ease;
+        }
+
+        .about-mobile-readmore-btn:hover {
+          background-color: #086130;
+          transform: translateY(-1px);
+        }
+
+        .readmore-icon {
+          font-size: 0.95rem;
+          line-height: 1;
+          transition: transform 0.3s ease;
+        }
+
+        .readmore-icon.expanded {
+          transform: rotate(180deg);
+        }
+
         @media (max-width: 860px) {
           .about-theme-grid {
             grid-template-columns: 1fr !important;
-            gap: 32px !important;
+            gap: 20px !important;
+          }
+
+          .about-mobile-toggle-wrap {
+            display: block !important;
+          }
+
+          .about-right-col {
+            display: none !important;
+          }
+
+          .about-right-col.mobile-expanded {
+            display: flex !important;
+            animation: fadeIn 0.3s ease;
+            margin-top: 10px;
+          }
+
+          .about-discover-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
         }
       `}</style>

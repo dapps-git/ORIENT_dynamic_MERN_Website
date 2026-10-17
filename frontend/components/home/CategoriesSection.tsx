@@ -137,7 +137,7 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
     <section
       id="categories"
       style={{
-        padding: '90px 0 100px',
+        padding: '75px 0 28px',
         backgroundColor: '#ffffff',
         fontFamily: "'Poppins', sans-serif",
         position: 'relative',
@@ -333,6 +333,7 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
 
               {/* Card Bottom Content */}
               <div
+                className="cat-card-content"
                 style={{
                   position: 'relative',
                   zIndex: 3,
@@ -343,6 +344,7 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
                 }}
               >
                 <h3
+                  className="cat-card-title"
                   style={{
                     fontFamily: '"Cormorant Garamond", Amiri, serif',
                     fontSize: '1.32rem',
@@ -358,6 +360,7 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
 
                 <Link
                   href={cat.href}
+                  className="cat-card-btn"
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -397,16 +400,53 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
         @media (max-width: 1024px) {
           .cat-slider-card {
             flex: 0 0 calc(33.333% - 15px) !important;
+            min-width: 220px !important;
           }
         }
         @media (max-width: 768px) {
+          .cat-slider-track {
+            gap: 12px !important;
+          }
           .cat-slider-card {
-            flex: 0 0 calc(50% - 11px) !important;
+            flex: 0 0 calc(50% - 6px) !important;
+            min-width: 0 !important;
+            max-width: none !important;
+            height: 260px !important;
+          }
+          .cat-card-title {
+            font-size: 1rem !important;
+            margin-bottom: 10px !important;
           }
         }
         @media (max-width: 520px) {
+          .cat-slider-track {
+            gap: 10px !important;
+          }
           .cat-slider-card {
-            flex: 0 0 85% !important;
+            flex: 0 0 calc(50% - 5px) !important;
+            min-width: 0 !important;
+            max-width: none !important;
+            height: 220px !important;
+          }
+          .cat-card-content {
+            padding: 14px 12px !important;
+          }
+          .cat-card-title {
+            font-size: 0.88rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 8px !important;
+          }
+          .cat-card-btn {
+            padding: 4px 10px !important;
+            font-size: 0.60rem !important;
+          }
+        }
+        @media (max-width: 380px) {
+          .cat-slider-card {
+            height: 200px !important;
+          }
+          .cat-card-title {
+            font-size: 0.80rem !important;
           }
         }
       `}</style>

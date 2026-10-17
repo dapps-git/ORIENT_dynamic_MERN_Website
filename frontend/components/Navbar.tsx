@@ -208,16 +208,6 @@ function NavbarInner() {
               )}
             </li>
 
-            {/* Oetc Rental Equipments */}
-            <li role="none">
-              <Link
-                href="/services"
-                className={`nav-link${pathname.startsWith('/services') ? ' active' : ''}`}
-              >
-                Oetc Rental Equipments
-              </Link>
-            </li>
-
             {/* Products Dropdown */}
             <li
               role="none"
@@ -414,9 +404,6 @@ function NavbarInner() {
           </Link>
           <Link href="/sectors" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
             Sectors
-          </Link>
-          <Link href="/services" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
-            Oetc Rental Equipments
           </Link>
           <Link href="/products" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
             Products

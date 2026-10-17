@@ -191,6 +191,7 @@ export default function CapabilitiesSection() {
 
               {/* Circular Floating Glass Badge */}
               <div
+                className="cap-icon-wrap"
                 style={{
                   width: '64px',
                   height: '64px',
@@ -281,13 +282,49 @@ export default function CapabilitiesSection() {
         @media (max-width: 1024px) {
           .capabilities-cards-grid {
             grid-template-columns: repeat(2, 1fr) !important;
-            gap: 20px !important;
+            gap: 18px !important;
           }
         }
         @media (max-width: 640px) {
           .capabilities-cards-grid {
-            grid-template-columns: 1fr !important;
-            gap: 18px !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
+          }
+          .capability-card {
+            padding: 20px 14px 18px !important;
+            border-radius: 12px !important;
+          }
+          .capability-card .cap-icon-wrap {
+            width: 44px !important;
+            height: 44px !important;
+            margin-bottom: 14px !important;
+          }
+          .capability-card .cap-icon-wrap svg {
+            width: 20px !important;
+            height: 20px !important;
+          }
+          .capability-card h3 {
+            font-size: 1.05rem !important;
+            line-height: 1.25 !important;
+            margin-bottom: 8px !important;
+          }
+          .capability-card p {
+            font-size: 0.72rem !important;
+            line-height: 1.5 !important;
+          }
+        }
+        @media (max-width: 380px) {
+          .capabilities-cards-grid {
+            gap: 8px !important;
+          }
+          .capability-card {
+            padding: 16px 10px 14px !important;
+          }
+          .capability-card h3 {
+            font-size: 0.95rem !important;
+          }
+          .capability-card p {
+            font-size: 0.68rem !important;
           }
         }
       `}</style>

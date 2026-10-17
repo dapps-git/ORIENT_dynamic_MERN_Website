@@ -9,7 +9,6 @@ import BrandsMarqueeSection from '@/components/home/BrandsMarqueeSection';
 import TrustBannerSection from '@/components/home/TrustBannerSection';
 import WhyChooseSection from '@/components/home/WhyChooseSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
-import RentalDivisionSection from '@/components/home/RentalDivisionSection';
 import BlogSection from '@/components/home/BlogSection';
 import ScrollAnimation from '@/components/ScrollAnimation';
 
@@ -47,9 +46,6 @@ export default function HomePage() {
 
         {/* What people say about Orient Energy */}
         <TestimonialsSection />
-
-        {/* OETC Rental Equipments Division */}
-        <RentalDivisionSection />
 
         {/* Articles & blog posts with useful information */}
         <BlogSection />

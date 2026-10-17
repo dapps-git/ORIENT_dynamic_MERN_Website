@@ -29,7 +29,7 @@ export default function BrandsMarqueeSection() {
   return (
     <section
       style={{
-        padding: '36px 0',
+        padding: '18px 0 20px',
         backgroundColor: '#ffffff',
         borderTop: '1px solid #f1f5f9',
         borderBottom: '1px solid #f1f5f9',
@@ -78,10 +78,10 @@ export default function BrandsMarqueeSection() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '10px 32px',
+                padding: '8px 36px',
                 flexShrink: 0,
                 textDecoration: 'none',
-                opacity: 0.88,
+                opacity: 0.92,
                 transition: 'all 0.25s ease',
               }}
               onMouseEnter={(e) => {
@@ -89,14 +89,14 @@ export default function BrandsMarqueeSection() {
                 e.currentTarget.style.transform = 'scale(1.08)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = '0.88';
+                e.currentTarget.style.opacity = '0.92';
                 e.currentTarget.style.transform = 'scale(1)';
               }}
             >
               <div
                 style={{
-                  height: '52px',
-                  width: '145px',
+                  height: '62px',
+                  width: '165px',
                   position: 'relative',
                   display: 'flex',
                   alignItems: 'center',
@@ -106,11 +106,11 @@ export default function BrandsMarqueeSection() {
                 <Image
                   src={brand.logo}
                   alt={brand.name}
-                  width={145}
-                  height={52}
+                  width={165}
+                  height={62}
                   style={{
-                    maxHeight: '48px',
-                    maxWidth: '140px',
+                    maxHeight: '56px',
+                    maxWidth: '155px',
                     width: 'auto',
                     height: 'auto',
                     objectFit: 'contain',
