@@ -286,6 +286,9 @@ export default function CapabilitiesSection() {
           }
         }
         @media (max-width: 640px) {
+          #capabilities {
+            padding: 42px 0 46px !important;
+          }
           .capabilities-cards-grid {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 12px !important;

@@ -245,6 +245,9 @@ export default function TestimonialsSection() {
         }
 
         @media (max-width: 640px) {
+          #testimonials {
+            padding: 48px 0 54px !important;
+          }
           .testimonials-grid {
             grid-template-columns: 1fr;
           }

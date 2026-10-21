@@ -244,6 +244,9 @@ export default function AboutSection() {
         }
 
         @media (max-width: 860px) {
+          #about {
+            padding: 42px 0 46px !important;
+          }
           .about-theme-grid {
             grid-template-columns: 1fr !important;
             gap: 20px !important;

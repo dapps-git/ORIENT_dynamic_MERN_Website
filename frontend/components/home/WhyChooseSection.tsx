@@ -244,9 +244,12 @@ export default function WhyChooseSection() {
         }
 
         @media (max-width: 900px) {
+          #why-choose-us {
+            padding: 48px 0 52px !important;
+          }
           .why-choose-grid {
             grid-template-columns: 1fr;
-            gap: 40px;
+            gap: 30px;
           }
 
           .why-choose-photo-wrap {

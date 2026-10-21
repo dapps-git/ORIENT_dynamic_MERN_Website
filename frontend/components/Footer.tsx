@@ -398,7 +398,7 @@ export default function Footer() {
 
               {/* Facebook */}
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/share/1FvBC9RFuK/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -423,7 +423,7 @@ export default function Footer() {
 
               {/* Instagram */}
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/orientenergyco?dlrf=MWptcnpienk0eDVxbQ=="
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"

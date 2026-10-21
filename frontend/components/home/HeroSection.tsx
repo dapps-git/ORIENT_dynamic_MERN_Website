@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 const DESKTOP_SLIDES = [
+  '/hero-bg-refinery-tanks.jpg',
   '/hero-bg.jpg',
   '/hero-bg-refinery-sunset.jpg',
   '/ima.webp',
@@ -113,6 +114,7 @@ export default function HeroSection() {
 
         {/* Subtitle description */}
         <p
+          className="hero-subtitle-desc"
           style={{
             fontFamily: "'Poppins', sans-serif",
             fontSize: '0.86rem',
@@ -131,6 +133,7 @@ export default function HeroSection() {
 
         {/* Action Buttons */}
         <div
+          className="hero-btn-row"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -142,23 +145,26 @@ export default function HeroSection() {
           {/* CTA Buttons */}
           <Link
             href="/contact"
+            className="hero-btn hero-btn-primary"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px',
+              justifyContent: 'center',
+              gap: '6px',
               backgroundColor: '#0056b3',
               color: '#ffffff',
               border: '1.5px solid #0056b3',
-              padding: '10px 24px',
-              borderRadius: '0px',
+              padding: '10px 20px',
+              borderRadius: '4px',
               fontWeight: 600,
-              fontSize: '12.5px',
-              letterSpacing: '0.06em',
+              fontSize: '12px',
+              letterSpacing: '0.04em',
               textTransform: 'uppercase',
               fontFamily: "'Poppins', sans-serif",
               textDecoration: 'none',
               transition: 'all 0.25s ease',
               boxShadow: '0 4px 14px rgba(0, 86, 179, 0.35)',
+              whiteSpace: 'nowrap',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = '#004085';
@@ -172,11 +178,12 @@ export default function HeroSection() {
             }}
           >
             Request a Quote
-            <span style={{ fontSize: '0.95rem', lineHeight: 1 }}>&rarr;</span>
+            <span style={{ fontSize: '0.9rem', lineHeight: 1 }}>&rarr;</span>
           </Link>
 
           <Link
             href="/contact"
+            className="hero-btn hero-btn-secondary"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -184,16 +191,17 @@ export default function HeroSection() {
               backgroundColor: 'transparent',
               border: '1.5px solid rgba(255, 255, 255, 0.75)',
               color: '#ffffff',
-              padding: '10px 24px',
-              borderRadius: '0px',
+              padding: '10px 20px',
+              borderRadius: '4px',
               fontWeight: 600,
-              fontSize: '12.5px',
-              letterSpacing: '0.06em',
+              fontSize: '12px',
+              letterSpacing: '0.04em',
               textTransform: 'uppercase',
               fontFamily: "'Poppins', sans-serif",
               textDecoration: 'none',
               transition: 'all 0.25s ease',
               backdropFilter: 'blur(8px)',
+              whiteSpace: 'nowrap',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
@@ -244,7 +252,7 @@ export default function HeroSection() {
         ))}
       </div>
 
-      <style jsx>{`
+      <style>{`
         @media (max-width: 768px) {
           .hero-desktop-slides,
           .hero-indicators {
@@ -252,6 +260,38 @@ export default function HeroSection() {
           }
           .hero-mobile-bg {
             display: block !important;
+          }
+          .hero-subtitle-desc {
+            display: none !important;
+          }
+          .hero-btn-row {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            width: 100% !important;
+            max-width: 320px !important;
+            margin: 0 auto !important;
+          }
+          .hero-btn {
+            flex: 1 1 0 !important;
+            height: 40px !important;
+            padding: 0 8px !important;
+            font-size: 10px !important;
+            letter-spacing: 0.02em !important;
+            white-space: nowrap !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            border-radius: 4px !important;
+            box-sizing: border-box !important;
+          }
+          .hero-btn span {
+            font-size: 0.8rem !important;
+            margin-left: 2px !important;
           }
         }
       `}</style>

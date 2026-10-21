@@ -65,12 +65,6 @@ const CATEGORIES: CategoryItem[] = [
     href: '/products?category=lifting-material-handling',
   },
   {
-    name: 'Lubricants & Chemicals',
-    slug: 'lubricants-chemicals',
-    image: '/categories/lubricants-chemicals.jpg',
-    href: '/products?category=lubricants-chemicals',
-  },
-  {
     name: 'Marine Division',
     slug: 'marine-division',
     image: '/categories/marine-division.jpg',
@@ -136,6 +130,7 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
   return (
     <section
       id="categories"
+      className="categories-section"
       style={{
         padding: '75px 0 28px',
         backgroundColor: '#ffffff',
@@ -146,6 +141,7 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
       <div className="container" style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px' }}>
         {/* Top Header Row with Title and Navigation Controls */}
         <div
+          className="cat-header-row"
           style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -404,14 +400,21 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
           }
         }
         @media (max-width: 768px) {
+          .categories-section {
+            padding: 34px 0 12px !important;
+          }
+          .cat-header-row {
+            margin-bottom: 20px !important;
+          }
           .cat-slider-track {
             gap: 12px !important;
+            padding-bottom: 6px !important;
           }
           .cat-slider-card {
             flex: 0 0 calc(50% - 6px) !important;
             min-width: 0 !important;
             max-width: none !important;
-            height: 260px !important;
+            height: 250px !important;
           }
           .cat-card-title {
             font-size: 1rem !important;
@@ -419,8 +422,15 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
           }
         }
         @media (max-width: 520px) {
+          .categories-section {
+            padding: 28px 0 10px !important;
+          }
+          .cat-header-row {
+            margin-bottom: 16px !important;
+          }
           .cat-slider-track {
             gap: 10px !important;
+            padding-bottom: 4px !important;
           }
           .cat-slider-card {
             flex: 0 0 calc(50% - 5px) !important;

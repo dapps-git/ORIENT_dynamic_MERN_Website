@@ -56,18 +56,12 @@ const SECTORS_LIST = [
   },
   {
     num: '08',
-    id: 'logistics',
-    title: 'Logistics & Transportation Supplier in Saudi Arabia',
-    image: '/sectors/logistics.jpg',
-  },
-  {
-    num: '09',
     id: 'metals-fabrication',
     title: 'Fabrication & Welding Supplier in Saudi Arabia',
     image: '/sectors/metals-fabrication.png',
   },
   {
-    num: '10',
+    num: '09',
     id: 'water-utility',
     title: 'Water & Utility Projects Supplier in Saudi Arabia',
     image: '/sectors/water-utility.jpg',
@@ -155,8 +149,8 @@ export default function SectorsPage() {
                   </div>
                   <div className="sector-slice-item">
                     <Image
-                      src="/sectors/logistics.jpg"
-                      alt="Logistics Transport"
+                      src="/sectors/power-energy.png"
+                      alt="Energy & Power Infrastructure"
                       fill
                       sizes="(max-width: 768px) 25vw, 145px"
                       style={{ objectFit: 'cover' }}

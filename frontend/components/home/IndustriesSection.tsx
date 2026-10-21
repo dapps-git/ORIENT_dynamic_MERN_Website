@@ -266,6 +266,9 @@ export default function IndustriesSection() {
           }
         }
         @media (max-width: 640px) {
+          #sectors {
+            padding: 42px 0 46px !important;
+          }
           .sectors-cards-grid {
             grid-template-columns: 1fr !important;
             gap: 18px !important;

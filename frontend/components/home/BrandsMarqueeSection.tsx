@@ -28,6 +28,7 @@ export default function BrandsMarqueeSection() {
 
   return (
     <section
+      className="brands-marquee-section"
       style={{
         padding: '18px 0 20px',
         backgroundColor: '#ffffff',
@@ -152,6 +153,23 @@ export default function BrandsMarqueeSection() {
           }
           100% {
             transform: translateX(-50%);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .brands-marquee-section {
+            padding: 8px 0 10px !important;
+          }
+          .marquee-item {
+            padding: 4px 14px !important;
+          }
+          .marquee-item > div {
+            height: 42px !important;
+            width: 115px !important;
+          }
+          .marquee-item img {
+            max-height: 38px !important;
+            max-width: 105px !important;
           }
         }
       `}</style>

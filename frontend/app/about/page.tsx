@@ -75,7 +75,7 @@ export default function AboutPage() {
 
       <main className="about-page" style={{ backgroundColor: '#ffffff', minHeight: '100vh', fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
         {/* Section 1: About Orient Energy Trading ("EXPERTISE IN EVERY TRADE") */}
-        <section style={{ padding: '130px 0 75px', backgroundColor: '#ffffff' }}>
+        <section className="about-intro-section" style={{ backgroundColor: '#ffffff' }}>
           <div
             className="container"
             style={{
@@ -85,46 +85,18 @@ export default function AboutPage() {
             }}
           >
             <div
+              className="scroll-reveal"
               style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1.08fr',
-                gap: '56px',
-                alignItems: 'center',
+                maxWidth: '860px',
+                margin: '0 auto',
               }}
-              className="about-split-grid"
             >
-              {/* Left Column: Graphic with Shanghai Skyline + Orient logo */}
-              <div
-                className="scroll-reveal"
-                style={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  borderRadius: '0px',
-                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.06)',
-                }}
-              >
-                <Image
-                  src="/about/about-hero.jpg"
-                  alt="Orient Energy — Expertise in Every Trade"
-                  width={720}
-                  height={720}
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    display: 'block',
-                    objectFit: 'contain',
-                  }}
-                  priority
-                />
-              </div>
-
-              {/* Right Column: Copy */}
-              <div className="scroll-reveal">
+              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
                 <div
                   style={{
                     fontSize: '0.78rem',
                     fontWeight: 700,
-                    letterSpacing: '0.12em',
+                    letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     color: '#2e3191',
                     marginBottom: '10px',
@@ -136,63 +108,49 @@ export default function AboutPage() {
                 <h2
                   style={{
                     fontFamily: '"Cormorant Garamond", Amiri, serif',
-                    fontSize: 'clamp(2.3rem, 3.4vw, 3.1rem)',
+                    fontSize: 'clamp(2.1rem, 3.2vw, 2.85rem)',
                     fontWeight: 600,
                     color: '#1a1f2c',
-                    lineHeight: 1.15,
-                    marginBottom: '20px',
+                    lineHeight: 1.18,
+                    marginBottom: '16px',
                     letterSpacing: '0.01em',
                   }}
                 >
                   ORIENT ENERGY TRADING
                 </h2>
 
-                <p
+                <div
                   style={{
-                    fontSize: '0.88rem',
-                    lineHeight: 1.72,
-                    color: '#4b5563',
-                    marginBottom: '16px',
-                    fontWeight: 400,
+                    width: '50px',
+                    height: '3px',
+                    backgroundColor: '#20b512',
+                    margin: '0 auto',
+                    borderRadius: '2px',
                   }}
-                >
-                  Orient Energy is a Saudi Arabia-based industrial supply and engineering solutions
-                  company serving the Oil &amp; Gas, Power, Marine, Construction, Infrastructure, and
-                  industrial sectors across the Kingdom and the Middle East.
-                </p>
-
-                <p
-                  style={{
-                    fontSize: '0.88rem',
-                    lineHeight: 1.72,
-                    color: '#4b5563',
-                    marginBottom: '16px',
-                    fontWeight: 400,
-                  }}
-                >
-                  We specialize in industrial supply, global procurement, engineering support, and
-                  heavy equipment rental, delivering reliable products and integrated solutions
-                  tailored for demanding industrial operations.
-                </p>
-
-                <p
-                  style={{
-                    fontSize: '0.88rem',
-                    lineHeight: 1.72,
-                    color: '#4b5563',
-                    margin: 0,
-                    fontWeight: 400,
-                  }}
-                >
-                  With a strong international sourcing network and industry expertise, we provide
-                  certified industrial materials, mechanical and electrical solutions, safety
-                  equipment, steel products, welding systems, marine supplies, and maintenance
-                  solutions backed by quality, reliability, and technical excellence. At Orient Energy,
-                  we are committed to supporting industries with dependable service, operational
-                  efficiency, and long-term partnership solutions designed to meet modern industrial
-                  demands.
-                </p>
+                />
               </div>
+
+              <p className="about-intro-p">
+                Orient Energy is a Saudi Arabia-based industrial supply and engineering solutions
+                company serving the Oil &amp; Gas, Power, Marine, Construction, Infrastructure, and
+                industrial sectors across the Kingdom and the Middle East.
+              </p>
+
+              <p className="about-intro-p">
+                We specialize in industrial supply, global procurement, engineering support, and
+                heavy equipment rental, delivering reliable products and integrated solutions
+                tailored for demanding industrial operations.
+              </p>
+
+              <p className="about-intro-p" style={{ margin: 0 }}>
+                With a strong international sourcing network and industry expertise, we provide
+                certified industrial materials, mechanical and electrical solutions, safety
+                equipment, steel products, welding systems, marine supplies, and maintenance
+                solutions backed by quality, reliability, and technical excellence. At Orient Energy,
+                we are committed to supporting industries with dependable service, operational
+                efficiency, and long-term partnership solutions designed to meet modern industrial
+                demands.
+              </p>
             </div>
           </div>
         </section>
@@ -1085,6 +1043,31 @@ export default function AboutPage() {
           }
           .about-certs-grid {
             grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+
+        .about-intro-section {
+          padding: 135px 0 65px;
+        }
+
+        .about-intro-p {
+          font-size: 0.94rem;
+          line-height: 1.82;
+          color: #4b5563;
+          margin-bottom: 20px;
+          text-align: left;
+          letter-spacing: 0.01em;
+        }
+
+        @media (max-width: 768px) {
+          .about-intro-section {
+            padding: 115px 0 32px !important;
+          }
+          .about-intro-p {
+            font-size: 0.88rem !important;
+            line-height: 1.74 !important;
+            text-align: left !important;
+            margin-bottom: 16px !important;
           }
         }
 

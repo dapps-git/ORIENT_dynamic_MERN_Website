@@ -119,6 +119,10 @@ export default function TrustBannerSection() {
 
       <style>{`
         @media (max-width: 900px) {
+          #operational-excellence {
+            padding: 48px 0 54px !important;
+            min-height: auto !important;
+          }
           .trust-content-box {
             max-width: 100% !important;
             padding: 0 10px;

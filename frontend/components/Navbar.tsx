@@ -12,7 +12,6 @@ const SECTORS_DROPDOWN = [
   { label: 'Energy & Power Sector', href: '/sectors#power-energy' },
   { label: 'Heavy Engineering', href: '/sectors#heavy-engineering' },
   { label: 'Industrial Maintenance', href: '/sectors#maintenance' },
-  { label: 'Logistics & Transportation', href: '/sectors#logistics' },
   { label: 'Fabrication & Welding', href: '/sectors#metals-fabrication' },
   { label: 'Water & Utility Projects', href: '/sectors#water-utility' },
 ];
