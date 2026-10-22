@@ -1,8 +1,25 @@
 export interface ProductItem {
   id: string;
   title: string;
+  slug?: string;
   image: string;
+  images?: string[];
+  category?: string;
+  divisionSlug?: string;
+  divisionName?: string;
+  date?: string;
+  comments?: string;
+  features?: string[];
+  shortDescription?: string;
+  fullDescription?: string;
   whatsappMessage?: string;
+}
+
+export function getProductSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 }
 
 export interface SubcategoryItem {
@@ -35,12 +52,6 @@ export const DIVISIONS_DATA: DivisionData[] = [
       'Orient Energy Trading Company, we supply a comprehensive range of industrial mechanical products designed to meet the demanding requirements of the Oil & Gas, Petrochemical, Power, Marine, Construction, and Manufacturing industries across Saudi Arabia.',
       'Our product portfolio includes valves, flanges, pipe fittings, fasteners, bearings, gaskets, seals, hydraulic components, industrial hoses, mechanical tools, and maintenance supplies sourced from globally recognized manufacturers. With a strong sourcing network, competitive pricing, and dependable delivery, we help contractors, EPC companies, and industrial facilities keep their operations running efficiently and reliably.',
     ],
-    subcategoriesTitle: 'Sub-Categories',
-    subcategories: [
-      { name: 'Bearings & Power Transmission' },
-      { name: 'Hoses, Hammer Unions & Rig Supplies' },
-      { name: 'Valves, Fittings & Tubing', image: '/products/subcategories/valves-fittings-tubing.jpg' },
-    ],
     productRangeTitle: 'Product Range',
     productRange: [
       'Industrial Valves (Gate, Globe, Ball, Butterfly, Check Valves)',
@@ -62,19 +73,214 @@ export const DIVISIONS_DATA: DivisionData[] = [
       'Industrial Plants',
     ],
     products: [
-      { id: 'mech-1', title: 'Black-Coated Steel Pipe Flanges Threaded', image: '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png' },
-      { id: 'mech-2', title: 'Breathing Hoses', image: '/products/mechanical/breathing-hoses.png' },
-      { id: 'mech-3', title: 'Butterfly Valve', image: '/products/mechanical/butterfly-valve.png' },
-      { id: 'mech-4', title: 'Butterfly Valve Lever Handle SS Disc 3', image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png' },
-      { id: 'mech-5', title: 'Butterfly Valve Lever Handle SS Disc 4', image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png' },
-      { id: 'mech-6', title: 'Butterfly Valve Lever Handle SS Disc 6', image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png' },
-      { id: 'mech-7', title: 'Butterfly Valve Lever Handle SS Disc 8', image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png' },
-      { id: 'mech-8', title: 'Hydraulic Hoses Fittings & Adaptors', image: '/products/mechanical/hydraulic-hoses-fittings-adaptors.png' },
-      { id: 'mech-9', title: 'Industrial & Large Bore Hoses', image: '/products/mechanical/industrial-large-bore-hoses.png' },
-      { id: 'mech-10', title: 'Industrial Gasket and Seals', image: '/products/mechanical/industrial-gasket-and-seals.png' },
-      { id: 'mech-11', title: 'Isolation Valve, Ball Valve Steam High Temperature Ball Valve', image: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png' },
-      { id: 'mech-12', title: 'Micro Linear Actuators', image: '/products/mechanical/micro-linear-actuators.png' },
-      { id: 'mech-13', title: 'Carbon Steel Seamless & ERW Pipes', image: '/products/mechanical/carbon-steel-seamless-erw-pipes.png' },
+      {
+        id: 'mech-1',
+        title: 'Black-Coated Steel Pipe Flanges Threaded',
+        slug: 'black-coated-steel-pipe-flanges-threaded',
+        image: '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
+        category: 'Flanges & Pipe Connections',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'High Pressure ASME B16.5 Standard',
+          'Anti-Corrosive Black Protective Coating',
+          'Threaded Class 150/300/600 Pressure Ratings',
+          'Carbon Steel ASTM A105 / A350 Material',
+          'Complete MTR (Mill Test Report) Traceability',
+        ],
+      },
+      {
+        id: 'mech-2',
+        title: 'Breathing Hoses',
+        slug: 'breathing-hoses',
+        image: '/products/mechanical/breathing-hoses.png',
+        category: 'Hoses, Hammer Unions & Rig Supplies',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'Low Pressure & High Pressure Hoses',
+          'Quick Release Couplers',
+          'Manifolds',
+          'CGA Connectors',
+          'Isolation Valves',
+        ],
+      },
+      {
+        id: 'mech-3',
+        title: 'Butterfly Valve',
+        slug: 'butterfly-valve',
+        image: '/products/mechanical/butterfly-valve.png',
+        category: 'Valves, Fittings & Tubing',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'Wafer and Lug Type Body Styles',
+          'API 609 / ASME B16.34 Compliant Design',
+          'Resilient Seated & High Performance Disc',
+          'Manual Lever, Gear Operator & Actuator Ready',
+          'Bubble-Tight Bidirectional Shut-Off',
+        ],
+      },
+      {
+        id: 'mech-4',
+        title: 'Butterfly Valve Lever Handle SS Disc 3',
+        slug: 'butterfly-valve-lever-handle-ss-disc-3',
+        image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png',
+        category: 'Valves, Fittings & Tubing',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          '3-Inch Nominal Bore Diameter',
+          'Stainless Steel 316 Investment Cast Disc',
+          'Ergonomic 10-Position Locking Lever Handle',
+          'EPDM / NBR Replaceable Liner',
+          'Working Pressure up to 16 Bar (232 PSI)',
+        ],
+      },
+      {
+        id: 'mech-5',
+        title: 'Butterfly Valve Lever Handle SS Disc 4',
+        slug: 'butterfly-valve-lever-handle-ss-disc-4',
+        image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+        category: 'Valves, Fittings & Tubing',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          '4-Inch Heavy-Duty Industrial Wafer Valve',
+          'Stainless Steel 316 Disc with Polished Edges',
+          'Rugged Lever Handle with Visual Position Indicator',
+          'Pinless Shaft Connection Preventing Leakage',
+          'Tested to API 598 Pressure Standards',
+        ],
+      },
+      {
+        id: 'mech-6',
+        title: 'Butterfly Valve Lever Handle SS Disc 6',
+        slug: 'butterfly-valve-lever-handle-ss-disc-6',
+        image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+        category: 'Valves, Fittings & Tubing',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          '6-Inch Industrial Process Control Valve',
+          'Ductile Iron Body with Epoxy Powder Coating',
+          'Stainless Steel Disc for Aggressive Fluids',
+          'Blow-out Proof Stem with PTFE Bushings',
+          'Direct Mount ISO 5211 Actuator Flange',
+        ],
+      },
+      {
+        id: 'mech-7',
+        title: 'Butterfly Valve Lever Handle SS Disc 8',
+        slug: 'butterfly-valve-lever-handle-ss-disc-8',
+        image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
+        category: 'Valves, Fittings & Tubing',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          '8-Inch Flanged / Wafer Isolation Valve',
+          'Heavy Industrial Duty Gear or Lever Handle',
+          'Dual Shaft O-ring Stem Sealing',
+          'Suitable for Water, Glycol, Slurries & Hydrocarbons',
+          'Aramco & SABIC Plant Approved Specifications',
+        ],
+      },
+      {
+        id: 'mech-8',
+        title: 'Hydraulic Hoses Fittings & Adaptors',
+        slug: 'hydraulic-hoses-fittings-adaptors',
+        image: '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+        category: 'Hoses, Hammer Unions & Rig Supplies',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'High Pressure Wire Braid & Spiral Hoses (1SN, 2SN, 4SP, 4SH)',
+          'BSP, JIC, NPT & ORFS Standard Crimp Fittings',
+          'Abrasion and Weather Resistant Outer Covers',
+          'Quick Disconnect Couplings & High-Pressure Swivels',
+          'Custom Crimping & Pressure Testing Certification',
+        ],
+      },
+      {
+        id: 'mech-9',
+        title: 'Industrial & Large Bore Hoses',
+        slug: 'industrial-large-bore-hoses',
+        image: '/products/mechanical/industrial-large-bore-hoses.png',
+        category: 'Hoses, Hammer Unions & Rig Supplies',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'Composite, Rubber & Stainless Steel Corrugated Hoses',
+          'Sizes from 2-Inch to 12-Inch Diameter',
+          'Built for Mud, Oil, Chemical & Water Suction/Discharge',
+          'Camlock, Hammer Union & Flanged End Terminations',
+          'Electrical Continuity Grounding Available',
+        ],
+      },
+      {
+        id: 'mech-10',
+        title: 'Industrial Gasket and Seals',
+        slug: 'industrial-gasket-and-seals',
+        image: '/products/mechanical/industrial-gasket-and-seals.png',
+        category: 'Gaskets & Sealing Solutions',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'Spiral Wound Gaskets (316SS with Graphite/PTFE Filler)',
+          'Ring Type Joint (RTJ) Gaskets for High Pressure Flanges',
+          'Non-Asbestos Fiber Sheet & Custom Cut Gaskets',
+          'EPDM, Viton, NBR & Silicone O-Rings and Mechanical Seals',
+          'Fire-Safe API 607 Compliant Sealing Solutions',
+        ],
+      },
+      {
+        id: 'mech-11',
+        title: 'Isolation Valve, Ball Valve Steam High Temperature Ball Valve',
+        slug: 'isolation-valve-ball-valve-steam-high-temperature-ball-valve',
+        image: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png',
+        category: 'Valves, Fittings & Tubing',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'Forged Steel 3-Piece Bolted Body Construction',
+          'Metal-to-Metal & PEEK Seated for Steam Service',
+          'Operating Temperatures up to 450°C (842°F)',
+          'Full Bore Design Minimizing Pressure Drops',
+          'API 6D, Firesafe API 607 Tested & Certified',
+        ],
+      },
+      {
+        id: 'mech-12',
+        title: 'Micro Linear Actuators',
+        slug: 'micro-linear-actuators',
+        image: '/products/mechanical/micro-linear-actuators.png',
+        category: 'Actuators & Control Components',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'High Precision Electric Linear Stroke Drive',
+          'Compact Form Factor for Space-Constrained Industrial Automation',
+          'IP65 / IP66 Dust and Water Ingress Protection',
+          'Built-in Adjustable Limit Switches & Position Feedback',
+          '12V / 24V DC Industrial Operating Voltage',
+        ],
+      },
+      {
+        id: 'mech-13',
+        title: 'Carbon Steel Seamless & ERW Pipes',
+        slug: 'carbon-steel-seamless-erw-pipes',
+        image: '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
+        category: 'Pipes & Tubes',
+        date: 'December 15, 2025',
+        comments: '0 Comment',
+        features: [
+          'ASTM A106 Grade B / API 5L Grade B & X-Grades',
+          'Schedules SCH 40, SCH 80, SCH 160 & XXS',
+          'Sizes ranging from 1/2" up to 36" Diameter',
+          'Beveled and Plain Ends with Protective Varnishing',
+          'Full Hydrostatic Testing and NDT Inspection Certified',
+        ],
+      },
     ],
   },
 
@@ -507,3 +713,80 @@ export const DIVISIONS_DATA: DivisionData[] = [
     ],
   },
 ];
+
+export function getAllStaticProducts(): { product: ProductItem; division: DivisionData }[] {
+  const result: { product: ProductItem; division: DivisionData }[] = [];
+  DIVISIONS_DATA.forEach((div) => {
+    div.products.forEach((prod) => {
+      result.push({
+        product: {
+          ...prod,
+          slug: prod.slug || getProductSlug(prod.title),
+          category: prod.category || div.name,
+          divisionSlug: div.id,
+          divisionName: div.name,
+        },
+        division: div,
+      });
+    });
+  });
+  return result;
+}
+
+export function findStaticProductBySlug(slug: string): {
+  product: ProductItem;
+  division: DivisionData;
+  related: ProductItem[];
+} | null {
+  const cleanSlug = slug.toLowerCase();
+  for (const div of DIVISIONS_DATA) {
+    const match = div.products.find(
+      (p) => (p.slug && p.slug.toLowerCase() === cleanSlug) || getProductSlug(p.title) === cleanSlug
+    );
+    if (match) {
+      const fullProd: ProductItem = {
+        ...match,
+        slug: match.slug || getProductSlug(match.title),
+        category: match.category || div.name,
+        divisionSlug: div.id,
+        divisionName: div.name,
+        date: match.date || 'December 15, 2025',
+        comments: match.comments || '0 Comment',
+        features:
+          match.features && match.features.length > 0
+            ? match.features
+            : [
+                'High quality certified industrial grade specification',
+                'Compliant with international and Saudi industrial standards',
+                'Traceable mill test reports and manufacturer certification',
+                'Engineered for maximum reliability and operational safety',
+                'Rapid availability and distribution across Saudi Arabia',
+              ],
+      };
+
+      // Prioritize related products in the same category/family (e.g. Hoses with other Hoses)
+      const sameCategory = div.products.filter(
+        (p) => p.id !== match.id && p.category && match.category && p.category === match.category
+      );
+      const otherCategory = div.products.filter(
+        (p) => p.id !== match.id && (!match.category || p.category !== match.category)
+      );
+      const related = [...sameCategory, ...otherCategory]
+        .slice(0, 4)
+        .map((p) => ({
+          ...p,
+          slug: p.slug || getProductSlug(p.title),
+          category: p.category || div.name,
+          divisionSlug: div.id,
+          divisionName: div.name,
+        }));
+
+      return {
+        product: fullProd,
+        division: div,
+        related,
+      };
+    }
+  }
+  return null;
+}

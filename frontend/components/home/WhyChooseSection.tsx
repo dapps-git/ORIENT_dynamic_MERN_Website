@@ -80,12 +80,13 @@ export default function WhyChooseSection() {
             {/* Main Section Heading */}
             <h2
               style={{
-                fontFamily: '"Cormorant Garamond", Amiri, serif',
-                fontSize: 'clamp(2.4rem, 3.6vw, 3.3rem)',
-                fontWeight: 600,
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.75rem, 2.6vw, 2.25rem)',
+                fontWeight: 500,
                 color: '#1a1f2c',
-                lineHeight: 1.14,
+                lineHeight: 1.2,
                 marginBottom: '16px',
+                letterSpacing: '-0.01em',
               }}
             >
               Because Your Operations
@@ -149,12 +150,12 @@ export default function WhyChooseSection() {
                 {/* Card Title */}
                 <h3
                   style={{
-                    fontFamily: '"Cormorant Garamond", Amiri, serif',
-                    fontSize: '1.28rem',
-                    fontWeight: 600,
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: '1.05rem',
+                    fontWeight: 500,
                     color: '#1a1f2c',
-                    lineHeight: 1.3,
-                    marginBottom: '12px',
+                    lineHeight: 1.35,
+                    marginBottom: '10px',
                     position: 'relative',
                     zIndex: 2,
                   }}

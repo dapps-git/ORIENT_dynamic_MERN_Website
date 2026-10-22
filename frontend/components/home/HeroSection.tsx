@@ -97,19 +97,28 @@ export default function HeroSection() {
       >
         {/* Main Heading - Refined elegant size */}
         <h1
+          className="hero-main-title"
           style={{
-            fontFamily: '"Cormorant Garamond", Amiri, serif',
-            fontSize: 'clamp(1.9rem, 3.1vw, 42px)',
-            fontWeight: 600,
-            lineHeight: 1.18,
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: 'clamp(1.85rem, 3.0vw, 40px)',
+            fontWeight: 500,
+            lineHeight: 1.22,
             marginBottom: '16px',
             color: '#ffffff',
-            maxWidth: '900px',
-            letterSpacing: '0.01em',
+            maxWidth: '920px',
+            letterSpacing: '-0.01em',
             textShadow: '0 2px 14px rgba(0, 0, 0, 0.45)',
           }}
         >
-          Powering Saudi Arabia&apos;s Industrial Future With Reliable Supply &amp; Engineering Solutions
+          <span className="hero-title-line hero-line-1">
+            Powering Saudi Arabia&apos;s Industrial
+          </span>{' '}
+          <span className="hero-title-line hero-line-2">
+            Future With Reliable Supply &amp;
+          </span>{' '}
+          <span className="hero-title-line hero-line-3">
+            Engineering Solutions
+          </span>
         </h1>
 
         {/* Subtitle description */}
@@ -254,6 +263,17 @@ export default function HeroSection() {
 
       <style>{`
         @media (max-width: 768px) {
+          .hero-main-title {
+            font-size: clamp(1.02rem, 4.3vw, 1.28rem) !important;
+            line-height: 1.34 !important;
+            max-width: 380px !important;
+            margin: 0 auto 16px !important;
+            padding: 0 10px !important;
+          }
+          .hero-title-line {
+            display: block !important;
+            white-space: nowrap !important;
+          }
           .hero-desktop-slides,
           .hero-indicators {
             display: none !important;

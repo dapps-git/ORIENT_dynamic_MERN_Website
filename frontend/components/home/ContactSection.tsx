@@ -97,13 +97,13 @@ export default function ContactSection() {
 
             <h2
               style={{
-                fontFamily: '"Cormorant Garamond", Amiri, serif',
-                fontSize: 'clamp(2.1rem, 3.2vw, 2.75rem)',
-                fontWeight: 600,
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.75rem, 2.6vw, 2.25rem)',
+                fontWeight: 500,
                 color: '#111827',
                 marginBottom: '16px',
-                lineHeight: 1.18,
-                letterSpacing: '0.01em',
+                lineHeight: 1.2,
+                letterSpacing: '-0.01em',
               }}
             >
               Get in Touch
@@ -340,13 +340,13 @@ export default function ContactSection() {
           <div>
             <h2
               style={{
-                fontFamily: '"Cormorant Garamond", Amiri, serif',
-                fontSize: 'clamp(2.1rem, 3.2vw, 2.75rem)',
-                fontWeight: 600,
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.75rem, 2.6vw, 2.25rem)',
+                fontWeight: 500,
                 color: '#111827',
                 marginBottom: '32px',
-                lineHeight: 1.18,
-                letterSpacing: '0.01em',
+                lineHeight: 1.2,
+                letterSpacing: '-0.01em',
               }}
             >
               Inquiry Form

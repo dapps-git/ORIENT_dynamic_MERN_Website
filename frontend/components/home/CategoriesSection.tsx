@@ -167,11 +167,11 @@ export default function CategoriesSection({ categories }: { categories?: any[] }
             </div>
             <h2
               style={{
-                fontFamily: '"Cormorant Garamond", Amiri, serif',
-                fontSize: 'clamp(2.3rem, 3.4vw, 3rem)',
-                fontWeight: 600,
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.35rem, 2.2vw, 1.95rem)',
+                fontWeight: 500,
                 color: '#111827',
-                lineHeight: 1.15,
+                lineHeight: 1.25,
                 margin: 0,
               }}
             >

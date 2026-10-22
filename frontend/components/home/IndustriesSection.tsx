@@ -84,12 +84,13 @@ export default function IndustriesSection() {
             </div>
             <h2
               style={{
-                fontFamily: '"Cormorant Garamond", Amiri, serif',
-                fontSize: 'clamp(2.3rem, 3.4vw, 3rem)',
-                fontWeight: 600,
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.75rem, 2.6vw, 2.25rem)',
+                fontWeight: 500,
                 color: '#111827',
-                lineHeight: 1.15,
+                lineHeight: 1.2,
                 marginBottom: '14px',
+                letterSpacing: '-0.01em',
               }}
             >
               Powering Industry,
@@ -213,11 +214,11 @@ export default function IndustriesSection() {
               <div style={{ position: 'relative', zIndex: 3 }}>
                 <h3
                   style={{
-                    fontFamily: '"Cormorant Garamond", Amiri, serif',
-                    fontSize: '1.45rem',
-                    fontWeight: 600,
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: '1.12rem',
+                    fontWeight: 500,
                     color: '#ffffff',
-                    marginBottom: '10px',
+                    marginBottom: '8px',
                     lineHeight: 1.25,
                   }}
                 >

@@ -121,13 +121,43 @@ export function generateStaticParams() {
   }));
 }
 
+async function getArticle(slug: string): Promise<ArticleData | null> {
+  try {
+    const res = await fetch(`http://localhost:5000/api/blogs/${slug}`, {
+      cache: 'no-store',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && data.data) {
+        const b = data.data;
+        return {
+          title: b.title,
+          subtitle: b.subtitle || '',
+          image: b.image || '/blog/blog-1.jpg',
+          date: b.date || 'Orient Energy Insight',
+          comments: '0 Comment',
+          introduction: b.introduction || '',
+          fleetTitle: b.fleetTitle || 'Key Capabilities & Offerings:',
+          fleetPoints: b.fleetPoints || [],
+          whyChoosePoints: b.whyChoosePoints || [],
+          conclusion: b.conclusion || '',
+        };
+      }
+    }
+  } catch {
+    // Backend offline: use static fallback
+  }
+
+  return ARTICLES[slug] || null;
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const article = ARTICLES[slug];
+  const article = await getArticle(slug);
   if (!article) return { title: 'Article Not Found — Orient Energy' };
 
   return {
@@ -142,7 +172,7 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = ARTICLES[slug] || ARTICLES['reliable-heavy-equipment-rental-across-saudi-arabia'];
+  const article = await getArticle(slug) || ARTICLES['reliable-heavy-equipment-rental-across-saudi-arabia'];
 
   if (!article) notFound();
 
@@ -200,13 +230,13 @@ export default async function BlogPostPage({
           {/* Title */}
           <h1
             style={{
-              fontFamily: '"Cormorant Garamond", Amiri, serif',
-              fontSize: 'clamp(2.3rem, 3.8vw, 3.2rem)',
-              fontWeight: 600,
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 'clamp(1.85rem, 3.0vw, 2.6rem)',
+              fontWeight: 500,
               color: '#111827',
-              lineHeight: 1.18,
+              lineHeight: 1.2,
               marginBottom: '16px',
-              letterSpacing: '0.01em',
+              letterSpacing: '-0.01em',
             }}
           >
             {article.title}
@@ -215,11 +245,11 @@ export default async function BlogPostPage({
           {/* Subtitle */}
           <h2
             style={{
-              fontFamily: '"Cormorant Garamond", Amiri, serif',
-              fontSize: 'clamp(1.35rem, 2.2vw, 1.75rem)',
-              fontWeight: 600,
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 'clamp(1.15rem, 1.8vw, 1.45rem)',
+              fontWeight: 500,
               color: '#334155',
-              lineHeight: 1.3,
+              lineHeight: 1.35,
               marginBottom: '28px',
               letterSpacing: '0.01em',
             }}

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollAnimation from '@/components/ScrollAnimation';
-import { DIVISIONS_DATA, DivisionData } from '@/lib/divisionsData';
+import { DIVISIONS_DATA, DivisionData, getProductSlug } from '@/lib/divisionsData';
 
 const WHATSAPP_PHONE = '966552400778';
 
@@ -23,9 +23,77 @@ const SLUG_ALIASES: Record<string, string> = {
   'lubricants-chemicals': 'coatings-surface-protection',
 };
 
-function getDivision(slug: string): DivisionData | undefined {
+async function getDivisionAsync(slug: string): Promise<DivisionData | undefined> {
   const resolvedId = SLUG_ALIASES[slug] || slug;
-  return DIVISIONS_DATA.find((d) => d.id === resolvedId);
+  const staticDiv = DIVISIONS_DATA.find((d) => d.id === resolvedId);
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/categories/${resolvedId}`, {
+      cache: 'no-store',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && data.data) {
+        const cat = data.data;
+
+        // Merge backend products with static products
+        const existingTitles = new Set(
+          (cat.products || []).map((p: any) => p.title.toLowerCase().trim())
+        );
+        const staticRemainder = (staticDiv?.products || []).filter(
+          (sp) => !existingTitles.has(sp.title.toLowerCase().trim())
+        );
+        const mappedCatProducts = (cat.products || []).map((p: any) => ({
+          id: p._id ? String(p._id) : p.slug,
+          title: p.title,
+          slug: p.slug || getProductSlug(p.title),
+          image: p.image || (p.images && p.images[0]) || '/categories/all-fittings.jpeg',
+          images: p.images || [p.image || '/categories/all-fittings.jpeg'],
+          category: p.categoryName || cat.name,
+          features: p.features || [],
+          shortDescription: p.shortDescription || '',
+          fullDescription: p.fullDescription || '',
+          whatsappMessage: p.whatsappMessage,
+        }));
+        const productsList = [...mappedCatProducts, ...staticRemainder];
+
+        return {
+          id: cat.slug || resolvedId,
+          name: cat.name || staticDiv?.name || '',
+          headline: cat.headline || staticDiv?.headline || cat.name,
+          description:
+            cat.detailedDescriptions && cat.detailedDescriptions.length > 0
+              ? cat.detailedDescriptions
+              : cat.description
+              ? [cat.description]
+              : staticDiv?.description || [],
+          subcategoriesTitle: cat.subcategoriesTitle || staticDiv?.subcategoriesTitle,
+          subcategories:
+            cat.slug === 'mechanical-division' || resolvedId === 'mechanical-division'
+              ? undefined
+              : cat.subcategories && cat.subcategories.length > 0
+              ? cat.subcategories.filter((s: any) => s.image && s.image.trim() !== '')
+              : staticDiv?.subcategories,
+          productRangeTitle: cat.productRangeTitle || staticDiv?.productRangeTitle,
+          productRange:
+            cat.productRange && cat.productRange.length > 0
+              ? cat.productRange
+              : staticDiv?.productRange,
+          applicationsTitle: cat.applicationsTitle || staticDiv?.applicationsTitle,
+          applications:
+            cat.applications && cat.applications.length > 0
+              ? cat.applications
+              : staticDiv?.applications,
+          pills: cat.pills && cat.pills.length > 0 ? cat.pills : staticDiv?.pills,
+          products: productsList,
+        };
+      }
+    }
+  } catch {
+    // Backend offline: fallback to staticDiv
+  }
+
+  return staticDiv;
 }
 
 export async function generateStaticParams() {
@@ -40,7 +108,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const division = getDivision(slug);
+  const division = await getDivisionAsync(slug);
 
   if (!division) {
     return {
@@ -67,7 +135,7 @@ export default async function ProductDivisionInnerPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const division = getDivision(slug);
+  const division = await getDivisionAsync(slug);
 
   if (!division) {
     notFound();
@@ -81,39 +149,7 @@ export default async function ProductDivisionInnerPage({
       <Navbar />
 
       <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '105px' }}>
-        {/* Breadcrumb Bar */}
-        <section
-          style={{
-            backgroundColor: '#FAF7F2',
-            borderBottom: '1px solid #ECE7DE',
-            padding: '14px 0',
-          }}
-        >
-          <div
-            className="container"
-            style={{
-              maxWidth: '1280px',
-              margin: '0 auto',
-              padding: '0 24px',
-              fontSize: '0.84rem',
-              color: '#64748b',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              flexWrap: 'wrap',
-            }}
-          >
-            <Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>
-              Home
-            </Link>
-            <span>/</span>
-            <Link href="/products" style={{ color: '#64748b', textDecoration: 'none' }}>
-              Products
-            </Link>
-            <span>/</span>
-            <span style={{ color: '#2e3191', fontWeight: 600 }}>{division.name}</span>
-          </div>
-        </section>
+
 
         {/* Division Hero Header */}
         <section style={{ padding: '50px 0 30px' }}>
@@ -139,14 +175,15 @@ export default async function ProductDivisionInnerPage({
             </div>
 
             <h1
+              className="division-hero-headline"
               style={{
-                fontFamily: '"Cormorant Garamond", Amiri, serif',
-                fontSize: 'clamp(2.2rem, 3.6vw, 3.2rem)',
-                fontWeight: 600,
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.15rem, 2.3vw, 1.85rem)',
+                fontWeight: 500,
                 color: '#111827',
-                lineHeight: 1.2,
+                lineHeight: 1.3,
                 maxWidth: '1100px',
-                marginBottom: '20px',
+                marginBottom: '18px',
               }}
             >
               {division.headline}
@@ -198,8 +235,8 @@ export default async function ProductDivisionInnerPage({
               </div>
             )}
 
-            {/* Subcategory Cards with Photos (e.g. Mechanical, Electrical, Fasteners, Coatings) */}
-            {division.subcategories && division.subcategories.length > 0 && (
+            {/* Subcategory Cards with Photos (e.g. Electrical, Fasteners, Coatings) */}
+            {division.id !== 'mechanical-division' && division.subcategories && division.subcategories.length > 0 && (
               <div style={{ marginBottom: '40px' }}>
                 <h3
                   style={{
@@ -214,7 +251,7 @@ export default async function ProductDivisionInnerPage({
                 <div
                   style={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
                     gap: '18px',
                   }}
                 >
@@ -224,19 +261,20 @@ export default async function ProductDivisionInnerPage({
                       style={{
                         backgroundColor: '#ffffff',
                         border: '1px solid #e2e8f0',
-                        borderRadius: '10px',
+                        borderRadius: '12px',
                         overflow: 'hidden',
                         display: 'flex',
                         flexDirection: 'column',
                         boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                        transition: 'transform 0.25s ease, box-shadow 0.25s ease',
                       }}
                     >
-                      {sub.image && (
+                      {sub.image ? (
                         <div
                           style={{
                             position: 'relative',
                             width: '100%',
-                            height: '130px',
+                            height: '135px',
                             backgroundColor: '#f1f5f9',
                           }}
                         >
@@ -247,6 +285,21 @@ export default async function ProductDivisionInnerPage({
                             sizes="250px"
                             style={{ objectFit: 'cover' }}
                           />
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            width: '100%',
+                            height: '80px',
+                            background: 'linear-gradient(135deg, #071138 0%, #1e293b 100%)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#e2e8f0',
+                            fontSize: '1.2rem',
+                          }}
+                        >
+                          ⚙️
                         </div>
                       )}
                       <div
@@ -362,14 +415,14 @@ export default async function ProductDivisionInnerPage({
               <div>
                 <h2
                   style={{
-                    fontSize: '1.85rem',
+                    fontSize: '2.1rem',
                     fontWeight: 700,
                     color: '#0f172a',
                     fontFamily: "'Poppins', sans-serif",
                     margin: 0,
                   }}
                 >
-                  Products Catalog
+                  Products
                 </h2>
                 <span style={{ fontSize: '0.84rem', color: '#64748b' }}>
                   Showing all {division.products.length} products
@@ -380,6 +433,7 @@ export default async function ProductDivisionInnerPage({
             {/* 4-Column Product Grid (Matching exact screenshots) */}
             <div className="product-grid-4col">
               {division.products.map((product) => {
+                const prodSlug = product.slug || getProductSlug(product.title);
                 const waMessage = encodeURIComponent(
                   `Hello Orient Energy Trading Co., I would like to order or request a quote for: ${product.title} (${division.name}).`
                 );
@@ -392,96 +446,90 @@ export default async function ProductDivisionInnerPage({
                     style={{
                       backgroundColor: '#ffffff',
                       border: '1px solid #e2e8f0',
-                      borderRadius: '10px',
-                      padding: '16px',
+                      borderRadius: '12px',
+                      padding: '18px 16px',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
                       textAlign: 'center',
                       boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
-                      transition: 'all 0.25s ease',
+                      transition: 'all 0.28s ease',
                     }}
                   >
-                    {/* Square Image Box */}
-                    <div
+                    {/* Clickable link to Product Detail Page */}
+                    <Link
+                      href={`/product/${prodSlug}`}
                       style={{
-                        position: 'relative',
+                        textDecoration: 'none',
+                        color: 'inherit',
                         width: '100%',
-                        height: '160px',
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        marginBottom: '14px',
-                        backgroundColor: '#ffffff',
+                        cursor: 'pointer',
                       }}
+                      className="product-card-link"
                     >
-                      <Image
-                        src={product.image}
-                        alt={product.title}
-                        width={160}
-                        height={150}
+                      {/* Square Image Box */}
+                      <div
                         style={{
-                          maxWidth: '100%',
-                          maxHeight: '100%',
-                          objectFit: 'contain',
-                          transition: 'transform 0.25s ease',
+                          position: 'relative',
+                          width: '100%',
+                          height: '165px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginBottom: '14px',
+                          backgroundColor: '#ffffff',
+                          overflow: 'hidden',
                         }}
-                        className="product-catalog-thumb"
-                      />
-                    </div>
+                      >
+                        <Image
+                          src={product.image}
+                          alt={product.title}
+                          width={160}
+                          height={150}
+                          style={{
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            objectFit: 'contain',
+                            transition: 'transform 0.28s ease',
+                          }}
+                          className="product-catalog-thumb"
+                        />
+                      </div>
 
-                    {/* Title */}
-                    <h4
-                      style={{
-                        fontSize: '0.86rem',
-                        fontWeight: 600,
-                        color: '#1e293b',
-                        lineHeight: 1.45,
-                        minHeight: '44px',
-                        marginBottom: '16px',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                      }}
-                      title={product.title}
-                    >
-                      {product.title}
-                    </h4>
+                      {/* Title */}
+                      <h4
+                        style={{
+                          fontSize: '0.86rem',
+                          fontWeight: 600,
+                          color: '#1e293b',
+                          lineHeight: 1.45,
+                          minHeight: '44px',
+                          marginBottom: '16px',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          transition: 'color 0.2s ease',
+                        }}
+                        title={product.title}
+                        className="product-card-title"
+                      >
+                        {product.title}
+                      </h4>
+                    </Link>
 
-                    {/* Order on WhatsApp Button */}
+                    {/* White Glossy Effect Order Now Button */}
                     <a
                       href={waUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="whatsapp-order-pill"
-                      aria-label={`Order ${product.title} on WhatsApp`}
+                      className="btn-order-now-glossy"
+                      aria-label={`Order ${product.title}`}
                     >
-                      <span
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '26px',
-                          height: '26px',
-                          borderRadius: '50%',
-                          backgroundColor: '#25D366',
-                          color: '#ffffff',
-                          fontSize: '14px',
-                          flexShrink: 0,
-                        }}
-                      >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.776.852 2.796.852 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.586-5.767-5.768-5.767zm0 10.428c-.878 0-1.579-.241-2.428-.737l-.173-.102-1.802.472.481-1.758-.112-.178c-.546-.867-.834-1.604-.834-2.359 0-2.628 2.139-4.767 4.768-4.767 2.629 0 4.768 2.139 4.768 4.767 0 2.628-2.139 4.767-4.768 4.767zm7.969-4.662c-.044-.074-.162-.119-.34-.208-.178-.089-1.054-.52-1.217-.58-.163-.059-.281-.089-.4.089-.119.178-.46 5.79-.564.708-.104.119-.208.134-.386.044-.178-.089-.751-.277-1.431-.883-.529-.471-.887-1.054-.991-1.232-.104-.178-.011-.274.078-.363.08-.08.178-.208.267-.312.089-.104.119-.178.178-.297.059-.119.03-.223-.015-.312-.044-.089-.4-1.025-.548-1.405-.144-.37-.291-.32-.4-.326l-.341-.006c-.119 0-.312.044-.475.223s-.623.609-.623 1.485.638 1.722.727 1.841c.089.119 1.256 1.918 3.043 2.689 1.787.771 1.787.514 2.107.484.32-.03 1.054-.43 1.202-.846.148-.416.148-.772.104-.846z" />
-                        </svg>
-                      </span>
-
-                      <span style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', lineHeight: 1.15 }}>
-                        <span style={{ fontSize: '0.58rem', fontWeight: 600, color: '#25D366', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          Order On
-                        </span>
-                        <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#ffffff' }}>WhatsApp</span>
-                      </span>
+                      Order Now
                     </a>
                   </div>
                 );
@@ -530,9 +578,9 @@ export default async function ProductDivisionInnerPage({
               <div style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
                 <h3
                   style={{
-                    fontFamily: '"Cormorant Garamond", Amiri, serif',
-                    fontSize: '2.1rem',
-                    fontWeight: 600,
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 'clamp(1.6rem, 2.8vw, 2.1rem)',
+                    fontWeight: 500,
                     color: '#ffffff',
                     marginBottom: '14px',
                     lineHeight: 1.25,
@@ -579,50 +627,67 @@ export default async function ProductDivisionInnerPage({
           transform: scale(1.05);
         }
 
-        .whatsapp-order-pill {
+        /* White Glossy Effect Order Now Button - Reduced font & button size */
+        .btn-order-now-glossy,
+        .btn-order-now-blue {
           display: inline-flex;
           align-items: center;
-          gap: 8px;
-          background-color: #000000;
-          color: #ffffff;
-          padding: 6px 14px 6px 6px;
-          border-radius: 9999px;
+          justify-content: center;
+          background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+          color: #0f172a !important;
+          padding: 6px 12px;
+          border-radius: 5px;
+          font-family: 'Montserrat', sans-serif !important;
+          font-size: 0.74rem;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
           text-decoration: none;
           margin-top: auto;
-          transition: background-color 0.2s ease, transform 0.15s ease;
+          width: 100%;
+          text-align: center;
+          border: 1px solid #dcdfe4;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff;
+          transition: all 0.2s ease;
         }
 
-        .whatsapp-order-pill:hover {
-          background-color: #111827;
+        .btn-order-now-glossy:hover,
+        .btn-order-now-blue:hover {
+          background: linear-gradient(180deg, #ffffff 0%, #edf2f7 100%);
+          border-color: #cbd5e1;
+          color: #2e3191 !important;
           transform: translateY(-1px);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 1px 0 #ffffff;
         }
 
         .product-cta-box {
           background: linear-gradient(135deg, #071138 0%, #0d2060 100%);
           border-radius: 12px;
-          padding: 50px 36px;
+          padding: 42px 28px;
           box-shadow: 0 14px 40px rgba(7, 17, 56, 0.18);
         }
 
         .product-cta-btn {
           display: inline-block;
-          background-color: #20b512;
-          color: #ffffff;
-          padding: 14px 36px;
-          font-family: 'Poppins', sans-serif;
+          background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+          color: #071138 !important;
+          padding: 8px 24px;
+          font-family: 'Montserrat', sans-serif;
           font-weight: 700;
-          font-size: 0.86rem;
+          font-size: 0.78rem;
           letter-spacing: 0.04em;
           text-transform: uppercase;
           text-decoration: none;
-          border-radius: 0px;
-          transition: background-color 0.2s ease, transform 0.15s ease;
+          border-radius: 5px;
+          border: 1px solid rgba(255, 255, 255, 0.9);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2), inset 0 1px 0 #ffffff;
+          transition: background 0.2s ease, transform 0.15s ease;
         }
 
         .product-cta-btn:hover {
-          background-color: #179b0e;
+          background: linear-gradient(180deg, #ffffff 0%, #edf2f7 100%);
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(32, 181, 18, 0.35);
+          box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35), inset 0 1px 0 #ffffff;
         }
 
         @media (max-width: 1024px) {

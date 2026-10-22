@@ -59,9 +59,9 @@ export default function AboutSection() {
             {/* Main Title */}
             <h2
               style={{
-                fontFamily: '"Cormorant Garamond", Amiri, serif',
-                fontSize: 'clamp(2.1rem, 2.9vw, 2.7rem)',
-                fontWeight: 600,
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(2.0rem, 2.9vw, 2.6rem)',
+                fontWeight: 500,
                 lineHeight: 1.2,
                 color: '#111827',
                 marginBottom: '20px',

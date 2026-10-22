@@ -192,9 +192,9 @@ export default function SectorsPage() {
                     />
                   </div>
 
-                  {/* Bottom-Left Pretty Box Overlay matching Screenshot */}
-                  <div className="sector-card-inset-box">
-                    <div className="sector-card-num">{sector.num}</div>
+                  {/* Heading placed directly on image top - no blue box, small clean font */}
+                  <div className="sector-card-top-content">
+                    <span className="sector-card-num">{sector.num}</span>
                     <h2 className="sector-card-title">{sector.title}</h2>
                   </div>
                 </Link>
@@ -205,27 +205,25 @@ export default function SectorsPage() {
             <div className="sector-bottom-cta">
               <div style={{ maxWidth: '720px', margin: '0 auto' }}>
                 <h3
+                  className="sector-cta-title"
                   style={{
-                    fontFamily: '"Cormorant Garamond", Amiri, serif',
-                    fontSize: '2rem',
-                    fontWeight: 600,
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: 'clamp(1.15rem, 2.2vw, 1.75rem)',
+                    fontWeight: 500,
                     color: '#ffffff',
                     marginBottom: '12px',
-                    lineHeight: 1.25,
+                    lineHeight: 1.3,
                   }}
                 >
-                  Partner With a Certified Industrial Supply Leader
+                  <span className="sector-cta-line">Partner With a Certified Industrial</span>
+                  <span className="sector-cta-line">Supply Leader</span>
                 </h3>
-                <p
-                  style={{
-                    fontSize: '0.90rem',
-                    color: 'rgba(255, 255, 255, 0.85)',
-                    lineHeight: 1.7,
-                    marginBottom: '26px',
-                  }}
-                >
-                  Whether you operate an offshore oil platform, large-scale construction site, or heavy manufacturing
-                  facility in Saudi Arabia, Orient Energy delivers compliant procurement and mission-critical support.
+                <p className="sector-cta-desc">
+                  Whether you operate an offshore platform, construction site,
+                  <br className="desktop-desc-break" />
+                  or manufacturing facility in Saudi Arabia, Orient Energy delivers
+                  <br className="desktop-desc-break" />
+                  compliant procurement and mission-critical engineering support.
                 </p>
                 <Link href="/contact" className="sector-cta-btn">
                   Request Sector Consultation &rarr;
@@ -261,13 +259,13 @@ export default function SectorsPage() {
         }
 
         .sector-hero-title {
-          font-family: "Cormorant Garamond", Amiri, serif !important;
-          font-size: clamp(2.3rem, 3.8vw, 3.3rem);
-          font-weight: 600;
+          font-family: 'Montserrat', sans-serif !important;
+          font-size: clamp(1.85rem, 3.0vw, 2.6rem);
+          font-weight: 500;
           color: #111827;
-          line-height: 1.16;
-          margin-bottom: 22px;
-          letter-spacing: 0.01em;
+          line-height: 1.2;
+          margin-bottom: 20px;
+          letter-spacing: -0.01em;
         }
 
         .sector-hero-desc {
@@ -310,7 +308,7 @@ export default function SectorsPage() {
           overflow: hidden;
         }
 
-        /* Pretty Box Style Sector Cards */
+        /* Sector Cards Grid */
         .sectors-cards-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -352,73 +350,100 @@ export default function SectorsPage() {
           transform: scale(1.06);
         }
 
-        /* Inset Bottom-Left Navy Box */
-        .sector-card-inset-box {
+        /* Heading on image top - no blue box, small clean font */
+        .sector-card-top-content {
           position: absolute;
-          bottom: 0;
+          top: 0;
           left: 0;
-          width: 84%;
-          background-color: #071138;
-          padding: 18px 20px 20px;
-          box-sizing: border-box;
+          right: 0;
+          padding: 16px 18px 24px;
           z-index: 2;
-          transition: background-color 0.25s ease, border-left 0.25s ease;
-          border-top-right-radius: 2px;
+          background: linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.3) 65%, transparent 100%);
+          transition: background 0.3s ease;
         }
 
-        .sector-box-card:hover .sector-card-inset-box {
-          background-color: #0a174c;
-          border-left: 4px solid #20b512;
+        .sector-box-card:hover .sector-card-top-content {
+          background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.45) 75%, transparent 100%);
         }
 
         .sector-card-num {
-          font-family: 'Poppins', sans-serif;
-          font-size: 0.78rem;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 0.72rem;
           font-weight: 700;
-          color: #ffffff;
-          letter-spacing: 0.06em;
-          margin-bottom: 6px;
-          opacity: 0.95;
+          color: #20b512;
+          letter-spacing: 0.08em;
+          margin-bottom: 4px;
+          display: block;
         }
 
         .sector-card-title {
-          font-family: 'Poppins', -apple-system, sans-serif !important;
-          font-size: 0.95rem;
-          font-weight: 700;
+          font-family: 'Montserrat', -apple-system, sans-serif !important;
+          font-size: 0.86rem;
+          font-weight: 500;
           color: #ffffff;
           line-height: 1.35;
           margin: 0;
           letter-spacing: 0.01em;
+          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .sector-cta-line {
+          display: block;
+          white-space: nowrap;
+        }
+
+        .sector-cta-desc {
+          font-size: 0.84rem;
+          color: rgba(255, 255, 255, 0.88);
+          line-height: 1.68;
+          margin: 0 auto 22px;
+          max-width: 580px;
         }
 
         .sector-bottom-cta {
           margin-top: 75px;
           background: linear-gradient(135deg, #071138 0%, #0d2060 100%);
           border-radius: 8px;
-          padding: 50px 36px;
+          padding: 42px 28px;
           text-align: center;
           box-shadow: 0 14px 40px rgba(7, 17, 56, 0.18);
         }
 
         .sector-cta-btn {
           display: inline-block;
-          background-color: #20b512;
-          color: #ffffff;
-          padding: 14px 36px;
-          font-family: 'Poppins', sans-serif;
+          background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+          color: #071138 !important;
+          padding: 8px 22px;
+          font-family: 'Montserrat', sans-serif;
           font-weight: 700;
-          font-size: 0.86rem;
+          font-size: 0.76rem;
           letter-spacing: 0.04em;
           text-transform: uppercase;
           text-decoration: none;
-          border-radius: 0px;
-          transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+          border-radius: 5px;
+          border: 1px solid rgba(255, 255, 255, 0.9);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 #ffffff;
+          transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
         }
 
         .sector-cta-btn:hover {
-          background-color: #179b0e;
+          background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(32, 181, 18, 0.35);
+          box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35), inset 0 1px 0 #ffffff;
+        }
+
+        @media (max-width: 768px) {
+          .sector-cta-desc {
+            font-size: 0.78rem !important;
+            line-height: 1.6 !important;
+            max-width: 320px !important;
+          }
+          .desktop-desc-break {
+            display: none !important;
+          }
+          .sector-cta-title {
+            font-size: clamp(0.96rem, 4.4vw, 1.25rem) !important;
+          }
         }
 
         @media (max-width: 1024px) {

@@ -71,13 +71,13 @@ export default function BrandsPage() {
 
               <h1
                 style={{
-                  fontFamily: '"Cormorant Garamond", Amiri, serif',
-                  fontSize: 'clamp(2.4rem, 4vw, 3.4rem)',
-                  fontWeight: 600,
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 'clamp(1.85rem, 3.0vw, 2.6rem)',
+                  fontWeight: 500,
                   color: '#111827',
                   marginBottom: '16px',
-                  lineHeight: 1.18,
-                  letterSpacing: '0.01em',
+                  lineHeight: 1.2,
+                  letterSpacing: '-0.01em',
                 }}
               >
                 Our Valuable Brands
@@ -184,9 +184,9 @@ export default function BrandsPage() {
             >
               <h3
                 style={{
-                  fontFamily: '"Cormorant Garamond", Amiri, serif',
-                  fontSize: '1.65rem',
-                  fontWeight: 600,
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: '1.25rem',
+                  fontWeight: 500,
                   color: '#111827',
                   marginBottom: '10px',
                   letterSpacing: '0.01em',

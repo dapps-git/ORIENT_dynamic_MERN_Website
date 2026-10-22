@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -32,6 +33,28 @@ const POSTS: BlogPost[] = [
 ];
 
 export default function BlogSection() {
+  const [blogs, setBlogs] = useState<BlogPost[]>(POSTS);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/blogs')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data && data.data.length > 0) {
+          setBlogs(
+            data.data.map((b: any) => ({
+              title: b.title.toUpperCase(),
+              image: b.image || '/blog/blog-1.jpg',
+              readTime: b.readTime || '8 Minute Read',
+              slug: b.slug,
+            }))
+          );
+        }
+      })
+      .catch(() => {
+        // Fallback to static posts
+      });
+  }, []);
+
   return (
     <section
       id="blog"
@@ -66,13 +89,13 @@ export default function BlogSection() {
 
           <h2
             style={{
-              fontFamily: '"Cormorant Garamond", Amiri, serif',
-              fontSize: 'clamp(2.35rem, 3.8vw, 3.35rem)',
-              fontWeight: 600,
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 'clamp(1.75rem, 2.6vw, 2.25rem)',
+              fontWeight: 500,
               color: '#111827',
               margin: 0,
-              lineHeight: 1.18,
-              letterSpacing: '0.01em',
+              lineHeight: 1.2,
+              letterSpacing: '-0.01em',
             }}
           >
             Your Source for Industrial Expertise
@@ -137,12 +160,12 @@ export default function BlogSection() {
               >
                 <h3
                   style={{
-                    fontFamily: '"Cormorant Garamond", Amiri, serif',
-                    fontSize: '1.25rem',
-                    fontWeight: 700,
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: '0.94rem',
+                    fontWeight: 500,
                     color: '#111827',
-                    lineHeight: 1.35,
-                    marginBottom: '18px',
+                    lineHeight: 1.4,
+                    marginBottom: '16px',
                     letterSpacing: '0.01em',
                   }}
                 >

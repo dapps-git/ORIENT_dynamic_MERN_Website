@@ -120,12 +120,13 @@ export default function CapabilitiesSection() {
           </div>
           <h2
             style={{
-              fontFamily: '"Cormorant Garamond", Amiri, serif',
-              fontSize: 'clamp(2.1rem, 3.2vw, 2.85rem)',
-              fontWeight: 600,
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 'clamp(1.75rem, 2.6vw, 2.25rem)',
+              fontWeight: 500,
               color: '#111827',
               lineHeight: 1.2,
               margin: 0,
+              letterSpacing: '-0.01em',
             }}
           >
             Engineering Excellence,{' '}
@@ -214,12 +215,12 @@ export default function CapabilitiesSection() {
               {/* Title */}
               <h3
                 style={{
-                  fontFamily: '"Cormorant Garamond", Amiri, serif',
-                  fontSize: '1.28rem',
-                  fontWeight: 600,
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: '1.05rem',
+                  fontWeight: 500,
                   color: '#111827',
-                  lineHeight: 1.3,
-                  marginBottom: '14px',
+                  lineHeight: 1.35,
+                  marginBottom: '12px',
                   letterSpacing: '0.01em',
                   position: 'relative',
                   zIndex: 2,

@@ -48,6 +48,21 @@ function NavbarInner() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   return (
     <>
       <nav
@@ -338,36 +353,40 @@ function NavbarInner() {
                 flexDirection: 'column',
                 gap: '5px',
                 padding: '6px',
+                zIndex: 10002,
               }}
             >
               <span
                 style={{
                   width: 22,
                   height: 2,
-                  background: '#1e293b',
+                  background: open ? '#20b512' : '#1e293b',
                   borderRadius: 2,
                   display: 'block',
-                  transition: 'all 0.3s',
+                  transition: 'all 0.3s ease',
+                  transform: open ? 'translateY(7px) rotate(45deg)' : 'none',
                 }}
               />
               <span
                 style={{
                   width: 22,
                   height: 2,
-                  background: '#1e293b',
+                  background: open ? '#20b512' : '#1e293b',
                   borderRadius: 2,
                   display: 'block',
-                  transition: 'all 0.3s',
+                  transition: 'all 0.3s ease',
+                  opacity: open ? 0 : 1,
                 }}
               />
               <span
                 style={{
                   width: 22,
                   height: 2,
-                  background: '#1e293b',
+                  background: open ? '#20b512' : '#1e293b',
                   borderRadius: 2,
                   display: 'block',
-                  transition: 'all 0.3s',
+                  transition: 'all 0.3s ease',
+                  transform: open ? 'translateY(-7px) rotate(-45deg)' : 'none',
                 }}
               />
             </button>
@@ -375,63 +394,177 @@ function NavbarInner() {
         </div>
       </nav>
 
-      {/* Mobile Drawer */}
+      {/* Pretty Mobile Navigation Drawer */}
       {open && (
         <div
           ref={menuRef}
           style={{
             position: 'fixed',
-            top: '74px',
+            top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'rgba(7, 17, 56, 0.98)',
-            zIndex: 999,
+            background: 'linear-gradient(180deg, #071138 0%, #0d1e56 100%)',
+            zIndex: 10000,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 20,
-            backdropFilter: 'blur(20px)',
+            overflowY: 'auto',
+            paddingTop: '86px',
+            paddingBottom: '36px',
+            paddingLeft: '22px',
+            paddingRight: '22px',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
           }}
         >
-          <Link href="/" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 600, color: '#20b512', textDecoration: 'none' }}>
-            Home
-          </Link>
-          <Link href="/about" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
-            About Us
-          </Link>
-          <Link href="/sectors" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
-            Sectors
-          </Link>
-          <Link href="/products" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
-            Products
-          </Link>
-          <Link href="/brands" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
-            Brands
-          </Link>
-          <Link href="/blog" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
-            Blog
-          </Link>
-          <Link href="/contact" onClick={() => setOpen(false)} style={{ fontSize: '1.15rem', fontWeight: 500, color: '#ffffff', textDecoration: 'none' }}>
-            Contact us
-          </Link>
-          <Link
-            href="/contact"
-            onClick={() => setOpen(false)}
+          {/* Header Close Bar / Brand */}
+          <div
             style={{
-              backgroundColor: '#20b512',
-              color: '#ffffff',
-              padding: '10px 30px',
-              borderRadius: '0px',
-              fontWeight: 600,
-              fontSize: '0.92rem',
-              textDecoration: 'none',
-              marginTop: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingBottom: '14px',
+              marginBottom: '16px',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
             }}
           >
-            Get A Quote &rarr;
-          </Link>
+            <span
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#20b512',
+              }}
+            >
+              ORIENT ENERGY MENU
+            </span>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+              style={{
+                background: 'rgba(255, 255, 255, 0.12)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                color: '#ffffff',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                fontSize: '0.92rem',
+                lineHeight: 1,
+              }}
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Nav Links List with Reduced Font Size */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            {[
+              { href: '/', label: 'Home' },
+              { href: '/about', label: 'About Us' },
+              { href: '/sectors', label: 'Sectors' },
+              { href: '/products', label: 'Products' },
+              { href: '/brands', label: 'Brands' },
+              { href: '/blog', label: 'Blog' },
+              { href: '/contact', label: 'Contact us' },
+            ].map((link) => {
+              const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '12px 14px',
+                    borderRadius: '8px',
+                    fontSize: '0.90rem',
+                    fontWeight: isActive ? 600 : 500,
+                    color: isActive ? '#20b512' : '#f1f5f9',
+                    backgroundColor: isActive ? 'rgba(32, 181, 18, 0.1)' : 'transparent',
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    textDecoration: 'none',
+                    fontFamily: "'Montserrat', sans-serif",
+                    letterSpacing: '0.01em',
+                    transition: 'all 0.18s ease',
+                  }}
+                >
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    {isActive && (
+                      <span
+                        style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          backgroundColor: '#20b512',
+                          display: 'inline-block',
+                        }}
+                      />
+                    )}
+                    {link.label}
+                  </span>
+                  <span style={{ color: isActive ? '#20b512' : 'rgba(255, 255, 255, 0.35)', fontSize: '1rem' }}>
+                    ›
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* CTA & Quick Contact in Mobile Menu */}
+          <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            <Link
+              href="/contact"
+              onClick={() => setOpen(false)}
+              style={{
+                display: 'block',
+                backgroundColor: '#20b512',
+                color: '#ffffff',
+                padding: '12px 20px',
+                borderRadius: '6px',
+                fontWeight: 700,
+                fontSize: '0.84rem',
+                textDecoration: 'none',
+                textAlign: 'center',
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+                fontFamily: "'Montserrat', sans-serif",
+                boxShadow: '0 4px 16px rgba(32, 181, 18, 0.35)',
+              }}
+            >
+              Get A Quote &rarr;
+            </Link>
+
+            {/* Quick Contact Footer */}
+            <div
+              style={{
+                marginTop: '18px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                textAlign: 'center',
+                fontSize: '0.78rem',
+                color: 'rgba(255, 255, 255, 0.65)',
+                fontFamily: "'Montserrat', sans-serif",
+              }}
+            >
+              <a
+                href="tel:+966552400778"
+                style={{ color: 'rgba(255, 255, 255, 0.85)', textDecoration: 'none' }}
+              >
+                📞 +966 55 240 0778
+              </a>
+              <span>📍 Al Khobar, Kingdom of Saudi Arabia</span>
+            </div>
+          </div>
         </div>
       )}
 

@@ -89,12 +89,13 @@ export default function TestimonialsSection() {
 
           <h2
             style={{
-              fontFamily: '"Cormorant Garamond", Amiri, serif',
-              fontSize: 'clamp(2.3rem, 3.4vw, 3rem)',
-              fontWeight: 600,
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 'clamp(1.75rem, 2.6vw, 2.25rem)',
+              fontWeight: 500,
               color: '#ffffff',
-              lineHeight: 1.15,
+              lineHeight: 1.2,
               margin: 0,
+              letterSpacing: '-0.01em',
             }}
           >
             What people say about
