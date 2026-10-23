@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import ProductSearchModal from '@/components/ProductSearchModal';
 
 const SECTORS_DROPDOWN = [
   { label: 'Oil & Gas', href: '/sectors#oil-gas' },
@@ -37,6 +38,7 @@ function NavbarInner() {
   const [open, setOpen] = useState(false);
   const [sectorsOpen, setSectorsOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isHome = pathname === '/';
@@ -46,6 +48,18 @@ function NavbarInner() {
     const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Global Ctrl+K / Cmd+K shortcut for search
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
   useEffect(() => {
@@ -65,15 +79,76 @@ function NavbarInner() {
 
   return (
     <>
+      {/* Top Navbar Sectors Marquee (Clean Train Track: No pinned SECTORS text, no green star) */}
+      <div
+        className="sectors-topbar"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          height: '32px',
+          backgroundColor: '#071138',
+          backgroundImage: 'linear-gradient(90deg, #060e2e 0%, #0a1945 50%, #060e2e 100%)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          zIndex: 1002,
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
+          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
+        }}
+      >
+        {/* Marquee Train Track Container with Gradient Edge Fades */}
+        <div
+          className="sectors-train-container"
+          style={{
+            position: 'relative',
+            width: '100%',
+            overflow: 'hidden',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            maskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
+          }}
+        >
+          <div className="sectors-train-track">
+            {[...SECTORS_DROPDOWN, ...SECTORS_DROPDOWN].map((sector, index) => (
+              <Link
+                key={`${sector.label}-${index}`}
+                href={sector.href}
+                className="sectors-train-item"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  color: 'rgba(255, 255, 255, 0.85)',
+                  textDecoration: 'none',
+                  fontSize: '0.74rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.04em',
+                  fontFamily: "'Montserrat', sans-serif",
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                <span>{sector.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Curved Floating Navbar */}
       <nav
         className={`navbar navbar--curved${scrolled ? ' scrolled' : ''}`}
         style={{
           position: 'fixed',
-          top: '16px',
+          top: '40px',
           left: '50%',
           transform: 'translateX(-50%)',
           zIndex: 1000,
-          height: '66px',
+          height: '64px',
           width: 'calc(100% - 36px)',
           maxWidth: '1340px',
           display: 'flex',
@@ -120,8 +195,9 @@ function NavbarInner() {
               alt="Orient Energy Trading Company"
               width={180}
               height={42}
+              className="navbar__logo-img"
               style={{
-                height: '40px',
+                height: '38px',
                 width: 'auto',
                 objectFit: 'contain',
                 display: 'block',
@@ -229,7 +305,6 @@ function NavbarInner() {
               onMouseEnter={() => setProductsOpen(true)}
               onMouseLeave={() => setProductsOpen(false)}
             >
-              {/* Green indicator bar matching Image 2 */}
               {(productsOpen || pathname.startsWith('/products')) && (
                 <span
                   style={{
@@ -334,11 +409,86 @@ function NavbarInner() {
                 Contact us
               </Link>
             </li>
+
+            {/* Desktop Search Icon Button - Just Search Icon, that's all */}
+            <li role="none" style={{ marginLeft: '4px' }}>
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                aria-label="Search"
+                title="Search"
+                className="navbar-search-btn"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '36px',
+                  height: '36px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #ECE7DE',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
+                  transition: 'all 0.2s ease',
+                  padding: 0,
+                }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#20b512"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </button>
+            </li>
           </ul>
 
-          {/* CTA Button + Mobile Burger */}
-          {/* Mobile Hamburger (Only visible on tablet/mobile screens) */}
-          <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          {/* Mobile Right Controls: Mobile Search Button + Mobile Burger */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            {/* Mobile Search Icon Button */}
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search"
+              className="navbar-search-mobile"
+              style={{
+                display: 'none',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '32px',
+                height: '32px',
+                backgroundColor: '#ffffff',
+                border: '1px solid #ECE7DE',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)',
+                transition: 'all 0.2s ease',
+                padding: 0,
+              }}
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#20b512"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </button>
+
+            {/* Mobile Hamburger Button */}
             <button
               id="navbar-burger"
               className="navbar__burger"
@@ -351,25 +501,25 @@ function NavbarInner() {
                 border: 'none',
                 cursor: 'pointer',
                 flexDirection: 'column',
-                gap: '5px',
-                padding: '6px',
+                gap: '4px',
+                padding: '4px',
                 zIndex: 10002,
               }}
             >
               <span
                 style={{
-                  width: 22,
+                  width: 20,
                   height: 2,
                   background: open ? '#20b512' : '#1e293b',
                   borderRadius: 2,
                   display: 'block',
                   transition: 'all 0.3s ease',
-                  transform: open ? 'translateY(7px) rotate(45deg)' : 'none',
+                  transform: open ? 'translateY(6px) rotate(45deg)' : 'none',
                 }}
               />
               <span
                 style={{
-                  width: 22,
+                  width: 20,
                   height: 2,
                   background: open ? '#20b512' : '#1e293b',
                   borderRadius: 2,
@@ -380,13 +530,13 @@ function NavbarInner() {
               />
               <span
                 style={{
-                  width: 22,
+                  width: 20,
                   height: 2,
                   background: open ? '#20b512' : '#1e293b',
                   borderRadius: 2,
                   display: 'block',
                   transition: 'all 0.3s ease',
-                  transform: open ? 'translateY(-7px) rotate(-45deg)' : 'none',
+                  transform: open ? 'translateY(-6px) rotate(-45deg)' : 'none',
                 }}
               />
             </button>
@@ -394,77 +544,44 @@ function NavbarInner() {
         </div>
       </nav>
 
-      {/* Pretty Mobile Navigation Drawer */}
+      {/* Mobile Compact Dropdown Menu (No full-view overlay, sleek card under navbar) */}
       {open && (
-        <div
-          ref={menuRef}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'linear-gradient(180deg, #071138 0%, #0d1e56 100%)',
-            zIndex: 10000,
-            display: 'flex',
-            flexDirection: 'column',
-            overflowY: 'auto',
-            paddingTop: '86px',
-            paddingBottom: '36px',
-            paddingLeft: '22px',
-            paddingRight: '22px',
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-          }}
-        >
-          {/* Header Close Bar / Brand */}
+        <>
           <div
+            onClick={() => setOpen(false)}
+            aria-label="Close menu backdrop"
             style={{
+              position: 'fixed',
+              inset: 0,
+              backgroundColor: 'rgba(7, 17, 56, 0.32)',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+              zIndex: 998,
+              animation: 'menuFadeIn 0.18s ease',
+            }}
+          />
+          <div
+            ref={menuRef}
+            className="mobile-dropdown-card"
+            style={{
+              position: 'fixed',
+              top: '78px',
+              left: '12px',
+              right: '12px',
+              maxWidth: '380px',
+              margin: '0 auto',
+              backgroundColor: '#FAF7F2',
+              borderRadius: '16px',
+              border: '1px solid #ECE7DE',
+              boxShadow: '0 20px 45px rgba(0, 0, 0, 0.16)',
+              zIndex: 999,
+              padding: '10px',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingBottom: '14px',
-              marginBottom: '16px',
-              borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+              flexDirection: 'column',
+              gap: '2px',
+              animation: 'menuSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            <span
-              style={{
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#20b512',
-              }}
-            >
-              ORIENT ENERGY MENU
-            </span>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Close menu"
-              style={{
-                background: 'rgba(255, 255, 255, 0.12)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#ffffff',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                fontSize: '0.92rem',
-                lineHeight: 1,
-              }}
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* Nav Links List with Reduced Font Size */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {[
               { href: '/', label: 'Home' },
               { href: '/about', label: 'About Us' },
@@ -484,91 +601,86 @@ function NavbarInner() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    padding: '12px 14px',
+                    padding: '9px 12px',
                     borderRadius: '8px',
-                    fontSize: '0.90rem',
-                    fontWeight: isActive ? 600 : 500,
-                    color: isActive ? '#20b512' : '#f1f5f9',
-                    backgroundColor: isActive ? 'rgba(32, 181, 18, 0.1)' : 'transparent',
-                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    fontSize: '0.86rem',
+                    fontWeight: isActive ? 700 : 500,
+                    color: isActive ? '#20b512' : '#1e293b',
+                    backgroundColor: isActive ? 'rgba(32, 181, 18, 0.08)' : 'transparent',
                     textDecoration: 'none',
                     fontFamily: "'Montserrat', sans-serif",
-                    letterSpacing: '0.01em',
-                    transition: 'all 0.18s ease',
+                    transition: 'all 0.15s ease',
                   }}
                 >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    {isActive && (
-                      <span
-                        style={{
-                          width: '6px',
-                          height: '6px',
-                          borderRadius: '50%',
-                          backgroundColor: '#20b512',
-                          display: 'inline-block',
-                        }}
-                      />
-                    )}
-                    {link.label}
-                  </span>
-                  <span style={{ color: isActive ? '#20b512' : 'rgba(255, 255, 255, 0.35)', fontSize: '1rem' }}>
-                    ›
-                  </span>
+                  <span>{link.label}</span>
+                  <span style={{ color: isActive ? '#20b512' : '#94a3b8', fontSize: '0.80rem' }}>&rarr;</span>
                 </Link>
               );
             })}
-          </div>
 
-          {/* CTA & Quick Contact in Mobile Menu */}
-          <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              style={{
-                display: 'block',
-                backgroundColor: '#20b512',
-                color: '#ffffff',
-                padding: '12px 20px',
-                borderRadius: '6px',
-                fontWeight: 700,
-                fontSize: '0.84rem',
-                textDecoration: 'none',
-                textAlign: 'center',
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase',
-                fontFamily: "'Montserrat', sans-serif",
-                boxShadow: '0 4px 16px rgba(32, 181, 18, 0.35)',
-              }}
-            >
-              Get A Quote &rarr;
-            </Link>
-
-            {/* Quick Contact Footer */}
-            <div
-              style={{
-                marginTop: '18px',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-                textAlign: 'center',
-                fontSize: '0.78rem',
-                color: 'rgba(255, 255, 255, 0.65)',
-                fontFamily: "'Montserrat', sans-serif",
-              }}
-            >
-              <a
-                href="tel:+966552400778"
-                style={{ color: 'rgba(255, 255, 255, 0.85)', textDecoration: 'none' }}
+            <div style={{ marginTop: '6px', paddingTop: '8px', borderTop: '1px solid #ECE7DE' }}>
+              <Link
+                href="/contact"
+                onClick={() => setOpen(false)}
+                style={{
+                  display: 'block',
+                  backgroundColor: '#20b512',
+                  color: '#ffffff',
+                  padding: '9px 16px',
+                  borderRadius: '8px',
+                  fontWeight: 700,
+                  fontSize: '0.80rem',
+                  textDecoration: 'none',
+                  textAlign: 'center',
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                  fontFamily: "'Montserrat', sans-serif",
+                  boxShadow: '0 3px 12px rgba(32, 181, 18, 0.3)',
+                }}
               >
-                📞 +966 55 240 0778
-              </a>
-              <span>📍 Al Khobar, Kingdom of Saudi Arabia</span>
+                Get A Quote &rarr;
+              </Link>
             </div>
           </div>
-        </div>
+        </>
       )}
 
+      {/* Clean Interactive Product Search Modal */}
+      <ProductSearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+
       <style>{`
+        @keyframes sectorsTrainTrack {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .sectors-train-track {
+          display: flex;
+          align-items: center;
+          gap: 40px;
+          width: max-content;
+          animation: sectorsTrainTrack 38s linear infinite;
+          will-change: transform;
+        }
+        .sectors-train-track:hover {
+          animation-play-state: paused;
+        }
+        .sectors-train-item:hover {
+          color: #20b512 !important;
+          text-shadow: 0 0 10px rgba(32, 181, 18, 0.4);
+        }
+        .navbar-search-btn:hover {
+          border-color: #20b512 !important;
+          background-color: #f8fafc !important;
+          box-shadow: 0 3px 10px rgba(32, 181, 18, 0.15) !important;
+        }
+        .navbar-search-mobile:hover {
+          border-color: #20b512 !important;
+          background-color: #f8fafc !important;
+        }
         .navbar .nav-link {
           color: #555e6d !important;
           font-weight: 500 !important;
@@ -581,9 +693,93 @@ function NavbarInner() {
           color: #111827 !important;
           font-weight: 700 !important;
         }
+        @keyframes menuFadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @keyframes menuSlideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.98);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
         @media (max-width: 1024px) {
-          .navbar__nav { display: none !important; }
-          .navbar__burger { display: flex !important; }
+          .navbar__nav {
+            display: none !important;
+          }
+          .navbar__burger {
+            display: flex !important;
+          }
+          .navbar-search-mobile {
+            display: inline-flex !important;
+          }
+          .navbar.navbar--curved,
+          .navbar.navbar--curved.scrolled {
+            top: 36px !important;
+          }
+          .sectors-topbar {
+            height: 28px !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .navbar.navbar--curved,
+          .navbar.navbar--curved.scrolled,
+          nav.navbar.navbar--curved,
+          nav.navbar.navbar--curved.scrolled {
+            top: 30px !important;
+            width: calc(100% - 20px) !important;
+            height: 44px !important;
+            min-height: 44px !important;
+            max-height: 44px !important;
+            padding: 0 4px !important;
+          }
+          .navbar__inner {
+            padding: 0 10px !important;
+            height: 44px !important;
+            max-height: 44px !important;
+          }
+          .navbar__logo-img,
+          .navbar .navbar__logo-img,
+          .navbar.scrolled .navbar__logo-img {
+            height: 24px !important;
+            max-height: 24px !important;
+            width: auto !important;
+          }
+          .navbar-search-mobile,
+          .navbar.scrolled .navbar-search-mobile {
+            width: 30px !important;
+            height: 30px !important;
+          }
+          .navbar-search-mobile svg {
+            width: 14px !important;
+            height: 14px !important;
+          }
+          .navbar__burger,
+          .navbar.scrolled .navbar__burger {
+            padding: 3px !important;
+            gap: 3.5px !important;
+          }
+          .navbar__burger span {
+            width: 18px !important;
+            height: 2px !important;
+          }
+          .sectors-topbar {
+            height: 26px !important;
+          }
+          .sectors-train-item {
+            font-size: 0.65rem !important;
+          }
+          .mobile-dropdown-card {
+            top: 76px !important;
+          }
         }
       `}</style>
     </>
@@ -597,4 +793,3 @@ export default function Navbar() {
     </Suspense>
   );
 }
-

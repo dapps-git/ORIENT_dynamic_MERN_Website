@@ -11,11 +11,14 @@ export interface IProduct extends Document {
   sku: string;
   category: mongoose.Types.ObjectId | string;
   categoryName?: string;
+  divisionSlug?: string;
   shortDescription: string;
   fullDescription: string;
   specifications: ISpecification[];
   features: string[];
+  image: string;
   images: string[];
+  whatsappMessage?: string;
   isFeatured: boolean;
   inStock: boolean;
   catalogueUrl?: string;
@@ -28,21 +31,24 @@ const ProductSchema: Schema = new Schema(
     title: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, lowercase: true, trim: true },
     sku: { type: String, default: '' },
-    category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+    category: { type: Schema.Types.ObjectId, ref: 'Category', required: false },
     categoryName: { type: String, default: '' },
+    divisionSlug: { type: String, default: '' },
     shortDescription: { type: String, default: '' },
     fullDescription: { type: String, default: '' },
     specifications: [
       {
         label: { type: String, required: true },
-        value: { type: String, required: true }
-      }
+        value: { type: String, required: true },
+      },
     ],
     features: [{ type: String }],
+    image: { type: String, default: '' },
     images: [{ type: String }],
+    whatsappMessage: { type: String, default: '' },
     isFeatured: { type: Boolean, default: false },
     inStock: { type: Boolean, default: true },
-    catalogueUrl: { type: String, default: '' }
+    catalogueUrl: { type: String, default: '' },
   },
   { timestamps: true }
 );

@@ -28,7 +28,9 @@ export const getCategoryBySlug = async (req: Request, res: Response) => {
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
-    const products = await Product.find({ category: category._id }).sort({ createdAt: -1 });
+    const products = await Product.find({
+      $or: [{ category: category._id }, { divisionSlug: category.slug }]
+    }).sort({ createdAt: -1 });
     res.json({
       success: true,
       data: {
@@ -43,7 +45,24 @@ export const getCategoryBySlug = async (req: Request, res: Response) => {
 
 export const createCategory = async (req: Request, res: Response) => {
   try {
-    const { name, slug, description, image, icon, featured, order } = req.body;
+    const {
+      name,
+      slug,
+      headline,
+      description,
+      detailedDescriptions,
+      image,
+      icon,
+      productRangeTitle,
+      productRange,
+      applicationsTitle,
+      applications,
+      subcategoriesTitle,
+      subcategories,
+      pills,
+      featured,
+      order,
+    } = req.body;
     const cleanSlug = slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     
     const existing = await Category.findOne({ slug: cleanSlug });
@@ -54,9 +73,18 @@ export const createCategory = async (req: Request, res: Response) => {
     const category = new Category({
       name,
       slug: cleanSlug,
-      description,
-      image,
-      icon,
+      headline: headline || '',
+      description: description || '',
+      detailedDescriptions: detailedDescriptions || [],
+      image: image || '',
+      icon: icon || '',
+      productRangeTitle: productRangeTitle || 'Product Range',
+      productRange: productRange || [],
+      applicationsTitle: applicationsTitle || 'Applications',
+      applications: applications || [],
+      subcategoriesTitle: subcategoriesTitle || 'Sub-Categories',
+      subcategories: subcategories || [],
+      pills: pills || [],
       featured: Boolean(featured),
       order: Number(order) || 0
     });

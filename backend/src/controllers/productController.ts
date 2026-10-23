@@ -67,13 +67,17 @@ export const getProductBySlug = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    // Get related products in the same category
+    // Get related products in the same category or division
     const relatedProducts = await Product.find({
-      category: product.category,
+      $or: [
+        { category: product.category },
+        { divisionSlug: product.divisionSlug },
+        { categoryName: product.categoryName }
+      ],
       _id: { $ne: product._id }
     })
-      .limit(4)
-      .select('title slug images shortDescription inStock');
+      .limit(6)
+      .select('title slug image images shortDescription inStock categoryName divisionSlug whatsappMessage');
 
     res.json({
       success: true,
@@ -98,7 +102,9 @@ export const createProduct = async (req: Request, res: Response) => {
       fullDescription,
       specifications,
       features,
+      image,
       images,
+      whatsappMessage,
       isFeatured,
       inStock,
       catalogueUrl
@@ -112,27 +118,32 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     let categoryDoc = null;
-    if (category.match(/^[0-9a-fA-F]{24}$/)) {
+    if (category && typeof category === 'string' && category.match(/^[0-9a-fA-F]{24}$/)) {
       categoryDoc = await Category.findById(category);
-    } else {
+    } else if (category && typeof category === 'string') {
       categoryDoc = await Category.findOne({ slug: category });
     }
-
-    if (!categoryDoc) {
-      return res.status(400).json({ success: false, message: 'Invalid category specified' });
+    if (!categoryDoc && (req.body.categoryName || req.body.division)) {
+      categoryDoc = await Category.findOne({ name: req.body.categoryName || req.body.division });
     }
+
+    const primaryImage = image || (images && images.length ? images[0] : '/categories/all-fittings.jpeg');
+    const imageList = images && images.length ? images : [primaryImage];
 
     const product = new Product({
       title,
       slug: cleanSlug,
       sku: sku || `OETC-${Math.floor(1000 + Math.random() * 9000)}`,
-      category: categoryDoc._id,
-      categoryName: categoryDoc.name,
-      shortDescription,
-      fullDescription,
+      category: categoryDoc ? categoryDoc._id : undefined,
+      categoryName: categoryDoc ? categoryDoc.name : (req.body.categoryName || req.body.division || 'General Industrial'),
+      divisionSlug: categoryDoc ? categoryDoc.slug : (req.body.divisionSlug || 'mechanical-division'),
+      shortDescription: shortDescription || '',
+      fullDescription: fullDescription || '',
       specifications: specifications || [],
       features: features || [],
-      images: images && images.length ? images : ['https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80'],
+      image: primaryImage,
+      images: imageList,
+      whatsappMessage: whatsappMessage || `Hello Orient Energy, I am interested in inquiring about ${title}.`,
       isFeatured: Boolean(isFeatured),
       inStock: inStock !== undefined ? Boolean(inStock) : true,
       catalogueUrl: catalogueUrl || ''
@@ -154,14 +165,34 @@ export const updateProduct = async (req: Request, res: Response) => {
       updateData.slug = updateData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
 
-    if (updateData.category) {
+    if (updateData.category && typeof updateData.category === 'string' && updateData.category.match(/^[0-9a-fA-F]{24}$/)) {
       const categoryDoc = await Category.findById(updateData.category);
       if (categoryDoc) {
-        updateData.categoryName = categoryDoc.name;
+        if (!updateData.categoryName) {
+          updateData.categoryName = categoryDoc.name;
+        }
+        if (!updateData.divisionSlug) updateData.divisionSlug = categoryDoc.slug;
+      }
+    } else if (updateData.divisionSlug && !updateData.category) {
+      const cat = await Category.findOne({ slug: updateData.divisionSlug });
+      if (cat) {
+        updateData.category = cat._id;
+        if (!updateData.categoryName) {
+          updateData.categoryName = cat.name;
+        }
       }
     }
 
-    const product = await Product.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    if (updateData.image && (!updateData.images || updateData.images.length === 0)) {
+      updateData.images = [updateData.image];
+    } else if (updateData.images && updateData.images.length > 0 && !updateData.image) {
+      updateData.image = updateData.images[0];
+    }
+
+    const isObjectId = Boolean(id && id.match(/^[0-9a-fA-F]{24}$/));
+    const product = isObjectId
+      ? await Product.findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
+      : await Product.findOneAndUpdate({ slug: id }, updateData, { new: true, runValidators: true });
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
