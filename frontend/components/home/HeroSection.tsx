@@ -1,320 +1,290 @@
 'use client';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import Image from 'next/image';
 
-const DESKTOP_SLIDES = [
-  '/hero-bg-refinery-tanks.jpg',
-  '/hero-bg.jpg',
-  '/hero-bg-refinery-sunset.jpg',
-  '/ima.webp',
+const CLIENT_LOGOS = [
+  { name: 'Saudi Aramco', logo: '/clientslogo/Saudi Aramco Logo Mark.png' },
+  { name: 'Sipchem', logo: '/clientslogo/Sipchem Sun and Waves Logo.png' },
+  { name: 'SINOPEC', logo: '/clientslogo/SINOPEC Logo with Chinese Calligraphy.png' },
+  { name: 'Saipem', logo: '/clientslogo/Saipem Teal and Orange Logo.png' },
+  { name: 'TAQA', logo: '/clientslogo/TAQA Geometric Navy and Cyan Logo.png' },
+  { name: 'Zamil Offshore', logo: '/clientslogo/Zamil Offshore Corporate Logo.png' },
+  { name: 'Larsen & Toubro', logo: '/clientslogo/Larsen & Toubro Blue Logo.png' },
+  { name: 'Arabian Drilling', logo: '/clientslogo/Arabian Drilling Corporate Logo.png' },
+  { name: 'Cameron', logo: '/clientslogo/Cameron Corporate Logo with Red Emblem.png' },
+  { name: 'CNPC', logo: '/clientslogo/CNPC Petal Emblem Logo.png' },
+  { name: 'COSL', logo: '/clientslogo/COSL Blue and Red Wordmark Logo.png' },
+  { name: 'Jana Marine', logo: '/clientslogo/Jana Marine Services Logo.png' },
+  { name: 'KBR', logo: '/clientslogo/KBR Globe Swoosh Logo.png' },
+  { name: 'KCA Kuwait Chemical', logo: '/clientslogo/KCA Kuwait Chemical Company Logo.png' },
+  { name: 'McDermott', logo: '/clientslogo/McDermott Blue and Lime Logo.png' },
+  { name: 'Subsea 7', logo: '/clientslogo/Subsea 7 Logo on Transparent Background.png' },
 ];
 
 export default function HeroSection() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Slideshow every 3 seconds on laptop/desktop
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % DESKTOP_SLIDES.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, []);
+  // Duplicate for seamless infinite marquee train track
+  const trainLogos = [...CLIENT_LOGOS, ...CLIENT_LOGOS];
 
   return (
-    <section
-      className="hero-main"
-      style={{
-        position: 'relative',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '120px 24px 80px',
-        color: '#ffffff',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Laptop / Desktop Slideshow Background Layers */}
-      <div className="hero-desktop-slides">
-        {DESKTOP_SLIDES.map((slide, idx) => (
-          <div
-            key={slide}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundImage: `url('${slide}')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center center',
-              backgroundRepeat: 'no-repeat',
-              imageRendering: '-webkit-optimize-contrast',
-              opacity: currentSlide === idx ? 1 : 0,
-              transition: 'opacity 1s ease-in-out',
-              zIndex: 0,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Mobile Background Layer (Uses portrait sunset image) */}
-      <div
-        className="hero-mobile-bg"
+    <>
+      {/* Landscape Video Hero Section (Zero Blue Effect, No Hero Buttons) */}
+      <section
+        className="hero-video-section"
         style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: "url('/hero-bg-mobile-sunset.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-          backgroundRepeat: 'no-repeat',
-          imageRendering: '-webkit-optimize-contrast',
-          zIndex: 0,
-          display: 'none',
-        }}
-      />
-
-      {/* Cinematic Contrast Overlay to eliminate glare and ensure crystal-clear image depth */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'linear-gradient(180deg, rgba(8, 20, 36, 0.44) 0%, rgba(8, 20, 36, 0.62) 100%)',
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div
-        className="container"
-        style={{
-          maxWidth: '1080px',
-          textAlign: 'center',
           position: 'relative',
-          zIndex: 2,
+          width: '100%',
           display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
+          color: '#ffffff',
+          overflow: 'hidden',
+          backgroundColor: '#000000',
         }}
       >
-        {/* Main Heading - Refined elegant size */}
-        <h1
-          className="hero-main-title"
+        {/* Landscape MP4 Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="hero-video-player"
           style={{
-            fontFamily: "'Montserrat', sans-serif",
-            fontSize: 'clamp(1.85rem, 3.0vw, 40px)',
-            fontWeight: 500,
-            lineHeight: 1.22,
-            marginBottom: '16px',
-            color: '#ffffff',
-            maxWidth: '920px',
-            letterSpacing: '-0.01em',
-            textShadow: '0 2px 14px rgba(0, 0, 0, 0.45)',
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: 0,
           }}
         >
-          <span className="hero-title-line hero-line-1">
-            Powering Saudi Arabia&apos;s Industrial
-          </span>{' '}
-          <span className="hero-title-line hero-line-2">
-            Future With Reliable Supply &amp;
-          </span>{' '}
-          <span className="hero-title-line hero-line-3">
-            Engineering Solutions
-          </span>
-        </h1>
+          <source src="/uploads/hero-video.mp4" type="video/mp4" />
+          <source src="/uploads/Offshore_oil_rig_platform_sunset_1c1c56e7 (1).mp4" type="video/mp4" />
+        </video>
 
-        {/* Subtitle description */}
-        <p
-          className="hero-subtitle-desc"
-          style={{
-            fontFamily: "'Poppins', sans-serif",
-            fontSize: '0.86rem',
-            lineHeight: 1.6,
-            color: 'rgba(255, 255, 255, 0.88)',
-            maxWidth: '620px',
-            margin: '0 auto 26px',
-            textShadow: '0 1px 8px rgba(0, 0, 0, 0.4)',
-            fontWeight: 400,
-          }}
-        >
-          Orient Energy is a trusted industrial supply and engineering solutions company in Saudi Arabia,
-          delivering certified materials, technical expertise, and global procurement support for
-          Oil &amp; Gas, Power, Marine, Infrastructure, Manufacturing, and Heavy Industrial sectors.
-        </p>
-
-        {/* Action Buttons */}
+        {/* Clean Neutral Dark Contrast Overlay (No Blue Tint) */}
         <div
-          className="hero-btn-row"
           style={{
+            position: 'absolute',
+            inset: 0,
+            background:
+              'linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.45) 100%)',
+            zIndex: 1,
+            pointerEvents: 'none',
+          }}
+        />
+
+        {/* Hero Content Over Video: Clean Centered Headline */}
+        <div
+          className="hero-video-content"
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            width: '100%',
+            maxWidth: '1100px',
+            margin: '0 auto',
+            textAlign: 'center',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '14px',
-            flexWrap: 'wrap',
+            padding: '120px 24px 75px',
           }}
         >
-          {/* CTA Buttons */}
-          <Link
-            href="/contact"
-            className="hero-btn hero-btn-primary"
+          {/* Main Headline: Expertise in Every Trade */}
+          <h1
+            className="hero-video-title"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-              backgroundColor: '#0056b3',
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: 'clamp(2.1rem, 5.2vw, 56px)',
+              fontWeight: 700,
+              lineHeight: 1.16,
               color: '#ffffff',
-              border: '1.5px solid #0056b3',
-              padding: '10px 20px',
-              borderRadius: '4px',
-              fontWeight: 600,
-              fontSize: '12px',
-              letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              fontFamily: "'Poppins', sans-serif",
-              textDecoration: 'none',
-              transition: 'all 0.25s ease',
-              boxShadow: '0 4px 14px rgba(0, 86, 179, 0.35)',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#004085';
-              e.currentTarget.style.borderColor = '#004085';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#0056b3';
-              e.currentTarget.style.borderColor = '#0056b3';
-              e.currentTarget.style.transform = 'translateY(0)';
+              letterSpacing: '-0.02em',
+              textShadow: '0 4px 30px rgba(0, 0, 0, 0.85)',
+              maxWidth: '920px',
+              margin: '0 auto',
             }}
           >
-            Request a Quote
-            <span style={{ fontSize: '0.9rem', lineHeight: 1 }}>&rarr;</span>
-          </Link>
-
-          <Link
-            href="/contact"
-            className="hero-btn hero-btn-secondary"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'transparent',
-              border: '1.5px solid rgba(255, 255, 255, 0.75)',
-              color: '#ffffff',
-              padding: '10px 20px',
-              borderRadius: '4px',
-              fontWeight: 600,
-              fontSize: '12px',
-              letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              fontFamily: "'Poppins', sans-serif",
-              textDecoration: 'none',
-              transition: 'all 0.25s ease',
-              backdropFilter: 'blur(8px)',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
-              e.currentTarget.style.borderColor = '#ffffff';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.75)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            Contact Us
-          </Link>
+            Expertise in Every Trade
+          </h1>
         </div>
-      </div>
+      </section>
 
-      {/* Slideshow Dots Indicator */}
-      <div
-        className="hero-indicators"
+      {/* Clients We Deal With Section (Corporate Cream / Off-White Background with Infinite Train Animation) */}
+      <section
+        className="clients-deal-section"
         style={{
-          position: 'absolute',
-          bottom: '26px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          gap: '10px',
-          zIndex: 3,
+          backgroundColor: '#FAF7F2',
+          padding: '8px 0',
+          color: '#1a1f2c',
+          position: 'relative',
+          overflow: 'hidden',
+          borderTop: '1px solid #ECE7DE',
+          borderBottom: '1px solid #ECE7DE',
         }}
+        aria-label="Clients We Deal With"
       >
-        {DESKTOP_SLIDES.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentSlide(i)}
-            aria-label={`Go to slide ${i + 1}`}
+
+        {/* Marquee Train Track Container with Gradient Edge Fades */}
+        <div
+          className="clients-marquee-container"
+          style={{
+            position: 'relative',
+            width: '100%',
+            overflow: 'hidden',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {/* Left & Right Edge Fades to Cream/Off-White */}
+          <div
             style={{
-              width: currentSlide === i ? '28px' : '8px',
-              height: '7px',
-              borderRadius: '4px',
-              backgroundColor: currentSlide === i ? '#ffffff' : 'rgba(255, 255, 255, 0.45)',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              transition: 'all 0.35s ease',
-              outline: 'none',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '70px',
+              height: '100%',
+              background: 'linear-gradient(90deg, #FAF7F2 0%, rgba(250, 247, 242, 0) 100%)',
+              zIndex: 3,
+              pointerEvents: 'none',
             }}
           />
-        ))}
-      </div>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '70px',
+              height: '100%',
+              background: 'linear-gradient(270deg, #FAF7F2 0%, rgba(250, 247, 242, 0) 100%)',
+              zIndex: 3,
+              pointerEvents: 'none',
+            }}
+          />
+
+          {/* Scrolling Train Track */}
+          <div className="clients-train-track">
+            {trainLogos.map((client, idx) => (
+              <div
+                key={`${client.name}-${idx}`}
+                className="client-train-item"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '4px 22px',
+                  flexShrink: 0,
+                  background: 'transparent',
+                  transition: 'transform 0.25s ease',
+                }}
+                title={client.name}
+              >
+                <div
+                  style={{
+                    height: '36px',
+                    width: '135px',
+                    position: 'relative',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'transparent',
+                  }}
+                >
+                  <Image
+                    src={client.logo}
+                    alt={client.name}
+                    width={140}
+                    height={40}
+                    style={{
+                      maxHeight: '32px',
+                      maxWidth: '125px',
+                      width: 'auto',
+                      height: 'auto',
+                      objectFit: 'contain',
+                      display: 'block',
+                      background: 'transparent',
+                      transition: 'opacity 0.2s ease, transform 0.2s ease',
+                    }}
+                    className="client-logo-img"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <style>{`
+        .hero-video-section {
+          min-height: 80vh;
+          max-height: 740px;
+        }
+
+        /* Continuous Infinite Train Animation */
+        @keyframes clientsTrainScroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .clients-train-track {
+          display: flex;
+          align-items: center;
+          width: max-content;
+          animation: clientsTrainScroll 32s linear infinite;
+          will-change: transform;
+        }
+
+        .clients-train-track:hover {
+          animation-play-state: paused;
+        }
+
+        .client-train-item:hover .client-logo-img {
+          transform: scale(1.08);
+          opacity: 1 !important;
+        }
+
+        /* Mobile Landscape Aspect Ratio Model */
         @media (max-width: 768px) {
-          .hero-main-title {
-            font-size: clamp(1.02rem, 4.3vw, 1.28rem) !important;
-            line-height: 1.34 !important;
-            max-width: 380px !important;
-            margin: 0 auto 16px !important;
-            padding: 0 10px !important;
+          .hero-video-section {
+            min-height: 290px !important;
+            max-height: 380px !important;
+            aspect-ratio: 16 / 10 !important;
+            height: auto !important;
           }
-          .hero-title-line {
-            display: block !important;
-            white-space: nowrap !important;
+
+          .hero-video-content {
+            padding: 85px 16px 30px !important;
           }
-          .hero-desktop-slides,
-          .hero-indicators {
-            display: none !important;
+
+          .hero-video-title {
+            font-size: clamp(1.3rem, 5.6vw, 1.7rem) !important;
+            line-height: 1.25 !important;
+            max-width: 340px !important;
           }
-          .hero-mobile-bg {
-            display: block !important;
+
+          .clients-deal-section {
+            padding: 5px 0 6px !important;
           }
-          .hero-subtitle-desc {
-            display: none !important;
+
+          .client-train-item {
+            padding: 3px 14px !important;
           }
-          .hero-btn-row {
-            display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: nowrap !important;
-            align-items: center !important;
-            justify-content: center !important;
-            gap: 8px !important;
-            width: 100% !important;
-            max-width: 320px !important;
-            margin: 0 auto !important;
+
+          .client-train-item div {
+            height: 28px !important;
+            width: 105px !important;
           }
-          .hero-btn {
-            flex: 1 1 0 !important;
-            height: 40px !important;
-            padding: 0 8px !important;
-            font-size: 10px !important;
-            letter-spacing: 0.02em !important;
-            white-space: nowrap !important;
-            display: inline-flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            text-align: center !important;
-            border-radius: 4px !important;
-            box-sizing: border-box !important;
-          }
-          .hero-btn span {
-            font-size: 0.8rem !important;
-            margin-left: 2px !important;
+
+          .client-logo-img {
+            max-height: 24px !important;
+            max-width: 95px !important;
           }
         }
       `}</style>
-    </section>
+    </>
   );
 }

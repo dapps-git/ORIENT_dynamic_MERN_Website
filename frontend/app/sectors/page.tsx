@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollAnimation from '@/components/ScrollAnimation';
+import { SECTORS_DATA } from '@/lib/sectorsData';
 
 export const metadata: Metadata = {
   title: 'Industries We Serve — Industrial Sectors Supply in Saudi Arabia | Orient Energy',
@@ -177,9 +178,9 @@ export default function SectorsPage() {
                 <Link
                   key={sector.num}
                   id={sector.id}
-                  href={`/contact?inquiry=${encodeURIComponent(sector.title)}`}
+                  href={`/sectors/${sector.id}`}
                   className="sector-box-card"
-                  aria-label={`Inquire for ${sector.title}`}
+                  aria-label={`View inner guide for ${sector.title}`}
                 >
                   {/* Full Background Image */}
                   <div className="sector-card-bg-wrap">
@@ -192,10 +193,37 @@ export default function SectorsPage() {
                     />
                   </div>
 
-                  {/* Heading placed directly on image top - no blue box, small clean font */}
+                  {/* Heading placed directly on image top */}
                   <div className="sector-card-top-content">
-                    <span className="sector-card-num">{sector.num}</span>
+                    <span className="sector-card-num">SECTOR #{sector.num}</span>
                     <h2 className="sector-card-title">{sector.title}</h2>
+                  </div>
+
+                  {/* Bottom View Inner Section Pill */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      bottom: '14px',
+                      left: '16px',
+                      right: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: 'rgba(7, 17, 56, 0.88)',
+                      backdropFilter: 'blur(4px)',
+                      WebkitBackdropFilter: 'blur(4px)',
+                      padding: '7px 12px',
+                      borderRadius: '6px',
+                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      zIndex: 3,
+                    }}
+                  >
+                    <span style={{ fontSize: '0.74rem', color: '#ffffff', fontWeight: 600 }}>
+                      View Sector Inner Section
+                    </span>
+                    <span style={{ fontSize: '0.82rem', color: '#20b512', fontWeight: 700 }}>
+                      &rarr;
+                    </span>
                   </div>
                 </Link>
               ))}
@@ -430,6 +458,56 @@ export default function SectorsPage() {
           background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35), inset 0 1px 0 #ffffff;
+        }
+
+        .sector-inner-accordion-card:hover {
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+          border-color: #cbd5e1 !important;
+        }
+
+        .sector-inner-row {
+          display: grid;
+          grid-template-columns: 280px 1fr;
+        }
+
+        .sector-inner-img-col {
+          position: relative;
+          min-height: 220px;
+          background-color: #0c1424;
+        }
+
+        .sector-inner-badge-overlay {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          background-color: rgba(7, 17, 56, 0.88);
+          color: #20b512;
+          font-family: 'Montserrat', sans-serif;
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 4px 10px;
+          border-radius: 4px;
+          letter-spacing: 0.06em;
+          z-index: 2;
+        }
+
+        .sector-inner-content-col {
+          padding: 24px 26px;
+          display: flex;
+          flex-direction: column;
+        }
+
+        @media (max-width: 820px) {
+          .sector-inner-row {
+            grid-template-columns: 1fr;
+          }
+          .sector-inner-img-col {
+            height: 180px;
+            min-height: 180px;
+          }
+          .sector-inner-content-col {
+            padding: 20px 18px;
+          }
         }
 
         @media (max-width: 768px) {

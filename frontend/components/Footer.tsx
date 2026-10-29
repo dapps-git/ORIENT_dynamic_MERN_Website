@@ -323,7 +323,7 @@ export default function Footer() {
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {/* LinkedIn */}
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/company/orient-energy-trading-co-oetc/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"

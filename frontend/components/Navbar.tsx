@@ -6,15 +6,15 @@ import { usePathname } from 'next/navigation';
 import ProductSearchModal from '@/components/ProductSearchModal';
 
 const SECTORS_DROPDOWN = [
-  { label: 'Oil & Gas', href: '/sectors#oil-gas' },
-  { label: 'Marine & Offshore', href: '/sectors#marine-offshore' },
-  { label: 'Construction & Infrastructure', href: '/sectors#construction' },
-  { label: 'Manufacturing Industry', href: '/sectors#manufacturing' },
-  { label: 'Energy & Power Sector', href: '/sectors#power-energy' },
-  { label: 'Heavy Engineering', href: '/sectors#heavy-engineering' },
-  { label: 'Industrial Maintenance', href: '/sectors#maintenance' },
-  { label: 'Fabrication & Welding', href: '/sectors#metals-fabrication' },
-  { label: 'Water & Utility Projects', href: '/sectors#water-utility' },
+  { label: 'Oil & Gas', href: '/sectors/oil-gas' },
+  { label: 'Marine & Offshore', href: '/sectors/marine-offshore' },
+  { label: 'Construction & Infrastructure', href: '/sectors/construction' },
+  { label: 'Manufacturing Industry', href: '/sectors/manufacturing' },
+  { label: 'Energy & Power Sector', href: '/sectors/power-energy' },
+  { label: 'Heavy Engineering', href: '/sectors/heavy-engineering' },
+  { label: 'Industrial Maintenance', href: '/sectors/maintenance' },
+  { label: 'Fabrication & Welding', href: '/sectors/metals-fabrication' },
+  { label: 'Water & Utility Projects', href: '/sectors/water-utility' },
 ];
 
 const PRODUCTS_DROPDOWN = [
@@ -39,6 +39,8 @@ function NavbarInner() {
   const [sectorsOpen, setSectorsOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [mobileSectorsOpen, setMobileSectorsOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isHome = pathname === '/';
@@ -79,107 +81,110 @@ function NavbarInner() {
 
   return (
     <>
-      {/* Top Navbar Sectors Marquee (Clean Train Track: No pinned SECTORS text, no green star) */}
-      <div
-        className="sectors-topbar"
+      {/* Fixed Header Wrapper containing Sector Topbar & Nav in Natural Flow (Zero Collision on Scroll) */}
+      <header
+        className="site-header"
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           width: '100%',
-          height: '32px',
-          backgroundColor: '#071138',
-          backgroundImage: 'linear-gradient(90deg, #060e2e 0%, #0a1945 50%, #060e2e 100%)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          zIndex: 1002,
-          display: 'flex',
-          alignItems: 'center',
-          overflow: 'hidden',
-          boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
+          zIndex: 1000,
+          transform: scrolled ? 'translateY(-32px)' : 'translateY(0)',
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        {/* Marquee Train Track Container with Gradient Edge Fades */}
+        {/* Top Navbar Sectors Marquee (White background, executive blue text) */}
         <div
-          className="sectors-train-container"
+          className="sectors-topbar"
           style={{
             position: 'relative',
             width: '100%',
-            overflow: 'hidden',
-            height: '100%',
+            height: '34px',
+            backgroundColor: '#ffffff',
+            borderBottom: '1px solid #e2e8f0',
             display: 'flex',
             alignItems: 'center',
-            maskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
-            WebkitMaskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
+            overflow: 'hidden',
+            boxShadow: '0 1px 4px rgba(0, 0, 0, 0.04)',
           }}
         >
-          <div className="sectors-train-track">
-            {[...SECTORS_DROPDOWN, ...SECTORS_DROPDOWN].map((sector, index) => (
-              <Link
-                key={`${sector.label}-${index}`}
-                href={sector.href}
-                className="sectors-train-item"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  color: 'rgba(255, 255, 255, 0.85)',
-                  textDecoration: 'none',
-                  fontSize: '0.74rem',
-                  fontWeight: 600,
-                  letterSpacing: '0.04em',
-                  fontFamily: "'Montserrat', sans-serif",
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <span>{sector.label}</span>
-              </Link>
-            ))}
+          {/* Marquee Train Track Container with Gradient Edge Fades */}
+          <div
+            className="sectors-train-container"
+            style={{
+              position: 'relative',
+              width: '100%',
+              overflow: 'hidden',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              maskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
+            }}
+          >
+            <div className="sectors-train-track">
+              {[...SECTORS_DROPDOWN, ...SECTORS_DROPDOWN].map((sector, index) => (
+                <Link
+                  key={`${sector.label}-${index}`}
+                  href={sector.href}
+                  className="sectors-train-item"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    color: '#071138',
+                    textDecoration: 'none',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.04em',
+                    fontFamily: "'Montserrat', sans-serif",
+                    whiteSpace: 'nowrap',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <span>{sector.label}</span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Curved Floating Navbar */}
-      <nav
-        className={`navbar navbar--curved${scrolled ? ' scrolled' : ''}`}
-        style={{
-          position: 'fixed',
-          top: '40px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 1000,
-          height: '64px',
-          width: 'calc(100% - 36px)',
-          maxWidth: '1340px',
-          display: 'flex',
-          alignItems: 'center',
-          backgroundColor: '#FAF7F2',
-          backdropFilter: 'blur(20px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-          borderRadius: '9999px',
-          border: '1px solid #ECE7DE',
-          boxShadow: scrolled
-            ? '0 12px 35px -5px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.05)'
-            : '0 8px 30px -4px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04)',
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          padding: '0 8px',
-        }}
-        role="navigation"
-        aria-label="Main navigation"
-      >
+        {/* Main Transparent / Glassmorphism Navbar */}
+        <nav
+          className={`navbar${scrolled ? ' scrolled' : ''}`}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: scrolled ? '64px' : '72px',
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: scrolled || !isHome ? 'rgba(7, 17, 56, 0.96)' : 'transparent',
+            backdropFilter: scrolled || !isHome ? 'blur(20px) saturate(180%)' : 'none',
+            WebkitBackdropFilter: scrolled || !isHome ? 'blur(20px) saturate(180%)' : 'none',
+            borderBottom: scrolled || !isHome ? '1px solid rgba(255, 255, 255, 0.08)' : 'none',
+            boxShadow: scrolled || !isHome
+              ? '0 12px 35px -5px rgba(0, 0, 0, 0.28)'
+              : 'none',
+            transition: 'height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, box-shadow 0.3s ease',
+            padding: '0 24px',
+          }}
+          role="navigation"
+          aria-label="Main navigation"
+        >
         <div
           className="navbar__inner"
           style={{
-            maxWidth: '100%',
+            maxWidth: '1360px',
             margin: '0 auto',
             width: '100%',
-            padding: '0 16px',
+            padding: '0 8px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          {/* Logo */}
+          {/* Logo with Zero Background & Authentic Brand Colors */}
           <Link
             href="/"
             aria-label="Orient Energy Trading Company"
@@ -188,6 +193,7 @@ function NavbarInner() {
               alignItems: 'center',
               textDecoration: 'none',
               flexShrink: 0,
+              background: 'transparent',
             }}
           >
             <Image
@@ -201,6 +207,7 @@ function NavbarInner() {
                 width: 'auto',
                 objectFit: 'contain',
                 display: 'block',
+                background: 'transparent',
                 filter: 'none',
                 transition: 'all 0.3s ease',
               }}
@@ -410,7 +417,7 @@ function NavbarInner() {
               </Link>
             </li>
 
-            {/* Desktop Search Icon Button - Just Search Icon, that's all */}
+            {/* Desktop Search Icon Button */}
             <li role="none" style={{ marginLeft: '4px' }}>
               <button
                 type="button"
@@ -424,11 +431,11 @@ function NavbarInner() {
                   justifyContent: 'center',
                   width: '36px',
                   height: '36px',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #ECE7DE',
+                  backgroundColor: 'rgba(255, 255, 255, 0.12)',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
                   borderRadius: '50%',
                   cursor: 'pointer',
-                  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
                   transition: 'all 0.2s ease',
                   padding: 0,
                 }}
@@ -438,7 +445,7 @@ function NavbarInner() {
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#20b512"
+                  stroke="#ffffff"
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -450,44 +457,8 @@ function NavbarInner() {
             </li>
           </ul>
 
-          {/* Mobile Right Controls: Mobile Search Button + Mobile Burger */}
+          {/* Mobile Right Controls: Minimalist Clean White Hamburger (Matching Reference Model) */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-            {/* Mobile Search Icon Button */}
-            <button
-              type="button"
-              onClick={() => setSearchOpen(true)}
-              aria-label="Search"
-              className="navbar-search-mobile"
-              style={{
-                display: 'none',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '32px',
-                height: '32px',
-                backgroundColor: '#ffffff',
-                border: '1px solid #ECE7DE',
-                borderRadius: '50%',
-                cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.05)',
-                transition: 'all 0.2s ease',
-                padding: 0,
-              }}
-            >
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#20b512"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-            </button>
-
             {/* Mobile Hamburger Button */}
             <button
               id="navbar-burger"
@@ -501,27 +472,27 @@ function NavbarInner() {
                 border: 'none',
                 cursor: 'pointer',
                 flexDirection: 'column',
-                gap: '4px',
-                padding: '4px',
-                zIndex: 10002,
+                gap: '5.5px',
+                padding: '6px',
+                zIndex: 10006,
               }}
             >
               <span
                 style={{
-                  width: 20,
-                  height: 2,
-                  background: open ? '#20b512' : '#1e293b',
+                  width: 25,
+                  height: 2.4,
+                  background: open ? '#20b512' : '#ffffff',
                   borderRadius: 2,
                   display: 'block',
                   transition: 'all 0.3s ease',
-                  transform: open ? 'translateY(6px) rotate(45deg)' : 'none',
+                  transform: open ? 'translateY(7.9px) rotate(45deg)' : 'none',
                 }}
               />
               <span
                 style={{
-                  width: 20,
-                  height: 2,
-                  background: open ? '#20b512' : '#1e293b',
+                  width: 25,
+                  height: 2.4,
+                  background: open ? '#20b512' : '#ffffff',
                   borderRadius: 2,
                   display: 'block',
                   transition: 'all 0.3s ease',
@@ -530,116 +501,243 @@ function NavbarInner() {
               />
               <span
                 style={{
-                  width: 20,
-                  height: 2,
-                  background: open ? '#20b512' : '#1e293b',
+                  width: 25,
+                  height: 2.4,
+                  background: open ? '#20b512' : '#ffffff',
                   borderRadius: 2,
                   display: 'block',
                   transition: 'all 0.3s ease',
-                  transform: open ? 'translateY(-6px) rotate(-45deg)' : 'none',
+                  transform: open ? 'translateY(-7.9px) rotate(-45deg)' : 'none',
                 }}
               />
             </button>
           </div>
         </div>
       </nav>
+    </header>
 
-      {/* Mobile Compact Dropdown Menu (No full-view overlay, sleek card under navbar) */}
+      {/* Modern Slide Drawer with Backdrop Overlay (Not Full View) */}
       {open && (
         <>
+          {/* Backdrop Blur Overlay - click outside to close */}
           <div
             onClick={() => setOpen(false)}
-            aria-label="Close menu backdrop"
+            aria-label="Close navigation menu"
             style={{
               position: 'fixed',
               inset: 0,
-              backgroundColor: 'rgba(7, 17, 56, 0.32)',
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
-              zIndex: 998,
-              animation: 'menuFadeIn 0.18s ease',
+              backgroundColor: 'rgba(7, 17, 56, 0.55)',
+              backdropFilter: 'blur(5px)',
+              WebkitBackdropFilter: 'blur(5px)',
+              zIndex: 10004,
+              animation: 'drawerFadeIn 0.22s ease',
             }}
           />
+
+          {/* Right-Side Slide Drawer (320px, max 85vw) */}
           <div
             ref={menuRef}
-            className="mobile-dropdown-card"
+            className="mobile-slide-drawer"
             style={{
               position: 'fixed',
-              top: '78px',
-              left: '12px',
-              right: '12px',
-              maxWidth: '380px',
-              margin: '0 auto',
-              backgroundColor: '#FAF7F2',
-              borderRadius: '16px',
-              border: '1px solid #ECE7DE',
-              boxShadow: '0 20px 45px rgba(0, 0, 0, 0.16)',
-              zIndex: 999,
-              padding: '10px',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: '320px',
+              maxWidth: '85vw',
+              height: '100dvh',
+              backgroundColor: '#ffffff',
+              boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.28)',
+              zIndex: 10005,
               display: 'flex',
               flexDirection: 'column',
-              gap: '2px',
-              animation: 'menuSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              animation: 'drawerSlideRight 0.26s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            {[
-              { href: '/', label: 'Home' },
-              { href: '/about', label: 'About Us' },
-              { href: '/sectors', label: 'Sectors' },
-              { href: '/products', label: 'Products' },
-              { href: '/brands', label: 'Brands' },
-              { href: '/blog', label: 'Blog' },
-              { href: '/contact', label: 'Contact us' },
-            ].map((link) => {
-              const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
+            {/* Top Header with Arabic & English Corporate Title and Clean Close Button */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '18px 20px 16px',
+                borderBottom: '1px solid #f1f5f9',
+                backgroundColor: '#ffffff',
+                flexShrink: 0,
+              }}
+            >
+              <div>
+                <div
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '9px 12px',
-                    borderRadius: '8px',
-                    fontSize: '0.86rem',
-                    fontWeight: isActive ? 700 : 500,
-                    color: isActive ? '#20b512' : '#1e293b',
-                    backgroundColor: isActive ? 'rgba(32, 181, 18, 0.08)' : 'transparent',
-                    textDecoration: 'none',
+                    color: '#0b7a3d',
+                    fontWeight: 700,
+                    fontSize: '0.96rem',
+                    lineHeight: 1.35,
+                    direction: 'rtl',
+                    textAlign: 'left',
                     fontFamily: "'Montserrat', sans-serif",
-                    transition: 'all 0.15s ease',
                   }}
                 >
-                  <span>{link.label}</span>
-                  <span style={{ color: isActive ? '#20b512' : '#94a3b8', fontSize: '0.80rem' }}>&rarr;</span>
-                </Link>
-              );
-            })}
+                  شركة اورين للطاقة التجارية
+                </div>
+                <div
+                  style={{
+                    color: '#071138',
+                    fontWeight: 700,
+                    fontSize: '0.90rem',
+                    lineHeight: 1.35,
+                    fontFamily: "'Montserrat', sans-serif",
+                  }}
+                >
+                  Orient Energy Trading Company
+                </div>
+              </div>
 
-            <div style={{ marginTop: '6px', paddingTop: '8px', borderTop: '1px solid #ECE7DE' }}>
-              <Link
-                href="/contact"
+              <button
+                type="button"
                 onClick={() => setOpen(false)}
+                aria-label="Close menu"
                 style={{
-                  display: 'block',
-                  backgroundColor: '#20b512',
-                  color: '#ffffff',
-                  padding: '9px 16px',
-                  borderRadius: '8px',
-                  fontWeight: 700,
-                  fontSize: '0.80rem',
-                  textDecoration: 'none',
-                  textAlign: 'center',
-                  letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
-                  fontFamily: "'Montserrat', sans-serif",
-                  boxShadow: '0 3px 12px rgba(32, 181, 18, 0.3)',
+                  background: 'none',
+                  border: 'none',
+                  color: '#1e293b',
+                  cursor: 'pointer',
+                  padding: '6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                Get A Quote &rarr;
-              </Link>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Navigation Links List (Active Green Pill, Inactive Clean Line Dividers & Chevrons) */}
+            <div
+              style={{
+                padding: '16px 16px 8px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2px',
+                flex: 1,
+              }}
+            >
+              {[
+                { label: 'Home', href: '/' },
+                { label: 'About Us', href: '/about' },
+                { label: 'Sectors', href: '/sectors' },
+                { label: 'Products', href: '/products' },
+                { label: 'Brands', href: '/brands' },
+                { label: 'Blog', href: '/blog' },
+                { label: 'Contact Us', href: '/contact' },
+              ].map((item) => {
+                const isActive =
+                  item.href === '/'
+                    ? pathname === '/'
+                    : pathname === item.href || pathname.startsWith(item.href + '/');
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    style={
+                      isActive
+                        ? {
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '14px 16px',
+                            backgroundColor: '#f0fdf4',
+                            borderRadius: '10px',
+                            color: '#15803d',
+                            fontWeight: 700,
+                            fontSize: '1.02rem',
+                            textDecoration: 'none',
+                            margin: '3px 0',
+                            fontFamily: "'Montserrat', sans-serif",
+                            transition: 'background-color 0.2s ease',
+                          }
+                        : {
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '15px 16px',
+                            backgroundColor: 'transparent',
+                            color: '#0f172a',
+                            fontWeight: 600,
+                            fontSize: '1.02rem',
+                            textDecoration: 'none',
+                            borderBottom: '1px solid #f1f5f9',
+                            fontFamily: "'Montserrat', sans-serif",
+                            transition: 'background-color 0.2s ease, color 0.2s ease',
+                          }
+                    }
+                  >
+                    <span>{item.label}</span>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={isActive ? '#15803d' : '#94a3b8'}
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Bottom Branding (Matching Exact User Mockup Footer) */}
+            <div
+              style={{
+                marginTop: 'auto',
+                padding: '24px 16px 28px',
+                textAlign: 'center',
+                backgroundColor: '#ffffff',
+                borderTop: '1px solid #f8fafc',
+                flexShrink: 0,
+              }}
+            >
+              <div
+                style={{
+                  color: '#64748b',
+                  fontSize: '0.80rem',
+                  fontWeight: 500,
+                  fontFamily: "'Montserrat', sans-serif",
+                  marginBottom: '3px',
+                }}
+              >
+                Orient Energy Trading Company
+              </div>
+              <div
+                style={{
+                  color: '#94a3b8',
+                  fontSize: '0.72rem',
+                  fontWeight: 400,
+                  fontFamily: "'Montserrat', sans-serif",
+                }}
+              >
+                Powering Industry. Delivering Excellence.
+              </div>
             </div>
           </div>
         </>
@@ -669,116 +767,172 @@ function NavbarInner() {
           animation-play-state: paused;
         }
         .sectors-train-item:hover {
-          color: #20b512 !important;
-          text-shadow: 0 0 10px rgba(32, 181, 18, 0.4);
+          color: #005ea6 !important;
         }
         .navbar-search-btn:hover {
           border-color: #20b512 !important;
-          background-color: #f8fafc !important;
-          box-shadow: 0 3px 10px rgba(32, 181, 18, 0.15) !important;
-        }
-        .navbar-search-mobile:hover {
-          border-color: #20b512 !important;
-          background-color: #f8fafc !important;
+          background-color: rgba(32, 181, 18, 0.2) !important;
+          box-shadow: 0 3px 12px rgba(32, 181, 18, 0.25) !important;
         }
         .navbar .nav-link {
-          color: #555e6d !important;
-          font-weight: 500 !important;
-          font-size: 0.85rem !important;
+          color: rgba(255, 255, 255, 0.95) !important;
+          font-weight: 600 !important;
+          font-size: 0.96rem !important;
+          letter-spacing: 0.01em !important;
+          transition: all 0.2s ease;
         }
         .navbar .nav-link:hover {
-          color: #111827 !important;
+          color: #20b512 !important;
         }
         .navbar .nav-link.active {
-          color: #111827 !important;
+          color: #20b512 !important;
           font-weight: 700 !important;
         }
-        @keyframes menuFadeIn {
+        @keyframes drawerFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes drawerSlideRight {
           from {
-            opacity: 0;
+            transform: translateX(100%);
           }
           to {
-            opacity: 1;
+            transform: translateX(0);
           }
         }
-        @keyframes menuSlideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-8px) scale(0.98);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
+        .mobile-nav-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 12px;
+          border-radius: 8px;
+          font-size: 0.88rem;
+          font-weight: 500;
+          color: #1e293b;
+          text-decoration: none;
+          font-family: 'Montserrat', sans-serif;
+          transition: all 0.15s ease;
+        }
+        .mobile-nav-item:hover {
+          background-color: #f8fafc;
+          color: #2e3191;
+          padding-left: 16px;
+        }
+        .mobile-nav-item.active {
+          color: #2e3191;
+          font-weight: 700;
+          background-color: rgba(46, 49, 145, 0.08);
         }
         @media (max-width: 1024px) {
+          .site-header {
+            transform: none !important;
+          }
+          .sectors-topbar {
+            display: none !important;
+          }
           .navbar__nav {
             display: none !important;
           }
-          .navbar__burger {
-            display: flex !important;
+          .navbar-search-btn {
+            display: none !important;
           }
+          .navbar-wa-mobile,
           .navbar-search-mobile {
-            display: inline-flex !important;
+            display: none !important;
           }
-          .navbar.navbar--curved,
-          .navbar.navbar--curved.scrolled {
-            top: 36px !important;
+          .navbar,
+          nav.navbar,
+          .navbar.scrolled,
+          nav.navbar.scrolled {
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            transform: none !important;
+            height: 60px !important;
+            min-height: 60px !important;
+            max-height: 60px !important;
+            padding: 0 16px !important;
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
           }
-          .sectors-topbar {
-            height: 28px !important;
-          }
-        }
-        @media (max-width: 768px) {
-          .navbar.navbar--curved,
-          .navbar.navbar--curved.scrolled,
-          nav.navbar.navbar--curved,
-          nav.navbar.navbar--curved.scrolled {
-            top: 30px !important;
-            width: calc(100% - 20px) !important;
-            height: 44px !important;
-            min-height: 44px !important;
-            max-height: 44px !important;
-            padding: 0 4px !important;
+          .navbar.scrolled,
+          nav.navbar.scrolled {
+            background: rgba(6, 14, 46, 0.94) !important;
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
           }
           .navbar__inner {
-            padding: 0 10px !important;
-            height: 44px !important;
-            max-height: 44px !important;
+            padding: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 100% !important;
           }
           .navbar__logo-img,
           .navbar .navbar__logo-img,
           .navbar.scrolled .navbar__logo-img {
-            height: 24px !important;
-            max-height: 24px !important;
+            height: 34px !important;
+            max-height: 34px !important;
             width: auto !important;
+            background: transparent !important;
           }
-          .navbar-search-mobile,
-          .navbar.scrolled .navbar-search-mobile {
-            width: 30px !important;
-            height: 30px !important;
-          }
-          .navbar-search-mobile svg {
-            width: 14px !important;
-            height: 14px !important;
-          }
-          .navbar__burger,
-          .navbar.scrolled .navbar__burger {
-            padding: 3px !important;
-            gap: 3.5px !important;
+          .navbar__burger {
+            display: flex !important;
           }
           .navbar__burger span {
-            width: 18px !important;
-            height: 2px !important;
+            background: #ffffff !important;
           }
+        }
+        @media (max-width: 768px) {
           .sectors-topbar {
-            height: 26px !important;
+            display: none !important;
           }
-          .sectors-train-item {
-            font-size: 0.65rem !important;
+          .navbar,
+          nav.navbar {
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 56px !important;
+            min-height: 56px !important;
+            max-height: 56px !important;
+            padding: 0 14px !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
           }
-          .mobile-dropdown-card {
-            top: 76px !important;
+          .navbar.scrolled,
+          nav.navbar.scrolled {
+            background: rgba(6, 14, 46, 0.95) !important;
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+          }
+          .navbar__inner {
+            padding: 0 !important;
+            height: 56px !important;
+          }
+          .navbar__logo-img,
+          .navbar .navbar__logo-img {
+            height: 32px !important;
+            max-height: 32px !important;
+            width: auto !important;
+            background: transparent !important;
+          }
+          .navbar__burger {
+            display: flex !important;
+            padding: 4px !important;
+            gap: 5px !important;
+          }
+          .navbar__burger span {
+            width: 24px !important;
+            height: 2.2px !important;
+            background: #ffffff !important;
           }
         }
       `}</style>

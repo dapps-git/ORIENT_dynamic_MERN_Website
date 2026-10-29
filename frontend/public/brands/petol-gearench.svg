@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 160" width="280" height="160">
+  <defs>
+    <style>
+      .shield-bg { fill: #f26522; stroke: #111111; stroke-width: 6; stroke-linejoin: round; }
+      .shield-inner { fill: none; stroke: #111111; stroke-width: 3; }
+      .petol-text { font-family: 'Arial Black', Impact, sans-serif; font-weight: 900; font-size: 34px; fill: #111111; text-anchor: middle; letter-spacing: 1px; }
+      .gear-text { font-family: 'Arial Black', Impact, sans-serif; font-weight: 800; font-size: 14px; fill: #111111; text-anchor: middle; letter-spacing: 1.5px; }
+      .div-line { stroke: #111111; stroke-width: 3.5; }
+    </style>
+  </defs>
+  <rect width="280" height="160" fill="#ffffff" rx="6" />
+  <!-- Shield shape -->
+  <path class="shield-bg" d="M 60,25 L 220,25 L 220,75 C 220,115 140,145 140,145 C 140,145 60,115 60,75 Z" />
+  <path class="shield-inner" d="M 68,32 L 212,32 L 212,74 C 212,108 140,135 140,135 C 140,135 68,108 68,74 Z" />
+  <!-- PETOL Text -->
+  <text x="140" y="65" class="petol-text">PETOL</text>
+  <!-- Divider -->
+  <line x1="78" y1="73" x2="202" y2="73" class="div-line" />
+  <!-- GEARENCH Text -->
+  <text x="140" y="90" class="gear-text">GEARENCH</text>
+  <!-- Small TM mark -->
+  <text x="210" y="125" font-family="sans-serif" font-size="8" font-weight="bold" fill="#111111">TM</text>
+</svg>

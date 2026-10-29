@@ -1,3 +1,9 @@
+export interface ProductInnerSection {
+  title: string;
+  content: string;
+  image?: string;
+}
+
 export interface ProductItem {
   id: string;
   title: string;
@@ -12,6 +18,7 @@ export interface ProductItem {
   features?: string[];
   shortDescription?: string;
   fullDescription?: string;
+  innerSections?: ProductInnerSection[];
   whatsappMessage?: string;
 }
 
@@ -78,6 +85,11 @@ export const DIVISIONS_DATA: DivisionData[] = [
         title: 'Black-Coated Steel Pipe Flanges Threaded',
         slug: 'black-coated-steel-pipe-flanges-threaded',
         image: '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
+        images: [
+          '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
+          '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
+          '/products/mechanical/industrial-gasket-and-seals.png',
+        ],
         category: 'Flanges & Pipe Connections',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -88,12 +100,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Carbon Steel ASTM A105 / A350 Material',
           'Complete MTR (Mill Test Report) Traceability',
         ],
+        innerSections: [
+          {
+            title: 'Flange Pressure Classes & Dimensional Accuracy',
+            content: 'Manufactured to strict ASME/ANSI B16.5 standards, these threaded flanges provide exceptional structural reliability in high-vibration piping systems. Features precision-tapered NPT threads that create leak-tight mechanical seals without requiring on-site welding.',
+            image: '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
+          },
+        ],
       },
       {
         id: 'mech-2',
         title: 'Breathing Hoses',
         slug: 'breathing-hoses',
         image: '/products/mechanical/breathing-hoses.png',
+        images: [
+          '/products/mechanical/breathing-hoses.png',
+          '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+          '/products/mechanical/industrial-large-bore-hoses.png',
+        ],
         category: 'Hoses, Hammer Unions & Rig Supplies',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -104,12 +128,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'CGA Connectors',
           'Isolation Valves',
         ],
+        innerSections: [
+          {
+            title: 'Critical Breathing Air Safety Standards',
+            content: 'Engineered for offshore rig safety and industrial refinery turnaround projects. Complies with EN 14593/EN 14594 breathing apparatus standards, with anti-static inner core lining and ozone-resistant synthetic outer cover.',
+            image: '/products/mechanical/breathing-hoses.png',
+          },
+        ],
       },
       {
         id: 'mech-3',
         title: 'Butterfly Valve',
         slug: 'butterfly-valve',
         image: '/products/mechanical/butterfly-valve.png',
+        images: [
+          '/products/mechanical/butterfly-valve.png',
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+        ],
         category: 'Valves, Fittings & Tubing',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -120,12 +156,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Manual Lever, Gear Operator & Actuator Ready',
           'Bubble-Tight Bidirectional Shut-Off',
         ],
+        innerSections: [
+          {
+            title: 'High-Integrity Bidirectional Sealing',
+            content: 'Designed with a vulcanized resilient seat that eliminates internal stem leaks. Ideal for both isolation and throttling duties across chemical dosing, cooling water, and desalination installations.',
+            image: '/products/mechanical/butterfly-valve.png',
+          },
+        ],
       },
       {
         id: 'mech-4',
         title: 'Butterfly Valve Lever Handle SS Disc 3',
         slug: 'butterfly-valve-lever-handle-ss-disc-3',
         image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png',
+        images: [
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png',
+          '/products/mechanical/butterfly-valve.png',
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+        ],
         category: 'Valves, Fittings & Tubing',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -136,12 +184,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'EPDM / NBR Replaceable Liner',
           'Working Pressure up to 16 Bar (232 PSI)',
         ],
+        innerSections: [
+          {
+            title: 'Precision Throttle Lever with 10-Position Lock',
+            content: 'Equipped with a notched locking quadrant plate allowing precise flow control from 0 to 90 degrees. Investment-cast SS316 disc ensures maximum corrosion resistance against saline marine fluids.',
+            image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png',
+          },
+        ],
       },
       {
         id: 'mech-5',
         title: 'Butterfly Valve Lever Handle SS Disc 4',
         slug: 'butterfly-valve-lever-handle-ss-disc-4',
         image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+        images: [
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+          '/products/mechanical/butterfly-valve.png',
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+        ],
         category: 'Valves, Fittings & Tubing',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -152,12 +212,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Pinless Shaft Connection Preventing Leakage',
           'Tested to API 598 Pressure Standards',
         ],
+        innerSections: [
+          {
+            title: 'Heavy Wafer Pattern Body & Direct ISO Mounting',
+            content: 'Universal wafer body fits seamlessly between ANSI Class 150, PN10, and PN16 counter-flanges. Features an ISO 5211 direct-mount actuator pad for effortless pneumatic or electric actuator retrofits.',
+            image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+          },
+        ],
       },
       {
         id: 'mech-6',
         title: 'Butterfly Valve Lever Handle SS Disc 6',
         slug: 'butterfly-valve-lever-handle-ss-disc-6',
         image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+        images: [
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
+          '/products/mechanical/butterfly-valve.png',
+        ],
         category: 'Valves, Fittings & Tubing',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -168,12 +240,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Blow-out Proof Stem with PTFE Bushings',
           'Direct Mount ISO 5211 Actuator Flange',
         ],
+        innerSections: [
+          {
+            title: 'Epoxy Powder-Coated Ductile Iron Construction',
+            content: 'Fusion-bonded epoxy coating (250+ microns) protects the valve body against corrosive atmospheric salt spray. Blow-out proof stem design ensures safe maintenance under full operational pressure.',
+            image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+          },
+        ],
       },
       {
         id: 'mech-7',
         title: 'Butterfly Valve Lever Handle SS Disc 8',
         slug: 'butterfly-valve-lever-handle-ss-disc-8',
         image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
+        images: [
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
+          '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+          '/products/mechanical/butterfly-valve.png',
+        ],
         category: 'Valves, Fittings & Tubing',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -184,12 +268,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Suitable for Water, Glycol, Slurries & Hydrocarbons',
           'Aramco & SABIC Plant Approved Specifications',
         ],
+        innerSections: [
+          {
+            title: 'Heavy Industrial Isolation & Slurry Capability',
+            content: 'Engineered for high-volume piping lines in petrochemical refineries and municipal treatment facilities. Dual O-ring stem seals and heavy-duty gear/lever operators provide low operating torque.',
+            image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
+          },
+        ],
       },
       {
         id: 'mech-8',
         title: 'Hydraulic Hoses Fittings & Adaptors',
         slug: 'hydraulic-hoses-fittings-adaptors',
         image: '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+        images: [
+          '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+          '/products/mechanical/industrial-large-bore-hoses.png',
+          '/products/mechanical/breathing-hoses.png',
+        ],
         category: 'Hoses, Hammer Unions & Rig Supplies',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -200,12 +296,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Quick Disconnect Couplings & High-Pressure Swivels',
           'Custom Crimping & Pressure Testing Certification',
         ],
+        innerSections: [
+          {
+            title: 'High-Pressure Hydraulic Crimp Assembly Certification',
+            content: 'Tested up to 6,000 PSI operating pressure with high-tensile 4-spiral steel reinforcement. Available with BSP, JIC, and ORFS fittings, crimped and pressure-certified to international SAE 100R standards.',
+            image: '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+          },
+        ],
       },
       {
         id: 'mech-9',
         title: 'Industrial & Large Bore Hoses',
         slug: 'industrial-large-bore-hoses',
         image: '/products/mechanical/industrial-large-bore-hoses.png',
+        images: [
+          '/products/mechanical/industrial-large-bore-hoses.png',
+          '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+          '/products/mechanical/breathing-hoses.png',
+        ],
         category: 'Hoses, Hammer Unions & Rig Supplies',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -216,12 +324,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Camlock, Hammer Union & Flanged End Terminations',
           'Electrical Continuity Grounding Available',
         ],
+        innerSections: [
+          {
+            title: 'Heavy Mud & Chemical Transfer Performance',
+            content: 'Engineered for extreme suction and discharge duties in offshore rig transfer operations. Built with oil-resistant synthetic rubber lining and dual-helix high-tensile wire for vacuum resistance.',
+            image: '/products/mechanical/industrial-large-bore-hoses.png',
+          },
+        ],
       },
       {
         id: 'mech-10',
         title: 'Industrial Gasket and Seals',
         slug: 'industrial-gasket-and-seals',
         image: '/products/mechanical/industrial-gasket-and-seals.png',
+        images: [
+          '/products/mechanical/industrial-gasket-and-seals.png',
+          '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
+          '/categories/all-fittings.jpeg',
+        ],
         category: 'Gaskets & Sealing Solutions',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -232,12 +352,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'EPDM, Viton, NBR & Silicone O-Rings and Mechanical Seals',
           'Fire-Safe API 607 Compliant Sealing Solutions',
         ],
+        innerSections: [
+          {
+            title: 'Spiral Wound & RTJ High-Temperature Sealing',
+            content: 'Manufactured with high-purity flexible graphite windings and 316 stainless steel guide rings. Resists thermal cycling and mechanical shock in petrochemical cracking and steam headers.',
+            image: '/products/mechanical/industrial-gasket-and-seals.png',
+          },
+        ],
       },
       {
         id: 'mech-11',
         title: 'Isolation Valve, Ball Valve Steam High Temperature Ball Valve',
         slug: 'isolation-valve-ball-valve-steam-high-temperature-ball-valve',
         image: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png',
+        images: [
+          '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png',
+          '/products/mechanical/butterfly-valve.png',
+          '/categories/all-fittings.jpeg',
+        ],
         category: 'Valves, Fittings & Tubing',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -248,12 +380,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Full Bore Design Minimizing Pressure Drops',
           'API 6D, Firesafe API 607 Tested & Certified',
         ],
+        innerSections: [
+          {
+            title: 'Firesafe Metal-Seated Steam Isolation',
+            content: 'Three-piece bolted body in forged carbon or stainless steel, with Stellite hard-faced ball and seat. Tested to API 607 firesafe guidelines, delivering zero-leakage shutoff in high-pressure superheated steam.',
+            image: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png',
+          },
+        ],
       },
       {
         id: 'mech-12',
         title: 'Micro Linear Actuators',
         slug: 'micro-linear-actuators',
         image: '/products/mechanical/micro-linear-actuators.png',
+        images: [
+          '/products/mechanical/micro-linear-actuators.png',
+          '/products/mechanical/butterfly-valve.png',
+          '/categories/all-fittings.jpeg',
+        ],
         category: 'Actuators & Control Components',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -264,12 +408,24 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Built-in Adjustable Limit Switches & Position Feedback',
           '12V / 24V DC Industrial Operating Voltage',
         ],
+        innerSections: [
+          {
+            title: 'Compact Electric Positioning & Ingress Protection',
+            content: 'Engineered for industrial automation and remote dampener actuation. Features IP66 waterproof casing, high-reduction planetary gearbox, and internal potentiometer feedback.',
+            image: '/products/mechanical/micro-linear-actuators.png',
+          },
+        ],
       },
       {
         id: 'mech-13',
         title: 'Carbon Steel Seamless & ERW Pipes',
         slug: 'carbon-steel-seamless-erw-pipes',
         image: '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
+        images: [
+          '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
+          '/products/steel/pipes.png',
+          '/products/steel/304-stainless-steel-pipe.png',
+        ],
         category: 'Pipes & Tubes',
         date: 'December 15, 2025',
         comments: '0 Comment',
@@ -279,6 +435,13 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Sizes ranging from 1/2" up to 36" Diameter',
           'Beveled and Plain Ends with Protective Varnishing',
           'Full Hydrostatic Testing and NDT Inspection Certified',
+        ],
+        innerSections: [
+          {
+            title: 'Aramco & API Specification Compliance',
+            content: 'Supplied strictly to ASTM A106 Grade B and API 5L PSL2 standards with complete Charpy V-Notch impact testing and HIC (Hydrogen Induced Cracking) resistance for sour gas service.',
+            image: '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
+          },
         ],
       },
     ],

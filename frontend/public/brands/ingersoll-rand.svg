@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 160" width="280" height="160">
+  <!-- White card container -->
+  <rect width="280" height="160" fill="#ffffff" rx="6" />
+  <!-- Red IR Oval Symbol -->
+  <g transform="translate(30, 48)">
+    <!-- Red circle / oval -->
+    <ellipse cx="28" cy="32" rx="28" ry="24" fill="#d9251d" />
+    <text x="28" y="40" font-family="'Arial Black', Impact, sans-serif" font-weight="900" font-size="24" fill="#ffffff" text-anchor="middle" font-style="italic">IR</text>
+    <!-- Ingersoll Rand text -->
+    <text x="66" y="38" font-family="'Helvetica Neue', Arial, sans-serif" font-weight="700" font-size="24" fill="#d9251d" letter-spacing="-0.5px">Ingersoll Rand<tspan fill="#d9251d">.</tspan></text>
+  </g>
+</svg>

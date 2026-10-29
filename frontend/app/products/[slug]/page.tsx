@@ -430,108 +430,109 @@ export default async function ProductDivisionInnerPage({
               </div>
             </div>
 
-            {/* 4-Column Product Grid (Matching exact screenshots) */}
+            {/* Product Catalog Grid (Clean Category / Product Cards matching reference image) */}
             <div className="product-grid-4col">
               {division.products.map((product) => {
                 const prodSlug = product.slug || getProductSlug(product.title);
-                const waMessage = encodeURIComponent(
-                  `Hello Orient Energy Trading Co., I would like to order or request a quote for: ${product.title} (${division.name}).`
-                );
-                const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${waMessage}`;
 
                 return (
-                  <div
+                  <Link
                     key={product.id}
+                    href={`/product/${prodSlug}`}
                     className="product-catalog-card"
                     style={{
                       backgroundColor: '#ffffff',
                       border: '1px solid #e2e8f0',
                       borderRadius: '12px',
-                      padding: '18px 16px',
+                      padding: '18px 18px 16px',
                       display: 'flex',
                       flexDirection: 'column',
-                      alignItems: 'center',
-                      textAlign: 'center',
-                      boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
-                      transition: 'all 0.28s ease',
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                      transition: 'all 0.25s ease',
+                      position: 'relative',
+                      cursor: 'pointer',
                     }}
                   >
-                    {/* Clickable link to Product Detail Page */}
-                    <Link
-                      href={`/product/${prodSlug}`}
+                    {/* 1. Category / Product Title at Top (Uppercase, bold, left aligned) */}
+                    <h4
                       style={{
-                        textDecoration: 'none',
-                        color: 'inherit',
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        cursor: 'pointer',
+                        fontFamily: "'Montserrat', sans-serif",
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
+                        letterSpacing: '0.04em',
+                        textTransform: 'uppercase',
+                        color: '#0f172a',
+                        lineHeight: 1.35,
+                        minHeight: '38px',
+                        margin: '0 0 12px 0',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        textAlign: 'left',
+                        transition: 'color 0.2s ease',
                       }}
-                      className="product-card-link"
+                      title={product.title}
+                      className="product-card-title"
                     >
-                      {/* Square Image Box */}
-                      <div
+                      {product.title}
+                    </h4>
+
+                    {/* 2. Centered Product Image Showcase */}
+                    <div
+                      style={{
+                        position: 'relative',
+                        width: '100%',
+                        height: '160px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '4px 0 14px',
+                        backgroundColor: '#ffffff',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Image
+                        src={product.image}
+                        alt={product.title}
+                        width={160}
+                        height={150}
                         style={{
-                          position: 'relative',
-                          width: '100%',
-                          height: '165px',
+                          maxWidth: '100%',
+                          maxHeight: '100%',
+                          objectFit: 'contain',
+                          transition: 'transform 0.28s ease',
+                        }}
+                        className="product-catalog-thumb"
+                      />
+                    </div>
+
+                    {/* 3. Bottom-Left Circular Dark Navy Blue Button with Right Arrow */}
+                    <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                      <div
+                        className="product-circle-arrow-btn"
+                        style={{
+                          width: '38px',
+                          height: '38px',
+                          borderRadius: '50%',
+                          backgroundColor: '#071138',
+                          color: '#ffffff',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          marginBottom: '14px',
-                          backgroundColor: '#ffffff',
-                          overflow: 'hidden',
+                          transition: 'all 0.25s ease',
+                          boxShadow: '0 3px 10px rgba(7, 17, 56, 0.2)',
                         }}
                       >
-                        <Image
-                          src={product.image}
-                          alt={product.title}
-                          width={160}
-                          height={150}
-                          style={{
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                            objectFit: 'contain',
-                            transition: 'transform 0.28s ease',
-                          }}
-                          className="product-catalog-thumb"
-                        />
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="5" y1="12" x2="19" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
                       </div>
-
-                      {/* Title */}
-                      <h4
-                        style={{
-                          fontSize: '0.86rem',
-                          fontWeight: 600,
-                          color: '#1e293b',
-                          lineHeight: 1.45,
-                          minHeight: '44px',
-                          marginBottom: '16px',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          transition: 'color 0.2s ease',
-                        }}
-                        title={product.title}
-                        className="product-card-title"
-                      >
-                        {product.title}
-                      </h4>
-                    </Link>
-
-                    {/* White Glossy Effect Order Now Button */}
-                    <a
-                      href={waUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-order-now-glossy"
-                      aria-label={`Order ${product.title}`}
-                    >
-                      Order Now
-                    </a>
-                  </div>
+                    </div>
+                  </Link>
                 );
               })}
             </div>
@@ -613,51 +614,36 @@ export default async function ProductDivisionInnerPage({
       <style>{`
         .product-grid-4col {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 16px;
         }
 
         .product-catalog-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-          border-color: #2e3191;
+          box-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
+          border-color: #cbd5e1 !important;
+        }
+
+        .product-catalog-card:hover .product-card-title {
+          color: #2e3191 !important;
         }
 
         .product-catalog-card:hover .product-catalog-thumb {
-          transform: scale(1.05);
+          transform: scale(1.06);
         }
 
-        /* White Glossy Effect Order Now Button - Reduced font & button size */
-        .btn-order-now-glossy,
-        .btn-order-now-blue {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-          color: #0f172a !important;
-          padding: 6px 12px;
-          border-radius: 5px;
-          font-family: 'Montserrat', sans-serif !important;
-          font-size: 0.74rem;
-          font-weight: 700;
-          letter-spacing: 0.04em;
-          text-transform: uppercase;
-          text-decoration: none;
-          margin-top: auto;
-          width: 100%;
-          text-align: center;
-          border: 1px solid #dcdfe4;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff;
-          transition: all 0.2s ease;
+        .product-catalog-card:hover .product-circle-arrow-btn {
+          background-color: #20b512 !important;
+          transform: scale(1.06);
+          box-shadow: 0 4px 14px rgba(32, 181, 18, 0.45) !important;
         }
 
-        .btn-order-now-glossy:hover,
-        .btn-order-now-blue:hover {
-          background: linear-gradient(180deg, #ffffff 0%, #edf2f7 100%);
-          border-color: #cbd5e1;
-          color: #2e3191 !important;
-          transform: translateY(-1px);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08), inset 0 1px 0 #ffffff;
+        .product-catalog-card .product-circle-arrow-btn svg {
+          transition: transform 0.2s ease;
+        }
+
+        .product-catalog-card:hover .product-circle-arrow-btn svg {
+          transform: translateX(3px);
         }
 
         .product-cta-box {
@@ -690,24 +676,41 @@ export default async function ProductDivisionInnerPage({
           box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35), inset 0 1px 0 #ffffff;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1400px) {
+          .product-grid-4col {
+            grid-template-columns: repeat(5, 1fr) !important;
+            gap: 15px !important;
+          }
+        }
+
+        @media (max-width: 1150px) {
+          .product-grid-4col {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 15px !important;
+          }
+        }
+
+        @media (max-width: 900px) {
           .product-grid-4col {
             grid-template-columns: repeat(3, 1fr) !important;
-            gap: 16px !important;
+            gap: 14px !important;
           }
         }
 
         @media (max-width: 768px) {
           .product-grid-4col {
             grid-template-columns: repeat(2, 1fr) !important;
-            gap: 14px !important;
+            gap: 12px !important;
           }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 540px) {
           .product-grid-4col {
-            grid-template-columns: 1fr !important;
-            gap: 12px !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+          }
+          .product-catalog-card {
+            padding: 12px 10px 12px !important;
           }
         }
       `}</style>

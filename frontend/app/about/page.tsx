@@ -37,9 +37,23 @@ export default function AboutPage() {
       <ScrollAnimation />
       <Navbar />
 
-      <main className="about-page" style={{ backgroundColor: '#ffffff', minHeight: '100vh', fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+      <main
+        className="about-page"
+        style={{
+          backgroundColor: '#ffffff',
+          minHeight: '100vh',
+          paddingTop: '115px',
+          fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        }}
+      >
         {/* Section 1: About Orient Energy Trading ("EXPERTISE IN EVERY TRADE") */}
-        <section className="about-intro-section" style={{ backgroundColor: '#ffffff', padding: '60px 0 50px' }}>
+        <section
+          className="about-intro-section"
+          style={{
+            backgroundColor: '#ffffff',
+            padding: '45px 0 50px',
+          }}
+        >
           <div
             className="container"
             style={{

@@ -11,7 +11,7 @@ export default function PageLoader() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 600);
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -20,7 +20,7 @@ export default function PageLoader() {
     setLoading(true);
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 450);
+    }, 350);
     return () => clearTimeout(timer);
   }, [pathname]);
 
@@ -35,107 +35,41 @@ export default function PageLoader() {
         zIndex: 99999,
         backgroundColor: '#FAF7F2',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '20px',
-        transition: 'opacity 0.35s ease, visibility 0.35s ease',
+        transition: 'opacity 0.3s ease, visibility 0.3s ease',
         pointerEvents: 'all',
       }}
-      aria-label="Loading Orient Energy"
+      aria-label="Loading"
     >
-      {/* Outer Circling Ring + Spinning Emblem */}
+      {/* Clean Reduced-Size Logo Only (No Circles, No Texts) */}
       <div
         style={{
+          width: '38px',
+          height: '38px',
           position: 'relative',
-          width: '90px',
-          height: '90px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          animation: 'logoFadePulse 1.4s ease-in-out infinite',
         }}
       >
-        {/* Subtle Outer Spinner Ring */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: '50%',
-            border: '2.5px solid rgba(14, 122, 61, 0.12)',
-            borderTopColor: '#0b7a3d',
-            borderRightColor: '#0056b3',
-            animation: 'circlingRing 1.2s linear infinite',
-          }}
+        <Image
+          src="/logo-emblem-transparent.png"
+          alt="Orient Energy"
+          fill
+          sizes="38px"
+          style={{ objectFit: 'contain' }}
+          priority
         />
-
-        {/* Circling / Spinning Logo Emblem without background */}
-        <div
-          style={{
-            width: '54px',
-            height: '54px',
-            position: 'relative',
-            animation: 'circlingLogo 2.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite',
-          }}
-        >
-          <Image
-            src="/logo-emblem-transparent.png"
-            alt="Orient Energy Loading"
-            fill
-            sizes="54px"
-            style={{ objectFit: 'contain' }}
-            priority
-          />
-        </div>
-      </div>
-
-      {/* Brand Label with Subtle Pulse */}
-      <div style={{ textAlign: 'center' }}>
-        <div
-          style={{
-            fontFamily: '"Cormorant Garamond", Amiri, serif',
-            fontSize: '1.05rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            color: '#111827',
-            textTransform: 'uppercase',
-          }}
-        >
-          Orient Energy
-        </div>
-        <div
-          style={{
-            fontFamily: "'Poppins', sans-serif",
-            fontSize: '0.68rem',
-            fontWeight: 500,
-            letterSpacing: '0.16em',
-            color: '#0b7a3d',
-            textTransform: 'uppercase',
-            marginTop: '2px',
-          }}
-        >
-          Loading...
-        </div>
       </div>
 
       <style>{`
-        @keyframes circlingLogo {
-          0% {
-            transform: rotate(0deg);
+        @keyframes logoFadePulse {
+          0%, 100% {
+            opacity: 0.75;
+            transform: scale(0.96);
           }
           50% {
-            transform: rotate(180deg) scale(1.06);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-
-        @keyframes circlingRing {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
+            opacity: 1;
+            transform: scale(1.04);
           }
         }
       `}</style>

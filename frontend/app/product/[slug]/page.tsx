@@ -69,6 +69,7 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
                 ],
           shortDescription: p.shortDescription || '',
           fullDescription: p.fullDescription || p.shortDescription || '',
+          innerSections: p.innerSections || [],
           whatsappMessage: p.whatsappMessage,
         };
 
@@ -241,110 +242,94 @@ export default async function ProductDetailPage({
                 >
                   {related.map((relItem) => {
                     const relSlug = relItem.slug || getProductSlug(relItem.title);
-                    const relWaMessage = encodeURIComponent(
-                      `Hello Orient Energy Trading Co., I would like to order or request a quote for: ${relItem.title}.`
-                    );
-                    const relWaUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${relWaMessage}`;
-
                     return (
-                      <div
+                      <Link
                         key={relItem.id}
+                        href={`/product/${relSlug}`}
                         className="related-product-card"
                         style={{
                           backgroundColor: '#ffffff',
                           border: '1px solid #e2e8f0',
                           borderRadius: '12px',
-                          padding: '18px',
+                          padding: '16px 16px 14px',
                           display: 'flex',
                           flexDirection: 'column',
-                          alignItems: 'center',
-                          textAlign: 'center',
-                          boxShadow: '0 2px 10px rgba(0,0,0,0.03)',
+                          textDecoration: 'none',
+                          color: 'inherit',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
                           transition: 'all 0.25s ease',
+                          cursor: 'pointer',
                         }}
                       >
-                        <Link
-                          href={`/product/${relSlug}`}
+                        <h4
                           style={{
-                            textDecoration: 'none',
-                            color: 'inherit',
-                            width: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <div
-                            style={{
-                              position: 'relative',
-                              width: '100%',
-                              height: '150px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              marginBottom: '14px',
-                            }}
-                          >
-                            <img
-                              src={relItem.image}
-                              alt={relItem.title}
-                              style={{
-                                maxWidth: '100%',
-                                maxHeight: '100%',
-                                objectFit: 'contain',
-                                transition: 'transform 0.25s ease',
-                              }}
-                              className="related-thumb-img"
-                            />
-                          </div>
-
-                          <h4
-                            style={{
-                              fontSize: '0.86rem',
-                              fontWeight: 600,
-                              color: '#1e293b',
-                              lineHeight: 1.45,
-                              minHeight: '44px',
-                              marginBottom: '14px',
-                              display: '-webkit-box',
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: 'vertical',
-                              overflow: 'hidden',
-                            }}
-                            title={relItem.title}
-                          >
-                            {relItem.title}
-                          </h4>
-                        </Link>
-
-                        <a
-                          href={relWaUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-order-now-glossy"
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
-                            color: '#0f172a',
-                            padding: '6px 12px',
-                            borderRadius: '5px',
-                            fontSize: '0.74rem',
+                            fontFamily: "'Montserrat', sans-serif",
+                            fontSize: '0.80rem',
                             fontWeight: 700,
                             letterSpacing: '0.04em',
                             textTransform: 'uppercase',
-                            textDecoration: 'none',
-                            marginTop: 'auto',
+                            color: '#0f172a',
+                            lineHeight: 1.35,
+                            minHeight: '36px',
+                            marginBottom: '10px',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            textAlign: 'left',
+                          }}
+                          title={relItem.title}
+                        >
+                          {relItem.title}
+                        </h4>
+
+                        <div
+                          style={{
+                            position: 'relative',
                             width: '100%',
-                            border: '1px solid #dcdfe4',
-                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05), inset 0 1px 0 #ffffff',
-                            transition: 'all 0.2s ease',
+                            height: '145px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            margin: '4px 0 12px',
                           }}
                         >
-                          Order Now
-                        </a>
-                      </div>
+                          <img
+                            src={relItem.image}
+                            alt={relItem.title}
+                            style={{
+                              maxWidth: '100%',
+                              maxHeight: '100%',
+                              objectFit: 'contain',
+                              transition: 'transform 0.25s ease',
+                            }}
+                            className="related-thumb-img"
+                          />
+                        </div>
+
+                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                          <div
+                            style={{
+                              width: '36px',
+                              height: '36px',
+                              borderRadius: '50%',
+                              backgroundColor: '#071138',
+                              color: '#ffffff',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              transition: 'all 0.25s ease',
+                              boxShadow: '0 2px 8px rgba(7, 17, 56, 0.2)',
+                            }}
+                            className="rel-circle-btn"
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <line x1="5" y1="12" x2="19" y2="12" />
+                              <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                          </div>
+                        </div>
+                      </Link>
                     );
                   })}
                 </div>

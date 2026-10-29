@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { ProductItem, DivisionData } from '@/lib/divisionsData';
+import { useState, useEffect } from 'react';
+import { ProductItem, DivisionData, ProductInnerSection } from '@/lib/divisionsData';
 
 interface Props {
   product: ProductItem;
@@ -9,13 +9,46 @@ interface Props {
   waUrl: string;
 }
 
-export default function ProductInnerClient({ product, division, waUrl }: Props) {
+export default function ProductInnerClient({ product: initialProduct, division, waUrl }: Props) {
+  const [product, setProduct] = useState<ProductItem>(initialProduct);
+
+  // Sync with live admin updates from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedProducts = localStorage.getItem('orient_admin_products');
+      if (savedProducts) {
+        try {
+          const parsed: ProductItem[] = JSON.parse(savedProducts);
+          const found = parsed.find(
+            (p) =>
+              p.slug === initialProduct.slug ||
+              (p.title && p.title.toLowerCase().trim() === initialProduct.title.toLowerCase().trim())
+          );
+          if (found) {
+            setProduct({
+              ...initialProduct,
+              ...found,
+              images: found.images && found.images.length > 0 ? found.images : initialProduct.images,
+              innerSections: found.innerSections || initialProduct.innerSections,
+            });
+          }
+        } catch {}
+      }
+    }
+  }, [initialProduct]);
+
   const allImages =
     product.images && product.images.length > 0
       ? product.images
       : [product.image || '/categories/all-fittings.jpeg'];
   const [selectedImage, setSelectedImage] = useState(allImages[0] || product.image);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    if (allImages.length > 0 && !allImages.includes(selectedImage)) {
+      setSelectedImage(allImages[0]);
+    }
+  }, [product, allImages, selectedImage]);
 
   const features =
     product.features && product.features.length > 0
@@ -93,47 +126,102 @@ export default function ProductInnerClient({ product, division, waUrl }: Props) 
               <span className="cat-prefix">Category:</span>{' '}
               <span className="cat-val">{product.category || division.name}</span>
             </div>
-
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-order-now-blue-main"
-              aria-label={`Order ${product.title}`}
-            >
-              Order Now
-            </a>
           </div>
         </div>
 
-        {/* Description Section with Tab Button & Bullets (Matching Image 2) */}
-        <div className="product-description-wrap">
-          <div className="tab-header">
-            <span className="description-tab">Description</span>
+
+
+        {/* Custom Inner Sections Configured From Admin Panel */}
+        {product.innerSections && product.innerSections.length > 0 && (
+          <div className="product-custom-inner-sections" style={{ marginTop: '36px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            {product.innerSections.map((sec, sIdx) => (
+              <div
+                key={sIdx}
+                className="inner-section-card"
+                style={{
+                  backgroundColor: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '12px',
+                  padding: '24px',
+                  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                  <span style={{ width: '4px', height: '18px', backgroundColor: '#20b512', borderRadius: '2px', display: 'inline-block' }} />
+                  <h3
+                    style={{
+                      fontSize: '1.18rem',
+                      fontWeight: 700,
+                      color: '#0f172a',
+                      margin: 0,
+                      fontFamily: "'Montserrat', sans-serif",
+                    }}
+                  >
+                    {sec.title}
+                  </h3>
+                </div>
+
+                <div
+                  className="inner-section-grid"
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: sec.image ? '1fr 260px' : '1fr',
+                    gap: '24px',
+                    alignItems: 'start',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: '0.94rem',
+                      lineHeight: 1.7,
+                      color: '#334155',
+                      whiteSpace: 'pre-line',
+                      fontFamily: "'Montserrat', sans-serif",
+                    }}
+                  >
+                    {sec.content}
+                  </div>
+
+                  {sec.image && (
+                    <div
+                      style={{
+                        position: 'relative',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                        border: '1px solid #e2e8f0',
+                        backgroundColor: '#ffffff',
+                        padding: '12px',
+                        cursor: 'pointer',
+                        textAlign: 'center',
+                      }}
+                      onClick={() => {
+                        setSelectedImage(sec.image!);
+                        setLightboxOpen(true);
+                      }}
+                      title="Click to zoom section image"
+                    >
+                      <img
+                        src={sec.image}
+                        alt={sec.title}
+                        style={{
+                          width: '100%',
+                          height: 'auto',
+                          maxHeight: '220px',
+                          objectFit: 'contain',
+                          display: 'block',
+                          margin: '0 auto',
+                        }}
+                      />
+                      <span style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '6px', display: 'block' }}>
+                        🔍 View Photo
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
-
-          <div className="description-body">
-            {product.fullDescription ? (
-              <p className="description-paragraph">{product.fullDescription}</p>
-            ) : product.shortDescription ? (
-              <p className="description-paragraph">{product.shortDescription}</p>
-            ) : null}
-
-            {product.fullDescription && product.shortDescription && product.fullDescription !== product.shortDescription && (
-              <p className="description-subparagraph">{product.shortDescription}</p>
-            )}
-
-            {/* Bullet Points with Square Markers */}
-            <ul className="specifications-bullet-list">
-              {features.map((feat, idx) => (
-                <li key={idx} className="spec-bullet-item">
-                  <span className="bullet-marker">&#9642;</span>
-                  <span className="bullet-text">{feat}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Lightbox Modal */}
