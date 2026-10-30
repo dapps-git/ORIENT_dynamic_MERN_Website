@@ -5,7 +5,7 @@ import path from 'path';
 const dataFilePath = path.join(process.cwd(), 'data', 'divisions.json');
 
 const DEFAULT_DIVISIONS = [
-  { id: 'mechanical-division', slug: 'mechanical-division', name: 'Mechanical Division', image: '/categories/mechanical-supply-division.png', productCount: 13 },
+  { id: 'mechanical-division', slug: 'mechanical-division', name: 'Pipe Fittings and Flanges', image: '/categories/mechanical-supply-division.png', productCount: 17 },
   { id: 'electrical-division', slug: 'electrical-division', name: 'Electrical Division', image: '/categories/electrical-ups-systems.jpg', productCount: 12 },
   { id: 'welding-division', slug: 'welding-division', name: 'Welding Division', image: '/categories/welding-safety.jpg', productCount: 16 },
   { id: 'marine-division', slug: 'marine-division', name: 'Marine Division', image: '/categories/marine-division.jpg', productCount: 4 },
@@ -13,13 +13,10 @@ const DEFAULT_DIVISIONS = [
   { id: 'lubricants-chemicals', slug: 'lubricants-chemicals', name: 'Lubricants & Chemicals Division', image: '/categories/lubricants-chemicals.jpg', productCount: 6 },
   { id: 'tools-maintenance', slug: 'tools-maintenance', name: 'Tools & Maintanance Division', image: '/categories/tools-maintenance.jpg', productCount: 10 },
   { id: 'lifting-material-handling', slug: 'lifting-material-handling', name: 'Lifting & Material Handling', image: '/categories/lifting-material-handling.jpg', productCount: 8 },
-  { id: 'ppe-safety-equipment', slug: 'ppe-safety-equipment', name: 'Ppe & Safety Equipment', image: '/categories/ppe-safety-equpments.jpg', productCount: 9 },
-  { id: 'steel-structural-materials-division', slug: 'steel-structural-materials-division', name: 'Steel & Structural Materials Division', image: '/categories/steel-structural-materials-division.jpg', productCount: 7 },
-  { id: 'power-system', slug: 'power-system', name: 'Power System', image: '/categories/power-system.jpg', productCount: 4 },
-  { id: 'auxiliary-systems', slug: 'auxiliary-systems', name: 'Auxiliary Systems', image: '/categories/auxiliary-systems.jpg', productCount: 6 },
+  { id: 'ppe-safety-equipment', slug: 'ppe-safety-equipment', name: 'PPE & Safety Equipment', image: '/categories/ppe-safety-equpments.jpg', productCount: 24 },
+  { id: 'steel-structural-materials-division', slug: 'steel-structural-materials-division', name: 'Steel & Structural Materials Division', image: '/categories/steel-structural-materials-division.jpg', productCount: 5 },
   { id: 'fasteners-division', slug: 'fasteners-division', name: 'Fasteners Division', image: '/categories/fasteners.jpg', productCount: 16 },
   { id: 'coatings-surface-protection', slug: 'coatings-surface-protection', name: 'Coatings & Surface Protection', image: '/categories/coatings-surface-protection.png', productCount: 8 },
-  { id: 'substructure', slug: 'substructure', name: 'Substructure', image: '/categories/substructure.png', productCount: 4 },
 ];
 
 function getStoredDivisions() {

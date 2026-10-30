@@ -13,7 +13,6 @@ export const metadata: Metadata = {
     'Welding Equipment Supplier Saudi Arabia',
     'Industrial Electrical Products KSA',
     'Lifting Equipment Supplier Saudi Arabia',
-    'Industrial Power Systems Saudi Arabia',
     'Marine and Offshore Products Supplier Saudi Arabia',
     'Structural Steel Supplier Riyadh Dammam Jubail',
     'Industrial Fasteners Supplier Saudi Arabia',

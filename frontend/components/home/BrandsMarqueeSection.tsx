@@ -2,41 +2,60 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-const BRAND_LOGOS = [
-  { name: 'Dropsafe', logo: '/brands/image copy.png' },
-  { name: 'Schneider Electric', logo: '/brands/image copy 2.png' },
-  { name: 'Fleetguard', logo: '/brands/image copy 3.png' },
-  { name: 'DEWALT', logo: '/brands/image copy 4.png' },
-  { name: 'Klauke', logo: '/brands/image copy 5.png' },
-  { name: 'Lincoln Electric', logo: '/brands/image copy 6.png' },
-  { name: 'Dapro', logo: '/brands/image copy 7.png' },
-  { name: 'Parker', logo: '/brands/image copy 8.png' },
-  { name: 'Curtiss-Wright', logo: '/brands/image copy 9.png' },
-  { name: 'TOTAL Tools', logo: '/brands/image copy 10.png' },
-  { name: 'Bryant', logo: '/brands/image.png' },
-  { name: 'Zamil Offshore', logo: '/about/client-v2-zamil.jpg' },
-  { name: 'CNPC', logo: '/about/client-v2-cnpc.jpg' },
-  { name: 'COSL', logo: '/about/client-v2-cosl.jpg' },
-  { name: 'Sinopec', logo: '/about/client-v2-sinopec.jpg' },
-  { name: 'Sipchem', logo: '/about/client-v2-sipchem.jpg' },
-  { name: 'Saipem', logo: '/about/client-v2-saipem.jpg' },
+// Brand logos from public/brandslogo/ folder
+const MARQUEE_LOGOS: string[] = [
+  '/brandslogo/3M-01-1-768x777.png',
+  '/brandslogo/3M-03-01-768x770.jpg',
+  '/brandslogo/3M-03-02-768x769.jpg',
+  '/brandslogo/3M-03-03-768x769.jpg',
+  '/brandslogo/3M-03-04-768x769.jpg',
+  '/brandslogo/3M-03-05-768x770.jpg',
+  '/brandslogo/3M-03-06-768x769.jpg',
+  '/brandslogo/3M-03-07-768x769.jpg',
+  '/brandslogo/3M-03-09-768x770.jpg',
+  '/brandslogo/3M-03-10-768x769.jpg',
+  '/brandslogo/3M-03-12-768x769.jpg',
+  '/brandslogo/3M-03-14-768x769.jpg',
+  '/brandslogo/3M-03-15-768x769.jpg',
+  '/brandslogo/3M-03-16-768x770.jpg',
+  '/brandslogo/3M-03-17-768x769.jpg',
+  '/brandslogo/3M-03-18-768x769.jpg',
+  '/brandslogo/3M-03-19-768x769.jpg',
+  '/brandslogo/3M-03-21-768x769.jpg',
+  '/brandslogo/3M-03-22-768x770.jpg',
+  '/brandslogo/3M-03-23-768x769.jpg',
+  '/brandslogo/3M-03-24-768x769.jpg',
+  '/brandslogo/3M-03-768x777.png',
+  '/brandslogo/3M-04-768x777.png',
+  '/brandslogo/3M-05-768x777.png',
+  '/brandslogo/3M-06-1-768x777.png',
+  '/brandslogo/3M-07-768x777.png',
+  '/brandslogo/3M-08-768x777.png',
+  '/brandslogo/3M-09-768x777.png',
+  '/brandslogo/3M-10-768x777.png',
+  '/brandslogo/3M-11-768x777.png',
+  '/brandslogo/3M-12-768x777.png',
+  '/brandslogo/3M-13-768x777.png',
+  '/brandslogo/3M-14-768x777.png',
+  '/brandslogo/3M-15-768x777.png',
+  '/brandslogo/logo-hh-01-768x769.jpg',
+  '/brandslogo/logo-hh-02-768x769.jpg',
 ];
 
 export default function BrandsMarqueeSection() {
   // Duplicate for seamless infinite train scroll
-  const marqueeItems = [...BRAND_LOGOS, ...BRAND_LOGOS];
+  const marqueeItems = [...MARQUEE_LOGOS, ...MARQUEE_LOGOS];
 
   return (
     <section
       className="brands-marquee-section"
       style={{
-        padding: '18px 0 20px',
+        padding: '16px 0',
         backgroundColor: '#ffffff',
         borderTop: '1px solid #f1f5f9',
         borderBottom: '1px solid #f1f5f9',
         overflow: 'hidden',
         position: 'relative',
-        fontFamily: "'Poppins', sans-serif",
       }}
       aria-label="Partner Brand Logos"
     >
@@ -48,7 +67,7 @@ export default function BrandsMarqueeSection() {
             position: 'absolute',
             top: 0,
             left: 0,
-            width: '90px',
+            width: '80px',
             height: '100%',
             background: 'linear-gradient(90deg, #ffffff 0%, transparent 100%)',
             zIndex: 3,
@@ -60,7 +79,7 @@ export default function BrandsMarqueeSection() {
             position: 'absolute',
             top: 0,
             right: 0,
-            width: '90px',
+            width: '80px',
             height: '100%',
             background: 'linear-gradient(270deg, #ffffff 0%, transparent 100%)',
             zIndex: 3,
@@ -69,35 +88,34 @@ export default function BrandsMarqueeSection() {
         />
 
         <div className="marquee-train">
-          {marqueeItems.map((brand, idx) => (
+          {marqueeItems.map((logoPath, idx) => (
             <Link
-              key={`${brand.name}-${idx}`}
+              key={`${logoPath}-${idx}`}
               href="/brands"
-              title={brand.name}
               className="marquee-item"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '8px 36px',
+                padding: '6px 28px',
                 flexShrink: 0,
                 textDecoration: 'none',
-                opacity: 0.92,
-                transition: 'all 0.25s ease',
+                opacity: 0.9,
+                transition: 'all 0.22s ease',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.opacity = '1';
-                e.currentTarget.style.transform = 'scale(1.08)';
+                e.currentTarget.style.transform = 'scale(1.06)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = '0.92';
+                e.currentTarget.style.opacity = '0.9';
                 e.currentTarget.style.transform = 'scale(1)';
               }}
             >
               <div
                 style={{
-                  height: '62px',
-                  width: '165px',
+                  height: '56px',
+                  width: '135px',
                   position: 'relative',
                   display: 'flex',
                   alignItems: 'center',
@@ -105,13 +123,13 @@ export default function BrandsMarqueeSection() {
                 }}
               >
                 <Image
-                  src={brand.logo}
-                  alt={brand.name}
-                  width={165}
-                  height={62}
+                  src={logoPath}
+                  alt="Partner Brand Logo"
+                  width={135}
+                  height={56}
                   style={{
-                    maxHeight: '56px',
-                    maxWidth: '155px',
+                    maxHeight: '52px',
+                    maxWidth: '125px',
                     width: 'auto',
                     height: 'auto',
                     objectFit: 'contain',
@@ -140,7 +158,7 @@ export default function BrandsMarqueeSection() {
           display: flex;
           align-items: center;
           width: max-content;
-          animation: trainScroll 30s linear infinite;
+          animation: trainScroll 35s linear infinite;
         }
 
         .marquee-train:hover {
@@ -158,18 +176,18 @@ export default function BrandsMarqueeSection() {
 
         @media (max-width: 768px) {
           .brands-marquee-section {
-            padding: 8px 0 10px !important;
+            padding: 10px 0 !important;
           }
           .marquee-item {
-            padding: 4px 14px !important;
+            padding: 4px 16px !important;
           }
           .marquee-item > div {
             height: 42px !important;
-            width: 115px !important;
+            width: 100px !important;
           }
           .marquee-item img {
             max-height: 38px !important;
-            max-width: 105px !important;
+            max-width: 90px !important;
           }
         }
       `}</style>

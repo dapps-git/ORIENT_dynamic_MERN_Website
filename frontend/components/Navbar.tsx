@@ -18,18 +18,16 @@ const SECTORS_DROPDOWN = [
 ];
 
 const PRODUCTS_DROPDOWN = [
-  { label: 'Mechanical Supply Division', href: '/products/mechanical-division' },
+  { label: 'Pipe Fittings and Flanges', href: '/products/pipe-fittings-and-flanges' },
   { label: 'Welding Division', href: '/products/welding-division' },
   { label: 'Electrical Division', href: '/products/electrical-division' },
   { label: 'Lifting & Material Handling', href: '/products/lifting-material-handling' },
-  { label: 'Power System', href: '/products/power-system' },
-  { label: 'Auxiliary Systems', href: '/products/auxiliary-systems' },
   { label: 'Marine Division', href: '/products/marine-division' },
   { label: 'Steel & Structural Materials Division', href: '/products/steel-structural-materials-division' },
   { label: 'Coatings & Surface Protection Division', href: '/products/coatings-surface-protection' },
-  { label: 'Pumps & Motors', href: '/products/pumps-motors' },
   { label: 'Fasteners Division', href: '/products/fasteners-division' },
-  { label: 'Substructure', href: '/products/substructure' },
+  { label: 'PPE & Safety Equipment', href: '/products/ppe-safety-equipment' },
+  { label: 'Bearings and Filters', href: '/products/bearings-and-filters' },
 ];
 
 function NavbarInner() {
@@ -333,7 +331,7 @@ function NavbarInner() {
                   color: productsOpen || pathname.startsWith('/products') ? '#20b512' : undefined,
                 }}
               >
-                Products
+                Category
                 <span style={{ fontSize: '0.68rem', opacity: 0.9, marginLeft: '4px', fontWeight: 700 }}>
                   {productsOpen ? '∧' : '∨'}
                 </span>
@@ -640,7 +638,7 @@ function NavbarInner() {
                 { label: 'Home', href: '/' },
                 { label: 'About Us', href: '/about' },
                 { label: 'Sectors', href: '/sectors' },
-                { label: 'Products', href: '/products' },
+                { label: 'Category', href: '/products' },
                 { label: 'Brands', href: '/brands' },
                 { label: 'Blog', href: '/blog' },
                 { label: 'Contact Us', href: '/contact' },

@@ -94,13 +94,13 @@ export default function HeroSection() {
           <h1
             className="hero-video-title"
             style={{
-              fontFamily: "'Montserrat', sans-serif",
-              fontSize: 'clamp(2.1rem, 5.2vw, 56px)',
-              fontWeight: 700,
-              lineHeight: 1.16,
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: 'clamp(1.9rem, 4.2vw, 46px)',
+              fontWeight: 600,
+              lineHeight: 1.25,
               color: '#ffffff',
-              letterSpacing: '-0.02em',
-              textShadow: '0 4px 30px rgba(0, 0, 0, 0.85)',
+              letterSpacing: '0.01em',
+              textShadow: '0 2px 14px rgba(0, 0, 0, 0.65)',
               maxWidth: '920px',
               margin: '0 auto',
             }}

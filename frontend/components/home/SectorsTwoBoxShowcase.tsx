@@ -109,6 +109,7 @@ export default function SectorsTwoBoxShowcase() {
           maxWidth: '1240px',
           margin: '0 auto',
           padding: '0 24px',
+          overflow: 'hidden',
         }}
       >
         {/* Strictly 2 Static Boxes: Zero Border Radius, No Cut-Off Edges, Smooth Slow-Motion Dissolve */}
@@ -119,6 +120,7 @@ export default function SectorsTwoBoxShowcase() {
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '20px',
             width: '100%',
+            overflow: 'hidden',
           }}
         >
           {/* Box 1 (Left Sector) */}

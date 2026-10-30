@@ -70,7 +70,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'High Pressure Valves & Flow Control',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'API 6D Trunnion & Floating Ball Valves',
           'Cast & Forged Steel Gate, Globe & Check Valves',
@@ -81,7 +81,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Piping, Flanges & Specialized Fittings',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'ASTM A106 Gr. B & API 5L Seamless Line Pipes',
           'Forged Steel Flanges (WN, BLRF, SO, RTJ - Class 150 to 2500)',
@@ -184,7 +184,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Marine Valves & Fluid Systems',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Bronze & Gunmetal Flanged Sea Water Valves',
           'Cast Iron & Ductile Iron Marine Butterfly Valves',
@@ -285,7 +285,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Piping & MEP Drainage Systems',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Ductile Iron Pipes & Flexible Expansion Joints',
           'Grooved Mechanical Fittings & Couplings for HVAC / Firefighting',
@@ -351,8 +351,8 @@ export const SECTORS_DATA: SectorData[] = [
     suppliedProducts: [
       {
         categoryName: 'Electric Motors & Power Drives',
-        divisionSlug: 'pumps-motors',
-        divisionName: 'Pumps & Motors',
+        divisionSlug: 'mechanical-division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Three-Phase High Efficiency Industrial Electric Motors (IE3 / IE4)',
           'Helical Gearboxes & Variable Speed Drive Units',
@@ -362,7 +362,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Industrial Valves & Fluid Transfer',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Stainless Steel 316 Sanitary Ball & Butterfly Valves',
           'Pneumatically Actuated Control Valves',
@@ -372,7 +372,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'MRO Tools & Maintenance Supplies',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Professional Power Tools (DeWalt, Makita, Bosch)',
           'Precision Calibrated Torque Wrenches & Hand Tool Sets',
@@ -449,7 +449,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Power Plant Mechanical Systems',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'High-Temperature / High-Pressure Steam Ball & Gate Valves',
           'Alloy Steel Seamless Pipes (ASTM A335 P11, P22, P91)',
@@ -612,7 +612,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Gaskets, Seals & Fluid Containment',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Spiral Wound Gaskets (SS316 / Graphite / Inner & Outer Rings)',
           'Non-Asbestos Compressed Sheet Gaskets & Custom Cut Gaskets',
@@ -623,7 +623,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Hydraulic Hoses & Industrial Couplings',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           '1SN, 2SN & 4SP High-Pressure Wire-Braided Hydraulic Hoses',
           'Quick Release Couplings & Camlock Couplings (SS316 / Brass / Aluminum)',
@@ -786,7 +786,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Water Valves & Flow Control',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Resilient Seated Ductile Iron Gate Valves (BS 5163 / DIN 3352)',
           'Double Eccentric Flanged Butterfly Valves (DN200 - DN1800)',
@@ -797,7 +797,7 @@ export const SECTORS_DATA: SectorData[] = [
       {
         categoryName: 'Piping, Couplings & Flange Adaptors',
         divisionSlug: 'mechanical-division',
-        divisionName: 'Mechanical Supply Division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Wide-Range Universal Flange Adaptors & Stepped Couplings',
           'Dismantling Joints (PN10, PN16, PN25, PN40)',
@@ -806,8 +806,8 @@ export const SECTORS_DATA: SectorData[] = [
       },
       {
         categoryName: 'Industrial Water Pumps',
-        divisionSlug: 'pumps-motors',
-        divisionName: 'Pumps & Motors',
+        divisionSlug: 'mechanical-division',
+        divisionName: 'Pipe Fittings and Flanges',
         items: [
           'Horizontal End Suction & Split Case Centrifugal Water Pumps',
           'Heavy Submersible Wastewater & Dewatering Drainage Pumps',

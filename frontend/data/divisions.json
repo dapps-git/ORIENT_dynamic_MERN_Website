@@ -2,9 +2,9 @@
   {
     "id": "mechanical-division",
     "slug": "mechanical-division",
-    "name": "Mechanical Division",
+    "name": "Pipe Fittings and Flanges",
     "image": "/categories/mechanical-supply-division.png",
-    "productCount": 13
+    "productCount": 17
   },
   {
     "id": "electrical-division",
@@ -58,30 +58,16 @@
   {
     "id": "ppe-safety-equipment",
     "slug": "ppe-safety-equipment",
-    "name": "Ppe & Safety Equipment",
+    "name": "PPE & Safety Equipment",
     "image": "/categories/ppe-safety-equpments.jpg",
-    "productCount": 9
+    "productCount": 24
   },
   {
     "id": "steel-structural-materials-division",
     "slug": "steel-structural-materials-division",
     "name": "Steel & Structural Materials Division",
     "image": "/categories/steel-structural-materials-division.jpg",
-    "productCount": 7
-  },
-  {
-    "id": "power-system",
-    "slug": "power-system",
-    "name": "Power System",
-    "image": "/categories/power-system.jpg",
-    "productCount": 4
-  },
-  {
-    "id": "auxiliary-systems",
-    "slug": "auxiliary-systems",
-    "name": "Auxiliary Systems",
-    "image": "/categories/auxiliary-systems.jpg",
-    "productCount": 6
+    "productCount": 5
   },
   {
     "id": "fasteners-division",
@@ -96,12 +82,5 @@
     "name": "Coatings & Surface Protection",
     "image": "/categories/coatings-surface-protection.png",
     "productCount": 8
-  },
-  {
-    "id": "substructure",
-    "slug": "substructure",
-    "name": "Substructure",
-    "image": "/categories/substructure.png",
-    "productCount": 4
   }
 ]

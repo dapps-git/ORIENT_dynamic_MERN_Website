@@ -11,16 +11,24 @@ const WHATSAPP_PHONE = '966552400778';
 
 // Aliases mapping for common category URLs
 const SLUG_ALIASES: Record<string, string> = {
+  'pipe-fittings-and-flanges': 'mechanical-division',
+  'pipe-fittings-flanges': 'mechanical-division',
+  'pipe-fittings': 'mechanical-division',
+  'pumps-motors': 'mechanical-division',
   'mechanical-supply-division': 'mechanical-division',
   'welding-safety': 'welding-division',
   'electrical-ups-systems': 'electrical-division',
   'fasteners': 'fasteners-division',
   'industrial-consumables': 'marine-division',
-  'ppe-safety-equpments': 'welding-division',
+  'ppe-safety-equpments': 'ppe-safety-equipment',
+  'ppe-safety-equipment': 'ppe-safety-equipment',
   'all-fittings': 'mechanical-division',
   'tools-maintenance': 'mechanical-division',
   'industrial-hoses-hose-couplings': 'mechanical-division',
   'lubricants-chemicals': 'coatings-surface-protection',
+  'bearings-and-filters': 'bearings-and-filters',
+  'bearings-filters': 'bearings-and-filters',
+  'bairing-and-filters': 'bearings-and-filters',
 };
 
 async function getDivisionAsync(slug: string): Promise<DivisionData | undefined> {
@@ -97,9 +105,15 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
 }
 
 export async function generateStaticParams() {
-  return DIVISIONS_DATA.map((d) => ({
+  const baseSlugs = DIVISIONS_DATA.map((d) => ({
     slug: d.id,
   }));
+  return [
+    ...baseSlugs,
+    { slug: 'pipe-fittings-and-flanges' },
+    { slug: 'pipe-fittings-flanges' },
+    { slug: 'pumps-motors' },
+  ];
 }
 
 export async function generateMetadata({

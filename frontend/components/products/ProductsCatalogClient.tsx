@@ -13,7 +13,7 @@ export interface DivisionCard {
 }
 
 const DEFAULT_DIVISIONS: DivisionCard[] = [
-  { id: 'mechanical-division', slug: 'mechanical-division', name: 'Mechanical Division', image: '/categories/mechanical-supply-division.png' },
+  { id: 'mechanical-division', slug: 'mechanical-division', name: 'Pipe Fittings and Flanges', image: '/categories/mechanical-supply-division.png' },
   { id: 'electrical-division', slug: 'electrical-division', name: 'Electrical Division', image: '/categories/electrical-ups-systems.jpg' },
   { id: 'welding-division', slug: 'welding-division', name: 'Welding Division', image: '/categories/welding-safety.jpg' },
   { id: 'marine-division', slug: 'marine-division', name: 'Marine Division', image: '/categories/marine-division.jpg' },
@@ -21,13 +21,10 @@ const DEFAULT_DIVISIONS: DivisionCard[] = [
   { id: 'lubricants-chemicals', slug: 'lubricants-chemicals', name: 'Lubricants & Chemicals Division', image: '/categories/lubricants-chemicals.jpg' },
   { id: 'tools-maintenance', slug: 'tools-maintenance', name: 'Tools & Maintanance Division', image: '/categories/tools-maintenance.jpg' },
   { id: 'lifting-material-handling', slug: 'lifting-material-handling', name: 'Lifting & Material Handling', image: '/categories/lifting-material-handling.jpg' },
-  { id: 'ppe-safety-equipment', slug: 'ppe-safety-equipment', name: 'Ppe & Safety Equipment', image: '/categories/ppe-safety-equpments.jpg' },
+  { id: 'ppe-safety-equipment', slug: 'ppe-safety-equipment', name: 'PPE & Safety Equipment', image: '/categories/ppe-safety-equpments.jpg' },
   { id: 'steel-structural-materials-division', slug: 'steel-structural-materials-division', name: 'Steel & Structural Materials Division', image: '/categories/steel-structural-materials-division.jpg' },
-  { id: 'power-system', slug: 'power-system', name: 'Power System', image: '/categories/power-system.jpg' },
-  { id: 'auxiliary-systems', slug: 'auxiliary-systems', name: 'Auxiliary Systems', image: '/categories/auxiliary-systems.jpg' },
   { id: 'fasteners-division', slug: 'fasteners-division', name: 'Fasteners Division', image: '/categories/fasteners.jpg' },
   { id: 'coatings-surface-protection', slug: 'coatings-surface-protection', name: 'Coatings & Surface Protection', image: '/categories/coatings-surface-protection.png' },
-  { id: 'substructure', slug: 'substructure', name: 'Substructure', image: '/categories/substructure.png' },
 ];
 
 const FAQ_ITEMS = [
@@ -78,10 +75,6 @@ const FAQ_ITEMS = [
   {
     q: 'Who supplies structural steel and steel materials in Saudi Arabia?',
     a: 'Orient Energy stocks and supplies structural steel beams (HEA/HEB, IPE, UB/UC), steel plates, equal/unequal angles, channels, square hollow sections, and carbon steel seamless pipes with full mill test certificates (MTC).',
-  },
-  {
-    q: 'Which company provides industrial power systems in Saudi Arabia?',
-    a: 'Orient Energy supplies robust industrial diesel generators, portable power packs, load banks, and custom power distribution panels for prime and standby power needs across industrial construction and remote rig camps.',
   },
   {
     q: 'Who supplies industrial products for oil & gas companies in Saudi Arabia?',
