@@ -40,26 +40,20 @@ export default function HeroSection() {
           backgroundColor: '#000000',
         }}
       >
-        {/* Landscape MP4 Video Background */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="hero-video-player"
+        {/* Hero Offshore Oil Rig Platform Sunset Image Background */}
+        <Image
+          src="/hero-bg-rig.jpg"
+          alt="Offshore Oil Rig Platform at Sunset"
+          fill
+          priority
+          quality={90}
+          sizes="100vw"
           style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
             objectFit: 'cover',
+            objectPosition: 'center',
             zIndex: 0,
           }}
-        >
-          <source src="/uploads/hero-video.mp4" type="video/mp4" />
-          <source src="/uploads/Offshore_oil_rig_platform_sunset_1c1c56e7 (1).mp4" type="video/mp4" />
-        </video>
+        />
 
         {/* Clean Neutral Dark Contrast Overlay (No Blue Tint) */}
         <div
@@ -87,7 +81,7 @@ export default function HeroSection() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '120px 24px 75px',
+            padding: '135px 24px 80px',
           }}
         >
           {/* Main Headline: Expertise in Every Trade */}
@@ -257,7 +251,7 @@ export default function HeroSection() {
           }
 
           .hero-video-content {
-            padding: 85px 16px 30px !important;
+            padding: 96px 16px 32px !important;
           }
 
           .hero-video-title {

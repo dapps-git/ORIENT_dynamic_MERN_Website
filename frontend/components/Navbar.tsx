@@ -89,7 +89,7 @@ function NavbarInner() {
           right: 0,
           width: '100%',
           zIndex: 1000,
-          transform: scrolled ? 'translateY(-32px)' : 'translateY(0)',
+          transform: scrolled ? 'translateY(-34px)' : 'translateY(0)',
           transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
@@ -148,7 +148,7 @@ function NavbarInner() {
           </div>
         </div>
 
-        {/* Main Transparent / Glassmorphism Navbar */}
+        {/* Main Clean White Navbar */}
         <nav
           className={`navbar${scrolled ? ' scrolled' : ''}`}
           style={{
@@ -157,14 +157,12 @@ function NavbarInner() {
             height: scrolled ? '64px' : '72px',
             display: 'flex',
             alignItems: 'center',
-            backgroundColor: scrolled || !isHome ? 'rgba(7, 17, 56, 0.96)' : 'transparent',
-            backdropFilter: scrolled || !isHome ? 'blur(20px) saturate(180%)' : 'none',
-            WebkitBackdropFilter: scrolled || !isHome ? 'blur(20px) saturate(180%)' : 'none',
-            borderBottom: scrolled || !isHome ? '1px solid rgba(255, 255, 255, 0.08)' : 'none',
-            boxShadow: scrolled || !isHome
-              ? '0 12px 35px -5px rgba(0, 0, 0, 0.28)'
-              : 'none',
-            transition: 'height 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, box-shadow 0.3s ease',
+            backgroundColor: '#ffffff',
+            borderBottom: '1px solid #e2e8f0',
+            boxShadow: scrolled
+              ? '0 8px 30px rgba(0, 0, 0, 0.08)'
+              : '0 2px 10px rgba(0, 0, 0, 0.04)',
+            transition: 'height 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease',
             padding: '0 24px',
           }}
           role="navigation"
@@ -197,11 +195,11 @@ function NavbarInner() {
             <Image
               src="/logo.png"
               alt="Orient Energy Trading Company"
-              width={180}
-              height={42}
+              width={220}
+              height={50}
               className="navbar__logo-img"
               style={{
-                height: '38px',
+                height: scrolled ? '42px' : '46px',
                 width: 'auto',
                 objectFit: 'contain',
                 display: 'block',
@@ -429,11 +427,11 @@ function NavbarInner() {
                   justifyContent: 'center',
                   width: '36px',
                   height: '36px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.12)',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  backgroundColor: '#f1f5f9',
+                  border: '1px solid #e2e8f0',
                   borderRadius: '50%',
                   cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
                   transition: 'all 0.2s ease',
                   padding: 0,
                 }}
@@ -443,10 +441,11 @@ function NavbarInner() {
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#ffffff"
+                  stroke="#071138"
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className="navbar-search-icon"
                 >
                   <circle cx="11" cy="11" r="8" />
                   <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -455,7 +454,7 @@ function NavbarInner() {
             </li>
           </ul>
 
-          {/* Mobile Right Controls: Minimalist Clean White Hamburger (Matching Reference Model) */}
+          {/* Mobile Right Controls: Minimalist Clean Hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
             {/* Mobile Hamburger Button */}
             <button
@@ -479,7 +478,7 @@ function NavbarInner() {
                 style={{
                   width: 25,
                   height: 2.4,
-                  background: open ? '#20b512' : '#ffffff',
+                  background: open ? '#20b512' : '#071138',
                   borderRadius: 2,
                   display: 'block',
                   transition: 'all 0.3s ease',
@@ -490,7 +489,7 @@ function NavbarInner() {
                 style={{
                   width: 25,
                   height: 2.4,
-                  background: open ? '#20b512' : '#ffffff',
+                  background: open ? '#20b512' : '#071138',
                   borderRadius: 2,
                   display: 'block',
                   transition: 'all 0.3s ease',
@@ -501,7 +500,7 @@ function NavbarInner() {
                 style={{
                   width: 25,
                   height: 2.4,
-                  background: open ? '#20b512' : '#ffffff',
+                  background: open ? '#20b512' : '#071138',
                   borderRadius: 2,
                   display: 'block',
                   transition: 'all 0.3s ease',
@@ -769,11 +768,14 @@ function NavbarInner() {
         }
         .navbar-search-btn:hover {
           border-color: #20b512 !important;
-          background-color: rgba(32, 181, 18, 0.2) !important;
-          box-shadow: 0 3px 12px rgba(32, 181, 18, 0.25) !important;
+          background-color: rgba(32, 181, 18, 0.12) !important;
+          box-shadow: 0 3px 12px rgba(32, 181, 18, 0.22) !important;
+        }
+        .navbar-search-btn:hover .navbar-search-icon {
+          stroke: #20b512 !important;
         }
         .navbar .nav-link {
-          color: rgba(255, 255, 255, 0.95) !important;
+          color: #071138 !important;
           font-weight: 600 !important;
           font-size: 0.96rem !important;
           letter-spacing: 0.01em !important;
@@ -848,22 +850,21 @@ function NavbarInner() {
             width: 100% !important;
             max-width: 100% !important;
             transform: none !important;
-            height: 60px !important;
-            min-height: 60px !important;
-            max-height: 60px !important;
-            padding: 0 16px !important;
+            height: 66px !important;
+            min-height: 66px !important;
+            max-height: 66px !important;
+            padding: 0 20px !important;
             border-radius: 0 !important;
             border: none !important;
-            box-shadow: none !important;
-            background: transparent !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+            background: #ffffff !important;
           }
           .navbar.scrolled,
           nav.navbar.scrolled {
-            background: rgba(6, 14, 46, 0.94) !important;
-            backdrop-filter: blur(14px) !important;
-            -webkit-backdrop-filter: blur(14px) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+            background: #ffffff !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
           }
           .navbar__inner {
             padding: 0 !important;
@@ -874,8 +875,8 @@ function NavbarInner() {
           .navbar__logo-img,
           .navbar .navbar__logo-img,
           .navbar.scrolled .navbar__logo-img {
-            height: 34px !important;
-            max-height: 34px !important;
+            height: 44px !important;
+            max-height: 44px !important;
             width: auto !important;
             background: transparent !important;
           }
@@ -883,7 +884,10 @@ function NavbarInner() {
             display: flex !important;
           }
           .navbar__burger span {
-            background: #ffffff !important;
+            background: #071138 !important;
+          }
+          .navbar__burger[aria-expanded="true"] span {
+            background: #20b512 !important;
           }
         }
         @media (max-width: 768px) {
@@ -895,42 +899,71 @@ function NavbarInner() {
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
-            height: 56px !important;
-            min-height: 56px !important;
-            max-height: 56px !important;
-            padding: 0 14px !important;
-            background: transparent !important;
+            height: 64px !important;
+            min-height: 64px !important;
+            max-height: 64px !important;
+            padding: 0 16px !important;
+            background: #ffffff !important;
             border: none !important;
-            box-shadow: none !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
             border-radius: 0 !important;
           }
           .navbar.scrolled,
           nav.navbar.scrolled {
-            background: rgba(6, 14, 46, 0.95) !important;
-            backdrop-filter: blur(14px) !important;
-            -webkit-backdrop-filter: blur(14px) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: #ffffff !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
           }
           .navbar__inner {
             padding: 0 !important;
-            height: 56px !important;
+            height: 64px !important;
           }
           .navbar__logo-img,
-          .navbar .navbar__logo-img {
-            height: 32px !important;
-            max-height: 32px !important;
+          .navbar .navbar__logo-img,
+          .navbar.scrolled .navbar__logo-img {
+            height: 44px !important;
+            max-height: 44px !important;
             width: auto !important;
             background: transparent !important;
           }
           .navbar__burger {
             display: flex !important;
-            padding: 4px !important;
+            padding: 6px !important;
             gap: 5px !important;
           }
           .navbar__burger span {
             width: 24px !important;
-            height: 2.2px !important;
-            background: #ffffff !important;
+            height: 2.4px !important;
+            background: #071138 !important;
+          }
+          .navbar__burger[aria-expanded="true"] span {
+            background: #20b512 !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .navbar,
+          nav.navbar {
+            height: 60px !important;
+            min-height: 60px !important;
+            max-height: 60px !important;
+            padding: 0 12px !important;
+          }
+          .navbar.scrolled,
+          nav.navbar.scrolled {
+            height: 60px !important;
+            min-height: 60px !important;
+            max-height: 60px !important;
+          }
+          .navbar__inner {
+            height: 60px !important;
+          }
+          .navbar__logo-img,
+          .navbar .navbar__logo-img,
+          .navbar.scrolled .navbar__logo-img {
+            height: 40px !important;
+            max-height: 40px !important;
+            width: auto !important;
           }
         }
       `}</style>

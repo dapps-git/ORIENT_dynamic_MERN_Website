@@ -55,44 +55,14 @@ const MOBILE_SLIDES = [
 
 export default function FeaturedProductsShowcase() {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
 
-  // Auto-slide animation for mobile view every 3.5 seconds
+  // Automatic continuous slide animation for mobile view every 3 seconds
   useEffect(() => {
-    if (isPaused) return;
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev === 0 ? 1 : 0));
-    }, 3500);
+    }, 3000);
     return () => clearInterval(timer);
-  }, [isPaused]);
-
-  // Touch swipe support for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchEndX.current = e.touches[0].clientX;
-    setIsPaused(true);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > 35) {
-      if (diff > 0) {
-        // Swiped left -> show next 2
-        setActiveSlide(1);
-      } else {
-        // Swiped right -> show first 2
-        setActiveSlide(0);
-      }
-    }
-    // Resume auto-sliding after a short delay
-    setTimeout(() => setIsPaused(false), 2000);
-  };
+  }, []);
 
   return (
     <section
@@ -126,7 +96,7 @@ export default function FeaturedProductsShowcase() {
                 style={{
                   backgroundColor: '#ffffff',
                   border: '1.5px solid #dbe2ea',
-                  borderRadius: '14px',
+                  borderRadius: '0px',
                   padding: '22px 20px 20px',
                   display: 'flex',
                   flexDirection: 'column',
@@ -185,16 +155,9 @@ export default function FeaturedProductsShowcase() {
         </div>
 
         {/* =========================================================
-            2. MOBILE VIEW (Show 2 Cards in One Row + Auto Swipe for Rest 2)
+            2. MOBILE VIEW (Show 2 Cards in One Row + Automatic Slide)
             ========================================================= */}
-        <div
-          className="featured-showcase-mobile"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
+        <div className="featured-showcase-mobile">
           {/* Viewport for smooth 2-card carousel */}
           <div className="mobile-carousel-viewport">
             <div
@@ -214,7 +177,7 @@ export default function FeaturedProductsShowcase() {
                         style={{
                           backgroundColor: '#ffffff',
                           border: '1.5px solid #dbe2ea',
-                          borderRadius: '12px',
+                          borderRadius: '0px',
                           padding: '14px 10px 14px',
                           display: 'flex',
                           flexDirection: 'column',
@@ -276,23 +239,6 @@ export default function FeaturedProductsShowcase() {
               ))}
             </div>
           </div>
-
-          {/* Pagination Indicators for Mobile Auto-Swipe */}
-          <div className="mobile-carousel-dots">
-            {MOBILE_SLIDES.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                aria-label={`Go to slide ${idx + 1}`}
-                className={`carousel-dot ${activeSlide === idx ? 'carousel-dot-active' : ''}`}
-                onClick={() => {
-                  setActiveSlide(idx);
-                  setIsPaused(true);
-                  setTimeout(() => setIsPaused(false), 2000);
-                }}
-              />
-            ))}
-          </div>
         </div>
       </div>
 
@@ -311,6 +257,7 @@ export default function FeaturedProductsShowcase() {
         }
 
         .product-box-card {
+          border-radius: 0px !important;
           transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease !important;
         }
 
@@ -406,13 +353,13 @@ export default function FeaturedProductsShowcase() {
         .mobile-carousel-viewport {
           width: 100%;
           overflow: hidden;
-          border-radius: 14px;
+          border-radius: 0px !important;
         }
 
         .mobile-carousel-track {
           display: flex;
           width: 100%;
-          transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+          transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
           will-change: transform;
         }
 
@@ -462,31 +409,6 @@ export default function FeaturedProductsShowcase() {
         .product-box-circle-btn-mobile {
           width: 28px !important;
           height: 28px !important;
-        }
-
-        /* Dots indicator */
-        .mobile-carousel-dots {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 8px;
-          margin-top: 14px;
-        }
-
-        .carousel-dot {
-          height: 7px;
-          width: 8px;
-          border-radius: 999px;
-          background-color: #cbd5e1;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          transition: all 0.3s ease;
-        }
-
-        .carousel-dot-active {
-          width: 24px;
-          background-color: #20b512;
         }
 
         /* ================= RESPONSIVE SWITCH ================= */
