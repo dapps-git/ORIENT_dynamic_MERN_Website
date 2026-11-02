@@ -17,12 +17,15 @@ import brandRoutes from './routes/brandRoutes';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Handle optional cPanel subfolder prefix (e.g. /orient/api/... -> /api/...)
+// Universal path normalization for cPanel / LiteSpeed / Phusion Passenger subfolders
 app.use((req, _res, next) => {
-  if (req.url === '/orient') {
+  if (req.url === '/' || req.url === '/orient' || req.url === '/orient/') {
     req.url = '/';
-  } else if (req.url.startsWith('/orient/')) {
-    req.url = req.url.slice(7);
+  } else {
+    const match = req.url.match(/(\/(?:api|health|admin|categories|products|services|inquiries|blogs|upload|brands)(?:[\/?].*)?)$/i);
+    if (match) {
+      req.url = match[1];
+    }
   }
   next();
 });
@@ -93,8 +96,14 @@ app.use('/api/brands', brandRoutes);
 app.use('/brands', brandRoutes);
 
 // 404
-app.use((_req, res) => {
-  res.status(404).json({ success: false, message: 'Route not found' });
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+    requestedUrl: req.url,
+    originalUrl: req.originalUrl,
+    method: req.method
+  });
 });
 
 // Start listening immediately so cPanel / Passenger detects the socket right away
