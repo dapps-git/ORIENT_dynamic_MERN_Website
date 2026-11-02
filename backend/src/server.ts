@@ -13,6 +13,8 @@ import adminRoutes from './routes/adminRoutes';
 import blogRoutes from './routes/blogRoutes';
 import uploadRoutes from './routes/uploadRoutes';
 import brandRoutes from './routes/brandRoutes';
+import bcrypt from 'bcryptjs';
+import { AdminUser } from './models/AdminUser';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -106,12 +108,46 @@ app.use((req, res) => {
   });
 });
 
-// Start listening immediately so cPanel / Passenger detects the socket right away
+// Auto-ensure default admin credentials exist and match environment variables
+const ensureAdminUser = async () => {
+  try {
+    const adminEmail = (process.env.ADMIN_SEED_EMAIL || process.env.ADMIN_EMAIL || 'orient@adminpanel.com').toLowerCase();
+    const adminPassword = process.env.ADMIN_SEED_PASSWORD || process.env.ADMIN_PASSWORD || 'orient@admin#1234';
+
+    const existingAdmin = await AdminUser.findOne({ email: adminEmail });
+    if (!existingAdmin) {
+      const hashedPassword = await bcrypt.hash(adminPassword, 12);
+      await AdminUser.create({
+        name: 'Orient Admin',
+        email: adminEmail,
+        password: hashedPassword,
+        role: 'admin'
+      });
+      console.log(`[AUTH] 🛡️ Initial Admin user auto-seeded: ${adminEmail}`);
+    } else {
+      const isMatch = await bcrypt.compare(adminPassword, existingAdmin.password);
+      if (!isMatch) {
+        existingAdmin.password = await bcrypt.hash(adminPassword, 12);
+        await existingAdmin.save();
+        console.log(`[AUTH] 🛡️ Admin password synchronized with environment settings.`);
+      }
+    }
+    console.log(`[AUTH] ✅ Admin account ready: ${adminEmail} (Credentials secured)`);
+  } catch (error: any) {
+    console.error('[AUTH] ⚠️ Note on admin user check:', error.message);
+  }
+};
+
+// Start listening immediately
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  connectDB().catch((err) => {
-    console.error('MongoDB connection error:', err);
-  });
+  connectDB()
+    .then(async () => {
+      await ensureAdminUser();
+    })
+    .catch((err) => {
+      console.error('MongoDB connection error:', err);
+    });
 });
 
 export default app;

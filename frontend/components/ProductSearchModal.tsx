@@ -23,7 +23,7 @@ export default function ProductSearchModal({ isOpen, onClose }: ProductSearchMod
 
   // Fetch newly added backend products to include in search
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/products?limit=200`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/products?limit=200`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {

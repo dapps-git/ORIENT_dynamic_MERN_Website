@@ -27,7 +27,7 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
 
   // 1. Try fetching from backend API first
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/products/${cleanSlug}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/products/${cleanSlug}`, {
       cache: 'no-store',
     });
     if (res.ok) {

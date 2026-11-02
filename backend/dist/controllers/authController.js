@@ -7,7 +7,13 @@ exports.changePassword = exports.getMe = exports.adminLogin = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const AdminUser_1 = require("../models/AdminUser");
-const getJwtSecret = () => process.env.JWT_SECRET || 'orient_energy_super_secure_jwt_secret_key_2026';
+const getJwtSecret = () => {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw new Error('FATAL: JWT_SECRET environment variable is missing.');
+    }
+    return secret;
+};
 const adminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;

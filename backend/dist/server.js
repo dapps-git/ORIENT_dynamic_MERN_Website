@@ -16,6 +16,8 @@ const adminRoutes_1 = __importDefault(require("./routes/adminRoutes"));
 const blogRoutes_1 = __importDefault(require("./routes/blogRoutes"));
 const uploadRoutes_1 = __importDefault(require("./routes/uploadRoutes"));
 const brandRoutes_1 = __importDefault(require("./routes/brandRoutes"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const AdminUser_1 = require("./models/AdminUser");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
 // Universal path normalization for cPanel / LiteSpeed / Phusion Passenger subfolders
@@ -93,10 +95,44 @@ app.use((req, res) => {
         method: req.method
     });
 });
-// Start listening immediately so cPanel / Passenger detects the socket right away
+// Auto-ensure default admin credentials exist and match environment variables
+const ensureAdminUser = async () => {
+    try {
+        const adminEmail = (process.env.ADMIN_SEED_EMAIL || process.env.ADMIN_EMAIL || 'orient@adminpanel.com').toLowerCase();
+        const adminPassword = process.env.ADMIN_SEED_PASSWORD || process.env.ADMIN_PASSWORD || 'orient@admin#1234';
+        const existingAdmin = await AdminUser_1.AdminUser.findOne({ email: adminEmail });
+        if (!existingAdmin) {
+            const hashedPassword = await bcryptjs_1.default.hash(adminPassword, 12);
+            await AdminUser_1.AdminUser.create({
+                name: 'Orient Admin',
+                email: adminEmail,
+                password: hashedPassword,
+                role: 'admin'
+            });
+            console.log(`[AUTH] 🛡️ Initial Admin user auto-seeded: ${adminEmail}`);
+        }
+        else {
+            const isMatch = await bcryptjs_1.default.compare(adminPassword, existingAdmin.password);
+            if (!isMatch) {
+                existingAdmin.password = await bcryptjs_1.default.hash(adminPassword, 12);
+                await existingAdmin.save();
+                console.log(`[AUTH] 🛡️ Admin password synchronized with environment settings.`);
+            }
+        }
+        console.log(`[AUTH] ✅ Admin account ready: ${adminEmail} (Credentials secured)`);
+    }
+    catch (error) {
+        console.error('[AUTH] ⚠️ Note on admin user check:', error.message);
+    }
+};
+// Start listening immediately
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
-    (0, db_1.default)().catch((err) => {
+    (0, db_1.default)()
+        .then(async () => {
+        await ensureAdminUser();
+    })
+        .catch((err) => {
         console.error('MongoDB connection error:', err);
     });
 });

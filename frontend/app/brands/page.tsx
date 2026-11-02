@@ -144,7 +144,7 @@ const FALLBACK_FILTERINGS: BrandItem[] = [
 
 async function fetchDynamicBrands(): Promise<BrandItem[]> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/brands?active=true`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/brands?active=true`, {
       next: { revalidate: 30 },
     });
     if (res.ok) {

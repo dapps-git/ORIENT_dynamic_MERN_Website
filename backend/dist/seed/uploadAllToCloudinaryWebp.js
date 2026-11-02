@@ -9,7 +9,10 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const cloudinary_1 = require("cloudinary");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://helloidealenergy_db_user:WqX3zvfB2vUB1tuA@cluster0.bw7i70r.mongodb.net/test';
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) {
+    throw new Error('FATAL: MONGODB_URI environment variable is required.');
+}
 // Setup Cloudinary
 const setupCloudinary = () => {
     const cloudUrl = process.env.CLOUDINARY_URL;
@@ -25,10 +28,13 @@ const setupCloudinary = () => {
             return;
         }
     }
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+        throw new Error('FATAL: Cloudinary environment variables (CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET) are required.');
+    }
     cloudinary_1.v2.config({
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'kcltj31l',
-        api_key: process.env.CLOUDINARY_API_KEY || '284332182897298',
-        api_secret: process.env.CLOUDINARY_API_SECRET || 'daY1jB8bz0Auiiz5zKYTPTOHOQs',
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
         secure: true,
     });
 };

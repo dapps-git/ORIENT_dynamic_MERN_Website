@@ -243,7 +243,10 @@ async function seed() {
     console.log(`Saved logo: /brands/${item.filename}`);
   }
 
-  const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://helloidealenergy_db_user:WqX3zvfB2vUB1tuA@cluster0.bw7i70r.mongodb.net/orient_energy?retryWrites=true&w=majority';
+  const mongoUri = process.env.MONGODB_URI;
+  if (!mongoUri) {
+    throw new Error('FATAL: MONGODB_URI environment variable is required.');
+  }
   await mongoose.connect(mongoUri);
   console.log('Connected to MongoDB Atlas');
 

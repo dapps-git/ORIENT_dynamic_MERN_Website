@@ -123,7 +123,7 @@ export function generateStaticParams() {
 
 async function getArticle(slug: string): Promise<ArticleData | null> {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/blogs/${slug}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/blogs/${slug}`, {
       cache: 'no-store',
     });
     if (res.ok) {

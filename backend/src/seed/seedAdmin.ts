@@ -3,7 +3,10 @@ import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://helloidealenergy_db_user:WqX3zvfB2vUB1tuA@cluster0.bw7i70r.mongodb.net/test';
+const MONGODB_URI = process.env.MONGODB_URI as string;
+if (!MONGODB_URI) {
+  throw new Error('FATAL: MONGODB_URI environment variable is required.');
+}
 
 async function seedAdminPassword() {
   try {
@@ -12,8 +15,12 @@ async function seedAdminPassword() {
     console.log('✅ Connected to MongoDB');
 
     const adminCol = mongoose.connection.db!.collection('adminusers');
-    const adminPassword = process.env.ADMIN_SEED_PASSWORD || 'orient@admin#1234';
-    const adminEmail = (process.env.ADMIN_SEED_EMAIL || 'orient@adminpanel.com').toLowerCase();
+    const adminPassword = process.env.ADMIN_SEED_PASSWORD;
+    const adminEmail = process.env.ADMIN_SEED_EMAIL ? process.env.ADMIN_SEED_EMAIL.toLowerCase() : undefined;
+
+    if (!adminPassword || !adminEmail) {
+      throw new Error('FATAL: ADMIN_SEED_EMAIL and ADMIN_SEED_PASSWORD environment variables are required.');
+    }
 
     const hashedPassword = await bcrypt.hash(adminPassword, 12);
 

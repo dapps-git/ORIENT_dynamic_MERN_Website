@@ -103,7 +103,7 @@ const INITIAL_BRANDS: Brand[] = [
   { _id: 'b-9', name: 'Fleetguard', category: 'filterings', logo: '/brands/fleetguard-logo.svg', websiteUrl: 'https://www.cumminsfiltration.com', description: 'Heavy-duty Cummins filtration', order: 3, isActive: true },
 ];
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/+$/, '');
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'https://orient-dynamic-mern-website.onrender.com/api').replace(/\/+$/, '');
 
 const INITIAL_INQUIRIES: Inquiry[] = [
   {
@@ -764,10 +764,19 @@ export default function AdminApp() {
   // Login form state
   const [checkingAuth, setCheckingAuth] = useState<boolean>(true);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>('orient@adminpanel.com');
+  const [password, setPassword] = useState<string>('orient@admin#1234');
   const [loginError, setLoginError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log('[Orient Admin Auth] Credentials saved: orient@adminpanel.com / orient@admin#1234');
+    try {
+      if (!localStorage.getItem('orient_admin_user')) {
+        localStorage.setItem('orient_admin_saved_email', 'orient@adminpanel.com');
+      }
+    } catch (_) {}
+  }, []);
 
   // Core App data states
   const [inquiries, setInquiries] = useState<Inquiry[]>(INITIAL_INQUIRIES);

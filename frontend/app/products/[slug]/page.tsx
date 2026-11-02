@@ -36,7 +36,7 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
   const staticDiv = DIVISIONS_DATA.find((d) => d.id === resolvedId);
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/categories/${resolvedId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/categories/${resolvedId}`, {
       cache: 'no-store',
     });
     if (res.ok) {

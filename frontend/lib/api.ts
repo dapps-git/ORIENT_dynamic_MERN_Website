@@ -1,6 +1,6 @@
 // Shared API utility for Orient Energy frontend
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://orient-dynamic-mern-website.onrender.com/api';
 
 export async function fetchAPI<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
