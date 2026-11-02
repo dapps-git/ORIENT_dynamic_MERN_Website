@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "Orient Energy Trading Company - Monorepo runner",
   "private": true,
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "build": "npm --prefix backend run build",
+    "postinstall": "npm --prefix backend install",
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:admin": "npm --prefix admin run dev",

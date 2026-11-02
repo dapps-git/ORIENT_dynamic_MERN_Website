@@ -18,27 +18,53 @@ const uploadRoutes_1 = __importDefault(require("./routes/uploadRoutes"));
 const brandRoutes_1 = __importDefault(require("./routes/brandRoutes"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
-// Middleware
+// Handle optional cPanel subfolder prefix (e.g. /orient/api/... -> /api/...)
+app.use((req, _res, next) => {
+    if (req.url === '/orient') {
+        req.url = '/';
+    }
+    else if (req.url.startsWith('/orient/')) {
+        req.url = req.url.slice(7);
+    }
+    next();
+});
+// Universal CORS Middleware with preflight handling
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    else {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(204);
+    }
+    next();
+});
 app.use((0, cors_1.default)({
-    origin: (origin, callback) => {
-        if (!origin)
-            return callback(null, true);
-        if (origin.includes('localhost') ||
-            origin.includes('vercel.app') ||
-            origin.includes('tweaki.pw') ||
-            origin === process.env.CLIENT_URL ||
-            origin === process.env.ADMIN_URL) {
-            return callback(null, true);
-        }
-        return callback(null, true);
-    },
+    origin: true,
     credentials: true
 }));
 app.use(express_1.default.json({ limit: '20mb' }));
 app.use(express_1.default.urlencoded({ extended: true }));
-// Health check
+// Health checks
+app.get('/', (_req, res) => {
+    res.json({
+        success: true,
+        message: 'Orient Energy API is active 🚀',
+        timestamp: new Date().toISOString()
+    });
+});
 app.get('/api/health', (_req, res) => {
-    res.json({ success: true, message: 'Orient Energy API is running 🚀', timestamp: new Date().toISOString() });
+    res.json({
+        success: true,
+        message: 'Orient Energy API is running 🚀',
+        timestamp: new Date().toISOString()
+    });
 });
 // Routes
 app.use('/api/categories', categoryRoutes_1.default);
@@ -53,10 +79,11 @@ app.use('/api/brands', brandRoutes_1.default);
 app.use((_req, res) => {
     res.status(404).json({ success: false, message: 'Route not found' });
 });
-// Start
-(0, db_1.default)().then(() => {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server running at http://localhost:${PORT}`);
+// Start listening immediately so cPanel / Passenger detects the socket right away
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    (0, db_1.default)().catch((err) => {
+        console.error('MongoDB connection error:', err);
     });
 });
 exports.default = app;
