@@ -4,12 +4,11 @@ import HeroSection from '@/components/home/HeroSection';
 import SectorsTwoBoxShowcase from '@/components/home/SectorsTwoBoxShowcase';
 import FeaturedProductsShowcase from '@/components/home/FeaturedProductsShowcase';
 import AboutSection from '@/components/home/AboutSection';
-import CapabilitiesSection from '@/components/home/CapabilitiesSection';
+import ApprovedBySection from '@/components/home/ApprovedBySection';
 import IndustriesSection from '@/components/home/IndustriesSection';
 import TrustBannerSection from '@/components/home/TrustBannerSection';
 import WhyChooseSection from '@/components/home/WhyChooseSection';
-import TestimonialsSection from '@/components/home/TestimonialsSection';
-import BlogSection from '@/components/home/BlogSection';
+import GoogleReviewsSection from '@/components/home/GoogleReviewsSection';
 import ScrollAnimation from '@/components/ScrollAnimation';
 
 export default function HomePage() {
@@ -32,8 +31,8 @@ export default function HomePage() {
         {/* About Orient Energy (Established 2001) */}
         <AboutSection />
 
-        {/* Our Capabilities (Engineering Excellence, Every Time.) */}
-        <CapabilitiesSection />
+        {/* Approved By (Accreditations & Major Approvals) */}
+        <ApprovedBySection />
 
         {/* Industries We Serve (Powering Industry, Driving Progress.) */}
         <IndustriesSection />
@@ -44,11 +43,8 @@ export default function HomePage() {
         {/* Why Choose Orient Energy? (Because Your Operations Deserve the Best.) */}
         <WhyChooseSection />
 
-        {/* What people say about Orient Energy */}
-        <TestimonialsSection />
-
-        {/* Articles & blog posts with useful information */}
-        <BlogSection />
+        {/* Real Google Customer Reviews & Ratings */}
+        <GoogleReviewsSection />
       </main>
 
       <Footer />

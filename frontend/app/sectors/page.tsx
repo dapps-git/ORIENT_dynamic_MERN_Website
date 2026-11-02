@@ -75,7 +75,7 @@ export default function SectorsPage() {
       <ScrollAnimation />
       <Navbar />
 
-      <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '110px' }}>
+      <main className="site-main-content">
         {/* Top Hero Section */}
         <section style={{ padding: '40px 0 60px' }}>
           <div
@@ -195,7 +195,6 @@ export default function SectorsPage() {
 
                   {/* Heading placed directly on image top */}
                   <div className="sector-card-top-content">
-                    <span className="sector-card-num">SECTOR #{sector.num}</span>
                     <h2 className="sector-card-title">{sector.title}</h2>
                   </div>
 

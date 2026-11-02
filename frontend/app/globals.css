@@ -69,6 +69,28 @@ body {
   position: relative;
 }
 
+/* Page Main Wrapper spacing below fixed site-header (topbar + navbar) */
+.site-main-content {
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding-top: 106px;
+}
+@media (max-width: 1024px) {
+  .site-main-content {
+    padding-top: 94px !important;
+  }
+}
+@media (max-width: 768px) {
+  .site-main-content {
+    padding-top: 90px !important;
+  }
+}
+@media (max-width: 480px) {
+  .site-main-content {
+    padding-top: 86px !important;
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }

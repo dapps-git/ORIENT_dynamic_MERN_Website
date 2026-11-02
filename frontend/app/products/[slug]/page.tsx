@@ -162,7 +162,7 @@ export default async function ProductDivisionInnerPage({
       <ScrollAnimation />
       <Navbar />
 
-      <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '105px' }}>
+      <main className="site-main-content">
 
 
         {/* Division Hero Header */}

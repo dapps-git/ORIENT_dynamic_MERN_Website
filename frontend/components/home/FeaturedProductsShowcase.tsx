@@ -55,14 +55,56 @@ const MOBILE_SLIDES = [
 
 export default function FeaturedProductsShowcase() {
   const [activeSlide, setActiveSlide] = useState(0);
+  const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
+  const touchEndY = useRef<number>(0);
+  const isDragging = useRef<boolean>(false);
 
-  // Automatic continuous slide animation for mobile view every 3 seconds
+  // Automatic slide animation every 3.5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveSlide((prev) => (prev === 0 ? 1 : 0));
-    }, 3000);
+    }, 3500);
     return () => clearInterval(timer);
-  }, []);
+  }, [activeSlide]);
+
+  // Hand swipe / Touch gesture handlers
+  const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    touchStartX.current = clientX;
+    touchEndX.current = clientX;
+    touchStartY.current = clientY;
+    touchEndY.current = clientY;
+    isDragging.current = true;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent | React.MouseEvent) => {
+    if (!isDragging.current) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    touchEndX.current = clientX;
+    touchEndY.current = clientY;
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging.current) return;
+    isDragging.current = false;
+    const diffX = touchStartX.current - touchEndX.current;
+    const diffY = touchStartY.current - touchEndY.current;
+
+    // Trigger slide switch when horizontal swipe > 35px and more horizontal than vertical
+    if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        // Swiped left -> show next 2 products
+        setActiveSlide(1);
+      } else {
+        // Swiped right -> show first 2 products
+        setActiveSlide(0);
+      }
+    }
+  };
 
   return (
     <section
@@ -154,10 +196,21 @@ export default function FeaturedProductsShowcase() {
           </div>
         </div>
 
-        {/* =========================================================
-            2. MOBILE VIEW (Show 2 Cards in One Row + Automatic Slide)
-            ========================================================= */}
-        <div className="featured-showcase-mobile">
+        <div
+          className="featured-showcase-mobile"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleTouchStart}
+          onMouseMove={handleTouchMove}
+          onMouseUp={handleTouchEnd}
+          onMouseLeave={handleTouchEnd}
+          style={{
+            touchAction: 'pan-y',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+          }}
+        >
           {/* Viewport for smooth 2-card carousel */}
           <div className="mobile-carousel-viewport">
             <div

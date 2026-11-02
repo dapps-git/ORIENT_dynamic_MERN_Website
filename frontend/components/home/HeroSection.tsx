@@ -33,8 +33,9 @@ export default function HeroSection() {
           position: 'relative',
           width: '100%',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
           color: '#ffffff',
           overflow: 'hidden',
           backgroundColor: '#000000',
@@ -67,7 +68,7 @@ export default function HeroSection() {
           }}
         />
 
-        {/* Hero Content Over Video: Clean Centered Headline */}
+        {/* Hero Content: Clean Centered Headline */}
         <div
           className="hero-video-content"
           style={{
@@ -81,7 +82,8 @@ export default function HeroSection() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '135px 24px 80px',
+            padding: '135px 24px 40px',
+            flex: '1 0 auto',
           }}
         >
           {/* Main Headline: Expertise in Every Trade */}
@@ -101,6 +103,146 @@ export default function HeroSection() {
           >
             Expertise in Every Trade
           </h1>
+        </div>
+
+        {/* Transparent Glassmorphic Stats Strip (Reference Model: 300+ Brands | 30+ Clients | 28+ Years Experience) */}
+        <div
+          className="hero-glassy-stats-bar"
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            width: '100%',
+            maxWidth: '960px',
+            margin: '0 auto 28px',
+            background:
+              'linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+            border: '1px solid rgba(255, 255, 255, 0.22)',
+            borderRadius: '16px',
+            boxShadow:
+              '0 8px 32px 0 rgba(0, 0, 0, 0.28), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            alignItems: 'center',
+            padding: '16px 20px',
+          }}
+        >
+          {/* Stat 1: 300+ Brands */}
+          <div
+            className="hero-stat-col"
+            style={{
+              textAlign: 'center',
+              padding: '4px 16px',
+              borderRight: '1px solid rgba(255, 255, 255, 0.18)',
+            }}
+          >
+            <div
+              className="hero-stat-number"
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.7rem, 3.4vw, 2.5rem)',
+                fontWeight: 700,
+                color: '#ffffff',
+                lineHeight: 1.15,
+                letterSpacing: '0.02em',
+                textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
+              }}
+            >
+              300+
+            </div>
+            <div
+              className="hero-stat-label"
+              style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: 'clamp(0.68rem, 1.4vw, 0.82rem)',
+                fontWeight: 500,
+                color: 'rgba(255, 255, 255, 0.88)',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                marginTop: '4px',
+              }}
+            >
+              Brands
+            </div>
+          </div>
+
+          {/* Stat 2: 30+ Clients */}
+          <div
+            className="hero-stat-col"
+            style={{
+              textAlign: 'center',
+              padding: '4px 16px',
+              borderRight: '1px solid rgba(255, 255, 255, 0.18)',
+            }}
+          >
+            <div
+              className="hero-stat-number"
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.7rem, 3.4vw, 2.5rem)',
+                fontWeight: 700,
+                color: '#ffffff',
+                lineHeight: 1.15,
+                letterSpacing: '0.02em',
+                textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
+              }}
+            >
+              30+
+            </div>
+            <div
+              className="hero-stat-label"
+              style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: 'clamp(0.68rem, 1.4vw, 0.82rem)',
+                fontWeight: 500,
+                color: 'rgba(255, 255, 255, 0.88)',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                marginTop: '4px',
+              }}
+            >
+              Clients
+            </div>
+          </div>
+
+          {/* Stat 3: 28 Years Experience */}
+          <div
+            className="hero-stat-col"
+            style={{
+              textAlign: 'center',
+              padding: '4px 16px',
+            }}
+          >
+            <div
+              className="hero-stat-number"
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: 'clamp(1.7rem, 3.4vw, 2.5rem)',
+                fontWeight: 700,
+                color: '#ffffff',
+                lineHeight: 1.15,
+                letterSpacing: '0.02em',
+                textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
+              }}
+            >
+              28+
+            </div>
+            <div
+              className="hero-stat-label"
+              style={{
+                fontFamily: "'Poppins', sans-serif",
+                fontSize: 'clamp(0.68rem, 1.4vw, 0.82rem)',
+                fontWeight: 500,
+                color: 'rgba(255, 255, 255, 0.88)',
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                marginTop: '4px',
+              }}
+            >
+              Years Experience
+            </div>
+          </div>
         </div>
       </section>
 
@@ -244,20 +386,44 @@ export default function HeroSection() {
         /* Mobile Landscape Aspect Ratio Model */
         @media (max-width: 768px) {
           .hero-video-section {
-            min-height: 290px !important;
-            max-height: 380px !important;
-            aspect-ratio: 16 / 10 !important;
+            min-height: 380px !important;
+            max-height: 500px !important;
             height: auto !important;
           }
 
           .hero-video-content {
-            padding: 96px 16px 32px !important;
+            padding: 85px 16px 20px !important;
           }
 
           .hero-video-title {
             font-size: clamp(1.3rem, 5.6vw, 1.7rem) !important;
             line-height: 1.25 !important;
             max-width: 340px !important;
+          }
+
+          .hero-glassy-stats-bar {
+            width: calc(100% - 32px) !important;
+            margin: 0 auto 16px !important;
+            padding: 10px 6px !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.24) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
+          }
+
+          .hero-stat-col {
+            padding: 2px 4px !important;
+          }
+
+          .hero-stat-number {
+            font-size: 1.25rem !important;
+          }
+
+          .hero-stat-label {
+            font-size: 0.6rem !important;
+            letter-spacing: 0.08em !important;
           }
 
           .clients-deal-section {

@@ -64,9 +64,9 @@ export default async function SectorDetailPage({ params }: SectorPageProps) {
       <ScrollAnimation />
       <Navbar />
 
-      <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '105px' }}>
+      <main className="site-main-content">
         {/* Breadcrumbs Navigation */}
-        <div style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '14px 0' }}>
+        <div className="breadcrumb-nav-bar" style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid #e2e8f0', padding: '12px 0' }}>
           <div className="container" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
             <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#64748b', flexWrap: 'wrap' }}>
               <Link href="/" style={{ color: '#64748b', textDecoration: 'none' }}>
@@ -109,20 +109,18 @@ export default async function SectorDetailPage({ params }: SectorPageProps) {
                   <span
                     style={{
                       display: 'inline-block',
-                      backgroundColor: 'rgba(32, 181, 18, 0.1)',
+                      backgroundColor: 'rgba(11, 122, 61, 0.08)',
                       color: '#0b7a3d',
-                      border: '1px solid rgba(11, 122, 61, 0.25)',
-                      padding: '4px 12px',
+                      border: '1px solid rgba(11, 122, 61, 0.22)',
+                      padding: '4px 14px',
                       borderRadius: '9999px',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                      letterSpacing: '0.04em',
                     }}
                   >
-                    SECTOR #{sector.num}
+                    Saudi Arabia Industrial Supply
                   </span>
-                  <span style={{ color: '#64748b', fontSize: '0.82rem' }}>Saudi Arabia Industrial Supply</span>
                 </div>
 
                 <h1
@@ -603,6 +601,12 @@ export default async function SectorDetailPage({ params }: SectorPageProps) {
       <Footer />
 
       <style>{`
+        .site-main-content {
+          background-color: #ffffff;
+          min-height: 100vh;
+          padding-top: 106px;
+        }
+
         .sector-inner-hero-grid {
           display: grid;
           grid-template-columns: 1.2fr 0.8fr;
@@ -616,10 +620,37 @@ export default async function SectorDetailPage({ params }: SectorPageProps) {
           border-color: #2e3191;
         }
 
+        @media (max-width: 1024px) {
+          .site-main-content {
+            padding-top: 94px !important;
+          }
+          .breadcrumb-nav-bar {
+            padding: 10px 0 !important;
+          }
+        }
+
         @media (max-width: 991px) {
           .sector-inner-hero-grid {
             grid-template-columns: 1fr;
             gap: 28px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .site-main-content {
+            padding-top: 90px !important;
+          }
+          .breadcrumb-nav-bar {
+            padding: 8px 0 !important;
+          }
+          .breadcrumb-nav-bar .container {
+            padding: 0 16px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .site-main-content {
+            padding-top: 86px !important;
           }
         }
       `}</style>

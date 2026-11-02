@@ -93,19 +93,19 @@ function NavbarInner() {
           transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        {/* Top Navbar Sectors Marquee (White background, executive blue text) */}
+        {/* Top Navbar Sectors Marquee (Saudi Green background, crisp white text) */}
         <div
           className="sectors-topbar"
           style={{
             position: 'relative',
             width: '100%',
             height: '34px',
-            backgroundColor: '#ffffff',
-            borderBottom: '1px solid #e2e8f0',
+            backgroundColor: '#0b7a3d',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.15)',
             display: 'flex',
             alignItems: 'center',
             overflow: 'hidden',
-            boxShadow: '0 1px 4px rgba(0, 0, 0, 0.04)',
+            boxShadow: '0 1px 4px rgba(0, 0, 0, 0.08)',
           }}
         >
           {/* Marquee Train Track Container with Gradient Edge Fades */}
@@ -131,7 +131,7 @@ function NavbarInner() {
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    color: '#071138',
+                    color: '#ffffff',
                     textDecoration: 'none',
                     fontSize: '0.78rem',
                     fontWeight: 600,
@@ -142,6 +142,7 @@ function NavbarInner() {
                   }}
                 >
                   <span>{sector.label}</span>
+                  <span style={{ margin: '0 12px', opacity: 0.55, fontSize: '0.65rem' }}>•</span>
                 </Link>
               ))}
             </div>
@@ -823,12 +824,28 @@ function NavbarInner() {
           font-weight: 700;
           background-color: rgba(46, 49, 145, 0.08);
         }
+        .sectors-train-item:hover {
+          color: #86efac !important;
+        }
         @media (max-width: 1024px) {
           .site-header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            z-index: 1000 !important;
             transform: none !important;
           }
           .sectors-topbar {
-            display: none !important;
+            display: flex !important;
+            height: 32px !important;
+            background-color: #0b7a3d !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
+          }
+          .sectors-train-item {
+            color: #ffffff !important;
+            font-size: 0.74rem !important;
           }
           .navbar__nav {
             display: none !important;
@@ -844,15 +861,16 @@ function NavbarInner() {
           nav.navbar,
           .navbar.scrolled,
           nav.navbar.scrolled {
+            position: relative !important;
             top: 0 !important;
             left: 0 !important;
             right: 0 !important;
             width: 100% !important;
             max-width: 100% !important;
             transform: none !important;
-            height: 66px !important;
-            min-height: 66px !important;
-            max-height: 66px !important;
+            height: 62px !important;
+            min-height: 62px !important;
+            max-height: 62px !important;
             padding: 0 20px !important;
             border-radius: 0 !important;
             border: none !important;
@@ -875,8 +893,8 @@ function NavbarInner() {
           .navbar__logo-img,
           .navbar .navbar__logo-img,
           .navbar.scrolled .navbar__logo-img {
-            height: 44px !important;
-            max-height: 44px !important;
+            height: 42px !important;
+            max-height: 42px !important;
             width: auto !important;
             background: transparent !important;
           }
@@ -891,17 +909,34 @@ function NavbarInner() {
           }
         }
         @media (max-width: 768px) {
+          .site-header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            z-index: 1000 !important;
+            transform: none !important;
+          }
           .sectors-topbar {
-            display: none !important;
+            display: flex !important;
+            height: 30px !important;
+            background-color: #0b7a3d !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
+          }
+          .sectors-train-item {
+            color: #ffffff !important;
+            font-size: 0.72rem !important;
           }
           .navbar,
           nav.navbar {
+            position: relative !important;
             top: 0 !important;
             left: 0 !important;
             width: 100% !important;
-            height: 64px !important;
-            min-height: 64px !important;
-            max-height: 64px !important;
+            height: 60px !important;
+            min-height: 60px !important;
+            max-height: 60px !important;
             padding: 0 16px !important;
             background: #ffffff !important;
             border: none !important;
@@ -917,13 +952,13 @@ function NavbarInner() {
           }
           .navbar__inner {
             padding: 0 !important;
-            height: 64px !important;
+            height: 60px !important;
           }
           .navbar__logo-img,
           .navbar .navbar__logo-img,
           .navbar.scrolled .navbar__logo-img {
-            height: 44px !important;
-            max-height: 44px !important;
+            height: 40px !important;
+            max-height: 40px !important;
             width: auto !important;
             background: transparent !important;
           }
@@ -942,27 +977,33 @@ function NavbarInner() {
           }
         }
         @media (max-width: 480px) {
+          .sectors-topbar {
+            height: 28px !important;
+          }
+          .sectors-train-item {
+            font-size: 0.70rem !important;
+          }
           .navbar,
           nav.navbar {
-            height: 60px !important;
-            min-height: 60px !important;
-            max-height: 60px !important;
+            height: 58px !important;
+            min-height: 58px !important;
+            max-height: 58px !important;
             padding: 0 12px !important;
           }
           .navbar.scrolled,
           nav.navbar.scrolled {
-            height: 60px !important;
-            min-height: 60px !important;
-            max-height: 60px !important;
+            height: 58px !important;
+            min-height: 58px !important;
+            max-height: 58px !important;
           }
           .navbar__inner {
-            height: 60px !important;
+            height: 58px !important;
           }
           .navbar__logo-img,
           .navbar .navbar__logo-img,
           .navbar.scrolled .navbar__logo-img {
-            height: 40px !important;
-            max-height: 40px !important;
+            height: 38px !important;
+            max-height: 38px !important;
             width: auto !important;
           }
         }

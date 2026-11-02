@@ -166,10 +166,8 @@ export default async function ProductDetailPage({
       <Navbar />
 
       <main
+        className="site-main-content"
         style={{
-          backgroundColor: '#ffffff',
-          minHeight: '100vh',
-          paddingTop: '105px',
           fontFamily: "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         }}
       >
