@@ -80,8 +80,30 @@ interface Blog {
   isPublished: boolean;
 }
 
-const DEFAULT_ADMIN_EMAIL = 'orient@adminpanel.com';
-const DEFAULT_ADMIN_PASS = 'orient@admin#1234';
+interface Brand {
+  _id?: string;
+  name: string;
+  category: 'general' | 'bearings' | 'filterings';
+  logo: string;
+  websiteUrl?: string;
+  description?: string;
+  order?: number;
+  isActive?: boolean;
+}
+
+const INITIAL_BRANDS: Brand[] = [
+  { _id: 'b-1', name: 'SKF', category: 'bearings', logo: '/brands/skf-logo.svg', websiteUrl: 'https://www.skf.com', description: 'World leader in rolling bearings and seals', order: 1, isActive: true },
+  { _id: 'b-2', name: 'FAG (Schaeffler)', category: 'bearings', logo: '/brands/fag-logo.svg', websiteUrl: 'https://www.schaeffler.com', description: 'Precision ball and roller bearings', order: 2, isActive: true },
+  { _id: 'b-3', name: 'NSK', category: 'bearings', logo: '/brands/nsk-logo.svg', websiteUrl: 'https://www.nsk.com', description: 'High-precision motion & control bearings', order: 3, isActive: true },
+  { _id: 'b-4', name: 'TIMKEN', category: 'bearings', logo: '/brands/timken-logo.svg', websiteUrl: 'https://www.timken.com', description: 'Engineered tapered roller bearings', order: 4, isActive: true },
+  { _id: 'b-5', name: 'NTN Bearings', category: 'bearings', logo: '/brands/ntn-logo.svg', websiteUrl: 'https://www.ntnglobal.com', description: 'Global precision bearings', order: 5, isActive: true },
+  { _id: 'b-6', name: 'KOYO (JTEKT)', category: 'bearings', logo: '/brands/koyo-logo.svg', websiteUrl: 'https://koyo.jtekt.co.jp/en/', description: 'Heavy machinery and automotive bearings', order: 6, isActive: true },
+  { _id: 'b-7', name: 'Donaldson Filtration Solutions', category: 'filterings', logo: '/brands/donaldson-logo.svg', websiteUrl: 'https://www.donaldson.com', description: 'Engine and industrial filtration systems', order: 1, isActive: true },
+  { _id: 'b-8', name: 'Parker Filtration', category: 'filterings', logo: '/brands/parker-filtration-logo.svg', websiteUrl: 'https://www.parker.com', description: 'Advanced hydraulic and process filtration', order: 2, isActive: true },
+  { _id: 'b-9', name: 'Fleetguard', category: 'filterings', logo: '/brands/fleetguard-logo.svg', websiteUrl: 'https://www.cumminsfiltration.com', description: 'Heavy-duty Cummins filtration', order: 3, isActive: true },
+];
+
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || `${API_BASE}`).replace(/\/+$/, '');
 
 const INITIAL_INQUIRIES: Inquiry[] = [
   {
@@ -736,12 +758,14 @@ export const MECHANICAL_13_STATIC_IMAGES = [
 
 export default function AdminApp() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'inquiries' | 'mechanical' | 'products' | 'divisions' | 'blogs' | 'settings'>('mechanical');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'inquiries' | 'mechanical' | 'products' | 'divisions' | 'blogs' | 'brands' | 'settings'>('mechanical');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Login form state
-  const [email, setEmail] = useState<string>(DEFAULT_ADMIN_EMAIL);
-  const [password, setPassword] = useState<string>(DEFAULT_ADMIN_PASS);
+  const [checkingAuth, setCheckingAuth] = useState<boolean>(true);
+  const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [loginError, setLoginError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -750,18 +774,34 @@ export default function AdminApp() {
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
   const [divisions, setDivisions] = useState<Division[]>(INITIAL_DIVISIONS);
   const [blogs, setBlogs] = useState<Blog[]>(INITIAL_BLOGS);
+  const [brands, setBrands] = useState<Brand[]>(INITIAL_BRANDS);
 
   // Filters & Toast
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [divisionFilter, setDivisionFilter] = useState<string>('all');
   const [staticFilter, setStaticFilter] = useState<string>('mechanical-division');
   const [blogSearchTerm, setBlogSearchTerm] = useState<string>('');
+  const [brandSearchTerm, setBrandSearchTerm] = useState<string>('');
+  const [brandCategoryFilter, setBrandCategoryFilter] = useState<'all' | 'bearings' | 'filterings' | 'general'>('all');
   const [toastMessage, setToastMessage] = useState<string>('');
   const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
+  const [autoConvertWebp, setAutoConvertWebp] = useState<boolean>(true);
 
   // Modals state
   const [showProductModal, setShowProductModal] = useState<boolean>(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
+  const [showBrandModal, setShowBrandModal] = useState<boolean>(false);
+  const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
+  const [brandForm, setBrandForm] = useState({
+    name: '',
+    category: 'bearings' as 'general' | 'bearings' | 'filterings',
+    logo: '/brands/skf-logo.svg',
+    websiteUrl: '',
+    description: '',
+    order: 0,
+    isActive: true,
+  });
 
   const [showBlogModal, setShowBlogModal] = useState<boolean>(false);
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
@@ -922,7 +962,7 @@ export default function AdminApp() {
     );
 
     try {
-      await fetch(`http://localhost:5000/api/products/${productId}`, {
+      await fetch(`${API_BASE}/products/${productId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: newImageUrl }),
@@ -934,18 +974,44 @@ export default function AdminApp() {
     showToast('Product listing image updated successfully!');
   };
 
-  // Check login token
+  // Check and verify login token
   useEffect(() => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
-    if (token) {
-      setIsAuthenticated(true);
+    if (!token) {
+      setIsAuthenticated(false);
+      setCheckingAuth(false);
+      return;
     }
+
+    fetch(`${API_BASE}/admin/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error('Invalid token');
+      })
+      .then((data) => {
+        if (data.success && data.data) {
+          setAdminUser({ email: data.data.email, name: data.data.name });
+          setIsAuthenticated(true);
+        } else {
+          localStorage.removeItem('orient_admin_token');
+          setIsAuthenticated(false);
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem('orient_admin_token');
+        setIsAuthenticated(false);
+      })
+      .finally(() => {
+        setCheckingAuth(false);
+      });
   }, []);
 
   // Fetch live data from backend when authenticated
   const loadAllData = async () => {
     // 1. Fetch Inquiries
-    fetch('http://localhost:5000/api/inquiries')
+    fetch(`${API_BASE}/inquiries`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {
@@ -967,7 +1033,7 @@ export default function AdminApp() {
       .catch(() => {});
 
     // 2. Fetch Products
-    fetch('http://localhost:5000/api/products?limit=200')
+    fetch(`${API_BASE}/products?limit=200`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {
@@ -1009,7 +1075,7 @@ export default function AdminApp() {
       .catch(() => {});
 
     // 3. Fetch Categories / Divisions
-    fetch('http://localhost:5000/api/categories')
+    fetch(`${API_BASE}/categories`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {
@@ -1037,7 +1103,7 @@ export default function AdminApp() {
       .catch(() => {});
 
     // 4. Fetch Blogs
-    fetch('http://localhost:5000/api/blogs')
+    fetch(`${API_BASE}/blogs`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {
@@ -1063,6 +1129,16 @@ export default function AdminApp() {
         }
       })
       .catch(() => {});
+
+    // 5. Fetch Brands
+    fetch(`${API_BASE}/brands`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          setBrands(data.data);
+        }
+      })
+      .catch(() => {});
   };
 
   useEffect(() => {
@@ -1081,16 +1157,20 @@ export default function AdminApp() {
     reader.onload = async () => {
       try {
         const base64 = reader.result as string;
-        const res = await fetch('http://localhost:5000/api/upload', {
+        const res = await fetch(`${API_BASE}/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: base64, name: file.name }),
+          body: JSON.stringify({
+            image: base64,
+            name: file.name,
+            convertToWebp: autoConvertWebp,
+          }),
         });
         const data = await res.json();
         setIsUploadingImage(false);
         if (data.success && data.url) {
           onUrlUploaded(data.url);
-          showToast('Image uploaded successfully!');
+          showToast(`Image uploaded & converted to ${data.format?.toUpperCase() || 'WebP'} on Cloudinary!`);
         } else {
           showToast(data.message || 'Image upload failed');
         }
@@ -1109,33 +1189,27 @@ export default function AdminApp() {
     setLoginError('');
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/login', {
+      const res = await fetch(`${API_BASE}/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: email.trim(), password }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('orient_admin_token', data.token || 'orient-admin-jwt');
+      const data = await res.json();
+      if (res.ok && data.success && data.token) {
+        localStorage.setItem('orient_admin_token', data.token);
+        if (data.user) {
+          setAdminUser({ email: data.user.email, name: data.user.name });
+        }
         setIsAuthenticated(true);
-        showToast('Logged in successfully!');
+        showToast('Signed in successfully');
         setIsLoading(false);
         return;
+      } else {
+        setLoginError(data.message || 'Invalid email or password');
       }
     } catch {
-      // Backend offline fallback
-    }
-
-    if (
-      email.trim().toLowerCase() === DEFAULT_ADMIN_EMAIL.toLowerCase() &&
-      password === DEFAULT_ADMIN_PASS
-    ) {
-      localStorage.setItem('orient_admin_token', 'demo-token-orient-admin');
-      setIsAuthenticated(true);
-      showToast('Logged in successfully!');
-    } else {
-      setLoginError('Invalid credentials. Use the default login provided.');
+      setLoginError('Cannot connect to authentication server. Please ensure backend is running.');
     }
     setIsLoading(false);
   };
@@ -1150,7 +1224,7 @@ export default function AdminApp() {
     setInquiries((prev) =>
       prev.map((inq) => (inq.id === id ? { ...inq, status: newStatus } : inq))
     );
-    fetch(`http://localhost:5000/api/inquiries/${id}`, {
+    fetch(`${API_BASE}/inquiries/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus }),
@@ -1272,10 +1346,14 @@ export default function AdminApp() {
           reader.onerror = reject;
           reader.readAsDataURL(file);
         });
-        const res = await fetch('http://localhost:5000/api/upload', {
+        const res = await fetch(`${API_BASE}/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: base64, name: file.name.replace(/\.[^/.]+$/, '') }),
+          body: JSON.stringify({
+            image: base64,
+            name: file.name.replace(/\.[^/.]+$/, ''),
+            convertToWebp: autoConvertWebp,
+          }),
         });
         if (res.ok) {
           const data = await res.json();
@@ -1387,13 +1465,13 @@ export default function AdminApp() {
       // Update existing
       try {
         const targetId = editingProduct.id || editingProduct.slug || cleanSlug;
-        let res = await fetch(`http://localhost:5000/api/products/${targetId}`, {
+        let res = await fetch(`${API_BASE}/products/${targetId}`, {
           method: 'PUT',
           headers: reqHeaders,
           body: JSON.stringify(payload),
         });
         if (!res.ok && editingProduct.slug) {
-          res = await fetch(`http://localhost:5000/api/products/${editingProduct.slug}`, {
+          res = await fetch(`${API_BASE}/products/${editingProduct.slug}`, {
             method: 'PUT',
             headers: reqHeaders,
             body: JSON.stringify(payload),
@@ -1463,7 +1541,7 @@ export default function AdminApp() {
     } else {
       // Create new product
       try {
-        const res = await fetch('http://localhost:5000/api/products', {
+        const res = await fetch(`${API_BASE}/products`, {
           method: 'POST',
           headers: reqHeaders,
           body: JSON.stringify(payload),
@@ -1535,7 +1613,7 @@ export default function AdminApp() {
   const handleDeleteProduct = async (id: string) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
     try {
-      await fetch(`http://localhost:5000/api/products/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
     } catch {}
     setProducts((prev) => prev.filter((p) => p.id !== id));
     showToast('Product deleted');
@@ -1605,7 +1683,7 @@ export default function AdminApp() {
 
     if (editingBlog) {
       try {
-        const res = await fetch(`http://localhost:5000/api/blogs/${editingBlog.id}`, {
+        const res = await fetch(`${API_BASE}/blogs/${editingBlog.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -1629,7 +1707,7 @@ export default function AdminApp() {
       setShowBlogModal(false);
     } else {
       try {
-        const res = await fetch('http://localhost:5000/api/blogs', {
+        const res = await fetch(`${API_BASE}/blogs`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -1661,7 +1739,7 @@ export default function AdminApp() {
   const handleDeleteBlog = async (id: string) => {
     if (!confirm('Are you sure you want to delete this blog article?')) return;
     try {
-      await fetch(`http://localhost:5000/api/blogs/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/blogs/${id}`, { method: 'DELETE' });
     } catch {}
     setBlogs((prev) => prev.filter((b) => b.id !== id));
     showToast('Blog article deleted');
@@ -1734,7 +1812,7 @@ export default function AdminApp() {
     };
 
     try {
-      const res = await fetch(`http://localhost:5000/api/categories/${editingDivision.id}`, {
+      const res = await fetch(`${API_BASE}/categories/${editingDivision.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -1757,6 +1835,111 @@ export default function AdminApp() {
     );
     showToast('Division details updated!');
     setShowDivisionModal(false);
+  };
+
+  // ---------------- BRAND LOGO HANDLERS ---------------- //
+  const openAddBrandModal = (defaultCat: 'general' | 'bearings' | 'filterings' = 'bearings') => {
+    setEditingBrand(null);
+    setBrandForm({
+      name: '',
+      category: defaultCat,
+      logo: defaultCat === 'bearings' ? '/brands/skf-logo.svg' : '/brands/donaldson-logo.svg',
+      websiteUrl: '',
+      description: '',
+      order: brands.length + 1,
+      isActive: true,
+    });
+    setShowBrandModal(true);
+  };
+
+  const openEditBrandModal = (brand: Brand) => {
+    setEditingBrand(brand);
+    setBrandForm({
+      name: brand.name,
+      category: brand.category,
+      logo: brand.logo,
+      websiteUrl: brand.websiteUrl || '',
+      description: brand.description || '',
+      order: brand.order || 0,
+      isActive: brand.isActive !== false,
+    });
+    setShowBrandModal(true);
+  };
+
+  const handleSaveBrand = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!brandForm.name.trim() || !brandForm.logo.trim()) {
+      showToast('Please provide brand name and logo URL');
+      return;
+    }
+
+    const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+    const headers: any = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    if (editingBrand && editingBrand._id) {
+      try {
+        const res = await fetch(`${API_BASE}/brands/${editingBrand._id}`, {
+          method: 'PUT',
+          headers,
+          body: JSON.stringify(brandForm),
+        });
+        if (res.ok) {
+          const resData = await res.json();
+          setBrands((prev) =>
+            prev.map((b) => (b._id === editingBrand._id ? resData.data : b))
+          );
+          showToast('Brand logo updated successfully!');
+          setShowBrandModal(false);
+          return;
+        }
+      } catch {}
+
+      setBrands((prev) =>
+        prev.map((b) => (b._id === editingBrand._id ? { ...b, ...brandForm } : b))
+      );
+      showToast('Brand logo updated');
+      setShowBrandModal(false);
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/brands`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(brandForm),
+        });
+        if (res.ok) {
+          const resData = await res.json();
+          setBrands((prev) => [resData.data, ...prev]);
+          showToast('Brand logo added successfully!');
+          setShowBrandModal(false);
+          return;
+        }
+      } catch {}
+
+      const newBrand: Brand = {
+        _id: `b-${Date.now()}`,
+        ...brandForm,
+      };
+      setBrands((prev) => [newBrand, ...prev]);
+      showToast('Brand logo added');
+      setShowBrandModal(false);
+    }
+  };
+
+  const handleDeleteBrand = async (brandId: string) => {
+    if (!confirm('Are you sure you want to delete this brand logo?')) return;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+    const headers: any = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    try {
+      await fetch(`${API_BASE}/brands/${brandId}`, {
+        method: 'DELETE',
+        headers,
+      });
+    } catch {}
+    setBrands((prev) => prev.filter((b) => b._id !== brandId));
+    showToast('Brand logo removed');
   };
 
   // Filtered lists
@@ -1785,6 +1968,27 @@ export default function AdminApp() {
     );
   });
 
+  const filteredBrands = brands.filter((b) => {
+    const matchesCategory =
+      brandCategoryFilter === 'all' || b.category === brandCategoryFilter;
+    const matchesSearch =
+      b.name.toLowerCase().includes(brandSearchTerm.toLowerCase()) ||
+      (b.description && b.description.toLowerCase().includes(brandSearchTerm.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
+  // Session verification loading state
+  if (checkingAuth) {
+    return (
+      <div className="login-container">
+        <div className="auth-loading-card">
+          <div className="auth-spinner" />
+          <p style={{ marginTop: '14px', color: '#cbd5e1', fontSize: '0.85rem' }}>Verifying session...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Login View
   if (!isAuthenticated) {
     return (
@@ -1794,29 +1998,29 @@ export default function AdminApp() {
             <div className="logo-wrap">
               <img src="/logo.png" alt="Orient Energy" style={{ height: '44px', objectFit: 'contain' }} />
             </div>
-            <div className="badge-admin">ADMIN PORTAL</div>
-            <h1>Secure Control Center</h1>
-            <p>Orient Energy Trading Company — Operations &amp; Catalog Management</p>
+            <h1>Admin Sign In</h1>
+            <p>Enter your credentials to access the admin portal</p>
           </div>
 
           <form onSubmit={handleLogin} className="login-form">
             {loginError && <div className="alert-error">{loginError}</div>}
 
             <div className="form-group">
-              <label htmlFor="email">Admin Email Address</label>
+              <label htmlFor="email">Email Address</label>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="orient@adminpanel.com"
+                placeholder="admin@example.com"
                 required
                 className="input-field"
+                autoComplete="email"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Security Password</label>
+              <label htmlFor="password">Password</label>
               <input
                 id="password"
                 type="password"
@@ -1825,169 +2029,15 @@ export default function AdminApp() {
                 placeholder="••••••••••••"
                 required
                 className="input-field"
+                autoComplete="current-password"
               />
             </div>
 
             <button type="submit" disabled={isLoading} className="btn-primary">
-              {isLoading ? 'Signing In...' : 'Sign In to Admin Dashboard'}
+              {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
-
-          <div className="credentials-helper">
-            <div className="cred-title">Default Admin Credentials:</div>
-            <div className="cred-item">
-              <span>Email:</span> <code>{DEFAULT_ADMIN_EMAIL}</code>
-            </div>
-            <div className="cred-item">
-              <span>Password:</span> <code>{DEFAULT_ADMIN_PASS}</code>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setEmail(DEFAULT_ADMIN_EMAIL);
-                setPassword(DEFAULT_ADMIN_PASS);
-                showToast('Default credentials loaded');
-              }}
-              className="btn-fill"
-            >
-              Fill Default Credentials
-            </button>
-          </div>
         </div>
-
-        <style jsx>{`
-          .login-container {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #071138 0%, #0d2060 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          }
-          .login-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 40px;
-            width: 100%;
-            max-width: 440px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-          }
-          .login-header {
-            text-align: center;
-            margin-bottom: 24px;
-          }
-          .logo-wrap {
-            margin-bottom: 14px;
-          }
-          .badge-admin {
-            display: inline-block;
-            background: #e0e7ff;
-            color: #2e3191;
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            letter-spacing: 0.08em;
-            margin-bottom: 8px;
-          }
-          .login-header h1 {
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 4px;
-          }
-          .login-header p {
-            font-size: 0.84rem;
-            color: #64748b;
-          }
-          .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-          }
-          .alert-error {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 0.82rem;
-          }
-          .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-          }
-          .form-group label {
-            font-size: 0.80rem;
-            font-weight: 600;
-            color: #334155;
-          }
-          .input-field {
-            padding: 11px 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.90rem;
-            outline: none;
-            transition: border-color 0.2s;
-          }
-          .input-field:focus {
-            border-color: #2e3191;
-          }
-          .btn-primary {
-            background: #2e3191;
-            color: #ffffff;
-            border: none;
-            padding: 13px;
-            border-radius: 8px;
-            font-size: 0.92rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 6px;
-            transition: background 0.2s;
-          }
-          .btn-primary:hover {
-            background: #1f2268;
-          }
-          .credentials-helper {
-            margin-top: 24px;
-            padding: 14px;
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-            border-radius: 10px;
-            font-size: 0.78rem;
-          }
-          .cred-title {
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 6px;
-          }
-          .cred-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-            color: #64748b;
-          }
-          .cred-item code {
-            background: #e2e8f0;
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #0f172a;
-            font-weight: 600;
-          }
-          .btn-fill {
-            width: 100%;
-            margin-top: 10px;
-            padding: 6px;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 0.76rem;
-            font-weight: 600;
-            color: #2e3191;
-            cursor: pointer;
-          }
-        `}</style>
       </div>
     );
   }
@@ -2027,8 +2077,8 @@ export default function AdminApp() {
           <div className="user-profile">
             <div className="avatar">OE</div>
             <div className="user-info">
-              <span className="user-name">Administrator</span>
-              <span className="user-email">{DEFAULT_ADMIN_EMAIL}</span>
+              <span className="user-name">{adminUser?.name || 'Administrator'}</span>
+              <span className="user-email">{adminUser?.email || 'orient@adminpanel.com'}</span>
             </div>
           </div>
           <button type="button" onClick={handleLogout} className="btn-logout" title="Sign Out">
@@ -2120,6 +2170,18 @@ export default function AdminApp() {
             >
               <span>Blogs &amp; Insights</span>
               <span className="badge-count">{blogs.length}</span>
+            </button>
+
+            <button
+              type="button"
+              className={`nav-item ${activeTab === 'brands' ? 'active' : ''}`}
+              onClick={() => {
+                setActiveTab('brands');
+                setMobileMenuOpen(false);
+              }}
+            >
+              <span>Brand Logos</span>
+              <span className="badge-count">{brands.length}</span>
             </button>
 
             <button
@@ -2776,7 +2838,251 @@ export default function AdminApp() {
             </div>
           )}
 
-          {/* TAB 6: COMPANY SETTINGS */}
+          {/* TAB: BRAND LOGOS MANAGEMENT */}
+          {activeTab === 'brands' && (
+            <div className="brands-view">
+              <div className="page-heading flex-between">
+                <div>
+                  <h1>Brand Logos Management</h1>
+                  <p>Manage partner manufacturers, Bearings brands, and Filtration brand logos displayed on the live website.</p>
+                </div>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={() => openAddBrandModal('bearings')}
+                    className="btn-primary-action"
+                    style={{ background: '#005a9c' }}
+                  >
+                    + Add Bearings Brand
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openAddBrandModal('filterings')}
+                    className="btn-primary-action"
+                    style={{ background: '#0b7a3d' }}
+                  >
+                    + Add Filtering Brand
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openAddBrandModal('general')}
+                    className="btn-primary-action"
+                    style={{ background: '#475569' }}
+                  >
+                    + Add General Brand
+                  </button>
+                </div>
+              </div>
+
+              {/* Category Filter Pills & Search */}
+              <div className="filter-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={() => setBrandCategoryFilter('all')}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      background: brandCategoryFilter === 'all' ? '#0f172a' : '#ffffff',
+                      color: brandCategoryFilter === 'all' ? '#ffffff' : '#334155',
+                      fontWeight: 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    All Logos ({brands.length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBrandCategoryFilter('bearings')}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      border: '1px solid #93c5fd',
+                      background: brandCategoryFilter === 'bearings' ? '#005a9c' : '#ffffff',
+                      color: brandCategoryFilter === 'bearings' ? '#ffffff' : '#005a9c',
+                      fontWeight: 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Bearings ({brands.filter((b) => b.category === 'bearings').length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBrandCategoryFilter('filterings')}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      border: '1px solid #86efac',
+                      background: brandCategoryFilter === 'filterings' ? '#0b7a3d' : '#ffffff',
+                      color: brandCategoryFilter === 'filterings' ? '#ffffff' : '#0b7a3d',
+                      fontWeight: 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Filterings ({brands.filter((b) => b.category === 'filterings').length})
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBrandCategoryFilter('general')}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      border: '1px solid #cbd5e1',
+                      background: brandCategoryFilter === 'general' ? '#475569' : '#ffffff',
+                      color: brandCategoryFilter === 'general' ? '#ffffff' : '#475569',
+                      fontWeight: 600,
+                      fontSize: '0.82rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    General Brands ({brands.filter((b) => b.category === 'general').length})
+                  </button>
+                </div>
+
+                <input
+                  type="text"
+                  placeholder="Search brands by name..."
+                  value={brandSearchTerm}
+                  onChange={(e) => setBrandSearchTerm(e.target.value)}
+                  className="search-input"
+                  style={{ maxWidth: '280px' }}
+                />
+              </div>
+
+              {/* Brands Grid */}
+              <div className="panel-box">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px', padding: '10px 0' }}>
+                  {filteredBrands.map((b) => (
+                    <div
+                      key={b._id || b.name}
+                      style={{
+                        background: '#ffffff',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '12px',
+                        padding: '18px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.03)',
+                      }}
+                    >
+                      <div>
+                        {/* Logo Box */}
+                        <div
+                          style={{
+                            height: '90px',
+                            background: '#f8fafc',
+                            borderRadius: '8px',
+                            border: '1px solid #f1f5f9',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '12px',
+                            marginBottom: '14px',
+                          }}
+                        >
+                          <img
+                            src={b.logo}
+                            alt={b.name}
+                            style={{
+                              maxWidth: '100%',
+                              maxHeight: '100%',
+                              objectFit: 'contain',
+                            }}
+                          />
+                        </div>
+
+                        {/* Title & Badge */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                          <strong style={{ fontSize: '1rem', color: '#0f172a' }}>{b.name}</strong>
+                          <span
+                            style={{
+                              fontSize: '0.72rem',
+                              fontWeight: 700,
+                              padding: '3px 8px',
+                              borderRadius: '999px',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.04em',
+                              background:
+                                b.category === 'bearings'
+                                  ? '#eff6ff'
+                                  : b.category === 'filterings'
+                                  ? '#f0fdf4'
+                                  : '#f1f5f9',
+                              color:
+                                b.category === 'bearings'
+                                  ? '#1d4ed8'
+                                  : b.category === 'filterings'
+                                  ? '#15803d'
+                                  : '#475569',
+                              border: `1px solid ${
+                                b.category === 'bearings'
+                                  ? '#bfdbfe'
+                                  : b.category === 'filterings'
+                                  ? '#bbf7d0'
+                                  : '#e2e8f0'
+                              }`,
+                            }}
+                          >
+                            {b.category}
+                          </span>
+                        </div>
+
+                        {b.description && (
+                          <p style={{ fontSize: '0.80rem', color: '#64748b', lineHeight: 1.45, margin: '0 0 12px 0' }}>
+                            {b.description}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Action buttons */}
+                      <div style={{ display: 'flex', gap: '8px', marginTop: '14px', paddingTop: '12px', borderTop: '1px solid #f1f5f9' }}>
+                        <button
+                          type="button"
+                          onClick={() => openEditBrandModal(b)}
+                          className="btn-edit-action"
+                          style={{ flex: 1, padding: '7px 10px', fontSize: '0.80rem' }}
+                        >
+                          Edit
+                        </button>
+                        {b.websiteUrl && (
+                          <a
+                            href={b.websiteUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-view-live"
+                            style={{ padding: '7px 10px', fontSize: '0.80rem' }}
+                          >
+                            Website
+                          </a>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => b._id && handleDeleteBrand(b._id)}
+                          className="btn-delete"
+                          style={{ padding: '7px 10px', fontSize: '0.80rem' }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {filteredBrands.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
+                    No brand logos found matching this category or search filter.
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 7: COMPANY SETTINGS */}
           {activeTab === 'settings' && (
             <div className="settings-view">
               <div className="page-heading">
@@ -2905,6 +3211,55 @@ export default function AdminApp() {
                       <strong>Product Images &amp; Gallery</strong>
                       <span className="step-subtitle">Upload the main cover image and inner page gallery photos.</span>
                     </div>
+                  </div>
+
+                  {/* Cloudinary WebP Auto-Conversion Option */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '12px 16px',
+                      backgroundColor: '#f0fdf4',
+                      border: '1px solid #bbf7d0',
+                      borderRadius: '8px',
+                      marginTop: '16px',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ fontSize: '1.1rem' }}>☁️</span>
+                      <div>
+                        <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#166534' }}>
+                          Cloudinary WebP Auto-Conversion
+                        </div>
+                        <div style={{ fontSize: '0.74rem', color: '#15803d' }}>
+                          Converts PNG &amp; JPEG uploads to compressed WebP directly on Cloudinary
+                        </div>
+                      </div>
+                    </div>
+                    <label
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        cursor: 'pointer',
+                        fontSize: '0.82rem',
+                        fontWeight: 600,
+                        color: '#166534',
+                        backgroundColor: '#ffffff',
+                        padding: '6px 12px',
+                        borderRadius: '6px',
+                        border: '1px solid #86efac',
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={autoConvertWebp}
+                        onChange={(e) => setAutoConvertWebp(e.target.checked)}
+                        style={{ accentColor: '#16a34a', width: '16px', height: '16px' }}
+                      />
+                      <span>{autoConvertWebp ? 'Convert to WebP (Active)' : 'Keep Original Format'}</span>
+                    </label>
                   </div>
 
                   <div
@@ -4136,6 +4491,154 @@ export default function AdminApp() {
                 </button>
                 <button type="submit" className="btn-primary-action">
                   {editingBlog ? 'Save Article Changes' : 'Publish Blog Article'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* BRAND MODAL */}
+      {showBrandModal && (
+        <div className="modal-overlay">
+          <div className="modal-box" style={{ maxWidth: '540px' }}>
+            <div className="modal-header">
+              <h2>{editingBrand ? 'Edit Brand Logo' : 'Add New Brand Logo'}</h2>
+              <button type="button" onClick={() => setShowBrandModal(false)} className="btn-close">
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveBrand} className="modal-form">
+              <div className="form-group">
+                <label>Brand Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. SKF, Donaldson, Timken"
+                  value={brandForm.name}
+                  onChange={(e) => setBrandForm({ ...brandForm, name: e.target.value })}
+                  className="input-field"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Brand Category *</label>
+                <select
+                  value={brandForm.category}
+                  onChange={(e) => setBrandForm({ ...brandForm, category: e.target.value as any })}
+                  className="input-field"
+                >
+                  <option value="bearings">Bearings (Rotating &amp; Precision Equipment)</option>
+                  <option value="filterings">Filterings (Industrial &amp; Hydraulic Filters)</option>
+                  <option value="general">General Brands (All Brands Grid)</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Brand Logo Image *</label>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. /brands/skf-logo.svg or Cloudinary URL"
+                    value={brandForm.logo}
+                    onChange={(e) => setBrandForm({ ...brandForm, logo: e.target.value })}
+                    className="input-field"
+                    style={{ flex: 1 }}
+                  />
+                  <label
+                    style={{
+                      background: '#0b7a3d',
+                      color: '#ffffff',
+                      padding: '10px 14px',
+                      borderRadius: '8px',
+                      fontSize: '0.80rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {isUploadingImage ? 'Uploading...' : '📁 Upload'}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      disabled={isUploadingImage}
+                      onChange={(e) =>
+                        handleImageFileChange(e, (url) => {
+                          setBrandForm((prev) => ({ ...prev, logo: url }));
+                        })
+                      }
+                    />
+                  </label>
+                </div>
+              </div>
+
+              {/* Live Preview */}
+              {brandForm.logo && (
+                <div style={{ padding: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', textAlign: 'center', marginBottom: '14px' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '6px' }}>Logo Live Preview:</div>
+                  <div style={{ height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <img
+                      src={brandForm.logo}
+                      alt="Brand preview"
+                      style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="form-group">
+                <label>Website URL (optional)</label>
+                <input
+                  type="url"
+                  placeholder="https://www.example.com"
+                  value={brandForm.websiteUrl}
+                  onChange={(e) => setBrandForm({ ...brandForm, websiteUrl: e.target.value })}
+                  className="input-field"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Short Description (optional)</label>
+                <textarea
+                  rows={2}
+                  placeholder="e.g. World leader in rolling bearings, seals, and lubrication..."
+                  value={brandForm.description}
+                  onChange={(e) => setBrandForm({ ...brandForm, description: e.target.value })}
+                  className="input-field"
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group" style={{ flex: 1 }}>
+                  <label>Display Sort Order</label>
+                  <input
+                    type="number"
+                    value={brandForm.order}
+                    onChange={(e) => setBrandForm({ ...brandForm, order: Number(e.target.value) })}
+                    className="input-field"
+                  />
+                </div>
+                <div className="form-group" style={{ flex: 1, display: 'flex', alignItems: 'center', marginTop: '24px' }}>
+                  <label className="checkbox-label" style={{ margin: 0 }}>
+                    <input
+                      type="checkbox"
+                      checked={brandForm.isActive}
+                      onChange={(e) => setBrandForm({ ...brandForm, isActive: e.target.checked })}
+                    />
+                    <span>Active on Live Website</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="modal-actions">
+                <button type="button" onClick={() => setShowBrandModal(false)} className="btn-cancel">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary-action">
+                  {editingBrand ? 'Save Brand Changes' : 'Add Brand Logo'}
                 </button>
               </div>
             </form>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" width="240" height="80">
+      <rect width="100%" height="100%" fill="#ffffff"/>
+      <rect x="35" y="18" width="170" height="44" rx="4" fill="#00805a"/>
+      <text x="120" y="50" fill="#ffffff" font-family="'Arial Black', 'Montserrat', sans-serif" font-weight="900" font-size="32" letter-spacing="6" text-anchor="middle">INA</text>
+    </svg>

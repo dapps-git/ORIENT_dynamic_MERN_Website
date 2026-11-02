@@ -10,6 +10,8 @@ node_modules/
 out/
 build/
 dist/
+!backend/dist/
+!backend/dist/**
 
 # Environment
 .env.local

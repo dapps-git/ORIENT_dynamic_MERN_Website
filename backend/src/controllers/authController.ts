@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { AdminUser } from '../models/AdminUser';
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+const getJwtSecret = () => process.env.JWT_SECRET || 'orient_energy_super_secure_jwt_secret_key_2026';
 
 export const adminLogin = async (req: Request, res: Response) => {
   try {
@@ -22,7 +22,7 @@ export const adminLogin = async (req: Request, res: Response) => {
       return res.status(401).json({ success: false, message: 'Invalid credentials.' });
     }
 
-    const token = jwt.sign({ id: admin._id, role: admin.role }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: admin._id, role: admin.role }, getJwtSecret(), { expiresIn: '7d' });
 
     res.json({
       success: true,
