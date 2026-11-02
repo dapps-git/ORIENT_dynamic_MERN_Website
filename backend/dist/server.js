@@ -51,30 +51,35 @@ app.use((0, cors_1.default)({
 }));
 app.use(express_1.default.json({ limit: '20mb' }));
 app.use(express_1.default.urlencoded({ extended: true }));
-// Health checks
-app.get('/', (_req, res) => {
-    res.json({
-        success: true,
-        message: 'Orient Energy API is active 🚀',
-        timestamp: new Date().toISOString()
-    });
-});
-app.get('/api/health', (_req, res) => {
+// Health checks - works at /, /health, /api, /api/health
+const healthHandler = (_req, res) => {
     res.json({
         success: true,
         message: 'Orient Energy API is running 🚀',
         timestamp: new Date().toISOString()
     });
-});
-// Routes
+};
+app.get('/', healthHandler);
+app.get('/health', healthHandler);
+app.get('/api', healthHandler);
+app.get('/api/health', healthHandler);
+// Routes - mounted on BOTH /api/* and /* so it works with any URL configuration
 app.use('/api/categories', categoryRoutes_1.default);
+app.use('/categories', categoryRoutes_1.default);
 app.use('/api/products', productRoutes_1.default);
+app.use('/products', productRoutes_1.default);
 app.use('/api/services', serviceRoutes_1.default);
+app.use('/services', serviceRoutes_1.default);
 app.use('/api/inquiries', inquiryRoutes_1.default);
+app.use('/inquiries', inquiryRoutes_1.default);
 app.use('/api/admin', adminRoutes_1.default);
+app.use('/admin', adminRoutes_1.default);
 app.use('/api/blogs', blogRoutes_1.default);
+app.use('/blogs', blogRoutes_1.default);
 app.use('/api/upload', uploadRoutes_1.default);
+app.use('/upload', uploadRoutes_1.default);
 app.use('/api/brands', brandRoutes_1.default);
+app.use('/brands', brandRoutes_1.default);
 // 404
 app.use((_req, res) => {
     res.status(404).json({ success: false, message: 'Route not found' });

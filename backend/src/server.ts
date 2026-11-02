@@ -53,32 +53,44 @@ app.use(cors({
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Health checks
-app.get('/', (_req, res) => {
-  res.json({
-    success: true,
-    message: 'Orient Energy API is active 🚀',
-    timestamp: new Date().toISOString()
-  });
-});
-
-app.get('/api/health', (_req, res) => {
+// Health checks - works at /, /health, /api, /api/health
+const healthHandler = (_req: express.Request, res: express.Response) => {
   res.json({
     success: true,
     message: 'Orient Energy API is running 🚀',
     timestamp: new Date().toISOString()
   });
-});
+};
 
-// Routes
+app.get('/', healthHandler);
+app.get('/health', healthHandler);
+app.get('/api', healthHandler);
+app.get('/api/health', healthHandler);
+
+// Routes - mounted on BOTH /api/* and /* so it works with any URL configuration
 app.use('/api/categories', categoryRoutes);
+app.use('/categories', categoryRoutes);
+
 app.use('/api/products', productRoutes);
+app.use('/products', productRoutes);
+
 app.use('/api/services', serviceRoutes);
+app.use('/services', serviceRoutes);
+
 app.use('/api/inquiries', inquiryRoutes);
+app.use('/inquiries', inquiryRoutes);
+
 app.use('/api/admin', adminRoutes);
+app.use('/admin', adminRoutes);
+
 app.use('/api/blogs', blogRoutes);
+app.use('/blogs', blogRoutes);
+
 app.use('/api/upload', uploadRoutes);
+app.use('/upload', uploadRoutes);
+
 app.use('/api/brands', brandRoutes);
+app.use('/brands', brandRoutes);
 
 // 404
 app.use((_req, res) => {
