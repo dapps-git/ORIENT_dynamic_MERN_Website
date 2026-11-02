@@ -191,46 +191,20 @@ export default async function BrandsPage() {
             {/* =========================================================
                 SECTION 1: ALL VALUABLE BRANDS (Original 95 Static + New)
                 ========================================================= */}
-            <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 50px' }}>
-              <div
-                style={{
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: '#20b512',
-                  marginBottom: '10px',
-                }}
-              >
-                OUR PARTNERS
-              </div>
-
+            <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 40px' }}>
               <h1
                 style={{
                   fontFamily: "'Montserrat', sans-serif",
                   fontSize: 'clamp(1.85rem, 3.0vw, 2.6rem)',
                   fontWeight: 600,
                   color: '#111827',
-                  marginBottom: '16px',
+                  marginBottom: '0px',
                   lineHeight: 1.2,
                   letterSpacing: '-0.01em',
                 }}
               >
                 Our Valuable Brands
               </h1>
-
-              <p
-                style={{
-                  fontSize: '0.92rem',
-                  color: '#6b7280',
-                  lineHeight: 1.7,
-                  margin: 0,
-                  fontWeight: 400,
-                }}
-              >
-                Orient Energy supplies certified industrial equipment, mechanical systems, electrical supplies,
-                and specialized consumables from the world’s most trusted global manufacturers.
-              </p>
             </div>
 
             {/* Brands Logo Grid - Only Clean Brand Logos */}
@@ -268,138 +242,74 @@ export default async function BrandsPage() {
             </div>
 
             {/* =========================================================
-                SECTION 2: BEARINGS BRANDS
+                SECTION 2: BEARINGS BRANDS (Logos Only - 6 per row)
                 ========================================================= */}
             <div className="brand-category-divider">
               <div className="divider-line" />
             </div>
 
-            <div style={{ textAlign: 'center', maxWidth: '780px', margin: '60px auto 40px' }}>
-              <div
-                style={{
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: '#005a9c',
-                  marginBottom: '10px',
-                }}
-              >
-                PRECISION MOTION &amp; ROTATING EQUIPMENT
-              </div>
-
+            <div style={{ textAlign: 'center', maxWidth: '780px', margin: '50px auto 30px' }}>
               <h2
                 style={{
                   fontFamily: "'Montserrat', sans-serif",
                   fontSize: 'clamp(1.75rem, 2.6vw, 2.3rem)',
-                  fontWeight: 700,
-                  color: '#0f172a',
-                  marginBottom: '14px',
+                  fontWeight: 600,
+                  color: '#111827',
+                  marginBottom: '0px',
                   letterSpacing: '-0.01em',
                 }}
               >
                 Bearings
               </h2>
-
-              <p
-                style={{
-                  fontSize: '0.92rem',
-                  color: '#64748b',
-                  lineHeight: 1.7,
-                  margin: 0,
-                  fontWeight: 400,
-                }}
-              >
-                High-precision deep groove ball bearings, spherical roller bearings, tapered roller bearings,
-                pillow blocks, and linear motion guides sourced directly from the world’s elite manufacturers.
-              </p>
             </div>
 
-            <div className="brands-category-grid">
+            <div className="brand-six-grid">
               {bearingsList.map((brand, i) => (
-                <div key={brand._id || `bearing-${i}`} className="category-brand-card">
-                  <div className="category-logo-box">
+                <div key={brand._id || `bearing-${i}`} className="brand-logo-card">
+                  <div className="brand-logo-wrapper">
                     <img
                       src={brand.logo}
-                      alt={`${brand.name} Bearings Logo`}
-                      className="category-brand-img"
+                      alt={`${brand.name} Logo`}
+                      className="brand-logo-img"
                       loading="lazy"
                     />
-                  </div>
-                  <div className="category-brand-info">
-                    <div className="category-brand-title">{brand.name}</div>
-                    {brand.description && (
-                      <p className="category-brand-desc">{brand.description}</p>
-                    )}
                   </div>
                 </div>
               ))}
             </div>
 
             {/* =========================================================
-                SECTION 3: FILTERINGS BRANDS
+                SECTION 3: FILTERINGS BRANDS (Logos Only - 6 per row)
                 ========================================================= */}
             <div className="brand-category-divider">
               <div className="divider-line" />
             </div>
 
-            <div style={{ textAlign: 'center', maxWidth: '780px', margin: '60px auto 40px' }}>
-              <div
-                style={{
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: '#0b7a3d',
-                  marginBottom: '10px',
-                }}
-              >
-                HEAVY INDUSTRIAL &amp; HYDRAULIC FILTRATION
-              </div>
-
+            <div style={{ textAlign: 'center', maxWidth: '780px', margin: '50px auto 30px' }}>
               <h2
                 style={{
                   fontFamily: "'Montserrat', sans-serif",
                   fontSize: 'clamp(1.75rem, 2.6vw, 2.3rem)',
-                  fontWeight: 700,
-                  color: '#0f172a',
-                  marginBottom: '14px',
+                  fontWeight: 600,
+                  color: '#111827',
+                  marginBottom: '0px',
                   letterSpacing: '-0.01em',
                 }}
               >
                 Filterings
               </h2>
-
-              <p
-                style={{
-                  fontSize: '0.92rem',
-                  color: '#64748b',
-                  lineHeight: 1.7,
-                  margin: 0,
-                  fontWeight: 400,
-                }}
-              >
-                Heavy-duty hydraulic oil filters, fuel water separators, industrial air intake cartridges,
-                lube filters, and process fluid filtration solutions built for extreme industrial uptime.
-              </p>
             </div>
 
-            <div className="brands-category-grid">
+            <div className="brand-six-grid">
               {filteringsList.map((brand, i) => (
-                <div key={brand._id || `filtering-${i}`} className="category-brand-card">
-                  <div className="category-logo-box">
+                <div key={brand._id || `filtering-${i}`} className="brand-logo-card">
+                  <div className="brand-logo-wrapper">
                     <img
                       src={brand.logo}
-                      alt={`${brand.name} Filtration Logo`}
-                      className="category-brand-img"
+                      alt={`${brand.name} Logo`}
+                      className="brand-logo-img"
                       loading="lazy"
                     />
-                  </div>
-                  <div className="category-brand-info">
-                    <div className="category-brand-title">{brand.name}</div>
-                    {brand.description && (
-                      <p className="category-brand-desc">{brand.description}</p>
-                    )}
                   </div>
                 </div>
               ))}
@@ -513,75 +423,11 @@ export default async function BrandsPage() {
           background: linear-gradient(90deg, transparent 0%, #cbd5e1 50%, transparent 100%);
         }
 
-        /* Dedicated Category Grids */
-        .brands-category-grid {
+        /* Dedicated Category 6-column Grid */
+        .brand-six-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
-        }
-
-        .category-brand-card {
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 8px;
-          padding: 18px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          transition: all 0.25s ease;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        }
-
-        .category-brand-card:hover {
-          border-color: #0b7a3d;
-          transform: translateY(-4px);
-          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        .category-logo-box {
-          width: 100%;
-          height: 80px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 8px 12px;
-          background: #ffffff;
-          border-bottom: 1px solid #f1f5f9;
-          margin-bottom: 12px;
-        }
-
-        .category-brand-img {
-          max-width: 100%;
-          max-height: 100%;
-          width: auto;
-          height: auto;
-          object-fit: contain;
-          transition: transform 0.2s ease;
-        }
-
-        .category-brand-card:hover .category-brand-img {
-          transform: scale(1.05);
-        }
-
-        .category-brand-info {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-
-        .category-brand-title {
-          font-family: 'Montserrat', sans-serif;
-          font-size: 0.95rem;
-          font-weight: 700;
-          color: #0f172a;
-        }
-
-        .category-brand-desc {
-          font-size: 0.76rem;
-          color: #64748b;
-          line-height: 1.45;
-          margin: 0;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 16px;
         }
 
         .brand-cta-btn {
@@ -604,8 +450,9 @@ export default async function BrandsPage() {
         }
 
         @media (max-width: 1024px) {
-          .brands-category-grid {
-            grid-template-columns: repeat(3, 1fr);
+          .brand-six-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
           }
         }
 
@@ -614,28 +461,28 @@ export default async function BrandsPage() {
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
           }
+          .brand-six-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+          }
           .brand-logo-card {
             height: 95px;
             padding: 10px 12px;
-          }
-          .brands-category-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
           }
         }
 
         @media (max-width: 480px) {
           .brands-logo-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px;
+          }
+          .brand-six-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
             gap: 10px;
           }
           .brand-logo-card {
             height: 90px;
             padding: 8px 10px;
-          }
-          .brands-category-grid {
-            grid-template-columns: 1fr;
-            gap: 12px;
           }
         }
       `}</style>

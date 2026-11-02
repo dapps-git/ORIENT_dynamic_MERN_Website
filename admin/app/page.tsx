@@ -103,7 +103,7 @@ const INITIAL_BRANDS: Brand[] = [
   { _id: 'b-9', name: 'Fleetguard', category: 'filterings', logo: '/brands/fleetguard-logo.svg', websiteUrl: 'https://www.cumminsfiltration.com', description: 'Heavy-duty Cummins filtration', order: 3, isActive: true },
 ];
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || `${API_BASE}`).replace(/\/+$/, '');
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace(/\/+$/, '');
 
 const INITIAL_INQUIRIES: Inquiry[] = [
   {
@@ -1994,25 +1994,22 @@ export default function AdminApp() {
     return (
       <div className="login-container">
         <div className="login-card">
-          <div className="login-header">
-            <div className="logo-wrap">
-              <img src="/logo.png" alt="Orient Energy" style={{ height: '44px', objectFit: 'contain' }} />
+          <div className="login-header" style={{ marginBottom: '26px' }}>
+            <div className="logo-wrap" style={{ margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
+              <img src="/logo.png" alt="Orient Energy" style={{ height: '52px', objectFit: 'contain' }} />
             </div>
-            <h1>Admin Sign In</h1>
-            <p>Enter your credentials to access the admin portal</p>
           </div>
 
           <form onSubmit={handleLogin} className="login-form">
             {loginError && <div className="alert-error">{loginError}</div>}
 
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@example.com"
+                placeholder="Email Address"
                 required
                 className="input-field"
                 autoComplete="email"
@@ -2020,20 +2017,19 @@ export default function AdminApp() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
               <input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••••••"
+                placeholder="Password"
                 required
                 className="input-field"
                 autoComplete="current-password"
               />
             </div>
 
-            <button type="submit" disabled={isLoading} className="btn-primary">
+            <button type="submit" disabled={isLoading} className="btn-primary" style={{ marginTop: '6px' }}>
               {isLoading ? 'Signing In...' : 'Sign In'}
             </button>
           </form>
