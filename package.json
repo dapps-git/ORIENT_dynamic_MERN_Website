@@ -1,0 +1,13 @@
+{
+  "name": "orient-root",
+  "version": "1.0.0",
+  "description": "Orient Energy Trading Company - Monorepo runner",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:admin": "npm --prefix admin run dev",
+    "seed": "npm --prefix backend run seed",
+    "start:all": "powershell -ExecutionPolicy Bypass -File ./run-all.ps1"
+  }
+}

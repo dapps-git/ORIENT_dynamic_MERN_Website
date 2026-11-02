@@ -1,10 +1,13 @@
 import { Router, Request, Response } from 'express';
+import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
 import path from 'path';
 
+cloudinary.config();
+
 const router = Router();
 
-// Endpoint to upload base64 image or file
+// Endpoint to upload base64 image or file (Auto-converts to WebP via Cloudinary)
 router.post('/', async (req: Request, res: Response) => {
   try {
     const { image, name } = req.body;
@@ -18,7 +21,33 @@ router.post('/', async (req: Request, res: Response) => {
       return res.json({ success: true, url: image });
     }
 
-    // Extract base64 data
+    // Try Cloudinary upload with automatic WebP conversion
+    if (process.env.CLOUDINARY_URL) {
+      try {
+        const safeName = (name || 'upload')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+
+        const uploadRes = await cloudinary.uploader.upload(image, {
+          folder: 'orient_energy',
+          format: 'webp',
+          resource_type: 'auto',
+          public_id: `${safeName}-${Date.now()}`,
+        });
+
+        return res.json({
+          success: true,
+          url: uploadRes.secure_url,
+          format: 'webp',
+          public_id: uploadRes.public_id,
+        });
+      } catch (cloudErr: any) {
+        console.error('Cloudinary upload error, falling back to local:', cloudErr.message);
+      }
+    }
+
+    // Local fallback
     const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
     if (!matches || matches.length !== 3) {
       return res.status(400).json({ success: false, message: 'Invalid base64 string' });
@@ -28,11 +57,10 @@ router.post('/', async (req: Request, res: Response) => {
     const base64Data = matches[2];
     const buffer = Buffer.from(base64Data, 'base64');
 
-    // Extension from mimeType
-    let ext = 'jpg';
+    let ext = 'webp';
     if (mimeType.includes('png')) ext = 'png';
-    else if (mimeType.includes('webp')) ext = 'webp';
     else if (mimeType.includes('svg')) ext = 'svg';
+    else if (mimeType.includes('jpg') || mimeType.includes('jpeg')) ext = 'jpg';
 
     const safeName = (name || 'upload')
       .toLowerCase()
@@ -40,10 +68,9 @@ router.post('/', async (req: Request, res: Response) => {
       .replace(/(^-|-$)/g, '');
     const filename = `${safeName}-${Date.now()}.${ext}`;
 
-    // Target upload directories in both frontend and admin
     const frontendDir = path.resolve(__dirname, '../../../frontend/public/uploads');
     const adminDir = path.resolve(__dirname, '../../../admin/public/uploads');
-    
+
     if (!fs.existsSync(frontendDir)) {
       fs.mkdirSync(frontendDir, { recursive: true });
     }

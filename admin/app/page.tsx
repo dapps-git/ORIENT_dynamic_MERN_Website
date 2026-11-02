@@ -15,6 +15,12 @@ interface Inquiry {
   status: 'new' | 'contacted' | 'quoted' | 'closed';
 }
 
+interface ProductInnerSection {
+  title: string;
+  content: string;
+  image?: string;
+}
+
 interface Product {
   id: string;
   title: string;
@@ -24,6 +30,7 @@ interface Product {
   category?: string;
   image: string;
   images?: string[];
+  innerSections?: ProductInnerSection[];
   shortDescription?: string;
   fullDescription?: string;
   features?: string[];
@@ -83,7 +90,7 @@ const INITIAL_INQUIRIES: Inquiry[] = [
     email: 'fahad@aramco-contractor.sa',
     phone: '+966551234567',
     company: 'Al-Khobar EPC Consortium',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     message: 'Need urgent quote for 150 pcs of Butterfly Valve Lever Handle SS Disc 6" and carbon steel seamless pipes.',
     date: '2026-10-16 14:20',
     status: 'new',
@@ -129,11 +136,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-1',
     title: 'Breathing Hoses',
     slug: 'breathing-hoses',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Hoses, Hammer Unions & Rig Supplies',
     image: '/products/mechanical/breathing-hoses.png',
-    images: ['/products/mechanical/breathing-hoses.png'],
+    images: [
+      '/products/mechanical/breathing-hoses.png',
+      '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+      '/products/mechanical/industrial-large-bore-hoses.png',
+    ],
+    innerSections: [
+      {
+        title: 'Critical Breathing Air Safety Standards',
+        content: 'Engineered for offshore rig safety and industrial refinery turnaround projects. Complies with EN 14593/EN 14594 breathing apparatus standards, with anti-static inner core lining and ozone-resistant synthetic outer cover.',
+        image: '/products/mechanical/breathing-hoses.png',
+      },
+    ],
     shortDescription: 'Industrial low-pressure and high-pressure breathing air hoses for critical offshore and plant environments.',
     fullDescription: 'High quality industrial breathing hoses designed for offshore, marine, and refinery operations. Meets international industrial safety standards with complete testing and certification.',
     features: ['Low Pressure & High Pressure Hoses', 'Quick Release Couplers', 'Manifolds', 'CGA Connectors', 'Isolation Valves'],
@@ -144,11 +162,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-2',
     title: 'Butterfly Valve',
     slug: 'butterfly-valve',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Valves, Fittings & Tubing',
     image: '/products/mechanical/butterfly-valve.png',
-    images: ['/products/mechanical/butterfly-valve.png'],
+    images: [
+      '/products/mechanical/butterfly-valve.png',
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+    ],
+    innerSections: [
+      {
+        title: 'High-Integrity Bidirectional Sealing',
+        content: 'Designed with a vulcanized resilient seat that eliminates internal stem leaks. Ideal for both isolation and throttling duties across chemical dosing, cooling water, and desalination installations.',
+        image: '/products/mechanical/butterfly-valve.png',
+      },
+    ],
     shortDescription: 'Wafer and lug type resilient seated butterfly valve for bubble-tight bidirectional shut-off.',
     fullDescription: 'Heavy-duty industrial butterfly valves engineered for chemical, petrochemical, and water processing pipelines with API 609 compliant design.',
     features: ['Wafer and Lug Type Body Styles', 'API 609 / ASME B16.34 Compliant Design', 'Resilient Seated & High Performance Disc', 'Manual Lever, Gear Operator & Actuator Ready', 'Bubble-Tight Bidirectional Shut-Off'],
@@ -159,11 +188,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-3',
     title: 'Butterfly Valve Lever Handle SS Disc 3',
     slug: 'butterfly-valve-lever-handle-ss-disc-3',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Valves, Fittings & Tubing',
     image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png',
-    images: ['/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png'],
+    images: [
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png',
+      '/products/mechanical/butterfly-valve.png',
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+    ],
+    innerSections: [
+      {
+        title: 'Precision Throttle Lever with 10-Position Lock',
+        content: 'Equipped with a notched locking quadrant plate allowing precise flow control from 0 to 90 degrees. Investment-cast SS316 disc ensures maximum corrosion resistance against saline marine fluids.',
+        image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png',
+      },
+    ],
     shortDescription: '3-Inch nominal bore with SS316 investment cast disc and 10-position locking lever.',
     fullDescription: '3-Inch butterfly valve with precision stainless steel disc, replaceable elastomer liner, and locking throttle handle.',
     features: ['3-Inch Nominal Bore Diameter', 'Stainless Steel 316 Investment Cast Disc', 'Ergonomic 10-Position Locking Lever Handle', 'EPDM / NBR Replaceable Liner', 'Working Pressure up to 16 Bar (232 PSI)'],
@@ -174,11 +214,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-4',
     title: 'Butterfly Valve Lever Handle SS Disc 4',
     slug: 'butterfly-valve-lever-handle-ss-disc-4',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Valves, Fittings & Tubing',
     image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
-    images: ['/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png'],
+    images: [
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+      '/products/mechanical/butterfly-valve.png',
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+    ],
+    innerSections: [
+      {
+        title: 'Heavy Wafer Pattern Body & Direct ISO Mounting',
+        content: 'Universal wafer body fits seamlessly between ANSI Class 150, PN10, and PN16 counter-flanges. Features an ISO 5211 direct-mount actuator pad for effortless pneumatic or electric actuator retrofits.',
+        image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png',
+      },
+    ],
     shortDescription: '4-Inch wafer pattern butterfly valve with polished stainless steel disc.',
     fullDescription: '4-Inch wafer body butterfly valve with pinless shaft design tested to API 598 pressure standards.',
     features: ['4-Inch Heavy-Duty Industrial Wafer Valve', 'Stainless Steel 316 Disc with Polished Edges', 'Rugged Lever Handle with Visual Position Indicator', 'Pinless Shaft Connection Preventing Leakage', 'Tested to API 598 Pressure Standards'],
@@ -189,11 +240,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-5',
     title: 'Butterfly Valve Lever Handle SS Disc 6',
     slug: 'butterfly-valve-lever-handle-ss-disc-6',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Valves, Fittings & Tubing',
     image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
-    images: ['/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png'],
+    images: [
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
+      '/products/mechanical/butterfly-valve.png',
+    ],
+    innerSections: [
+      {
+        title: 'Epoxy Powder-Coated Ductile Iron Construction',
+        content: 'Fusion-bonded epoxy coating (250+ microns) protects the valve body against corrosive atmospheric salt spray. Blow-out proof stem design ensures safe maintenance under full operational pressure.',
+        image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+      },
+    ],
     shortDescription: '6-Inch heavy-duty process control valve with ductile iron body and epoxy coating.',
     fullDescription: '6-Inch industrial butterfly valve featuring high-performance ductile iron body, SS316 disc, and blowout-proof stem.',
     features: ['6-Inch Industrial Process Control Valve', 'Ductile Iron Body with Epoxy Powder Coating', 'Stainless Steel Disc for Aggressive Fluids', 'Blow-out Proof Stem with PTFE Bushings', 'Direct Mount ISO 5211 Actuator Flange'],
@@ -204,11 +266,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-6',
     title: 'Butterfly Valve Lever Handle SS Disc 8',
     slug: 'butterfly-valve-lever-handle-ss-disc-8',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Valves, Fittings & Tubing',
     image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
-    images: ['/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png'],
+    images: [
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
+      '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png',
+      '/products/mechanical/butterfly-valve.png',
+    ],
+    innerSections: [
+      {
+        title: 'Heavy Industrial Isolation & Slurry Capability',
+        content: 'Engineered for high-volume piping lines in petrochemical refineries and municipal treatment facilities. Dual O-ring stem seals and heavy-duty gear/lever operators provide low operating torque.',
+        image: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png',
+      },
+    ],
     shortDescription: '8-Inch flanged wafer valve designed for high-capacity industrial cooling and hydrocarbon lines.',
     fullDescription: '8-Inch heavy industrial butterfly valve approved for major Saudi energy operators including Aramco & SABIC facilities.',
     features: ['8-Inch Flanged / Wafer Isolation Valve', 'Heavy Industrial Duty Gear or Lever Handle', 'Dual Shaft O-ring Stem Sealing', 'Suitable for Water, Glycol, Slurries & Hydrocarbons', 'Aramco & SABIC Plant Approved Specifications'],
@@ -219,11 +292,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-7',
     title: 'Hydraulic Hoses Fittings & Adaptors',
     slug: 'hydraulic-hoses-fittings-adaptors',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Hoses, Hammer Unions & Rig Supplies',
     image: '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
-    images: ['/products/mechanical/hydraulic-hoses-fittings-adaptors.png'],
+    images: [
+      '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+      '/products/mechanical/industrial-large-bore-hoses.png',
+      '/products/mechanical/breathing-hoses.png',
+    ],
+    innerSections: [
+      {
+        title: 'High-Pressure Hydraulic Crimp Assembly Certification',
+        content: 'Tested up to 6,000 PSI operating pressure with high-tensile 4-spiral steel reinforcement. Available with BSP, JIC, and ORFS fittings, crimped and pressure-certified to international SAE 100R standards.',
+        image: '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+      },
+    ],
     shortDescription: 'High-pressure 1SN, 2SN, 4SP wire spiral hydraulic hoses with certified crimp fittings.',
     fullDescription: 'Comprehensive range of hydraulic hoses, BSP, JIC, and NPT crimp fittings and high-pressure quick disconnect swivels.',
     features: ['High Pressure Wire Braid & Spiral Hoses (1SN, 2SN, 4SP, 4SH)', 'BSP, JIC, NPT & ORFS Standard Crimp Fittings', 'Abrasion and Weather Resistant Outer Covers', 'Quick Disconnect Couplings & High-Pressure Swivels', 'Custom Crimping & Pressure Testing Certification'],
@@ -234,11 +318,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-8',
     title: 'Industrial & Large Bore Hoses',
     slug: 'industrial-large-bore-hoses',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Hoses, Hammer Unions & Rig Supplies',
     image: '/products/mechanical/industrial-large-bore-hoses.png',
-    images: ['/products/mechanical/industrial-large-bore-hoses.png'],
+    images: [
+      '/products/mechanical/industrial-large-bore-hoses.png',
+      '/products/mechanical/hydraulic-hoses-fittings-adaptors.png',
+      '/products/mechanical/breathing-hoses.png',
+    ],
+    innerSections: [
+      {
+        title: 'Heavy Mud & Chemical Transfer Performance',
+        content: 'Engineered for extreme suction and discharge duties in offshore rig transfer operations. Built with oil-resistant synthetic rubber lining and dual-helix high-tensile wire for vacuum resistance.',
+        image: '/products/mechanical/industrial-large-bore-hoses.png',
+      },
+    ],
     shortDescription: 'Large diameter composite, rubber & stainless steel hoses from 2" to 12" bore.',
     fullDescription: 'Heavy-duty industrial suction and discharge hoses for mud, oil, chemicals, and industrial fluids with camlock and hammer union ends.',
     features: ['Composite, Rubber & Stainless Steel Corrugated Hoses', 'Sizes from 2-Inch to 12-Inch Diameter', 'Built for Mud, Oil, Chemical & Water Suction/Discharge', 'Camlock, Hammer Union & Flanged End Terminations', 'Electrical Continuity Grounding Available'],
@@ -249,11 +344,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-9',
     title: 'Industrial Gasket and Seals',
     slug: 'industrial-gasket-and-seals',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Gaskets & Sealing Solutions',
     image: '/products/mechanical/industrial-gasket-and-seals.png',
-    images: ['/products/mechanical/industrial-gasket-and-seals.png'],
+    images: [
+      '/products/mechanical/industrial-gasket-and-seals.png',
+      '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
+      '/categories/all-fittings.jpeg',
+    ],
+    innerSections: [
+      {
+        title: 'Spiral Wound & RTJ High-Temperature Sealing',
+        content: 'Manufactured with high-purity flexible graphite windings and 316 stainless steel guide rings. Resists thermal cycling and mechanical shock in petrochemical cracking and steam headers.',
+        image: '/products/mechanical/industrial-gasket-and-seals.png',
+      },
+    ],
     shortDescription: 'Spiral wound gaskets, Ring Type Joints (RTJ), and non-asbestos sheet seals.',
     fullDescription: 'Engineered sealing solutions conforming to ASME B16.20 and API 607 fire-safe standards for refineries and chemical plants.',
     features: ['Spiral Wound Gaskets (316SS with Graphite/PTFE Filler)', 'Ring Type Joint (RTJ) Gaskets for High Pressure Flanges', 'Non-Asbestos Fiber Sheet & Custom Cut Gaskets', 'EPDM, Viton, NBR & Silicone O-Rings and Mechanical Seals', 'Fire-Safe API 607 Compliant Sealing Solutions'],
@@ -264,11 +370,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-10',
     title: 'Isolation Valve, Ball Valve Steam High Temperature Ball Valve',
     slug: 'isolation-valve-ball-valve-steam-high-temperature-ball-valve',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Valves, Fittings & Tubing',
     image: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png',
-    images: ['/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png'],
+    images: [
+      '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png',
+      '/products/mechanical/butterfly-valve.png',
+      '/categories/all-fittings.jpeg',
+    ],
+    innerSections: [
+      {
+        title: 'Firesafe Metal-Seated Steam Isolation',
+        content: 'Three-piece bolted body in forged carbon or stainless steel, with Stellite hard-faced ball and seat. Tested to API 607 firesafe guidelines, delivering zero-leakage shutoff in high-pressure superheated steam.',
+        image: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png',
+      },
+    ],
     shortDescription: 'High-temperature forged steel 3-piece ball valve for steam service up to 450°C.',
     fullDescription: 'Industrial metal-to-metal and PEEK seated ball valves built for extreme temperature, high-pressure steam and hydrocarbons.',
     features: ['Forged Steel 3-Piece Bolted Body Construction', 'Metal-to-Metal & PEEK Seated for Steam Service', 'Operating Temperatures up to 450°C (842°F)', 'Full Bore Design Minimizing Pressure Drops', 'API 6D, Firesafe API 607 Tested & Certified'],
@@ -279,11 +396,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-11',
     title: 'Micro Linear Actuators',
     slug: 'micro-linear-actuators',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Actuators & Control Components',
     image: '/products/mechanical/micro-linear-actuators.png',
-    images: ['/products/mechanical/micro-linear-actuators.png'],
+    images: [
+      '/products/mechanical/micro-linear-actuators.png',
+      '/products/mechanical/butterfly-valve.png',
+      '/categories/all-fittings.jpeg',
+    ],
+    innerSections: [
+      {
+        title: 'Compact Electric Positioning & Ingress Protection',
+        content: 'Engineered for industrial automation and remote dampener actuation. Features IP66 waterproof casing, high-reduction planetary gearbox, and internal potentiometer feedback.',
+        image: '/products/mechanical/micro-linear-actuators.png',
+      },
+    ],
     shortDescription: 'Precision electric linear actuators with IP66 protection and adjustable limit switches.',
     fullDescription: 'High-precision micro linear drive actuators for space-constrained industrial automation, damper controls, and valve positioning.',
     features: ['High Precision Electric Linear Stroke Drive', 'Compact Form Factor for Space-Constrained Industrial Automation', 'IP65 / IP66 Dust and Water Ingress Protection', 'Built-in Adjustable Limit Switches & Position Feedback', '12V / 24V DC Industrial Operating Voltage'],
@@ -294,11 +422,22 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-12',
     title: 'Carbon Steel Seamless & ERW Pipes',
     slug: 'carbon-steel-seamless-erw-pipes',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Pipes & Tubes',
     image: '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
-    images: ['/products/mechanical/carbon-steel-seamless-erw-pipes.png'],
+    images: [
+      '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
+      '/products/steel/pipes.png',
+      '/products/steel/304-stainless-steel-pipe.png',
+    ],
+    innerSections: [
+      {
+        title: 'Aramco & API Specification Compliance',
+        content: 'Supplied strictly to ASTM A106 Grade B and API 5L PSL2 standards with complete Charpy V-Notch impact testing and HIC (Hydrogen Induced Cracking) resistance for sour gas service.',
+        image: '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
+      },
+    ],
     shortDescription: 'ASTM A106 Grade B & API 5L line pipes from 1/2" up to 36" diameter.',
     fullDescription: 'Certified seamless and electric resistance welded (ERW) carbon steel pipes with full hydrostatic and NDT testing.',
     features: ['ASTM A106 Grade B / API 5L Grade B & X-Grades', 'Schedules SCH 40, SCH 80, SCH 160 & XXS', 'Sizes ranging from 1/2" up to 36" Diameter', 'Beveled and Plain Ends with Protective Varnishing', 'Full Hydrostatic Testing and NDT Inspection Certified'],
@@ -309,14 +448,77 @@ const INITIAL_PRODUCTS: Product[] = [
     id: 'mech-13',
     title: 'Black-Coated Steel Pipe Flanges Threaded',
     slug: 'black-coated-steel-pipe-flanges-threaded',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Flanges & Pipe Connections',
     image: '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
-    images: ['/products/mechanical/black-coated-steel-pipe-flanges-threaded.png'],
+    images: [
+      '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
+      '/products/mechanical/carbon-steel-seamless-erw-pipes.png',
+      '/products/mechanical/industrial-gasket-and-seals.png',
+    ],
+    innerSections: [
+      {
+        title: 'Flange Pressure Classes & Dimensional Accuracy',
+        content: 'Manufactured to strict ASME/ANSI B16.5 standards, these threaded flanges provide exceptional structural reliability in high-vibration piping systems. Features precision-tapered NPT threads that create leak-tight mechanical seals without requiring on-site welding.',
+        image: '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png',
+      },
+    ],
     shortDescription: 'Threaded carbon steel pipe flanges Class 150/300/600 with black anti-corrosion coating.',
     fullDescription: 'High-strength forged carbon steel ASTM A105 threaded flanges for secure piping connections with complete MTR mill certification.',
     features: ['High Pressure ASME B16.5 Standard', 'Anti-Corrosive Black Protective Coating', 'Threaded Class 150/300/600 Pressure Ratings', 'Carbon Steel ASTM A105 / A350 Material', 'Complete MTR (Mill Test Report) Traceability'],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: 'pmp-1',
+    title: 'API 610 Centrifugal Process Pump',
+    slug: 'api-610-centrifugal-process-pump',
+    division: 'Pipe Fittings and Flanges',
+    divisionSlug: 'mechanical-division',
+    category: 'Pumps & Fluid Handling',
+    image: '/categories/pumps-motors.jpg',
+    images: ['/categories/pumps-motors.jpg', '/categories/mechanical-supply-division.png'],
+    features: ['API 610 11th / 12th Edition Compliant', 'Heavy-Duty Casing Design', 'Single or Double Mechanical Cartridge Seals to API 682'],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: 'pmp-2',
+    title: 'Heavy-Duty Submersible Slurry Pump',
+    slug: 'heavy-duty-submersible-slurry-pump',
+    division: 'Pipe Fittings and Flanges',
+    divisionSlug: 'mechanical-division',
+    category: 'Pumps & Fluid Handling',
+    image: '/categories/mechanical-supply-division.png',
+    images: ['/categories/mechanical-supply-division.png', '/categories/pumps-motors.jpg'],
+    features: ['High-Chrome Abrasion-Resistant Wet End (28% Cr)', 'Integrated Agitator', 'Class H Motor Insulation'],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: 'pmp-3',
+    title: 'High-Efficiency Industrial Electric Motor',
+    slug: 'high-efficiency-industrial-electric-motor',
+    division: 'Pipe Fittings and Flanges',
+    divisionSlug: 'mechanical-division',
+    category: 'Electric Motors & Drives',
+    image: '/categories/power-system.jpg',
+    images: ['/categories/power-system.jpg', '/categories/pumps-motors.jpg'],
+    features: ['IE3 / IE4 Premium Efficiency Rating', 'Cast Iron Frame', 'IP55 / IP66 Ingress Protection'],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: 'pmp-4',
+    title: 'Multistage High-Pressure Feed Pump',
+    slug: 'multistage-high-pressure-feed-pump',
+    division: 'Pipe Fittings and Flanges',
+    divisionSlug: 'mechanical-division',
+    category: 'Pumps & Fluid Handling',
+    image: '/categories/all-fittings.jpeg',
+    images: ['/categories/all-fittings.jpeg', '/categories/pumps-motors.jpg'],
+    features: ['High-Pressure Multistage Impeller Design up to 100+ Bar', 'Stainless Steel AISI 316 / Super Duplex', 'Cartridge Mechanical Seal'],
     inStock: true,
     featured: true,
   },
@@ -327,23 +529,48 @@ const INITIAL_PRODUCTS: Product[] = [
   { id: 'elec-1', title: 'Acti9 Miniature Circuit Breaker C60H-DC', division: 'Electrical Division', divisionSlug: 'electrical-division', category: 'Circuit Breakers', image: '/products/electrical/acti9-mcb-c60h-dc-10a.png', inStock: true, featured: true },
   { id: 'elec-2', title: 'TeSys Giga Contactor 185A Wide Band', division: 'Electrical Division', divisionSlug: 'electrical-division', category: 'Switchgear', image: '/products/electrical/tesys-giga-contactor-185a.png', inStock: true, featured: true },
   { id: 'lift-1', title: 'Industrial Chain Blocks 5 Ton Rating', division: 'Lifting & Material Handling', divisionSlug: 'lifting-material-handling', category: 'Hoists & Rigging', image: '/products/lifting/chain-blocks.png', inStock: true, featured: true },
+  // Fasteners & Coatings Highlights
   { id: 'fast-1', title: 'Stainless Steel Hex Head Structural Bolts', division: 'Fasteners Division', divisionSlug: 'fasteners-division', category: 'Bolts & Screws', image: '/products/fasteners/stainless-steel-hex-head-bolts.png', inStock: true, featured: true },
   { id: 'coat-1', title: 'Jotun Hardtop XP 1005 Protective Paint', division: 'Coatings & Surface Protection', divisionSlug: 'coatings-surface-protection', category: 'Paints & Coatings', image: '/products/coatings/jotun-hardtop-xp-1005.png', inStock: true, featured: true },
+
+  // PPE & Safety Equipment Products (24 Items)
+  { id: 'ppe-1', title: '3M 6700 Full Face Respirator', slug: '3m-6700', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6700-full-face-respirator.png', inStock: true, featured: true },
+  { id: 'ppe-2', title: '3M 6800 Full Face Respirator', slug: '3m-6800-full-mask', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6800-full-face-respirator.png', inStock: true, featured: true },
+  { id: 'ppe-3', title: '3M 6900 Fullface Mask Large', slug: '3m-6900-fullface-mask-larg', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6900-full-face-respirator-large.png', inStock: true, featured: false },
+  { id: 'ppe-4', title: '3M 7093 Particulate Filter', slug: '3m-7093', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-7093-particulate-filter.png', inStock: true, featured: false },
+  { id: 'ppe-5', title: '3M FF 402 Full Facepiece Respirator', slug: '3m-ff-402', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-ff-402-full-facepiece-respirator.png', inStock: true, featured: false },
+  { id: 'ppe-6', title: '6100 Half Mask', slug: '6100-half-mask', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6100-half-facepiece-respirator.png', inStock: true, featured: false },
+  { id: 'ppe-7', title: '6200 Half Mask', slug: '6200-half-mask', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6200-half-facepiece-respirator.png', inStock: true, featured: false },
+  { id: 'ppe-8', title: '6300 Half Mask', slug: '6300-half-mask', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6300-half-facepiece-respirator.png', inStock: true, featured: false },
+  { id: 'ppe-9', title: '7502 Half Mask', slug: '7502-half-mask', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-7502-silicone-half-mask.png', inStock: true, featured: false },
+  { id: 'ppe-10', title: '7503 Half Mask', slug: '7503-half-mask', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-7503-silicone-half-mask.png', inStock: true, featured: false },
+  { id: 'ppe-11', title: 'Catridge Filter 2097', slug: 'catridge-filter-2097', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-2097-particulate-filter.png', inStock: true, featured: false },
+  { id: 'ppe-12', title: 'Catridge Filter 501', slug: 'catridge-filter-501', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-501-filter-retainer.png', inStock: true, featured: false },
+  { id: 'ppe-13', title: 'Catridge Filter 5N11', slug: 'catridge-filter-5n11', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-5n11-n95-particulate-filter.png', inStock: true, featured: false },
+  { id: 'ppe-14', title: 'Catridge Filter 6001', slug: 'catridge-filter-6001', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6001-organic-vapor-cartridge.png', inStock: true, featured: false },
+  { id: 'ppe-15', title: 'Catridge Filter 6002', slug: 'catridge-filter-6002', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6002-acid-gas-cartridge.png', inStock: true, featured: false },
+  { id: 'ppe-16', title: 'Catridge Filter 6003', slug: 'catridge-filter-6003', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6003-organic-vapor-acid-gas-cartridge.png', inStock: true, featured: false },
+  { id: 'ppe-17', title: 'Catridge Filter 6004', slug: 'catridge-filter-6004', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6004-ammonia-methylamine-cartridge.png', inStock: true, featured: false },
+  { id: 'ppe-18', title: 'Catridge Filter 6005', slug: 'catridge-filter-6005', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6005-formaldehyde-organic-vapor-cartridge.png', inStock: true, featured: false },
+  { id: 'ppe-19', title: 'Catridge Filter 6006', slug: 'catridge-filter-6006', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6006-multi-gas-vapor-cartridge.png', inStock: true, featured: false },
+  { id: 'ppe-20', title: 'Catridge Filter 6051', slug: 'catridge-filter-6051', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6051-organic-vapor-filter.png', inStock: true, featured: false },
+  { id: 'ppe-21', title: 'Catridge Filter 6057', slug: 'catridge-filter-6057', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6057-inorganic-gas-acid-filter.png', inStock: true, featured: false },
+  { id: 'ppe-22', title: 'Catridge Filter 6059', slug: 'catridge-filter-6059', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6059-multi-gas-vapor-filter.png', inStock: true, featured: false },
+  { id: 'ppe-23', title: 'Disposable Masks (Box Pack)', slug: 'disposable-masks-box', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-disposable-particulate-respirator-masks-box.png', inStock: true, featured: false },
+  { id: 'ppe-24', title: 'Disposable Particulate Masks', slug: 'disposable-masks', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-disposable-particulate-respirator-masks.png', inStock: true, featured: false },
 ];
 
 const INITIAL_DIVISIONS: Division[] = [
-  { id: 'div-1', name: 'Mechanical Supply Division', slug: 'mechanical-division', headline: 'Industrial Mechanical Valves, Pipes & Structural Fittings', description: 'Certified valves, seamless pipes, and specialized alloy fittings.', productCount: 13 },
+  { id: 'div-1', name: 'Pipe Fittings and Flanges', slug: 'mechanical-division', headline: 'Industrial Mechanical Valves, Pipes, Flanges & Pumps', description: 'Certified valves, seamless pipes, flanges, and fluid pumps.', productCount: 17 },
   { id: 'div-2', name: 'Welding Division', slug: 'welding-division', headline: 'Industrial Welding Machinery, Gas Apparatus & Consumables', description: 'Cutting torches, regulators, auto helmets, Victor systems.', productCount: 16 },
   { id: 'div-3', name: 'Electrical Division', slug: 'electrical-division', headline: 'Industrial Power Distribution, UPS Systems & Switchgear', description: 'Circuit breakers, switchgear, UPS systems, cables.', productCount: 12 },
   { id: 'div-4', name: 'Lifting & Material Handling', slug: 'lifting-material-handling', headline: 'Heavy Lifting Tackles, Hoists & Rigging Equipment', description: 'Chain blocks, hoists, wire rope slings, snatch blocks.', productCount: 8 },
-  { id: 'div-5', name: 'Power System', slug: 'power-system', headline: 'High-Output Generators & Heavy-Duty Power Equipment', description: 'Industrial generators, diesel & gas engines.', productCount: 4 },
-  { id: 'div-6', name: 'Auxiliary Systems', slug: 'auxiliary-systems', headline: 'Pneumatics, Compressed Air & Plant Utility Equipment', description: 'Air compressors, water tanks, camp logistics equipment.', productCount: 6 },
   { id: 'div-7', name: 'Marine Division', slug: 'marine-division', headline: 'Offshore Deck Hardware, Safety & Marine Operations Support', description: 'Lifejackets, life-saving appliances, deck equipment.', productCount: 4 },
-  { id: 'div-8', name: 'Steel & Structural Materials', slug: 'steel-structural-materials-division', headline: 'Structural Steel Beams, Heavy Plates & Piping Solutions', description: 'Seamless pipes, structural beams, stainless tubes.', productCount: 7 },
+  { id: 'div-8', name: 'Steel & Structural Materials', slug: 'steel-structural-materials-division', headline: 'Structural Steel Beams, Heavy Plates & Piping Solutions', description: 'Seamless pipes, structural beams, carbon steel products.', productCount: 5 },
   { id: 'div-9', name: 'Coatings & Surface Protection', slug: 'coatings-surface-protection', headline: 'Protective Coatings, Industrial Paints & Blasting Abrasives', description: 'Jotun, National Paints, intumescent fire coatings.', productCount: 8 },
-  { id: 'div-10', name: 'Pumps & Motors Division', slug: 'pumps-motors', headline: 'API Industrial Fluid Transfer Pumps & Electric Motors', description: 'API 610 pumps, electric motors, high-pressure boosters.', productCount: 4 },
   { id: 'div-11', name: 'Fasteners Division', slug: 'fasteners-division', headline: 'High-Tensile Structural Fasteners, Studs & Anchors', description: 'Hex bolts, stud bolts, carriage bolts, anchors.', productCount: 16 },
-  { id: 'div-12', name: 'Substructure', slug: 'substructure', headline: 'Rigging Mats, Rig Floors & Environmental Containment', description: 'Rig floors, base frames, spill containment systems.', productCount: 4 },
+  { id: 'div-13', name: 'PPE & Safety Equipment', slug: 'ppe-safety-equipment', headline: 'PPE & Industrial Safety Equipment Supplier in Saudi Arabia', description: 'Certified safety helmets, respiratory masks, protective coveralls, and PPE equipment.', productCount: 24 },
+  { id: 'div-14', name: 'Bearings and Filters', slug: 'bearings-and-filters', headline: 'Industrial Bearings, Mechanical Seals & Filtration Systems', description: 'Ball bearings, roller bearings, hydraulic oil filters, and filtration systems.', productCount: 4 },
 ];
 
 const INITIAL_BLOGS: Blog[] = [
@@ -418,20 +645,24 @@ interface StaticImageItem {
 }
 
 const STATIC_CATALOG_IMAGES: StaticImageItem[] = [
-  // Mechanical Division (13 Products)
-  { id: 'm-1', name: 'Breathing Hoses', url: '/products/mechanical/breathing-hoses.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-2', name: 'Butterfly Valve', url: '/products/mechanical/butterfly-valve.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-3', name: 'Butterfly Valve 3"', url: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-4', name: 'Butterfly Valve 4"', url: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-5', name: 'Butterfly Valve 6"', url: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-6', name: 'Butterfly Valve 8"', url: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-7', name: 'Threaded Flanges', url: '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-8', name: 'Seamless & ERW Pipes', url: '/products/mechanical/carbon-steel-seamless-erw-pipes.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-9', name: 'Hydraulic Hoses & Adaptors', url: '/products/mechanical/hydraulic-hoses-fittings-adaptors.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-10', name: 'Large Bore Hoses', url: '/products/mechanical/industrial-large-bore-hoses.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-11', name: 'Gasket & Seals', url: '/products/mechanical/industrial-gasket-and-seals.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-12', name: 'High Temp Ball Valve', url: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
-  { id: 'm-13', name: 'Micro Linear Actuators', url: '/products/mechanical/micro-linear-actuators.png', division: 'Mechanical Supply Division', divisionSlug: 'mechanical-division' },
+  // Pipe Fittings and Flanges (Mechanical Division - 17 Products)
+  { id: 'm-1', name: 'Breathing Hoses', url: '/products/mechanical/breathing-hoses.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-2', name: 'Butterfly Valve', url: '/products/mechanical/butterfly-valve.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-3', name: 'Butterfly Valve 3"', url: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-3.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-4', name: 'Butterfly Valve 4"', url: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-4.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-5', name: 'Butterfly Valve 6"', url: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-6.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-6', name: 'Butterfly Valve 8"', url: '/products/mechanical/butterfly-valve-lever-handle-ss-disc-8.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-7', name: 'Threaded Flanges', url: '/products/mechanical/black-coated-steel-pipe-flanges-threaded.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-8', name: 'Seamless & ERW Pipes', url: '/products/mechanical/carbon-steel-seamless-erw-pipes.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-9', name: 'Hydraulic Hoses & Adaptors', url: '/products/mechanical/hydraulic-hoses-fittings-adaptors.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-10', name: 'Large Bore Hoses', url: '/products/mechanical/industrial-large-bore-hoses.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-11', name: 'Gasket & Seals', url: '/products/mechanical/industrial-gasket-and-seals.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-12', name: 'High Temp Ball Valve', url: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-13', name: 'Micro Linear Actuators', url: '/products/mechanical/micro-linear-actuators.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-14', name: 'API 610 Process Pump', url: '/categories/pumps-motors.jpg', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-15', name: 'Submersible Slurry Pump', url: '/categories/mechanical-supply-division.png', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-16', name: 'Industrial Electric Motor', url: '/categories/power-system.jpg', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
+  { id: 'm-17', name: 'Multistage Feed Pump', url: '/categories/all-fittings.jpeg', division: 'Pipe Fittings and Flanges', divisionSlug: 'mechanical-division' },
 
   // Welding Division
   { id: 'w-1', name: 'Contender EDGE 2.0', url: '/products/welding/contender-edge-2-0.png', division: 'Welding Division', divisionSlug: 'welding-division' },
@@ -463,9 +694,7 @@ const STATIC_CATALOG_IMAGES: StaticImageItem[] = [
   { id: 'c-1', name: 'Jotun Hardtop XP 1005', url: '/products/coatings/jotun-hardtop-xp-1005.png', division: 'Coatings & Surface Protection', divisionSlug: 'coatings-surface-protection' },
   { id: 'c-2', name: 'Intumescent Fire Coatings', url: '/products/coatings/fire-rated-intumescent-coatings.png', division: 'Coatings & Surface Protection', divisionSlug: 'coatings-surface-protection' },
 
-  // Power System & Marine
-  { id: 'p-1', name: 'Industrial Diesel Engines', url: '/products/power/diesel-engines.png', division: 'Power System', divisionSlug: 'power-system' },
-  { id: 'p-2', name: 'Industrial Generators', url: '/products/power/generators.png', division: 'Power System', divisionSlug: 'power-system' },
+  // Marine
   { id: 'mr-1', name: 'Lifejackets Inflatable', url: '/products/marine/lifejackets-foam-inflatable.png', division: 'Marine Division', divisionSlug: 'marine-division' },
   { id: 'mr-2', name: 'Industrial Ear Plugs', url: '/products/marine/ear-plug-orange-cord.png', division: 'Marine Division', divisionSlug: 'marine-division' },
 
@@ -477,15 +706,12 @@ const STATIC_CATALOG_IMAGES: StaticImageItem[] = [
   { id: 'cat-5', name: 'Fasteners Banner', url: '/categories/fasteners.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
   { id: 'cat-6', name: 'Lifting & Rigging', url: '/categories/lifting-material-handling.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
   { id: 'cat-7', name: 'Coatings & Protection', url: '/categories/coatings-surface-protection.png', division: 'Categories & Banners', divisionSlug: 'categories' },
-  { id: 'cat-8', name: 'Power System Banner', url: '/categories/power-system.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
   { id: 'cat-9', name: 'Marine Deck Hardware', url: '/categories/marine-division.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
   { id: 'cat-10', name: 'Pumps & Motors Banner', url: '/categories/pumps-motors.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
   { id: 'cat-11', name: 'Steel & Structural Materials', url: '/categories/steel-structural-materials-division.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
-  { id: 'cat-12', name: 'Substructure Rig Floors', url: '/categories/substructure.png', division: 'Categories & Banners', divisionSlug: 'categories' },
   { id: 'cat-13', name: 'Industrial Hoses & Couplings', url: '/categories/industrial-hoses-hose-couplings.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
   { id: 'cat-14', name: 'PPE & Safety Equipment', url: '/categories/ppe-safety-equpments.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
   { id: 'cat-15', name: 'Tools & Maintenance', url: '/categories/tools-maintenance.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
-  { id: 'cat-16', name: 'Auxiliary Systems', url: '/categories/auxiliary-systems.jpg', division: 'Categories & Banners', divisionSlug: 'categories' },
 ];
 
 export const MECHANICAL_13_STATIC_IMAGES = [
@@ -502,6 +728,10 @@ export const MECHANICAL_13_STATIC_IMAGES = [
   { name: 'Gasket & Seals', url: '/products/mechanical/industrial-gasket-and-seals.png', slug: 'industrial-gasket-and-seals' },
   { name: 'High Temp Ball Valve', url: '/products/mechanical/isolation-valve-ball-valve-steam-high-temperature-ball-valve.png', slug: 'isolation-valve-ball-valve-steam-high-temperature-ball-valve' },
   { name: 'Micro Linear Actuators', url: '/products/mechanical/micro-linear-actuators.png', slug: 'micro-linear-actuators' },
+  { name: 'API 610 Centrifugal Process Pump', url: '/categories/pumps-motors.jpg', slug: 'api-610-centrifugal-process-pump' },
+  { name: 'Heavy-Duty Submersible Slurry Pump', url: '/categories/mechanical-supply-division.png', slug: 'heavy-duty-submersible-slurry-pump' },
+  { name: 'High-Efficiency Industrial Electric Motor', url: '/categories/power-system.jpg', slug: 'high-efficiency-industrial-electric-motor' },
+  { name: 'Multistage High-Pressure Feed Pump', url: '/categories/all-fittings.jpeg', slug: 'multistage-high-pressure-feed-pump' },
 ];
 
 export default function AdminApp() {
@@ -538,16 +768,20 @@ export default function AdminApp() {
 
   const [showDivisionModal, setShowDivisionModal] = useState<boolean>(false);
   const [editingDivision, setEditingDivision] = useState<Division | null>(null);
+  const [divisionModalTab, setDivisionModalTab] = useState<'products' | 'general' | 'subcategories' | 'range' | 'all'>('products');
 
   // Product Form state
   const [productForm, setProductForm] = useState({
     title: '',
     slug: '',
-    division: 'Mechanical Supply Division',
+    division: 'Pipe Fittings and Flanges',
     divisionSlug: 'mechanical-division',
     category: 'Valves & Fittings',
     image: '/categories/all-fittings.jpeg',
+    images: [] as string[],
     imagesText: '',
+    innerSections: [] as ProductInnerSection[],
+    newInnerImgUrl: '',
     shortDescription: '',
     fullDescription: '',
     featuresText: '',
@@ -636,6 +870,70 @@ export default function AdminApp() {
     });
   }, [products]);
 
+  // Products belonging to the division currently open in Edit Division Inner Page modal
+  const currentDivisionProducts = useMemo(() => {
+    if (!editingDivision) return [];
+    const divSlug = (editingDivision.slug || '').toLowerCase();
+    const divName = (editingDivision.name || '').toLowerCase();
+
+    return products.filter((p) => {
+      const pDivSlug = (p.divisionSlug || '').toLowerCase();
+      const pDivName = (p.division || '').toLowerCase();
+
+      // Exact match on divisionSlug or division name
+      if (pDivSlug && pDivSlug === divSlug) return true;
+      if (pDivName && pDivName === divName) return true;
+
+      // Pipe Fittings and Flanges (Mechanical Division) aliases
+      const isMechanicalDiv =
+        divSlug === 'mechanical-division' ||
+        divName.includes('pipe') ||
+        divName.includes('flange') ||
+        divName.includes('mechanical');
+      const isMechanicalProduct =
+        pDivSlug === 'mechanical-division' ||
+        pDivName.includes('pipe') ||
+        pDivName.includes('flange') ||
+        pDivName.includes('mechanical');
+      if (isMechanicalDiv && isMechanicalProduct) return true;
+
+      // PPE & Safety aliases
+      const isPPEDiv = divSlug === 'ppe-safety-equipment' || divName.includes('ppe') || divName.includes('safety');
+      const isPPEProduct = pDivSlug === 'ppe-safety-equipment' || pDivName.includes('ppe') || pDivName.includes('safety');
+      if (isPPEDiv && isPPEProduct) return true;
+
+      return false;
+    });
+  }, [editingDivision, products]);
+
+  const handleQuickProductImageChange = async (productId: string, newImageUrl: string) => {
+    setProducts((prev) =>
+      prev.map((p) => {
+        if (p.id === productId) {
+          const updatedImages = p.images && p.images.length > 0 ? [newImageUrl, ...p.images.slice(1)] : [newImageUrl];
+          return {
+            ...p,
+            image: newImageUrl,
+            images: updatedImages,
+          };
+        }
+        return p;
+      })
+    );
+
+    try {
+      await fetch(`http://localhost:5000/api/products/${productId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: newImageUrl }),
+      });
+    } catch {
+      // offline fallback
+    }
+
+    showToast('Product listing image updated successfully!');
+  };
+
   // Check login token
   useEffect(() => {
     const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
@@ -676,7 +974,7 @@ export default function AdminApp() {
           const allDivs = divisions.length > 0 ? divisions : INITIAL_DIVISIONS;
           setProducts(
             data.data.map((p: any) => {
-              let divName = 'Mechanical Supply Division';
+              let divName = 'Pipe Fittings and Flanges';
               let divSlug = p.divisionSlug || (p.category && p.category.slug) || 'mechanical-division';
 
               if (p.category && typeof p.category === 'object' && p.category.name) {
@@ -867,11 +1165,14 @@ export default function AdminApp() {
     setProductForm({
       title: '',
       slug: '',
-      division: divisions[0]?.name || 'Mechanical Supply Division',
+      division: divisions[0]?.name || 'Pipe Fittings and Flanges',
       divisionSlug: divisions[0]?.slug || 'mechanical-division',
       category: 'Valves & Fittings',
       image: '/categories/all-fittings.jpeg',
-      imagesText: '',
+      images: ['/categories/all-fittings.jpeg'],
+      imagesText: '/categories/all-fittings.jpeg',
+      innerSections: [],
+      newInnerImgUrl: '',
       shortDescription: '',
       fullDescription: '',
       featuresText: '',
@@ -885,7 +1186,10 @@ export default function AdminApp() {
   const openEditProductModal = (p: Product) => {
     setEditingProduct(p);
     setStaticFilter(p.divisionSlug || 'mechanical-division');
-    const gallery = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+    const gallery = Array.isArray(p.images) && p.images.length > 0 ? [...p.images] : (p.image ? [p.image] : []);
+    if (p.image && !gallery.includes(p.image)) {
+      gallery.unshift(p.image);
+    }
     setProductForm({
       title: p.title,
       slug: p.slug || '',
@@ -893,7 +1197,10 @@ export default function AdminApp() {
       divisionSlug: p.divisionSlug || 'mechanical-division',
       category: p.category || 'General Industrial',
       image: p.image || gallery[0] || '/categories/all-fittings.jpeg',
+      images: gallery,
       imagesText: gallery.join('\n'),
+      innerSections: Array.isArray(p.innerSections) ? p.innerSections : [],
+      newInnerImgUrl: '',
       shortDescription: p.shortDescription || '',
       fullDescription: p.fullDescription || '',
       featuresText: (p.features || []).join('\n'),
@@ -902,6 +1209,122 @@ export default function AdminApp() {
       featured: p.featured,
     });
     setShowProductModal(true);
+  };
+
+  const handleAddInnerImage = (url: string) => {
+    if (!url || !url.trim()) return;
+    const cleanUrl = url.trim();
+    setProductForm((prev) => {
+      const curImages = prev.images.length > 0 ? prev.images : (prev.image ? [prev.image] : []);
+      if (curImages.includes(cleanUrl)) {
+        showToast('Photo already in inner gallery');
+        return prev;
+      }
+      const updated = [...curImages, cleanUrl];
+      return {
+        ...prev,
+        images: updated,
+        imagesText: updated.join('\n'),
+        newInnerImgUrl: '',
+      };
+    });
+    showToast('Inner product photo added!');
+  };
+
+  const handleRemoveInnerImage = (idx: number) => {
+    setProductForm((prev) => {
+      const updated = prev.images.filter((_, i) => i !== idx);
+      const newCover = prev.image === prev.images[idx] ? (updated[0] || '/categories/all-fittings.jpeg') : prev.image;
+      return {
+        ...prev,
+        image: newCover,
+        images: updated,
+        imagesText: updated.join('\n'),
+      };
+    });
+    showToast('Photo removed from inner gallery');
+  };
+
+  const handleSetCoverPhoto = (url: string) => {
+    setProductForm((prev) => {
+      const curImages = prev.images.filter((img) => img !== url);
+      return {
+        ...prev,
+        image: url,
+        images: [url, ...curImages],
+        imagesText: [url, ...curImages].join('\n'),
+      };
+    });
+    showToast('Set as main cover photo!');
+  };
+
+  const handleMultipleInnerImagesUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setIsUploadingImage(true);
+    const newUrls: string[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      try {
+        const base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        const res = await fetch('http://localhost:5000/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: base64, name: file.name.replace(/\.[^/.]+$/, '') }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          newUrls.push(data.url);
+        } else {
+          newUrls.push(base64);
+        }
+      } catch {
+        // fallback
+      }
+    }
+    setIsUploadingImage(false);
+    if (newUrls.length > 0) {
+      setProductForm((prev) => {
+        const curImages = prev.images.length > 0 ? prev.images : (prev.image ? [prev.image] : []);
+        const updated = [...curImages, ...newUrls];
+        return {
+          ...prev,
+          images: updated,
+          imagesText: updated.join('\n'),
+        };
+      });
+      showToast(`${newUrls.length} inner photo(s) uploaded successfully!`);
+    }
+  };
+
+  const handleAddInnerSection = () => {
+    setProductForm((prev) => ({
+      ...prev,
+      innerSections: [
+        ...(prev.innerSections || []),
+        { title: '', content: '', image: '' },
+      ],
+    }));
+  };
+
+  const handleUpdateInnerSection = (idx: number, field: 'title' | 'content' | 'image', value: string) => {
+    setProductForm((prev) => {
+      const updated = [...(prev.innerSections || [])];
+      updated[idx] = { ...updated[idx], [field]: value };
+      return { ...prev, innerSections: updated };
+    });
+  };
+
+  const handleRemoveInnerSection = (idx: number) => {
+    setProductForm((prev) => ({
+      ...prev,
+      innerSections: (prev.innerSections || []).filter((_, i) => i !== idx),
+    }));
   };
 
   const handleSaveProduct = async (e: React.FormEvent) => {
@@ -918,10 +1341,12 @@ export default function AdminApp() {
       .map((s) => s.trim())
       .filter(Boolean);
 
-    const galleryList = productForm.imagesText
-      .split('\n')
-      .map((s) => s.trim())
-      .filter(Boolean);
+    const galleryList = (productForm.images && productForm.images.length > 0)
+      ? [...productForm.images]
+      : productForm.imagesText
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean);
 
     if (productForm.image && !galleryList.includes(productForm.image)) {
       galleryList.unshift(productForm.image);
@@ -941,6 +1366,7 @@ export default function AdminApp() {
       categoryName: productForm.category || productForm.division,
       image: productForm.image || (galleryList[0] || '/categories/all-fittings.jpeg'),
       images: galleryList.length > 0 ? galleryList : [productForm.image || '/categories/all-fittings.jpeg'],
+      innerSections: productForm.innerSections || [],
       shortDescription: productForm.shortDescription,
       fullDescription: productForm.fullDescription,
       features: featuresList,
@@ -976,8 +1402,8 @@ export default function AdminApp() {
         if (res.ok) {
           const resData = await res.json();
           const updated = resData.data;
-          setProducts((prev) =>
-            prev.map((item) =>
+          setProducts((prev) => {
+            const updatedList = prev.map((item) =>
               item.id === editingProduct.id || item.slug === editingProduct.slug
                 ? {
                     ...item,
@@ -988,6 +1414,7 @@ export default function AdminApp() {
                     category: productForm.category,
                     image: updated.image || productForm.image,
                     images: Array.isArray(updated.images) && updated.images.length > 0 ? updated.images : galleryList,
+                    innerSections: updated.innerSections || productForm.innerSections,
                     shortDescription: updated.shortDescription,
                     fullDescription: updated.fullDescription,
                     features: Array.isArray(updated.features) ? updated.features : featuresList,
@@ -996,8 +1423,12 @@ export default function AdminApp() {
                     featured: updated.isFeatured,
                   }
                 : item
-            )
-          );
+            );
+            if (typeof window !== 'undefined') {
+              localStorage.setItem('orient_admin_products', JSON.stringify(updatedList));
+            }
+            return updatedList;
+          });
           showToast('Product and Inner Page updated successfully!');
           setShowProductModal(false);
           return;
@@ -1006,8 +1437,8 @@ export default function AdminApp() {
         // Fallback update locally
       }
 
-      setProducts((prev) =>
-        prev.map((item) =>
+      setProducts((prev) => {
+        const updatedList = prev.map((item) =>
           item.id === editingProduct.id || item.slug === editingProduct.slug
             ? {
                 ...item,
@@ -1015,13 +1446,18 @@ export default function AdminApp() {
                 category: productForm.category,
                 division: productForm.division,
                 images: galleryList,
+                innerSections: productForm.innerSections || [],
                 fullDescription: productForm.fullDescription,
                 id: editingProduct.id,
                 featured: productForm.featured,
               }
             : item
-        )
-      );
+        );
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('orient_admin_products', JSON.stringify(updatedList));
+        }
+        return updatedList;
+      });
       showToast('Product and Inner Page updated!');
       setShowProductModal(false);
     } else {
@@ -1044,6 +1480,7 @@ export default function AdminApp() {
             category: productForm.category,
             image: created.image || productForm.image,
             images: Array.isArray(created.images) && created.images.length > 0 ? created.images : galleryList,
+            innerSections: created.innerSections || productForm.innerSections,
             shortDescription: created.shortDescription,
             fullDescription: created.fullDescription,
             features: Array.isArray(created.features) ? created.features : featuresList,
@@ -1051,7 +1488,13 @@ export default function AdminApp() {
             inStock: created.inStock,
             featured: created.isFeatured,
           };
-          setProducts((prev) => [newItem, ...prev]);
+          setProducts((prev) => {
+            const updatedList = [newItem, ...prev];
+            if (typeof window !== 'undefined') {
+              localStorage.setItem('orient_admin_products', JSON.stringify(updatedList));
+            }
+            return updatedList;
+          });
           showToast('Product created and published!');
           setShowProductModal(false);
           return;
@@ -1069,6 +1512,7 @@ export default function AdminApp() {
         category: productForm.category,
         image: productForm.image,
         images: galleryList,
+        innerSections: productForm.innerSections || [],
         shortDescription: productForm.shortDescription,
         fullDescription: productForm.fullDescription,
         features: featuresList,
@@ -1076,7 +1520,13 @@ export default function AdminApp() {
         inStock: productForm.inStock,
         featured: productForm.featured,
       };
-      setProducts((prev) => [newItem, ...prev]);
+      setProducts((prev) => {
+        const updatedList = [newItem, ...prev];
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('orient_admin_products', JSON.stringify(updatedList));
+        }
+        return updatedList;
+      });
       showToast('Product added!');
       setShowProductModal(false);
     }
@@ -1239,6 +1689,7 @@ export default function AdminApp() {
       applicationsText: div.applications ? div.applications.join('\n') : '',
       pillsText: div.pills ? div.pills.join(', ') : '',
     });
+    setDivisionModalTab('products');
     setShowDivisionModal(true);
   };
 
@@ -1310,11 +1761,20 @@ export default function AdminApp() {
 
   // Filtered lists
   const filteredProducts = products.filter((p) => {
+    const filterNorm = divisionFilter.toLowerCase().trim();
+    const divNorm = p.division.toLowerCase().trim();
+    const slugNorm = (p.divisionSlug || '').toLowerCase().trim();
     const matchesDiv =
       divisionFilter === 'all' ||
-      p.division.toLowerCase().includes(divisionFilter.toLowerCase()) ||
-      (p.divisionSlug && p.divisionSlug.toLowerCase().includes(divisionFilter.toLowerCase()));
-    const matchesSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase());
+      divNorm === filterNorm ||
+      divNorm.includes(filterNorm) ||
+      filterNorm.includes(divNorm) ||
+      slugNorm === filterNorm ||
+      slugNorm.includes(filterNorm) ||
+      filterNorm.includes(slugNorm);
+    const matchesSearch =
+      p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.category && p.category.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesDiv && matchesSearch;
   });
 
@@ -1595,10 +2055,9 @@ export default function AdminApp() {
                 fontWeight: activeTab === 'mechanical' ? 700 : undefined,
               }}
             >
-              <span className="nav-icon" style={{ fontSize: '1.15rem' }}>⚙️</span>
-              <span>13 Mechanical Products</span>
+              <span>Pipe Fittings &amp; Flanges</span>
               <span className="badge-count" style={{ background: '#2563eb', color: '#fff', fontWeight: 800 }}>
-                13
+                17
               </span>
             </button>
 
@@ -1610,7 +2069,6 @@ export default function AdminApp() {
                 setMobileMenuOpen(false);
               }}
             >
-              <span className="nav-icon">📊</span>
               <span>Overview</span>
             </button>
 
@@ -1622,7 +2080,6 @@ export default function AdminApp() {
                 setMobileMenuOpen(false);
               }}
             >
-              <span className="nav-icon">💬</span>
               <span>Quotes &amp; Inquiries</span>
               <span className="badge-count">
                 {inquiries.filter((i) => i.status === 'new').length}
@@ -1637,7 +2094,6 @@ export default function AdminApp() {
                 setMobileMenuOpen(false);
               }}
             >
-              <span className="nav-icon">📦</span>
               <span>Products Catalog</span>
               <span className="badge-count">{products.length}</span>
             </button>
@@ -1650,7 +2106,6 @@ export default function AdminApp() {
                 setMobileMenuOpen(false);
               }}
             >
-              <span className="nav-icon">🏭</span>
               <span>Divisions &amp; Units</span>
               <span className="badge-count">{divisions.length}</span>
             </button>
@@ -1663,7 +2118,6 @@ export default function AdminApp() {
                 setMobileMenuOpen(false);
               }}
             >
-              <span className="nav-icon">📰</span>
               <span>Blogs &amp; Insights</span>
               <span className="badge-count">{blogs.length}</span>
             </button>
@@ -1676,7 +2130,6 @@ export default function AdminApp() {
                 setMobileMenuOpen(false);
               }}
             >
-              <span className="nav-icon">⚙️</span>
               <span>Company Settings</span>
             </button>
           </nav>
@@ -1872,30 +2325,30 @@ export default function AdminApp() {
             <div className="mechanical-view">
               <div className="page-heading flex-between" style={{ alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                    <span className="pill-division" style={{ background: '#2563eb', color: '#fff', fontWeight: 700, padding: '4px 12px', borderRadius: '6px' }}>
-                      Mechanical Supply Division
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                    <span className="pill-division">
+                      Pipe Fittings and Flanges
                     </span>
-                    <span style={{ fontSize: '0.82rem', color: '#16a34a', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
-                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#16a34a', display: 'inline-block' }}></span>
-                      All 13 Products &amp; Inner Pages Live
+                    <span className="pill-live-status">
+                      <span className="live-dot-pulse"></span>
+                      All 17 Products &amp; Inner Pages Live
                     </span>
                   </div>
-                  <h1 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#0f172a', margin: '0 0 6px 0' }}>
-                    13 Products &amp; Inner Pages Manager
+                  <h1 style={{ fontSize: '1.5rem', fontWeight: 600, color: '#0f172a', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
+                    17 Products &amp; Inner Pages Manager
                   </h1>
-                  <p style={{ color: '#64748b', fontSize: '0.92rem', margin: 0, maxWidth: '820px', lineHeight: 1.5 }}>
-                    Here are all 13 products with their dedicated live inner pages. Click <strong>&quot;Replace Photo &amp; Edit Inner Page&quot;</strong> on any product to select from original static photos or upload a camera photo, update titles, and change inner page descriptions.
+                  <p style={{ color: '#64748b', fontSize: '0.88rem', fontWeight: 300, margin: 0, maxWidth: '820px', lineHeight: 1.6 }}>
+                    Manage inner gallery images, custom technical sections, specifications, and live content for all 17 Pipe Fittings and Flanges products.
                   </p>
                 </div>
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                   <a
-                    href="http://localhost:3000/division/mechanical-division"
+                    href="http://localhost:3000/products/pipe-fittings-and-flanges"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-live-mechanical"
                   >
-                    <span>🌐 View Live Mechanical Catalog ↗</span>
+                    <span>View Live Catalog ↗</span>
                   </a>
                 </div>
               </div>
@@ -1919,11 +2372,12 @@ export default function AdminApp() {
                           className="mech-badge-live"
                           title="Click to view live page"
                         >
-                          🟢 Live Page ↗
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', display: 'inline-block' }}></span>
+                          Live Page ↗
                         </a>
                       </div>
 
-                      {/* Product Image Frame */}
+                      {/* Product Image Showcase Frame */}
                       <div className="mech-img-frame">
                         <img
                           src={product.image || '/categories/all-fittings.jpeg'}
@@ -1944,11 +2398,21 @@ export default function AdminApp() {
                           {product.title}
                         </h3>
                         <p className="mech-description">
-                          {product.shortDescription || (product.fullDescription ? product.fullDescription.slice(0, 100) + '...' : 'Heavy-duty industrial mechanical equipment.')}
+                          {product.shortDescription || (product.fullDescription ? product.fullDescription.slice(0, 95) + '...' : 'Heavy-duty industrial mechanical equipment.')}
                         </p>
 
-                        <div className="mech-specs-badge">
-                          <span>📌 {product.features?.length || 5} Specifications configured</span>
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: 'auto' }}>
+                          <div className="mech-specs-badge">
+                            <span>📌 {product.features?.length || 5} Specs</span>
+                          </div>
+                          <div className="mech-specs-badge" style={{ background: '#f0f9ff', color: '#0369a1', borderColor: '#e0f2fe' }}>
+                            <span>🖼️ {Array.isArray(product.images) && product.images.length > 0 ? product.images.length : 1} Photos</span>
+                          </div>
+                          {product.innerSections && product.innerSections.length > 0 && (
+                            <div className="mech-specs-badge" style={{ background: '#fefce8', color: '#a16207', borderColor: '#fef08a' }}>
+                              <span>📑 {product.innerSections.length} Sections</span>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -1959,7 +2423,7 @@ export default function AdminApp() {
                           onClick={() => openEditProductModal(product)}
                           className="btn-mech-primary"
                         >
-                          <span>✏️ Replace Photo &amp; Edit Inner Page</span>
+                          <span>Manage Inner Photos &amp; Content</span>
                         </button>
                         <a
                           href={liveUrl}
@@ -2009,56 +2473,29 @@ export default function AdminApp() {
                 >
                   All Products <span className="pill-count">{products.length}</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setDivisionFilter('Mechanical Supply Division')}
-                  className={`div-filter-pill ${divisionFilter === 'Mechanical Supply Division' ? 'active' : ''}`}
-                >
-                  Mechanical Division{' '}
-                  <span className="pill-count">
-                    {products.filter((p) => p.divisionSlug === 'mechanical-division' || p.division.includes('Mechanical')).length}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDivisionFilter('Welding Division')}
-                  className={`div-filter-pill ${divisionFilter === 'Welding Division' ? 'active' : ''}`}
-                >
-                  Welding{' '}
-                  <span className="pill-count">
-                    {products.filter((p) => p.divisionSlug === 'welding-division' || p.division.includes('Welding')).length}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDivisionFilter('Electrical Division')}
-                  className={`div-filter-pill ${divisionFilter === 'Electrical Division' ? 'active' : ''}`}
-                >
-                  Electrical{' '}
-                  <span className="pill-count">
-                    {products.filter((p) => p.divisionSlug === 'electrical-division' || p.division.includes('Electrical')).length}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDivisionFilter('Lifting & Material Handling')}
-                  className={`div-filter-pill ${divisionFilter === 'Lifting & Material Handling' ? 'active' : ''}`}
-                >
-                  Lifting{' '}
-                  <span className="pill-count">
-                    {products.filter((p) => p.divisionSlug === 'lifting-material-handling' || p.division.includes('Lifting')).length}
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDivisionFilter('Fasteners Division')}
-                  className={`div-filter-pill ${divisionFilter === 'Fasteners Division' ? 'active' : ''}`}
-                >
-                  Fasteners{' '}
-                  <span className="pill-count">
-                    {products.filter((p) => p.divisionSlug === 'fasteners-division' || p.division.includes('Fasteners')).length}
-                  </span>
-                </button>
+                {divisions.map((div) => {
+                  const count = products.filter(
+                    (p) =>
+                      p.divisionSlug === div.slug ||
+                      p.division.toLowerCase() === div.name.toLowerCase() ||
+                      p.division.toLowerCase().includes(div.name.toLowerCase()) ||
+                      div.name.toLowerCase().includes(p.division.toLowerCase())
+                  ).length;
+                  const isActive =
+                    divisionFilter === div.name ||
+                    divisionFilter === div.slug ||
+                    divisionFilter.toLowerCase() === div.name.toLowerCase();
+                  return (
+                    <button
+                      key={div.id || div.slug}
+                      type="button"
+                      onClick={() => setDivisionFilter(div.name)}
+                      className={`div-filter-pill ${isActive ? 'active' : ''}`}
+                    >
+                      {div.name} <span className="pill-count">{count}</span>
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Filter & Search Bar */}
@@ -2077,11 +2514,20 @@ export default function AdminApp() {
                   className="filter-select"
                 >
                   <option value="all">All Divisions ({products.length})</option>
-                  {divisions.map((d) => (
-                    <option key={d.id} value={d.name}>
-                      {d.name}
-                    </option>
-                  ))}
+                  {divisions.map((d) => {
+                    const count = products.filter(
+                      (p) =>
+                        p.divisionSlug === d.slug ||
+                        p.division.toLowerCase() === d.name.toLowerCase() ||
+                        p.division.toLowerCase().includes(d.name.toLowerCase()) ||
+                        d.name.toLowerCase().includes(p.division.toLowerCase())
+                    ).length;
+                    return (
+                      <option key={d.id} value={d.name}>
+                        {d.name} ({count})
+                      </option>
+                    );
+                  })}
                 </select>
                 {divisionFilter !== 'all' && (
                   <button
@@ -2144,9 +2590,9 @@ export default function AdminApp() {
                                 type="button"
                                 onClick={() => openEditProductModal(p)}
                                 className="btn-edit-product-prominent"
-                                title="Edit product and replace photo"
+                                title="Edit product and manage inner photos"
                               >
-                                ✏️ Edit &amp; Replace Photo
+                                🖼️ Edit &amp; Inner Photos
                               </button>
                               <a
                                 href={`http://localhost:3000/product/${p.slug || p.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
@@ -2196,19 +2642,33 @@ export default function AdminApp() {
                     {div.headline && <div className="div-headline-badge">{div.headline}</div>}
                     <p>{div.description || 'Dedicated division providing specialized industrial supplies across Saudi Arabia.'}</p>
                     
-                    <div className="division-card-actions">
+                    <div className="division-card-actions" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       <button
                         type="button"
                         onClick={() => openEditDivisionModal(div)}
                         className="btn-edit-div"
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                       >
                         ✏️ Edit Inner Page Details
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const targetSlug = div.slug === 'mechanical-division' ? 'mechanical-division' : div.slug;
+                          setDivisionFilter(targetSlug);
+                          setActiveTab('products');
+                        }}
+                        className="btn-edit-div"
+                        style={{ background: '#f8fafc', color: '#1e293b', border: '1px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                      >
+                        📦 Product Listing Images &amp; Items ({div.productCount || (div.slug === 'mechanical-division' ? 17 : div.slug === 'ppe-safety-equipment' ? 24 : 0)}) &rarr;
                       </button>
                       <a
                         href={`http://localhost:3000/products/${div.slug}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="div-link"
+                        style={{ textAlign: 'center' }}
                       >
                         View Live Page &rarr;
                       </a>
@@ -2405,7 +2865,7 @@ export default function AdminApp() {
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                   <span className="pill-division" style={{ fontSize: '0.75rem', background: '#e0e7ff', color: '#2e3191' }}>
-                    {productForm.division || 'Mechanical Supply Division'}
+                    {productForm.division || 'Pipe Fittings and Flanges'}
                   </span>
                   {productForm.slug && (
                     <a
@@ -2437,31 +2897,75 @@ export default function AdminApp() {
 
             <form onSubmit={handleSaveProduct} className="modal-clean-form">
               <div className="modal-clean-body">
-                {/* SECTION 1: PHOTO STUDIO */}
+                {/* UNIFIED SIMPLE PRODUCT IMAGES & GALLERY */}
                 <div className="clean-section-card">
                   <div className="clean-section-title">
                     <span className="step-num">1</span>
                     <div>
-                      <strong>Product &amp; Inner Page Photo</strong>
-                      <span className="step-subtitle">Click any static photo below to select it, or upload a real photo from your computer.</span>
+                      <strong>Product Images &amp; Gallery</strong>
+                      <span className="step-subtitle">Upload the main cover image and inner page gallery photos.</span>
                     </div>
                   </div>
 
-                  <div className="photo-selection-layout">
-                    {/* Active Preview */}
-                    <div className="active-preview-box">
-                      <div className="active-preview-label">Active Photo Preview</div>
-                      <div className="active-preview-img-wrap">
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'minmax(230px, 1fr) 2fr',
+                      gap: '20px',
+                      marginTop: '16px',
+                    }}
+                  >
+                    {/* Column 1: Main Product Image */}
+                    <div
+                      style={{
+                        backgroundColor: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '10px',
+                        padding: '16px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <div style={{ fontSize: '0.86rem', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
+                        Main Product Image
+                      </div>
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '160px',
+                          backgroundColor: '#ffffff',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: '8px',
+                          overflow: 'hidden',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginBottom: '12px',
+                        }}
+                      >
                         <img
                           src={productForm.image || '/categories/all-fittings.jpeg'}
-                          alt="Product Preview"
+                          alt="Main Product"
+                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
                           }}
                         />
                       </div>
-                      <label className="btn-clean-upload">
-                        <span>📤 Upload Real Photo</span>
+                      <label
+                        style={{
+                          display: 'block',
+                          textAlign: 'center',
+                          backgroundColor: '#005ea6',
+                          color: '#ffffff',
+                          padding: '8px 16px',
+                          borderRadius: '6px',
+                          fontWeight: 600,
+                          fontSize: '0.84rem',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <span>Upload Main Image</span>
                         <input
                           type="file"
                           accept="image/*"
@@ -2471,70 +2975,355 @@ export default function AdminApp() {
                               setProductForm((prev) => ({
                                 ...prev,
                                 image: url,
-                                imagesText: prev.imagesText ? `${url}\n${prev.imagesText}` : url,
+                                images: prev.images && prev.images.includes(url) ? prev.images : [url, ...(prev.images || [])],
                               }));
-                              showToast('Photo uploaded and selected!');
+                              showToast('Main product image updated!');
                             })
                           }
                         />
                       </label>
                     </div>
 
-                    {/* 13 Static Photos Picker */}
-                    <div className="static-photos-picker">
-                      <div className="picker-header">
-                        <strong>🖼️ Original 13 Static Catalog Photos (Click to Select):</strong>
+                    {/* Column 2: Inner Page Images Gallery */}
+                    <div
+                      style={{
+                        backgroundColor: '#f8fafc',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '10px',
+                        padding: '16px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                        <div style={{ fontSize: '0.86rem', fontWeight: 700, color: '#0f172a' }}>
+                          Inner Page Images (Gallery)
+                        </div>
+                        <label
+                          style={{
+                            backgroundColor: '#20b512',
+                            color: '#ffffff',
+                            padding: '6px 14px',
+                            borderRadius: '6px',
+                            fontWeight: 600,
+                            fontSize: '0.80rem',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                          }}
+                        >
+                          <span>+ Add Inner Photos</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            style={{ display: 'none' }}
+                            onChange={handleMultipleInnerImagesUpload}
+                          />
+                        </label>
                       </div>
-                      <div className="static-13-grid">
-                        {MECHANICAL_13_STATIC_IMAGES.map((imgItem) => {
-                          const isSelected = productForm.image === imgItem.url;
+
+                      {/* Attached Photos Grid */}
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(auto-fill, minmax(105px, 1fr))',
+                          gap: '10px',
+                          flex: 1,
+                          maxHeight: '160px',
+                          overflowY: 'auto',
+                          padding: '10px',
+                          backgroundColor: '#ffffff',
+                          border: '1px solid #e2e8f0',
+                          borderRadius: '8px',
+                        }}
+                      >
+                        {(productForm.images && productForm.images.length > 0 ? productForm.images : [productForm.image || '/categories/all-fittings.jpeg']).map((imgUrl, idx) => {
+                          const isMain = productForm.image === imgUrl;
                           return (
                             <div
-                              key={imgItem.slug}
-                              className={`static-pick-card ${isSelected ? 'selected' : ''}`}
-                              onClick={() => {
-                                setProductForm((prev) => ({
-                                  ...prev,
-                                  image: imgItem.url,
-                                  imagesText: prev.imagesText ? `${imgItem.url}\n${prev.imagesText}` : imgItem.url,
-                                }));
-                                showToast(`Selected "${imgItem.name}"`);
+                              key={idx}
+                              style={{
+                                position: 'relative',
+                                border: isMain ? '2px solid #005ea6' : '1px solid #e2e8f0',
+                                borderRadius: '6px',
+                                padding: '6px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                backgroundColor: isMain ? '#f0f9ff' : '#ffffff',
                               }}
-                              title={`Click to use: ${imgItem.name}`}
                             >
-                              <div className="static-pick-img-wrap">
-                                <img
-                                  src={imgItem.url}
-                                  alt={imgItem.name}
-                                  onError={(e) => {
-                                    (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
-                                  }}
-                                />
-                                {isSelected && <span className="pick-check">✓ ACTIVE</span>}
+                              <img
+                                src={imgUrl}
+                                alt={`Gallery ${idx + 1}`}
+                                style={{ width: '100%', height: '65px', objectFit: 'contain' }}
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
+                                }}
+                              />
+                              <div style={{ display: 'flex', gap: '4px', width: '100%', marginTop: '6px' }}>
+                                {!isMain ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleSetCoverPhoto(imgUrl)}
+                                    style={{
+                                      flex: 1,
+                                      fontSize: '0.65rem',
+                                      padding: '2px 4px',
+                                      border: '1px solid #cbd5e1',
+                                      borderRadius: '3px',
+                                      background: '#f8fafc',
+                                      cursor: 'pointer',
+                                    }}
+                                  >
+                                    Main
+                                  </button>
+                                ) : (
+                                  <span style={{ flex: 1, textAlign: 'center', fontSize: '0.62rem', fontWeight: 700, color: '#005ea6' }}>
+                                    Active Main
+                                  </span>
+                                )}
+                                {productForm.images && productForm.images.length > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveInnerImage(idx)}
+                                    style={{
+                                      fontSize: '0.65rem',
+                                      padding: '2px 6px',
+                                      border: 'none',
+                                      borderRadius: '3px',
+                                      background: '#fee2e2',
+                                      color: '#dc2626',
+                                      cursor: 'pointer',
+                                    }}
+                                  >
+                                    ✕
+                                  </button>
+                                )}
                               </div>
-                              <span className="static-pick-name">{imgItem.name}</span>
                             </div>
                           );
                         })}
+                      </div>
+
+                      {/* URL add fallback */}
+                      <div style={{ display: 'flex', gap: '6px', marginTop: '10px' }}>
+                        <input
+                          type="text"
+                          placeholder="Or paste photo URL..."
+                          value={productForm.newInnerImgUrl}
+                          onChange={(e) => setProductForm({ ...productForm, newInnerImgUrl: e.target.value })}
+                          className="input-field"
+                          style={{ fontSize: '0.80rem', padding: '6px 10px', flex: 1 }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleAddInnerImage(productForm.newInnerImgUrl)}
+                          style={{
+                            padding: '6px 12px',
+                            backgroundColor: '#005ea6',
+                            color: '#ffffff',
+                            border: 'none',
+                            borderRadius: '6px',
+                            fontWeight: 600,
+                            fontSize: '0.80rem',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          + Add
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* SECTION 2: PRODUCT & INNER PAGE DETAILS */}
+                {/* SECTION 3: CUSTOM INNER PAGE CONTENT SECTIONS */}
+                <div className="clean-section-card" style={{ marginTop: '20px' }}>
+                  <div className="clean-section-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span className="step-num">3</span>
+                      <div>
+                        <strong>📑 Custom Inner Page Content Sections</strong>
+                        <span className="step-subtitle">
+                          Add dedicated technical sections with custom description paragraphs and engineering illustration photos.
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAddInnerSection}
+                      style={{
+                        padding: '6px 14px',
+                        backgroundColor: '#10b981',
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '6px',
+                        fontWeight: 700,
+                        fontSize: '0.82rem',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                      }}
+                    >
+                      + Add New Section
+                    </button>
+                  </div>
+
+                  {productForm.innerSections && productForm.innerSections.length > 0 ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginTop: '14px' }}>
+                      {productForm.innerSections.map((sec, secIdx) => (
+                        <div
+                          key={secIdx}
+                          style={{
+                            backgroundColor: '#f8fafc',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '8px',
+                            padding: '14px',
+                            position: 'relative',
+                          }}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                            <span style={{ fontSize: '0.84rem', fontWeight: 800, color: '#0f172a' }}>
+                              Section #{secIdx + 1}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveInnerSection(secIdx)}
+                              style={{
+                                fontSize: '0.74rem',
+                                color: '#dc2626',
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                fontWeight: 700,
+                              }}
+                            >
+                              🗑️ Delete Section
+                            </button>
+                          </div>
+
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                            <div>
+                              <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '4px' }}>
+                                Section Title
+                              </label>
+                              <input
+                                type="text"
+                                placeholder="e.g. Flange Pressure Classes & Dimensional Accuracy"
+                                value={sec.title}
+                                onChange={(e) => handleUpdateInnerSection(secIdx, 'title', e.target.value)}
+                                className="input-field"
+                                style={{ fontSize: '0.88rem', padding: '6px 10px' }}
+                              />
+                            </div>
+
+                            <div>
+                              <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '4px' }}>
+                                Section Content / Technical Details
+                              </label>
+                              <textarea
+                                rows={3}
+                                placeholder="Write the engineering details, operational guidelines, or standards compliance for this section..."
+                                value={sec.content}
+                                onChange={(e) => handleUpdateInnerSection(secIdx, 'content', e.target.value)}
+                                className="input-field"
+                                style={{ fontSize: '0.84rem', lineHeight: 1.5 }}
+                              />
+                            </div>
+
+                            <div>
+                              <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '4px' }}>
+                                Section Photo (Optional)
+                              </label>
+                              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                <input
+                                  type="text"
+                                  placeholder="Photo URL or upload below..."
+                                  value={sec.image || ''}
+                                  onChange={(e) => handleUpdateInnerSection(secIdx, 'image', e.target.value)}
+                                  className="input-field"
+                                  style={{ fontSize: '0.82rem', padding: '6px 10px', flex: 1 }}
+                                />
+                                <label
+                                  style={{
+                                    padding: '6px 12px',
+                                    backgroundColor: '#0f172a',
+                                    color: '#ffffff',
+                                    borderRadius: '6px',
+                                    fontSize: '0.78rem',
+                                    fontWeight: 700,
+                                    cursor: 'pointer',
+                                    whiteSpace: 'nowrap',
+                                  }}
+                                >
+                                  <span>Upload Photo</span>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    onChange={(e) =>
+                                      handleImageFileChange(e, (url) => handleUpdateInnerSection(secIdx, 'image', url))
+                                    }
+                                  />
+                                </label>
+                              </div>
+
+                              {sec.image && (
+                                <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                  <img
+                                    src={sec.image}
+                                    alt="Section Preview"
+                                    style={{ width: '60px', height: '45px', objectFit: 'contain', border: '1px solid #e2e8f0', borderRadius: '4px', background: '#ffffff' }}
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => handleUpdateInnerSection(secIdx, 'image', '')}
+                                    style={{ fontSize: '0.72rem', color: '#dc2626', background: 'none', border: 'none', cursor: 'pointer' }}
+                                  >
+                                    Remove Photo
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        padding: '16px',
+                        textAlign: 'center',
+                        color: '#64748b',
+                        fontSize: '0.84rem',
+                        marginTop: '12px',
+                        backgroundColor: '#f8fafc',
+                        borderRadius: '8px',
+                        border: '1px dashed #cbd5e1',
+                      }}
+                    >
+                      No custom sections added yet. Click <strong>&quot;+ Add New Section&quot;</strong> above to create dedicated content blocks with photos on this product&apos;s live inner page.
+                    </div>
+                  )}
+                </div>
+
+                {/* SECTION 4: PRODUCT & INNER PAGE DETAILS */}
                 <div className="clean-section-card" style={{ marginTop: '20px' }}>
                   <div className="clean-section-title">
-                    <span className="step-num">2</span>
+                    <span className="step-num">4</span>
                     <div>
                       <strong>Product &amp; Inner Page Content</strong>
-                      <span className="step-subtitle">Configure the title, description, and key specifications shown on the website.</span>
+                      <span className="step-subtitle">Configure the title, description, and key specifications shown on the live website.</span>
                     </div>
                   </div>
 
                   <div className="clean-fields-stack">
                     {/* Title */}
                     <div className="form-group">
-                      <label style={{ fontWeight: 700, fontSize: '0.88rem', color: '#1e293b' }}>
+                      <label className="field-label">
                         Product Title / Name *
                       </label>
                       <input
@@ -2544,52 +3333,50 @@ export default function AdminApp() {
                         value={productForm.title}
                         onChange={(e) => setProductForm({ ...productForm, title: e.target.value })}
                         className="input-field"
-                        style={{ fontSize: '1rem', padding: '10px 14px', fontWeight: 600 }}
                       />
                     </div>
 
                     {/* Inner Page Full Description */}
-                    <div className="form-group" style={{ marginTop: '14px' }}>
-                      <label style={{ fontWeight: 700, fontSize: '0.88rem', color: '#1e293b' }}>
+                    <div className="form-group">
+                      <label className="field-label">
                         Inner Page Description (Appears under the Description Tab on the website)
                       </label>
                       <textarea
-                        rows={3}
+                        rows={4}
                         placeholder="Detailed technical description, material construction, pressure ratings, and industrial applications..."
                         value={productForm.fullDescription}
                         onChange={(e) => setProductForm({ ...productForm, fullDescription: e.target.value })}
                         className="input-field"
-                        style={{ fontSize: '0.90rem', lineHeight: 1.5, resize: 'vertical' }}
                       />
                     </div>
 
                     {/* Specifications Bullet Points */}
-                    <div className="form-group" style={{ marginTop: '14px' }}>
-                      <label style={{ fontWeight: 700, fontSize: '0.88rem', color: '#1e293b' }}>
+                    <div className="form-group">
+                      <label className="field-label">
                         Key Specifications &amp; Features (One bullet point per line)
                       </label>
                       <textarea
-                        rows={4}
+                        rows={5}
                         placeholder={`6-Inch Industrial Process Control Valve\nDuctile Iron Body with Epoxy Powder Coating\nASTM A351 CF8M (316SS) Disc\nEPDM Resilient Seat for Bidirectional Bubble-Tight Shut-Off\nManual 10-Position Locking Notch Lever Handle`}
                         value={productForm.featuresText}
                         onChange={(e) => setProductForm({ ...productForm, featuresText: e.target.value })}
                         className="input-field"
-                        style={{ fontFamily: 'monospace', fontSize: '0.84rem', lineHeight: 1.5, resize: 'vertical' }}
                       />
-                      <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
-                        💡 Each line here creates a clean square bullet point (▪) on the product&apos;s inner page.
+                      <span style={{ fontSize: '0.74rem', color: '#64748b', fontWeight: 300, marginTop: '4px', display: 'block' }}>
+                        💡 Each line here creates a clean bullet point on the product&apos;s live inner page.
                       </span>
                     </div>
 
                     {/* In Stock toggle */}
                     <div style={{ marginTop: '12px' }}>
-                      <label className="checkbox-pill" style={{ cursor: 'pointer' }}>
+                      <label className="checkbox-pill" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 14px', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#ffffff' }}>
                         <input
                           type="checkbox"
                           checked={productForm.inStock}
                           onChange={(e) => setProductForm({ ...productForm, inStock: e.target.checked })}
+                          style={{ width: '16px', height: '16px', accentColor: '#10b981' }}
                         />
-                        <span style={{ fontWeight: 600, fontSize: '0.88rem' }}>🟢 Product In Stock &amp; Ready for Order</span>
+                        <span style={{ fontWeight: 500, fontSize: '0.84rem', color: '#1e293b' }}>Product In Stock &amp; Ready for Order</span>
                       </label>
                     </div>
                   </div>
@@ -2598,15 +3385,15 @@ export default function AdminApp() {
 
               {/* Modal Sticky Footer */}
               <div className="modal-clean-footer">
-                <div style={{ fontSize: '0.82rem', color: '#64748b' }}>
-                  Live URL: <code style={{ background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px' }}>/product/{productForm.slug || 'product-slug'}</code>
+                <div style={{ fontSize: '0.80rem', color: '#64748b', fontWeight: 300 }}>
+                  Live URL: <code style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '3px 8px', borderRadius: '6px', color: '#0f172a' }}>/product/{productForm.slug || 'product-slug'}</code>
                 </div>
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                   <button type="button" onClick={() => setShowProductModal(false)} className="btn-cancel">
                     Cancel
                   </button>
                   <button type="submit" className="btn-clean-save">
-                    💾 Save &amp; Update Inner Page
+                    Save &amp; Update Inner Page
                   </button>
                 </div>
               </div>
@@ -2628,170 +3415,444 @@ export default function AdminApp() {
                 &times;
               </button>
             </div>
+            {/* Modal Section Selector Tabs */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '8px',
+                padding: '12px 20px',
+                background: '#f8fafc',
+                borderBottom: '1px solid #e2e8f0',
+                flexWrap: 'wrap',
+                alignItems: 'center',
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setDivisionModalTab('products')}
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: '6px',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  background: divisionModalTab === 'products' ? '#2563eb' : '#ffffff',
+                  color: divisionModalTab === 'products' ? '#ffffff' : '#1e293b',
+                  boxShadow: divisionModalTab === 'products' ? '0 2px 4px rgba(37,99,235,0.25)' : '0 1px 2px rgba(0,0,0,0.05)',
+                  border: divisionModalTab === 'products' ? '1px solid #2563eb' : '1px solid #cbd5e1',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <span>📦 Product Listing Images &amp; Items</span>
+                <span
+                  style={{
+                    background: divisionModalTab === 'products' ? '#ffffff' : '#2563eb',
+                    color: divisionModalTab === 'products' ? '#2563eb' : '#ffffff',
+                    borderRadius: '12px',
+                    padding: '2px 8px',
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                  }}
+                >
+                  {currentDivisionProducts.length}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setDivisionModalTab('general')}
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: '6px',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  background: divisionModalTab === 'general' ? '#2563eb' : '#ffffff',
+                  color: divisionModalTab === 'general' ? '#ffffff' : '#334155',
+                  border: divisionModalTab === 'general' ? '1px solid #2563eb' : '1px solid #cbd5e1',
+                }}
+              >
+                📝 Headline &amp; Descriptions
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setDivisionModalTab('subcategories')}
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: '6px',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  background: divisionModalTab === 'subcategories' ? '#2563eb' : '#ffffff',
+                  color: divisionModalTab === 'subcategories' ? '#ffffff' : '#334155',
+                  border: divisionModalTab === 'subcategories' ? '1px solid #2563eb' : '1px solid #cbd5e1',
+                }}
+              >
+                📑 Sub-Categories Photo Cards ({divisionForm.subcategories.length})
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setDivisionModalTab('range')}
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: '6px',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  background: divisionModalTab === 'range' ? '#2563eb' : '#ffffff',
+                  color: divisionModalTab === 'range' ? '#ffffff' : '#334155',
+                  border: divisionModalTab === 'range' ? '1px solid #2563eb' : '1px solid #cbd5e1',
+                }}
+              >
+                🎯 Product Range &amp; Applications
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setDivisionModalTab('all')}
+                style={{
+                  padding: '8px 14px',
+                  borderRadius: '6px',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  background: divisionModalTab === 'all' ? '#0f172a' : '#ffffff',
+                  color: divisionModalTab === 'all' ? '#ffffff' : '#64748b',
+                  border: '1px solid #cbd5e1',
+                }}
+              >
+                👁️ View All
+              </button>
+            </div>
+
             <form onSubmit={handleSaveDivision} className="modal-form">
-              <div className="form-group">
-                <label>Main Headline (Shown on Inner Page) *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. INDUSTRIAL MECHANICAL VALVES, PIPES & STRUCTURAL FITTINGS"
-                  value={divisionForm.headline}
-                  onChange={(e) => setDivisionForm({ ...divisionForm, headline: e.target.value })}
-                  className="input-field"
-                />
-              </div>
+              {/* SECTION: PRODUCT LISTING IMAGES & ITEMS */}
+              {(divisionModalTab === 'products' || divisionModalTab === 'all') && (
+                <div className="inner-section-box" style={{ background: '#f8fafc', border: '1px solid #cbd5e1', borderRadius: '10px', padding: '16px', marginBottom: '20px' }}>
+                  <div className="inner-section-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
+                    <div>
+                      <label style={{ fontWeight: 700, fontSize: '1rem', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        📦 Product Listing Images &amp; Products in this Division
+                        <span style={{ fontSize: '0.78rem', background: '#2563eb', color: '#fff', padding: '2px 8px', borderRadius: '12px', fontWeight: 700 }}>
+                          {currentDivisionProducts.length} Products
+                        </span>
+                      </label>
+                      <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px' }}>
+                        View, update thumbnail images, or edit full specifications for each product listed on this division's inner page.
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowDivisionModal(false);
+                        openAddProductModal();
+                      }}
+                      className="btn-add-inline"
+                      style={{ background: '#2563eb', color: '#fff', border: 'none', padding: '7px 14px', borderRadius: '6px', fontSize: '0.82rem', fontWeight: 600, cursor: 'pointer' }}
+                    >
+                      + Add Product to Division
+                    </button>
+                  </div>
 
-              <div className="form-group">
-                <label>Detailed Descriptions (Separate paragraphs by double enter/blank line)</label>
-                <textarea
-                  rows={5}
-                  placeholder="Paragraph 1 about division capabilities...&#10;&#10;Paragraph 2 about quality compliance and standards..."
-                  value={divisionForm.descriptionText}
-                  onChange={(e) => setDivisionForm({ ...divisionForm, descriptionText: e.target.value })}
-                  className="input-field"
-                />
-              </div>
+                  {currentDivisionProducts.length === 0 ? (
+                    <div style={{ padding: '28px', textAlign: 'center', color: '#94a3b8', fontSize: '0.88rem', background: '#ffffff', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
+                      No products currently assigned to this division. Click &quot;+ Add Product to Division&quot; above to create one.
+                    </div>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '12px', maxHeight: '480px', overflowY: 'auto', padding: '4px' }}>
+                      {currentDivisionProducts.map((prod, pIdx) => (
+                        <div
+                          key={prod.id || pIdx}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            background: '#ffffff',
+                            padding: '10px',
+                            borderRadius: '8px',
+                            border: '1px solid #e2e8f0',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                          }}
+                        >
+                          {/* Thumbnail preview */}
+                          <div
+                            style={{
+                              width: '56px',
+                              height: '56px',
+                              borderRadius: '6px',
+                              background: '#f8fafc',
+                              overflow: 'hidden',
+                              position: 'relative',
+                              flexShrink: 0,
+                              border: '1px solid #cbd5e1',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <img
+                              src={prod.image || '/categories/all-fittings.jpeg'}
+                              alt={prod.title}
+                              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
+                              }}
+                            />
+                          </div>
 
-              <div className="form-group">
-                <label>Division Banner / Feature Image</label>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <input
-                    type="text"
-                    value={divisionForm.image}
-                    onChange={(e) => setDivisionForm({ ...divisionForm, image: e.target.value })}
-                    className="input-field"
-                    style={{ flex: 1 }}
-                  />
-                  <label className="btn-upload-file">
-                    {isUploadingImage ? 'Uploading...' : '📁 Upload'}
+                          {/* Info and quick image replace */}
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div
+                              style={{
+                                fontSize: '0.84rem',
+                                fontWeight: 600,
+                                color: '#1e293b',
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                              }}
+                              title={prod.title}
+                            >
+                              {prod.title}
+                            </div>
+                            <div style={{ fontSize: '0.74rem', color: '#64748b', marginBottom: '6px' }}>
+                              {prod.category || 'Product Item'}
+                            </div>
+
+                            <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
+                              <label
+                                className="btn-upload-file"
+                                style={{
+                                  padding: '3px 8px',
+                                  fontSize: '0.72rem',
+                                  background: '#f1f5f9',
+                                  color: '#334155',
+                                  border: '1px solid #cbd5e1',
+                                  borderRadius: '4px',
+                                  cursor: 'pointer',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '3px',
+                                }}
+                              >
+                                📷 Change Img
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  style={{ display: 'none' }}
+                                  onChange={(e) =>
+                                    handleImageFileChange(e, (url) => {
+                                      handleQuickProductImageChange(prod.id, url);
+                                    })
+                                  }
+                                />
+                              </label>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setShowDivisionModal(false);
+                                  openEditProductModal(prod);
+                                }}
+                                style={{
+                                  padding: '3px 8px',
+                                  fontSize: '0.72rem',
+                                  background: 'transparent',
+                                  color: '#2563eb',
+                                  border: '1px solid #bfdbfe',
+                                  borderRadius: '4px',
+                                  cursor: 'pointer',
+                                }}
+                              >
+                                ✏️ Edit Details
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* SECTION: GENERAL HEADLINE, DESCRIPTIONS & BANNER */}
+              {(divisionModalTab === 'general' || divisionModalTab === 'all') && (
+                <>
+                  <div className="form-group">
+                    <label>Main Headline (Shown on Inner Page) *</label>
                     <input
-                      type="file"
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      onChange={(e) => handleImageFileChange(e, (url) => setDivisionForm({ ...divisionForm, image: url }))}
+                      type="text"
+                      required
+                      placeholder="e.g. INDUSTRIAL MECHANICAL VALVES, PIPES & STRUCTURAL FITTINGS"
+                      value={divisionForm.headline}
+                      onChange={(e) => setDivisionForm({ ...divisionForm, headline: e.target.value })}
+                      className="input-field"
                     />
-                  </label>
-                </div>
-              </div>
+                  </div>
 
-              {/* Subcategories (Images & Titles) */}
-              <div className="inner-section-box">
-                <div className="inner-section-head">
-                  <label style={{ fontWeight: 700 }}>Subcategories Photo Cards</label>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setDivisionForm({
-                        ...divisionForm,
-                        subcategories: [...divisionForm.subcategories, { name: '', image: '' }],
-                      })
-                    }
-                    className="btn-add-inline"
-                  >
-                    + Add Subcategory
-                  </button>
-                </div>
-                <div className="form-group" style={{ marginBottom: '12px' }}>
-                  <input
-                    type="text"
-                    placeholder="Subcategories Section Title (e.g. Mechanical Product Categories)"
-                    value={divisionForm.subcategoriesTitle}
-                    onChange={(e) => setDivisionForm({ ...divisionForm, subcategoriesTitle: e.target.value })}
-                    className="input-field"
-                  />
-                </div>
-                <div className="dynamic-subcat-list">
-                  {divisionForm.subcategories.map((sub, idx) => (
-                    <div key={idx} className="subcat-row">
+                  <div className="form-group">
+                    <label>Detailed Descriptions (Separate paragraphs by double enter/blank line)</label>
+                    <textarea
+                      rows={5}
+                      placeholder="Paragraph 1 about division capabilities...&#10;&#10;Paragraph 2 about quality compliance and standards..."
+                      value={divisionForm.descriptionText}
+                      onChange={(e) => setDivisionForm({ ...divisionForm, descriptionText: e.target.value })}
+                      className="input-field"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Division Banner / Feature Image</label>
+                    <div style={{ display: 'flex', gap: '8px' }}>
                       <input
                         type="text"
-                        placeholder="Subcategory Name (e.g. Industrial Valves)"
-                        value={sub.name}
-                        onChange={(e) => {
-                          const updated = [...divisionForm.subcategories];
-                          updated[idx].name = e.target.value;
-                          setDivisionForm({ ...divisionForm, subcategories: updated });
-                        }}
+                        value={divisionForm.image}
+                        onChange={(e) => setDivisionForm({ ...divisionForm, image: e.target.value })}
                         className="input-field"
                         style={{ flex: 1 }}
                       />
-                      <input
-                        type="text"
-                        placeholder="Image URL (/categories/...)"
-                        value={sub.image}
-                        onChange={(e) => {
-                          const updated = [...divisionForm.subcategories];
-                          updated[idx].image = e.target.value;
-                          setDivisionForm({ ...divisionForm, subcategories: updated });
-                        }}
-                        className="input-field"
-                        style={{ flex: 1 }}
-                      />
-                      <label className="btn-upload-file" style={{ padding: '8px 12px' }}>
-                        📁
+                      <label className="btn-upload-file">
+                        {isUploadingImage ? 'Uploading...' : '📁 Upload'}
                         <input
                           type="file"
                           accept="image/*"
                           style={{ display: 'none' }}
-                          onChange={(e) =>
-                            handleImageFileChange(e, (url) => {
-                              const updated = [...divisionForm.subcategories];
-                              updated[idx].image = url;
-                              setDivisionForm({ ...divisionForm, subcategories: updated });
-                            })
-                          }
+                          onChange={(e) => handleImageFileChange(e, (url) => setDivisionForm({ ...divisionForm, image: url }))}
                         />
                       </label>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const updated = divisionForm.subcategories.filter((_, i) => i !== idx);
-                          setDivisionForm({ ...divisionForm, subcategories: updated });
-                        }}
-                        className="btn-remove-inline"
-                      >
-                        ✕
-                      </button>
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
+                </>
+              )}
 
-              {/* Product Range & Applications */}
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Product Range Items (One item per line)</label>
-                  <textarea
-                    rows={4}
-                    placeholder="Gate Valves, Globe Valves, Ball Valves&#10;Check Valves, Butterfly Valves&#10;Seamless Carbon Steel Pipes"
-                    value={divisionForm.productRangeText}
-                    onChange={(e) => setDivisionForm({ ...divisionForm, productRangeText: e.target.value })}
-                    className="input-field"
-                  />
+              {/* SECTION: SUBCATEGORIES (IMAGES & TITLES) */}
+              {(divisionModalTab === 'subcategories' || divisionModalTab === 'all') && (
+                <div className="inner-section-box">
+                  <div className="inner-section-head">
+                    <label style={{ fontWeight: 700 }}>Subcategories Photo Cards</label>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setDivisionForm({
+                          ...divisionForm,
+                          subcategories: [...divisionForm.subcategories, { name: '', image: '' }],
+                        })
+                      }
+                      className="btn-add-inline"
+                    >
+                      + Add Subcategory
+                    </button>
+                  </div>
+                  <div className="form-group" style={{ marginBottom: '12px' }}>
+                    <input
+                      type="text"
+                      placeholder="Subcategories Section Title (e.g. Mechanical Product Categories)"
+                      value={divisionForm.subcategoriesTitle}
+                      onChange={(e) => setDivisionForm({ ...divisionForm, subcategoriesTitle: e.target.value })}
+                      className="input-field"
+                    />
+                  </div>
+                  <div className="dynamic-subcat-list">
+                    {divisionForm.subcategories.map((sub, idx) => (
+                      <div key={idx} className="subcat-row">
+                        <input
+                          type="text"
+                          placeholder="Subcategory Name (e.g. Industrial Valves)"
+                          value={sub.name}
+                          onChange={(e) => {
+                            const updated = [...divisionForm.subcategories];
+                            updated[idx].name = e.target.value;
+                            setDivisionForm({ ...divisionForm, subcategories: updated });
+                          }}
+                          className="input-field"
+                          style={{ flex: 1 }}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Image URL (/categories/...)"
+                          value={sub.image}
+                          onChange={(e) => {
+                            const updated = [...divisionForm.subcategories];
+                            updated[idx].image = e.target.value;
+                            setDivisionForm({ ...divisionForm, subcategories: updated });
+                          }}
+                          className="input-field"
+                          style={{ flex: 1 }}
+                        />
+                        <label className="btn-upload-file" style={{ padding: '8px 12px' }}>
+                          📁
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={(e) =>
+                              handleImageFileChange(e, (url) => {
+                                const updated = [...divisionForm.subcategories];
+                                updated[idx].image = url;
+                                setDivisionForm({ ...divisionForm, subcategories: updated });
+                              })
+                            }
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = divisionForm.subcategories.filter((_, i) => i !== idx);
+                            setDivisionForm({ ...divisionForm, subcategories: updated });
+                          }}
+                          className="btn-remove-inline"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+              )}
 
-                <div className="form-group">
-                  <label>Applications Items (One item per line)</label>
-                  <textarea
-                    rows={4}
-                    placeholder="Oil & Gas Exploration & Production&#10;Petrochemical Refineries&#10;Water Desalination Plants"
-                    value={divisionForm.applicationsText}
-                    onChange={(e) => setDivisionForm({ ...divisionForm, applicationsText: e.target.value })}
-                    className="input-field"
-                  />
-                </div>
-              </div>
+              {/* SECTION: PRODUCT RANGE & APPLICATIONS */}
+              {(divisionModalTab === 'range' || divisionModalTab === 'all') && (
+                <>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Product Range Items (One item per line)</label>
+                      <textarea
+                        rows={4}
+                        placeholder="Gate Valves, Globe Valves, Ball Valves&#10;Check Valves, Butterfly Valves&#10;Seamless Carbon Steel Pipes"
+                        value={divisionForm.productRangeText}
+                        onChange={(e) => setDivisionForm({ ...divisionForm, productRangeText: e.target.value })}
+                        className="input-field"
+                      />
+                    </div>
 
-              <div className="form-group">
-                <label>Filter Pills / Badges (Comma-separated)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Aramco Certified, ASTM Compliant, API Spec 6D, ISO 9001"
-                  value={divisionForm.pillsText}
-                  onChange={(e) => setDivisionForm({ ...divisionForm, pillsText: e.target.value })}
-                  className="input-field"
-                />
-              </div>
+                    <div className="form-group">
+                      <label>Applications Items (One item per line)</label>
+                      <textarea
+                        rows={4}
+                        placeholder="Oil & Gas Exploration & Production&#10;Petrochemical Refineries&#10;Water Desalination Plants"
+                        value={divisionForm.applicationsText}
+                        onChange={(e) => setDivisionForm({ ...divisionForm, applicationsText: e.target.value })}
+                        className="input-field"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Filter Pills / Badges (Comma-separated)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Aramco Certified, ASTM Compliant, API Spec 6D, ISO 9001"
+                      value={divisionForm.pillsText}
+                      onChange={(e) => setDivisionForm({ ...divisionForm, pillsText: e.target.value })}
+                      className="input-field"
+                    />
+                  </div>
+                </>
+              )}
 
               <div className="modal-actions">
                 <button type="button" onClick={() => setShowDivisionModal(false)} className="btn-cancel">
@@ -4601,6 +5662,74 @@ export default function AdminApp() {
           }
         }
 
+        .pill-division {
+          background: #eef2ff;
+          color: #4338ca;
+          font-weight: 500;
+          font-size: 0.74rem;
+          padding: 4px 12px;
+          border-radius: 9999px;
+          border: 1px solid #e0e7ff;
+          letter-spacing: 0.02em;
+          display: inline-block;
+        }
+
+        .pill-live-status {
+          background: #ecfdf5;
+          color: #047857;
+          font-weight: 400;
+          font-size: 0.74rem;
+          padding: 4px 12px;
+          border-radius: 9999px;
+          border: 1px solid #d1fae5;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .live-dot-pulse {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #10b981;
+          box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-live-mechanical {
+          background: #ffffff;
+          color: #334155;
+          border: 1px solid #e2e8f0;
+          font-weight: 400;
+          font-size: 0.82rem;
+          padding: 8px 16px;
+          border-radius: 9999px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+          transition: all 0.2s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          text-decoration: none;
+        }
+
+        .btn-live-mechanical:hover {
+          background: #f8fafc;
+          color: #0f172a;
+          border-color: #cbd5e1;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .mech-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+        }
+
+        @media (max-width: 1200px) {
+          .mech-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
         @media (max-width: 768px) {
           .mech-grid {
             grid-template-columns: 1fr;
@@ -4609,106 +5738,119 @@ export default function AdminApp() {
 
         .mech-card {
           background: #ffffff;
-          border: 1.5px solid #e2e8f0;
-          border-radius: 16px;
+          border: 1px solid #eef2f6;
+          border-radius: 18px;
           overflow: hidden;
           display: flex;
           flex-direction: column;
-          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+          box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+          transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+          position: relative;
         }
 
         .mech-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-          border-color: #93c5fd;
+          transform: translateY(-4px);
+          box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.08);
+          border-color: #cbd5e1;
         }
 
         .mech-card-top {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 14px 16px;
-          border-bottom: 1px solid #f1f5f9;
-          background: #f8fafc;
+          padding: 12px 18px;
+          background: #ffffff;
+          border-bottom: 1px solid #f8fafc;
         }
 
         .mech-badge-num {
-          background: #2563eb;
-          color: #ffffff;
-          font-size: 0.74rem;
-          font-weight: 800;
-          padding: 4px 10px;
-          border-radius: 6px;
-          letter-spacing: 0.04em;
+          background: #f1f5f9;
+          color: #475569;
+          font-size: 0.70rem;
+          font-weight: 500;
+          padding: 3px 10px;
+          border-radius: 9999px;
+          letter-spacing: 0.03em;
+          border: 1px solid #e2e8f0;
         }
 
         .mech-badge-live {
-          color: #16a34a;
-          font-size: 0.78rem;
-          font-weight: 700;
+          color: #059669;
+          font-size: 0.72rem;
+          font-weight: 400;
           text-decoration: none;
-          background: #f0fdf4;
-          padding: 3px 9px;
-          border-radius: 6px;
-          border: 1px solid #bbf7d0;
-          transition: background 0.15s ease;
+          background: #ecfdf5;
+          padding: 3px 10px;
+          border-radius: 9999px;
+          border: 1px solid #a7f3d0;
+          transition: all 0.15s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
         }
 
         .mech-badge-live:hover {
-          background: #dcfce7;
+          background: #d1fae5;
+          color: #047857;
         }
 
         .mech-img-frame {
-          height: 190px;
-          background: #ffffff;
+          height: 180px;
+          background: linear-gradient(180deg, #fbfcfe 0%, #f1f5f9 100%);
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 16px;
-          border-bottom: 1px solid #f1f5f9;
+          padding: 18px;
+          position: relative;
+          overflow: hidden;
+          margin: 0 16px;
+          border-radius: 12px;
+          border: 1px solid #f1f5f9;
         }
 
         .mech-img {
-          max-width: 100%;
-          max-height: 100%;
+          max-width: 85%;
+          max-height: 135px;
           object-fit: contain;
-          transition: transform 0.25s ease;
+          filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.05));
+          transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .mech-card:hover .mech-img {
-          transform: scale(1.04);
+          transform: scale(1.06);
         }
 
         .mech-card-content {
-          padding: 16px;
+          padding: 16px 18px 14px;
           display: flex;
           flex-direction: column;
           flex: 1;
         }
 
         .mech-category-label {
-          font-size: 0.72rem;
-          font-weight: 700;
-          color: #64748b;
+          font-size: 0.68rem;
+          font-weight: 500;
+          color: #94a3b8;
           text-transform: uppercase;
-          letter-spacing: 0.05em;
+          letter-spacing: 0.06em;
           margin-bottom: 4px;
         }
 
         .mech-title {
-          font-size: 1.05rem;
-          font-weight: 800;
+          font-size: 1.02rem;
+          font-weight: 600;
           color: #0f172a;
-          margin: 0 0 8px 0;
+          margin: 0 0 6px 0;
           line-height: 1.35;
+          letter-spacing: -0.01em;
         }
 
         .mech-description {
-          font-size: 0.84rem;
+          font-size: 0.80rem;
+          font-weight: 300;
           color: #64748b;
-          line-height: 1.45;
-          margin: 0 0 12px 0;
+          line-height: 1.55;
+          margin: 0 0 14px 0;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
@@ -4716,57 +5858,59 @@ export default function AdminApp() {
         }
 
         .mech-specs-badge {
-          margin-top: auto;
-          font-size: 0.76rem;
-          font-weight: 600;
+          font-size: 0.70rem;
+          font-weight: 400;
           color: #475569;
-          background: #f1f5f9;
-          padding: 5px 10px;
+          background: #f8fafc;
+          padding: 3px 8px;
           border-radius: 6px;
-          display: inline-block;
-          align-self: flex-start;
+          border: 1px solid #e2e8f0;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
         }
 
         .mech-card-actions {
           display: flex;
           gap: 8px;
-          padding: 14px 16px;
-          background: #f8fafc;
-          border-top: 1px solid #f1f5f9;
+          padding: 14px 18px;
+          background: #ffffff;
+          border-top: 1px solid #f8fafc;
         }
 
         .btn-mech-primary {
           flex: 1;
-          background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+          background: #0f172a;
           color: #ffffff;
           border: none;
-          border-radius: 8px;
-          font-size: 0.82rem;
-          font-weight: 700;
-          padding: 10px 14px;
+          border-radius: 9px;
+          font-size: 0.78rem;
+          font-weight: 400;
+          letter-spacing: 0.01em;
+          padding: 9px 14px;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
           justify-content: center;
           gap: 6px;
-          box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
-          transition: all 0.18s ease;
+          box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+          transition: all 0.2s ease;
         }
 
         .btn-mech-primary:hover {
-          background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+          background: #1e293b;
           transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
         }
 
         .btn-mech-secondary {
           background: #ffffff;
-          color: #0284c7;
-          border: 1.5px solid #bae6fd;
-          border-radius: 8px;
-          font-size: 0.82rem;
-          font-weight: 700;
-          padding: 10px 14px;
+          color: #475569;
+          border: 1px solid #e2e8f0;
+          border-radius: 9px;
+          font-size: 0.78rem;
+          font-weight: 400;
+          padding: 9px 13px;
           text-decoration: none;
           display: inline-flex;
           align-items: center;
@@ -4775,28 +5919,29 @@ export default function AdminApp() {
         }
 
         .btn-mech-secondary:hover {
-          background: #e0f2fe;
-          color: #0369a1;
-          border-color: #7dd3fc;
+          background: #f8fafc;
+          color: #0f172a;
+          border-color: #cbd5e1;
         }
 
         /* ================= CLEAN MODAL STYLES ================= */
         .modal-card-clean {
           max-width: 900px !important;
-          width: 95%;
-          max-height: 90vh;
+          width: 94%;
+          max-height: 88vh;
           background: #ffffff;
-          border-radius: 18px;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+          border-radius: 20px;
+          box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25);
+          border: 1px solid #e2e8f0;
           overflow: hidden;
           display: flex;
           flex-direction: column;
         }
 
         .modal-clean-header {
-          padding: 20px 24px;
+          padding: 18px 26px;
           background: #ffffff;
-          border-bottom: 1.5px solid #e2e8f0;
+          border-bottom: 1px solid #eef2f6;
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
@@ -4813,33 +5958,35 @@ export default function AdminApp() {
         }
 
         .modal-clean-body {
-          padding: 24px;
+          padding: 24px 26px;
           overflow-y: auto;
           flex: 1;
         }
 
         .clean-section-card {
-          background: #f8fafc;
-          border: 1.5px solid #e2e8f0;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
           border-radius: 14px;
-          padding: 20px;
+          padding: 22px;
+          margin-top: 18px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
         }
 
         .clean-section-title {
           display: flex;
           align-items: center;
           gap: 12px;
-          margin-bottom: 16px;
+          margin-bottom: 18px;
         }
 
         .step-num {
           width: 28px;
           height: 28px;
           border-radius: 50%;
-          background: #2563eb;
+          background: #0f172a;
           color: #ffffff;
-          font-weight: 800;
-          font-size: 0.85rem;
+          font-weight: 600;
+          font-size: 0.80rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -4847,15 +5994,18 @@ export default function AdminApp() {
         }
 
         .clean-section-title strong {
-          font-size: 1.05rem;
+          font-size: 1.02rem;
+          font-weight: 600;
           color: #0f172a;
           display: block;
         }
 
         .step-subtitle {
           font-size: 0.78rem;
+          font-weight: 300;
           color: #64748b;
           display: block;
+          margin-top: 2px;
         }
 
         .photo-selection-layout {
@@ -4873,10 +6023,10 @@ export default function AdminApp() {
         .active-preview-box {
           width: 200px;
           flex-shrink: 0;
-          background: #ffffff;
-          border: 1.5px solid #cbd5e1;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
           border-radius: 12px;
-          padding: 12px;
+          padding: 14px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -4884,9 +6034,9 @@ export default function AdminApp() {
         }
 
         .active-preview-label {
-          font-size: 0.75rem;
-          font-weight: 700;
-          color: #16a34a;
+          font-size: 0.72rem;
+          font-weight: 500;
+          color: #059669;
           text-transform: uppercase;
           letter-spacing: 0.05em;
         }
@@ -4897,11 +6047,11 @@ export default function AdminApp() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: #f8fafc;
+          background: #ffffff;
           border-radius: 8px;
           overflow: hidden;
           border: 1px solid #e2e8f0;
-          padding: 6px;
+          padding: 8px;
         }
 
         .active-preview-img-wrap img {
@@ -4912,13 +6062,13 @@ export default function AdminApp() {
 
         .btn-clean-upload {
           width: 100%;
-          background: #eff6ff;
-          color: #2563eb;
-          border: 1.5px solid #bfdbfe;
+          background: #f1f5f9;
+          color: #334155;
+          border: 1px solid #cbd5e1;
           border-radius: 8px;
-          padding: 9px 12px;
-          font-size: 0.82rem;
-          font-weight: 700;
+          padding: 8px 12px;
+          font-size: 0.80rem;
+          font-weight: 500;
           text-align: center;
           cursor: pointer;
           transition: all 0.15s ease;
@@ -4926,15 +6076,14 @@ export default function AdminApp() {
         }
 
         .btn-clean-upload:hover {
-          background: #2563eb;
-          color: #ffffff;
-          border-color: #2563eb;
+          background: #e2e8f0;
+          color: #0f172a;
         }
 
         .static-photos-picker {
           flex: 1;
-          background: #ffffff;
-          border: 1.5px solid #cbd5e1;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
           border-radius: 12px;
           padding: 14px;
           display: flex;
@@ -4943,8 +6092,9 @@ export default function AdminApp() {
         }
 
         .picker-header {
-          font-size: 0.82rem;
-          color: #334155;
+          font-size: 0.80rem;
+          font-weight: 400;
+          color: #475569;
         }
 
         .static-13-grid {
@@ -4963,7 +6113,7 @@ export default function AdminApp() {
         }
 
         .static-pick-card {
-          border: 2px solid #e2e8f0;
+          border: 1px solid #e2e8f0;
           border-radius: 8px;
           padding: 6px;
           cursor: pointer;
@@ -4976,15 +6126,15 @@ export default function AdminApp() {
         }
 
         .static-pick-card:hover {
-          border-color: #93c5fd;
+          border-color: #cbd5e1;
           background: #f8fafc;
           transform: translateY(-1px);
         }
 
         .static-pick-card.selected {
-          border-color: #16a34a;
-          background: #f0fdf4;
-          box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+          border-color: #10b981;
+          background: #ecfdf5;
+          box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.18);
         }
 
         .static-pick-img-wrap {
@@ -5006,18 +6156,18 @@ export default function AdminApp() {
           position: absolute;
           top: 0;
           right: 0;
-          background: #16a34a;
+          background: #10b981;
           color: #ffffff;
-          font-size: 0.60rem;
-          font-weight: 800;
+          font-size: 0.58rem;
+          font-weight: 600;
           padding: 2px 5px;
           border-radius: 4px;
         }
 
         .static-pick-name {
-          font-size: 0.70rem;
-          font-weight: 700;
-          color: #1e293b;
+          font-size: 0.68rem;
+          font-weight: 500;
+          color: #334155;
           margin-top: 4px;
           line-height: 1.2;
           display: -webkit-box;
@@ -5029,12 +6179,52 @@ export default function AdminApp() {
         .clean-fields-stack {
           display: flex;
           flex-direction: column;
+          gap: 14px;
+        }
+
+        .form-group {
+          display: flex !important;
+          flex-direction: column !important;
+          width: 100% !important;
+          gap: 6px !important;
+        }
+
+        .field-label {
+          display: block !important;
+          font-size: 0.78rem !important;
+          font-weight: 500 !important;
+          color: #334155 !important;
+          letter-spacing: 0.01em !important;
+          margin-bottom: 4px !important;
+        }
+
+        .input-field {
+          width: 100% !important;
+          box-sizing: border-box !important;
+          display: block !important;
+          font-family: 'Montserrat', sans-serif !important;
+          font-weight: 300 !important;
+          font-size: 0.88rem !important;
+          color: #0f172a !important;
+          background: #ffffff !important;
+          border: 1px solid #cbd5e1 !important;
+          border-radius: 10px !important;
+          padding: 10px 14px !important;
+          line-height: 1.5 !important;
+          outline: none !important;
+          transition: all 0.2s ease !important;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+        }
+
+        .input-field:focus {
+          border-color: #2563eb !important;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
         }
 
         .modal-clean-footer {
-          padding: 16px 24px;
+          padding: 16px 26px;
           background: #ffffff;
-          border-top: 1.5px solid #e2e8f0;
+          border-top: 1px solid #eef2f6;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -5044,22 +6234,40 @@ export default function AdminApp() {
         }
 
         .btn-clean-save {
-          background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
+          background: #059669;
           color: #ffffff;
           border: none;
-          font-size: 0.94rem;
-          font-weight: 700;
-          padding: 11px 26px;
-          border-radius: 8px;
+          font-size: 0.86rem;
+          font-weight: 500;
+          padding: 10px 22px;
+          border-radius: 9px;
           cursor: pointer;
-          box-shadow: 0 4px 14px rgba(22, 163, 74, 0.28);
+          box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
           transition: all 0.18s ease;
         }
 
         .btn-clean-save:hover {
-          background: linear-gradient(135deg, #166534 0%, #15803d 100%);
-          box-shadow: 0 6px 18px rgba(22, 163, 74, 0.38);
+          background: #047857;
+          box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
           transform: translateY(-1px);
+        }
+
+        .btn-cancel {
+          background: #ffffff;
+          color: #64748b;
+          border: 1px solid #e2e8f0;
+          border-radius: 9px;
+          font-size: 0.84rem;
+          font-weight: 400;
+          padding: 9px 18px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+
+        .btn-cancel:hover {
+          background: #f8fafc;
+          color: #1e293b;
+          border-color: #cbd5e1;
         }
 
         /* Responsive Mobile Styles */

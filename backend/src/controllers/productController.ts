@@ -143,6 +143,7 @@ export const createProduct = async (req: Request, res: Response) => {
       features: features || [],
       image: primaryImage,
       images: imageList,
+      innerSections: req.body.innerSections || [],
       whatsappMessage: whatsappMessage || `Hello Orient Energy, I am interested in inquiring about ${title}.`,
       isFeatured: Boolean(isFeatured),
       inStock: inStock !== undefined ? Boolean(inStock) : true,

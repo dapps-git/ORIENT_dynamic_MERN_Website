@@ -8,7 +8,9 @@ export const getCategories = async (req: Request, res: Response) => {
     // Also include count of products for each category
     const categoriesWithCount = await Promise.all(
       categories.map(async (cat) => {
-        const count = await Product.countDocuments({ category: cat._id });
+        const count = await Product.countDocuments({
+          $or: [{ category: cat._id }, { divisionSlug: cat.slug }]
+        });
         return {
           ...cat.toObject(),
           productCount: count

@@ -5,6 +5,12 @@ export interface ISpecification {
   value: string;
 }
 
+export interface IInnerSection {
+  title: string;
+  content: string;
+  image?: string;
+}
+
 export interface IProduct extends Document {
   title: string;
   slug: string;
@@ -18,6 +24,7 @@ export interface IProduct extends Document {
   features: string[];
   image: string;
   images: string[];
+  innerSections?: IInnerSection[];
   whatsappMessage?: string;
   isFeatured: boolean;
   inStock: boolean;
@@ -45,6 +52,13 @@ const ProductSchema: Schema = new Schema(
     features: [{ type: String }],
     image: { type: String, default: '' },
     images: [{ type: String }],
+    innerSections: [
+      {
+        title: { type: String, required: true },
+        content: { type: String, required: true },
+        image: { type: String, default: '' },
+      },
+    ],
     whatsappMessage: { type: String, default: '' },
     isFeatured: { type: Boolean, default: false },
     inStock: { type: Boolean, default: true },

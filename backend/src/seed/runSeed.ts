@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
@@ -14,13 +16,13 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/orient
 
 const divisions = [
   {
-    name: 'Mechanical Supply Division',
+    name: 'Pipe Fittings and Flanges',
     slug: 'mechanical-division',
-    headline: 'Industrial Mechanical Products Supplier in Saudi Arabia',
-    description: 'Orient Energy Trading Company supplies a comprehensive range of industrial mechanical products designed to meet demanding requirements.',
+    headline: 'Pipe Fittings, Flanges & Industrial Mechanical Products Supplier in Saudi Arabia',
+    description: 'Orient Energy Trading Company supplies a comprehensive range of pipe fittings, flanges, valves, pumps, motors, and mechanical products designed to meet demanding requirements.',
     detailedDescriptions: [
-      'Orient Energy Trading Company, we supply a comprehensive range of industrial mechanical products designed to meet the demanding requirements of the Oil & Gas, Petrochemical, Power, Marine, Construction, and Manufacturing industries across Saudi Arabia.',
-      'Our product portfolio includes valves, flanges, pipe fittings, fasteners, bearings, gaskets, seals, hydraulic components, industrial hoses, mechanical tools, and maintenance supplies sourced from globally recognized manufacturers. With a strong sourcing network, competitive pricing, and dependable delivery, we help contractors, EPC companies, and industrial facilities keep their operations running efficiently and reliably.',
+      'Orient Energy Trading Company, we supply a comprehensive range of industrial pipe fittings, flanges, valves, pumps, motors, and mechanical products designed to meet the demanding requirements of the Oil & Gas, Petrochemical, Power, Marine, Construction, and Manufacturing industries across Saudi Arabia.',
+      'Our product portfolio includes ASME B16.5 flanges, butt weld and socket weld fittings, industrial valves, centrifugal and submersible pumps, electric motors, fasteners, bearings, gaskets, seals, hydraulic components, industrial hoses, mechanical tools, and maintenance supplies sourced from globally recognized manufacturers. With a strong sourcing network, competitive pricing, and dependable delivery, we help contractors, EPC companies, and industrial facilities keep their operations running efficiently and reliably.',
     ],
     image: '/categories/mechanical-supply-division.png',
     productRangeTitle: 'Product Range',
@@ -131,30 +133,6 @@ const divisions = [
     featured: true,
   },
   {
-    name: 'Power System',
-    slug: 'power-system',
-    headline: 'Industrial Power System Supplier in Saudi Arabia',
-    description: 'We provide industrial power systems and energy support equipment designed for project sites, industrial operations, rigs, and infrastructure developments.',
-    detailedDescriptions: [
-      'We provide industrial power systems and energy support equipment designed for project sites, industrial operations, rigs, and infrastructure developments.',
-    ],
-    image: '/categories/power-system.jpg',
-    order: 5,
-    featured: true,
-  },
-  {
-    name: 'Auxiliary Systems',
-    slug: 'auxiliary-systems',
-    headline: 'Industrial Auxiliary Equipment Supplier in Saudi Arabia',
-    description: 'Orient Energy Co. supplies auxiliary systems and operational support equipment for industrial camps, offshore facilities, and project site operations across Saudi Arabia.',
-    detailedDescriptions: [
-      'Orient Energy Co. supplies auxiliary systems and operational support equipment for industrial camps, offshore facilities, and project site operations across Saudi Arabia.',
-    ],
-    image: '/categories/auxiliary-systems.jpg',
-    order: 6,
-    featured: false,
-  },
-  {
     name: 'Marine Division',
     slug: 'marine-division',
     headline: 'Marine & Offshore Products Supplier in Saudi Arabia',
@@ -170,9 +148,9 @@ const divisions = [
     name: 'Steel & Structural Materials Division',
     slug: 'steel-structural-materials-division',
     headline: 'Structural Steel & Industrial Materials Supplier in Saudi Arabia',
-    description: 'We supply high-grade structural steel, carbon steel pipes, fittings, flanges, and fabrication materials for heavy construction and industrial infrastructure.',
+    description: 'We supply high-grade structural steel, carbon steel pipes, fittings, and fabrication materials for heavy construction and industrial infrastructure.',
     detailedDescriptions: [
-      'We supply high-grade structural steel, carbon steel pipes, fittings, flanges, and fabrication materials for heavy construction and industrial infrastructure.',
+      'We supply high-grade structural steel, carbon steel pipes, fittings, and fabrication materials for heavy construction and industrial infrastructure.',
     ],
     image: '/categories/steel-structural-materials-division.jpg',
     order: 8,
@@ -200,18 +178,6 @@ const divisions = [
     featured: true,
   },
   {
-    name: 'Pumps & Motors Division',
-    slug: 'pumps-motors',
-    headline: 'Industrial Pumps & Electric Motors Supplier in Saudi Arabia',
-    description: 'Orient Energy Co. supplies high-performance industrial pumps, electric motors, compressors, and fluid management systems designed for oil & gas, petrochemical, marine, and industrial applications.',
-    detailedDescriptions: [
-      'Orient Energy Co. supplies high-performance industrial pumps, electric motors, compressors, and fluid management systems designed for oil & gas, petrochemical, marine, and industrial applications across Saudi Arabia.',
-    ],
-    image: '/categories/pumps-motors.jpg',
-    order: 10,
-    featured: true,
-  },
-  {
     name: 'Fasteners Division',
     slug: 'fasteners-division',
     headline: 'Industrial Fasteners Supplier in Saudi Arabia',
@@ -232,10 +198,75 @@ const divisions = [
     order: 11,
     featured: false,
   },
+  {
+    name: 'PPE & Safety Equipment',
+    slug: 'ppe-safety-equipment',
+    headline: 'PPE & Industrial Safety Equipment Supplier in Saudi Arabia',
+    description: 'We supply industrial safety products, PPE equipment, and industrial consumables designed to improve workplace safety and operational efficiency across industrial sectors in Saudi Arabia.',
+    detailedDescriptions: [
+      'We supply industrial safety products, PPE equipment, and industrial consumables designed to improve workplace safety and operational efficiency across industrial sectors in Saudi Arabia.',
+    ],
+    image: '/categories/ppe-safety-equpments.jpg',
+    productRangeTitle: 'Product Range',
+    productRange: [
+      'Safety Helmets',
+      'Gloves & Coveralls',
+      'Eye & Face Protection',
+      'Safety Shoes',
+      'Respiratory Protection',
+      'Industrial Adhesives & Sealants',
+      'Abrasives & Grinding Discs',
+      'Industrial Tapes',
+      'Packing Materials',
+    ],
+    applicationsTitle: 'Applications',
+    applications: [
+      'Oil & Gas Sites',
+      'Construction Projects',
+      'Manufacturing Industries',
+      'Industrial Maintenance',
+      'Offshore Operations',
+    ],
+    order: 12,
+    featured: true,
+  },
+  {
+    name: 'Bearings and Filters',
+    slug: 'bearings-and-filters',
+    headline: 'Industrial Bearings, Mechanical Seals & Filtration Systems in Saudi Arabia',
+    description: 'Orient Energy Trading Company supplies high-precision industrial bearings, mechanical seals, and heavy filtration systems across Saudi Arabia for oil & gas refineries, petrochemical plants, and power utilities.',
+    detailedDescriptions: [
+      'Orient Energy Trading Company supplies high-precision industrial bearings, mechanical seals, and heavy filtration systems across Saudi Arabia for oil & gas refineries, petrochemical plants, power utilities, marine installations, and heavy manufacturing.',
+      'Our comprehensive bearings catalog includes deep groove ball bearings, spherical roller bearings, tapered roller bearings, pillow blocks, and linear guides from premium world-leading manufacturers. Alongside bearings, our filtration division provides high-efficiency hydraulic oil filters, heavy machinery fuel and air filters, suction strainers, and replacement cartridge elements to guarantee peak equipment uptime.',
+    ],
+    image: '/categories/mechanical-supply-division.png',
+    productRangeTitle: 'Product Range',
+    productRange: [
+      'Deep Groove Ball Bearings & Angular Contact Bearings',
+      'Spherical & Tapered Roller Bearings',
+      'Pillow Block & Flange Mounted Bearing Units',
+      'Hydraulic Oil & Lube Return Line Filter Elements',
+      'Heavy Duty Air & Fuel Filtration Systems',
+      'Industrial Duplex & Simplex Basket Strainers',
+      'High-Temperature & High-Speed Bearing Grease',
+      'Mechanical Seals, Gaskets & Shaft O-Rings',
+    ],
+    applicationsTitle: 'Applications',
+    applications: [
+      'Refinery Pumps & Process Turbines',
+      'Mining, Quarry & Aggregate Equipment',
+      'Automotive & Industrial Fleet Machinery',
+      'Manufacturing & Production Conveyor Systems',
+      'Power Plants & Compressor Stations',
+      'Offshore Drilling Rigs & Marine Deck Winches',
+    ],
+    order: 13,
+    featured: true,
+  },
 ];
 
 const sampleProducts = [
-  // 1. Mechanical Supply Division (All 13 Products)
+  // 1. Pipe Fittings and Flanges (Mechanical Division)
   {
     title: 'Black-Coated Steel Pipe Flanges Threaded',
     slug: 'black-coated-steel-pipe-flanges-threaded',
@@ -483,6 +514,58 @@ const sampleProducts = [
     inStock: true,
     isFeatured: true,
   },
+  {
+    title: 'API 610 Centrifugal Process Pump',
+    slug: 'api-610-centrifugal-process-pump',
+    divisionSlug: 'mechanical-division',
+    categoryName: 'Pumps & Fluid Handling',
+    image: '/categories/pumps-motors.jpg',
+    images: ['/categories/pumps-motors.jpg', '/categories/mechanical-supply-division.png'],
+    shortDescription: 'Heavy-duty API 610 compliant process pump for petrochemical services.',
+    fullDescription: 'API 610 11th/12th edition compliant centrifugal pump for refinery, petrochemical, and power generation fluid handling.',
+    features: ['API 610 11th / 12th Edition Compliant', 'Single or Double Mechanical Cartridge Seals', 'Hydrostatic Pressure Tested & Vibration Certified'],
+    inStock: true,
+    isFeatured: true,
+  },
+  {
+    title: 'Heavy-Duty Submersible Slurry Pump',
+    slug: 'heavy-duty-submersible-slurry-pump',
+    divisionSlug: 'mechanical-division',
+    categoryName: 'Pumps & Fluid Handling',
+    image: '/categories/mechanical-supply-division.png',
+    images: ['/categories/mechanical-supply-division.png', '/categories/pumps-motors.jpg'],
+    shortDescription: 'High-chrome abrasion-resistant submersible slurry and drainage pump.',
+    fullDescription: 'Submersible slurry pump with integrated agitator for abrasive slurries, mining sumps, and wastewater holding ponds.',
+    features: ['High-Chrome Abrasion-Resistant Wet End (28% Cr)', 'Integrated Agitator for High Solids Concentration', 'Double Silicon Carbide Mechanical Seals'],
+    inStock: true,
+    isFeatured: true,
+  },
+  {
+    title: 'High-Efficiency Industrial Electric Motor',
+    slug: 'high-efficiency-industrial-electric-motor',
+    divisionSlug: 'mechanical-division',
+    categoryName: 'Electric Motors & Drives',
+    image: '/categories/power-system.jpg',
+    images: ['/categories/power-system.jpg', '/categories/pumps-motors.jpg'],
+    shortDescription: 'IE3 and IE4 premium efficiency continuous duty electric motor.',
+    fullDescription: 'Cast iron frame industrial 3-phase electric motor designed for severe ambient environments, VFD inverter duty capable.',
+    features: ['IE3 / IE4 Premium Efficiency Rating', 'Cast Iron Rigid Frame & IP55/IP66 Protection', 'VFD Inverter Duty Capable'],
+    inStock: true,
+    isFeatured: true,
+  },
+  {
+    title: 'Multistage High-Pressure Booster Pump',
+    slug: 'multistage-high-pressure-booster-pump',
+    divisionSlug: 'mechanical-division',
+    categoryName: 'Pumps & Fluid Handling',
+    image: '/categories/all-fittings.jpeg',
+    images: ['/categories/all-fittings.jpeg', '/categories/pumps-motors.jpg'],
+    shortDescription: 'Vertical multistage centrifugal pump for high pressure booster duties.',
+    fullDescription: 'Stainless steel multistage high-pressure pump for reverse osmosis, boiler feed, and high-rise pressure boosting systems.',
+    features: ['High-Pressure Multistage Impeller Design', 'Stainless Steel AISI 316 / Super Duplex', 'Cartridge Mechanical Seal'],
+    inStock: true,
+    isFeatured: true,
+  },
   // 2. Welding Division
   {
     title: 'Contender EDGE 2.0 Gas Outfit',
@@ -575,10 +658,35 @@ const sampleProducts = [
     images: ['/products/coatings/jotun-hardtop-xp-1005.png'],
     shortDescription: 'Two-pack polyurethane topcoat with high gloss and color retention.',
     fullDescription: 'Industrial protective polyurethane coating designed for atmospheric exposure in aggressive marine and industrial environments.',
-    features: ['Two-pack Aliphatic Polyurethane', 'High Gloss & Color Retention', 'Certified for Marine & Industrial C5-M'],
     inStock: true,
     isFeatured: true,
   },
+
+  // 7. PPE & Safety Equipment Division (24 products)
+  { title: '3M 6700 Full Face Respirator', slug: '3m-6700', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6700-full-face-respirator.png', images: ['/products/ppe/3m-6700-full-face-respirator.png'], shortDescription: 'Lightweight full facepiece respirator for respiratory and eye protection.', fullDescription: 'Features a large lens for wide field of view, silicone faceseal, and 3M Cool Flow Valve.', features: ['NIOSH Approved Full Face', '3M Cool Flow Valve', 'Lightweight & Balanced Design'], inStock: true, isFeatured: true },
+  { title: '3M 6800 Full Face Respirator', slug: '3m-6800-full-mask', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6800-full-face-respirator.png', images: ['/products/ppe/3m-6800-full-face-respirator.png'], shortDescription: 'Medium full facepiece respirator with bayonet connection.', fullDescription: 'Durable thermoplastic elastomeric facepiece engineered for harsh industrial particulate environments.', features: ['Standard Medium Size', 'Bayonet Connection System', 'Wide Vision Polycarbonate Visor'], inStock: true, isFeatured: true },
+  { title: '3M 6900 Fullface Mask Large', slug: '3m-6900-fullface-mask-larg', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6900-full-face-respirator-large.png', images: ['/products/ppe/3m-6900-full-face-respirator-large.png'], shortDescription: 'Large full facepiece respirator with dual cartridge compatibility.', fullDescription: 'Engineered for comfort and clear visibility during paint spraying and chemical processing.', features: ['Large Size Configuration', 'Low Maintenance Design', 'Impact Resistant Lens'], inStock: true, isFeatured: false },
+  { title: '3M 7093 Particulate Filter', slug: '3m-7093', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-7093-particulate-filter.png', images: ['/products/ppe/3m-7093-particulate-filter.png'], shortDescription: 'P100 high-efficiency particulate filter with hard casing.', fullDescription: 'Enclosed in a durable plastic case suitable for high heat, sparks, and wet decontamination showers.', features: ['P100 Filtration 99.97%', 'Hard Shell Protection', 'Channeled Airflow'], inStock: true, isFeatured: false },
+  { title: '3M FF 402 Full Facepiece Respirator', slug: '3m-ff-402', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-ff-402-full-facepiece-respirator.png', images: ['/products/ppe/3m-ff-402-full-facepiece-respirator.png'], shortDescription: 'Ultimate FX premium silicone full facepiece respirator.', fullDescription: 'Scotchgard protector finish on lens to shed paint and debris effortlessly.', features: ['Scotchgard Coated Lens', 'Comfort Cradle Head Harness', 'Silicone Seal'], inStock: true, isFeatured: false },
+  { title: '6100 Half Mask', slug: '6100-half-mask', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6100-half-facepiece-respirator.png', images: ['/products/ppe/3m-6100-half-facepiece-respirator.png'], shortDescription: 'Small reusable half facepiece respirator.', fullDescription: 'Economical and reusable half mask offering dependable particulate and gas protection.', features: ['Small Fit Form Factor', 'Low Profile Head Straps', 'Easy Clean Elastomer'], inStock: true, isFeatured: false },
+  { title: '6200 Half Mask', slug: '6200-half-mask', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6200-half-facepiece-respirator.png', images: ['/products/ppe/3m-6200-half-facepiece-respirator.png'], shortDescription: 'Medium reusable half facepiece respirator.', fullDescription: 'The industry standard medium half mask for construction, fabrication, and oilfield operations.', features: ['Medium Fit Size', 'Bayonet Filter Mount', 'Lightweight & Comfortable'], inStock: true, isFeatured: false },
+  { title: '6300 Half Mask', slug: '6300-half-mask', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6300-half-facepiece-respirator.png', images: ['/products/ppe/3m-6300-half-facepiece-respirator.png'], shortDescription: 'Large reusable half facepiece respirator.', fullDescription: 'Large sized half face respirator for secure fit across wide facial structures.', features: ['Large Size Fit', 'Low Breathing Resistance', 'Ergonomic Straps'], inStock: true, isFeatured: false },
+  { title: '7502 Half Mask', slug: '7502-half-mask', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-7502-silicone-half-mask.png', images: ['/products/ppe/3m-7502-silicone-half-mask.png'], shortDescription: 'Advanced silicone half facepiece respirator (Medium).', fullDescription: 'Soft medical grade silicone facepiece reduces pressure points and provides unmatched comfort.', features: ['Advanced Silicone Seal', 'Drop Down Strap Option', 'Cool Flow Valve'], inStock: true, isFeatured: false },
+  { title: '7503 Half Mask', slug: '7503-half-mask', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-7503-silicone-half-mask.png', images: ['/products/ppe/3m-7503-silicone-half-mask.png'], shortDescription: 'Advanced silicone half facepiece respirator (Large).', fullDescription: 'Premium large silicone respirator for extended shift wear in hot and humid plant environments.', features: ['Advanced Silicone Facepiece', 'High Heat Resistance', 'Easy Breathability'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 2097', slug: 'catridge-filter-2097', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-2097-particulate-filter.png', images: ['/products/ppe/3m-2097-particulate-filter.png'], shortDescription: 'P100 filter with nuisance level organic vapor relief.', fullDescription: 'Ideal for welding, metal pouring, torch cutting, and undercoating operations.', features: ['P100 Particulate Filtration', 'Nuisance Organic Vapor Relief', 'Flexible Pancake Style'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 501', slug: 'catridge-filter-501', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-501-filter-retainer.png', images: ['/products/ppe/3m-501-filter-retainer.png'], shortDescription: 'Pre-filter retainer for 5N11 particulate filters.', fullDescription: 'Snaps over 5N11 and 5P71 filters to attach to 6000 series gas and vapor cartridges.', features: ['Durable Polypropylene', 'Snap-On Locking Mechanism', 'Reusable Design'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 5N11', slug: 'catridge-filter-5n11', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-5n11-n95-particulate-filter.png', images: ['/products/ppe/3m-5n11-n95-particulate-filter.png'], shortDescription: 'N95 particulate pre-filter.', fullDescription: 'Non-oil based particulate filter for spray painting, pesticide application, and agriculture.', features: ['N95 NIOSH Rating', 'Advanced Electret Media', 'Pack of 10 Pairs'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6001', slug: 'catridge-filter-6001', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6001-organic-vapor-cartridge.png', images: ['/products/ppe/3m-6001-organic-vapor-cartridge.png'], shortDescription: 'Organic vapor cartridge for solvents and paints.', fullDescription: 'Protects against solvents, resins, and organic chemical vapors across Saudi industrial plants.', features: ['Organic Vapor Certified', 'Swept-Back Design', 'Low Breathing Resistance'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6002', slug: 'catridge-filter-6002', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6002-acid-gas-cartridge.png', images: ['/products/ppe/3m-6002-acid-gas-cartridge.png'], shortDescription: 'Acid gas cartridge for chlorine and sulfur dioxide.', fullDescription: 'Recommended for chemical manufacturing, glass etching, and water chlorination facilities.', features: ['Acid Gas Protection', 'Chlorine / SO2 Protection', 'Bayonet Mounting'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6003', slug: 'catridge-filter-6003', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6003-organic-vapor-acid-gas-cartridge.png', images: ['/products/ppe/3m-6003-organic-vapor-acid-gas-cartridge.png'], shortDescription: 'Combination organic vapor and acid gas cartridge.', fullDescription: 'Dual protection against VOCs, hydrogen sulfide, sulfur dioxide, and chlorine.', features: ['Dual Gas Protection', 'H2S Compliant', 'Compact Profile'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6004', slug: 'catridge-filter-6004', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6004-ammonia-methylamine-cartridge.png', images: ['/products/ppe/3m-6004-ammonia-methylamine-cartridge.png'], shortDescription: 'Ammonia and methylamine industrial cartridge.', fullDescription: 'Used in refrigeration plant maintenance, fertilizer manufacturing, and chemical synthesis.', features: ['Ammonia & Methylamine', 'High Adsorption Carbon', 'Color Coded Green'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6005', slug: 'catridge-filter-6005', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6005-formaldehyde-organic-vapor-cartridge.png', images: ['/products/ppe/3m-6005-formaldehyde-organic-vapor-cartridge.png'], shortDescription: 'Formaldehyde and organic vapor cartridge.', fullDescription: 'Specialized chemical cartridge for laboratories, adhesive manufacturing, and polymer plants.', features: ['Formaldehyde Rated', 'Olive / Black Identification', 'Bayonet Fitting'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6006', slug: 'catridge-filter-6006', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6006-multi-gas-vapor-cartridge.png', images: ['/products/ppe/3m-6006-multi-gas-vapor-cartridge.png'], shortDescription: 'Multi-gas and vapor cartridge for mixed hazards.', fullDescription: 'Comprehensive protection against organic vapors, chlorine, sulfur dioxide, ammonia, and formaldehyde.', features: ['Multi-Gas Spectrum', 'Universal Industrial Defense', 'High Capacity Bed'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6051', slug: 'catridge-filter-6051', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6051-organic-vapor-filter.png', images: ['/products/ppe/3m-6051-organic-vapor-filter.png'], shortDescription: 'A1 organic vapor filter cartridge to EN14387.', fullDescription: 'European standard A1 cartridge for solvents with boiling point over 65°C.', features: ['A1 Rated to EN14387', 'Balanced Weight Distribution', 'Quick Bayonet Click'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6057', slug: 'catridge-filter-6057', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6057-inorganic-gas-acid-filter.png', images: ['/products/ppe/3m-6057-inorganic-gas-acid-filter.png'], shortDescription: 'ABE1 inorganic and acid gas filter.', fullDescription: 'Protection against organic vapors, inorganic vapors, and acid gases in refinery processes.', features: ['ABE1 Multi Protection', 'High Retention Carbon', 'Reliable Ingress Barrier'], inStock: true, isFeatured: false },
+  { title: 'Catridge Filter 6059', slug: 'catridge-filter-6059', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-6059-multi-gas-vapor-filter.png', images: ['/products/ppe/3m-6059-multi-gas-vapor-filter.png'], shortDescription: 'ABEK1 multi-gas filter cartridge.', fullDescription: 'Comprehensive ABEK1 filter covering organic, inorganic, acid gas, and ammonia compounds.', features: ['ABEK1 Rated', 'Full Spectrum Defense', 'Robust Casing'], inStock: true, isFeatured: false },
+  { title: 'Disposable Masks (Box Pack)', slug: 'disposable-masks-box', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-disposable-particulate-respirator-masks-box.png', images: ['/products/ppe/3m-disposable-particulate-respirator-masks-box.png'], shortDescription: 'Box of 20 N95 particulate respirator masks.', fullDescription: 'Box packaged particulate respirators with adjustable noseclip and cushioning nose foam.', features: ['Box of 20 Masks', 'N95 Certified Filtration', 'Cushioned Nose Foam'], inStock: true, isFeatured: false },
+  { title: 'Disposable Particulate Masks', slug: 'disposable-masks', divisionSlug: 'ppe-safety-equipment', categoryName: 'Respiratory Protection', image: '/products/ppe/3m-disposable-particulate-respirator-masks.png', images: ['/products/ppe/3m-disposable-particulate-respirator-masks.png'], shortDescription: 'Industrial disposable particulate mask with braided headbands.', fullDescription: 'Reliable worker protection against dust, grinding particles, and non-oil aerosols.', features: ['Braided Two-Strap Headband', 'Collapse Resistant Shell', 'Lightweight Fit'], inStock: true, isFeatured: false },
 ];
 
 const sampleBlogs = [
@@ -709,7 +817,12 @@ async function runSeed() {
     console.log(`✅ Seeded ${createdCategories.length} divisions/categories`);
 
     // Map division IDs to products
-    const productsToInsert = sampleProducts.map((p: any) => {
+    const allProductsPath = path.resolve(__dirname, 'allProducts.json');
+    const sourceProducts = fs.existsSync(allProductsPath)
+      ? JSON.parse(fs.readFileSync(allProductsPath, 'utf8'))
+      : sampleProducts;
+
+    const productsToInsert = sourceProducts.map((p: any) => {
       const match = createdCategories.find((c) => c.slug === p.divisionSlug);
       return {
         ...p,
@@ -728,7 +841,7 @@ async function runSeed() {
     });
 
     await Product.insertMany(productsToInsert);
-    console.log(`✅ Seeded ${productsToInsert.length} sample products`);
+    console.log(`✅ Seeded ${productsToInsert.length} complete industrial products across all divisions`);
 
     // Seed Blogs
     await Blog.insertMany(sampleBlogs);
@@ -761,7 +874,7 @@ async function runSeed() {
       socials: {
         instagram: 'https://www.instagram.com/orientenergyco?dlrf=MWptcnpienk0eDVxbQ==',
         facebook: 'https://www.facebook.com/share/1FvBC9RFuK/?mibextid=wwXIfr',
-        linkedin: 'https://linkedin.com',
+        linkedin: 'https://www.linkedin.com/company/orient-energy-trading-co-oetc/',
         twitter: '',
       },
       stats: { experienceYears: 15, productsDelivered: 12500, activeClients: 450, satisfactionRate: 99 },
