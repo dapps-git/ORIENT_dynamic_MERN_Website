@@ -777,8 +777,8 @@ function NavbarInner() {
         }
         .navbar .nav-link {
           color: #071138 !important;
-          font-weight: 600 !important;
-          font-size: 0.96rem !important;
+          font-weight: 450 !important;
+          font-size: 0.95rem !important;
           letter-spacing: 0.01em !important;
           transition: all 0.2s ease;
         }
@@ -787,7 +787,7 @@ function NavbarInner() {
         }
         .navbar .nav-link.active {
           color: #20b512 !important;
-          font-weight: 700 !important;
+          font-weight: 550 !important;
         }
         @keyframes drawerFadeIn {
           from { opacity: 0; }

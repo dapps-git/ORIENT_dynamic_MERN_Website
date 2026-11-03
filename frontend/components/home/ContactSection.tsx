@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/api';
+import { GOOGLE_REVIEWS_URL } from '@/components/home/GoogleReviewsSection';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -166,6 +167,28 @@ export default function ContactSection() {
                     <br />
                     Unit Number: 36, Al Khobar 34427 - 3524, Building number - 6625, KSA
                   </p>
+                  <a
+                    href={GOOGLE_REVIEWS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      color: '#1a73e8',
+                      fontSize: '0.82rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                      marginTop: '8px',
+                    }}
+                    title="View Orient Energy on Google & Read Reviews"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    View on Google Maps & Reviews
+                  </a>
                 </div>
               </div>
 

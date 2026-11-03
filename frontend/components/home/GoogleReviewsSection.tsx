@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
+export const GOOGLE_REVIEWS_URL =
+  'https://www.google.com/search?sca_esv=27e99585eb7cf8ac&rlz=1CDGOYI_enIN1165IN1166&hl=en-US&biw=440&bih=873&sxsrf=AKL5yDjOrY_Htede7YO0sIFj2rN-Yjz2wA:1793675131722&q=orient+energy+trading+company+al+khobar+reviews&uds=AE2AFgbs_IEAvPLh0jZNfSk2jzJcMVMNnW9wZBoFzThqxdAp9rou2sF2KqZeew911WhS5hWIoj2LE4LX-DEu1MlQWs3LHNdGSu5r9bHFHdmjtR0mH5Zrv4zIl0eqva4HCxc7vhoEnc8NdySbGskvvEbTbYZpPgbazF2Rn-8ds1sPBvjBv5UKzWh_FDhRQyrMKRkr_VEEJq_7qn_eWfV0k6YSB94oeih_S3GNvhgRfa7ypLYyCZWK-l8JCsM78yGfzRj3QXVwqJ_HNgtdLz8hNov1ZdBKx5T32Yzsf_qbJobrPOMwxHcqgMNWUz6NHbzk-WjcXB5jRIFMendsTp4bqVKxxdlAzK1qylU902Jkbb2RbNACv3YT5WycEm5YFcTdzTCpK3QZ3TsUK3z-i3rDVVBlW1DL06Bgf5Gwo-wrV2MGlVqB7Zqf4M8&si=AE1YtOqiKPb2pdLXAi8quZ9vbH4aVq_aX8-3H9iFBLpRNK95cxO-zQ_resfAZdLSTx6sslVpvRnCVBJRYnVtWbH36pvod6UZLEvEj8-ULaX_td7CzpsHHdmoIKtomcxci_cqF1Aw8is-DIjzHzGFCbRdbuN7V88vs1n8-mPkfRQhZsQ8a8xlrxA%3D&sa=X&ved=2ahUKEwjMgcbI6OqXAxWgTmwGHXNTM_QQk8gLegQIHxAB&ictx=1&stq=1&cs=0&lei=e0_paozYK6CdseMP86bNoQ8#ebo=3';
+
 interface GoogleReview {
   id: number;
   name: string;
@@ -227,7 +230,14 @@ export default function GoogleReviewsSection() {
       >
         {/* Real Google Rating Header Bar */}
         <div className="google-header-card">
-          <div className="google-brand-left">
+          <a
+            href={GOOGLE_REVIEWS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="google-brand-left"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+            title="Read Orient Energy reviews on Google"
+          >
             <div className="google-icon-wrapper">
               <GoogleGIcon size={34} />
             </div>
@@ -251,7 +261,7 @@ export default function GoogleReviewsSection() {
                 <span className="google-review-count">Based on 48+ Google Reviews</span>
               </div>
             </div>
-          </div>
+          </a>
 
           <div className="google-header-actions">
             {/* Carousel Arrows */}
@@ -281,7 +291,7 @@ export default function GoogleReviewsSection() {
             </div>
 
             <a
-              href="https://maps.google.com"
+              href={GOOGLE_REVIEWS_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="google-review-btn"
@@ -347,9 +357,15 @@ export default function GoogleReviewsSection() {
                       </div>
                     </div>
 
-                    <div className="rev-google-corner" title="Google Verified Review">
+                    <a
+                      href={GOOGLE_REVIEWS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rev-google-corner"
+                      title="Google Verified Review — Open on Google"
+                    >
                       <GoogleGIcon size={20} />
-                    </div>
+                    </a>
                   </div>
 
                   {/* Rating Stars & Relative Date */}
@@ -390,9 +406,16 @@ export default function GoogleReviewsSection() {
                       </svg>
                       Helpful ({rev.likes})
                     </button>
-                    <span className="google-posted-via">
+                    <a
+                      href={GOOGLE_REVIEWS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="google-posted-via"
+                      style={{ textDecoration: 'none' }}
+                      title="View review on Google"
+                    >
                       Posted on <strong style={{ color: '#1a73e8' }}>Google</strong>
-                    </span>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -432,6 +455,17 @@ export default function GoogleReviewsSection() {
           display: flex;
           align-items: center;
           gap: 16px;
+          cursor: pointer;
+          transition: opacity 0.2s ease;
+        }
+
+        .google-brand-left:hover .google-business-title {
+          color: #1a73e8;
+        }
+
+        .google-brand-left:hover .google-icon-wrapper {
+          border-color: #1a73e8;
+          box-shadow: 0 2px 8px rgba(26,115,232,0.18);
         }
 
         .google-icon-wrapper {
@@ -713,6 +747,15 @@ export default function GoogleReviewsSection() {
         .rev-google-corner {
           opacity: 0.9;
           flex-shrink: 0;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .rev-google-corner:hover {
+          opacity: 1;
+          transform: scale(1.15);
         }
 
         .rev-stars-row {
@@ -814,6 +857,12 @@ export default function GoogleReviewsSection() {
         .google-posted-via {
           font-size: 0.75rem;
           color: #70757a;
+          transition: color 0.2s ease;
+        }
+
+        .google-posted-via:hover {
+          color: #1a73e8;
+          text-decoration: underline !important;
         }
 
         .google-mobile-dots {

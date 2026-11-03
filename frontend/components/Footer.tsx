@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { GOOGLE_REVIEWS_URL } from '@/components/home/GoogleReviewsSection';
 
 const USEFUL_LINKS = [
   { label: 'About Us', href: '/about' },
@@ -229,7 +230,7 @@ export default function Footer() {
                 color: 'rgba(255, 255, 255, 0.72)',
                 fontSize: '0.76rem',
                 lineHeight: 1.55,
-                marginBottom: '14px',
+                marginBottom: '8px',
                 fontWeight: 300,
               }}
             >
@@ -238,6 +239,30 @@ export default function Footer() {
               Al Khubar, Ash Shamaliyah Dist.
               <br />
               Unit Number: 36, Al Khobar 34427 – 3524, Building number – 6625
+            </p>
+            <p style={{ margin: '0 0 14px 0' }}>
+              <a
+                href={GOOGLE_REVIEWS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  color: '#60a5fa',
+                  fontSize: '0.74rem',
+                  fontWeight: 400,
+                  textDecoration: 'none',
+                }}
+                className="footer-nav-link"
+                title="View on Google & Leave a Review"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                View & Review on Google
+              </a>
             </p>
 
             {/* Email Address */}
@@ -468,6 +493,32 @@ export default function Footer() {
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
+              </a>
+
+              {/* Google Reviews */}
+              <a
+                href={GOOGLE_REVIEWS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Google Reviews"
+                title="Review Us on Google"
+                className="social-btn"
+                style={{
+                  width: '38px',
+                  height: '38px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#ffffff',
+                  textDecoration: 'none',
+                  transition: 'all 0.25s ease',
+                }}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
                 </svg>
               </a>
             </div>
