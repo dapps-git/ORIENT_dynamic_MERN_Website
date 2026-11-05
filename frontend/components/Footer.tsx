@@ -45,7 +45,7 @@ export default function Footer() {
       >
         {/* 4-Column Footer Grid */}
         <div className="footer-main-grid">
-          {/* Column 1: Brand Logo, Description, Vision 2030 & Iktva */}
+          {/* Column 1: Brand Logo, Description & Vision 2030 */}
           <div className="footer-col-brand">
             {/* White Logo Card - reduced size */}
             <div
@@ -85,29 +85,13 @@ export default function Footer() {
               sourcing, and fast project support tailored for demanding operational environments.
             </p>
 
-            {/* Saudi Vision 2030 Logo - reduced */}
-            <div style={{ marginBottom: '10px' }}>
+            {/* Saudi Vision 2030 Logo */}
+            <div>
               <Image
                 src="/footer/vision-2030.png"
                 alt="Kingdom of Saudi Arabia Vision 2030"
                 width={85}
                 height={42}
-                style={{
-                  width: '78px',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  display: 'block',
-                }}
-              />
-            </div>
-
-            {/* Aramco Iktva Logo - reduced */}
-            <div>
-              <Image
-                src="/footer/aramco-iktva.png"
-                alt="Aramco Iktva Certification"
-                width={85}
-                height={32}
                 style={{
                   width: '78px',
                   height: 'auto',

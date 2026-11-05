@@ -86,79 +86,31 @@ export default function SectorsPage() {
               padding: '0 24px',
             }}
           >
-            <div className="sector-hero-grid">
-              {/* Left Column: Heading and Text */}
-              <div className="sector-hero-left">
-                <div className="sector-hero-tag">INDUSTRIES WE SERVE</div>
+            <div style={{ maxWidth: '820px', margin: '0 auto', textAlign: 'center' }}>
+              <div className="sector-hero-tag">INDUSTRIES WE SERVE</div>
 
-                <h1 className="sector-hero-title">
-                  Powering Progress
-                  <br />
-                  Across Every Industry
-                </h1>
+              <h1 className="sector-hero-title">
+                Powering Progress
+                <br />
+                Across Every Industry
+              </h1>
 
-                <p className="sector-hero-desc">
-                  Orient Energy Co. supports a wide range of industries across Saudi Arabia with reliable
-                  industrial supply solutions, engineering materials, maintenance products, lifting systems,
-                  safety equipment, and operational support services designed for demanding industrial
-                  environments.
-                </p>
-              </div>
+              <div
+                style={{
+                  width: '50px',
+                  height: '3px',
+                  backgroundColor: '#20b512',
+                  margin: '0 auto 20px',
+                  borderRadius: '2px',
+                }}
+              />
 
-              {/* Right Column: Hero Collage */}
-              <div className="sector-hero-collage">
-                {/* Top Wide Image */}
-                <div className="sector-collage-top">
-                  <Image
-                    src="/sectors/oil-gas.png"
-                    alt="Industrial Refinery at Dusk"
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, 580px"
-                    style={{ objectFit: 'cover' }}
-                  />
-                </div>
-
-                {/* Bottom Diagonal Slices Row */}
-                <div className="sector-collage-bottom">
-                  <div className="sector-slice-item">
-                    <Image
-                      src="/sectors/marine-offshore.png"
-                      alt="Marine Offshore Rig"
-                      fill
-                      sizes="(max-width: 768px) 25vw, 145px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                  <div className="sector-slice-item">
-                    <Image
-                      src="/sectors/construction.png"
-                      alt="Construction Crane"
-                      fill
-                      sizes="(max-width: 768px) 25vw, 145px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                  <div className="sector-slice-item">
-                    <Image
-                      src="/sectors/metals-fabrication.png"
-                      alt="Industrial Welder Sparks"
-                      fill
-                      sizes="(max-width: 768px) 25vw, 145px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                  <div className="sector-slice-item">
-                    <Image
-                      src="/sectors/power-energy.png"
-                      alt="Energy & Power Infrastructure"
-                      fill
-                      sizes="(max-width: 768px) 25vw, 145px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                </div>
-              </div>
+              <p className="sector-hero-desc" style={{ maxWidth: '720px', margin: '0 auto' }}>
+                Orient Energy Co. supports a wide range of industries across Saudi Arabia with reliable
+                industrial supply solutions, engineering materials, maintenance products, lifting systems,
+                safety equipment, and operational support services designed for demanding industrial
+                environments.
+              </p>
             </div>
           </div>
         </section>

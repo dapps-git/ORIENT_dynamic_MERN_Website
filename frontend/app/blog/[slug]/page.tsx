@@ -257,30 +257,30 @@ export default async function BlogPostPage({
             {article.subtitle}
           </h2>
 
-          {/* Introduction */}
-          <div style={{ marginBottom: '24px' }}>
+          {/* Introduction & Content (Supports Rich Formatting: Bold, Italic, Images, Links, Headings) */}
+          <div style={{ marginBottom: '28px' }}>
             <h3
               style={{
                 fontFamily: "'Poppins', sans-serif",
                 fontSize: '0.94rem',
                 fontWeight: 700,
                 color: '#111827',
-                marginBottom: '8px',
+                marginBottom: '10px',
               }}
             >
-              Introduction:
+              Overview:
             </h3>
-            <p
+            <div
+              className="blog-rendered-content"
               style={{
                 fontSize: '0.88rem',
-                lineHeight: 1.75,
+                lineHeight: 1.8,
                 color: '#4b5563',
                 margin: 0,
                 fontWeight: 400,
               }}
-            >
-              {article.introduction}
-            </p>
+              dangerouslySetInnerHTML={{ __html: article.introduction }}
+            />
           </div>
 
           {/* Fleet and Services */}
@@ -407,6 +407,80 @@ export default async function BlogPostPage({
       </main>
 
       <Footer />
+
+      <style>{`
+        .blog-rendered-content strong,
+        .blog-rendered-content b {
+          color: #0f172a !important;
+          font-weight: 600 !important;
+        }
+        .blog-rendered-content em,
+        .blog-rendered-content i {
+          font-style: italic !important;
+        }
+        .blog-rendered-content u {
+          text-decoration: underline !important;
+        }
+        .blog-rendered-content a {
+          color: #2e3191 !important;
+          text-decoration: underline !important;
+          font-weight: 500 !important;
+          transition: color 0.2s ease;
+        }
+        .blog-rendered-content a:hover {
+          color: #20b512 !important;
+        }
+        .blog-rendered-content img {
+          max-width: 100% !important;
+          height: auto !important;
+          border-radius: 8px !important;
+          margin: 18px 0 !important;
+          display: block !important;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+        }
+        .blog-rendered-content h2 {
+          font-family: 'Montserrat', sans-serif !important;
+          color: #0f172a !important;
+          font-size: 1.35rem !important;
+          font-weight: 600 !important;
+          margin: 24px 0 10px !important;
+          letter-spacing: -0.01em;
+        }
+        .blog-rendered-content h3 {
+          font-family: 'Montserrat', sans-serif !important;
+          color: #1e293b !important;
+          font-size: 1.15rem !important;
+          font-weight: 600 !important;
+          margin: 20px 0 8px !important;
+        }
+        .blog-rendered-content p {
+          margin-bottom: 14px !important;
+          line-height: 1.8 !important;
+        }
+        .blog-rendered-content ul {
+          padding-left: 24px !important;
+          margin: 12px 0 16px !important;
+          list-style-type: disc !important;
+        }
+        .blog-rendered-content ol {
+          padding-left: 24px !important;
+          margin: 12px 0 16px !important;
+          list-style-type: decimal !important;
+        }
+        .blog-rendered-content li {
+          margin-bottom: 6px !important;
+          line-height: 1.7 !important;
+        }
+        .blog-rendered-content blockquote {
+          border-left: 4px solid #20b512 !important;
+          padding: 12px 18px !important;
+          margin: 18px 0 !important;
+          background-color: #f8fafc !important;
+          color: #334155 !important;
+          font-style: italic !important;
+          border-radius: 0 6px 6px 0 !important;
+        }
+      `}</style>
     </>
   );
 }

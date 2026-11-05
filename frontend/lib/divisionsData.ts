@@ -20,6 +20,17 @@ export interface ProductItem {
   fullDescription?: string;
   innerSections?: ProductInnerSection[];
   whatsappMessage?: string;
+  // SEO & Google Rich Snippets
+  sku?: string;
+  brand?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  focusKeyword?: string;
+  secondaryKeywords?: string[];
+  imageAlt?: string;
+  imageTitle?: string;
+  canonicalUrl?: string;
+  inStock?: boolean;
 }
 
 export function getProductSlug(title: string): string {
@@ -924,23 +935,21 @@ export const DIVISIONS_DATA: DivisionData[] = [
     ],
   },
 
-  // 12. Bearings and Filters Division
+  // 12. Bearings Division
   {
-    id: 'bearings-and-filters',
-    name: 'Bearings and Filters',
-    headline: 'Industrial Bearings, Mechanical Seals & Filtration Systems in Saudi Arabia',
+    id: 'bearings',
+    name: 'Bearings',
+    headline: 'Industrial Bearings, Mechanical Seals & Pillow Block Units in Saudi Arabia',
     description: [
-      'Orient Energy Trading Company supplies high-precision industrial bearings, mechanical seals, and heavy filtration systems across Saudi Arabia for oil & gas refineries, petrochemical plants, power utilities, marine installations, and heavy manufacturing.',
-      'Our comprehensive bearings catalog includes deep groove ball bearings, spherical roller bearings, tapered roller bearings, pillow blocks, and linear guides from premium world-leading manufacturers. Alongside bearings, our filtration division provides high-efficiency hydraulic oil filters, heavy machinery fuel and air filters, suction strainers, and replacement cartridge elements to guarantee peak equipment uptime.',
+      'Orient Energy Trading Company supplies high-precision industrial bearings, mechanical seals, and motion components across Saudi Arabia for oil & gas refineries, petrochemical plants, power utilities, marine installations, and heavy manufacturing.',
+      'Our comprehensive bearings catalog includes deep groove ball bearings, spherical roller bearings, tapered roller bearings, pillow blocks, and linear guides from premium world-leading manufacturers.',
     ],
     productRangeTitle: 'Product Range',
     productRange: [
       'Deep Groove Ball Bearings & Angular Contact Bearings',
       'Spherical & Tapered Roller Bearings',
       'Pillow Block & Flange Mounted Bearing Units',
-      'Hydraulic Oil & Lube Return Line Filter Elements',
-      'Heavy Duty Air & Fuel Filtration Systems',
-      'Industrial Duplex & Simplex Basket Strainers',
+      'Thrust Ball Bearings & Needle Roller Bearings',
       'High-Temperature & High-Speed Bearing Grease',
       'Mechanical Seals, Gaskets & Shaft O-Rings',
     ],
@@ -953,20 +962,18 @@ export const DIVISIONS_DATA: DivisionData[] = [
       'Power Plants & Compressor Stations',
       'Offshore Drilling Rigs & Marine Deck Winches',
     ],
-    subcategoriesTitle: 'Bearings & Filters Sub-Categories',
+    subcategoriesTitle: 'Bearings Sub-Categories',
     subcategories: [
       { name: 'Ball & Roller Bearings' },
       { name: 'Pillow Block Bearing Units' },
-      { name: 'Hydraulic & Oil Filtration' },
-      { name: 'Industrial Air & Fuel Filters' },
+      { name: 'Mounted Bearings & Housing' },
     ],
     pills: [
       'Ball Bearings',
       'Roller Bearings',
       'Pillow Blocks',
-      'Hydraulic Filters',
-      'Oil & Fuel Filters',
-      'Air Filters',
+      'Angular Contact Bearings',
+      'Tapered Roller',
       'Mechanical Seals',
     ],
     products: [
@@ -1000,6 +1007,50 @@ export const DIVISIONS_DATA: DivisionData[] = [
           'Dual Contact Rubber Seals Protecting Against Dirt and Moisture',
         ],
       },
+    ],
+  },
+
+  // 13. Filters Division
+  {
+    id: 'filters',
+    name: 'Filters',
+    headline: 'Industrial Hydraulic, Oil, Fuel & Air Filtration Systems in Saudi Arabia',
+    description: [
+      'Orient Energy Trading Company supplies high-efficiency industrial filters, hydraulic oil filters, heavy machinery fuel and air filters, suction strainers, and replacement cartridge elements across Saudi Arabia to guarantee peak equipment uptime.',
+      'Our filtration division provides contamination control solutions engineered for demanding hydraulic power units, industrial engines, compressor stations, and marine propulsion systems.',
+    ],
+    productRangeTitle: 'Product Range',
+    productRange: [
+      'Hydraulic Oil & Lube Return Line Filter Elements',
+      'Heavy Duty Air & Fuel Filtration Systems',
+      'Industrial Duplex & Simplex Basket Strainers',
+      'High-Pressure Hydraulic Filters',
+      'Suction Strainers & Breather Caps',
+      'Replacement Cartridge Elements',
+    ],
+    applicationsTitle: 'Applications',
+    applications: [
+      'Heavy Earth-Moving & Construction Equipment',
+      'Oil & Gas Hydraulic Power Units (HPUs)',
+      'Diesel Generator Sets & Engines',
+      'Industrial Manufacturing Lubrication Systems',
+      'Marine Propulsion & Deck Machinery',
+    ],
+    subcategoriesTitle: 'Filters Sub-Categories',
+    subcategories: [
+      { name: 'Hydraulic & Oil Filtration' },
+      { name: 'Industrial Air & Fuel Filters' },
+      { name: 'Basket Strainers & Elements' },
+    ],
+    pills: [
+      'Hydraulic Filters',
+      'Oil & Fuel Filters',
+      'Air Filters',
+      'Cartridge Elements',
+      'Duplex Strainers',
+      'Suction Filters',
+    ],
+    products: [
       {
         id: 'bf-3',
         title: 'High-Pressure Hydraulic Return Line Filter Element',

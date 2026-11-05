@@ -107,7 +107,11 @@ export const updateCategory = async (req: Request, res: Response) => {
       updateData.slug = updateData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
 
-    const category = await Category.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    const isObjectId = Boolean(id && id.match(/^[0-9a-fA-F]{24}$/));
+    const category = isObjectId
+      ? await Category.findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
+      : await Category.findOneAndUpdate({ $or: [{ slug: id }, { name: id }] }, updateData, { new: true, runValidators: true });
+
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
@@ -120,7 +124,11 @@ export const updateCategory = async (req: Request, res: Response) => {
 export const deleteCategory = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const category = await Category.findByIdAndDelete(id);
+    const isObjectId = Boolean(id && id.match(/^[0-9a-fA-F]{24}$/));
+    const category = isObjectId
+      ? await Category.findByIdAndDelete(id)
+      : await Category.findOneAndDelete({ $or: [{ slug: id }, { name: id }] });
+
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }

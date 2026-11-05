@@ -178,7 +178,7 @@ export default async function BrandsPage() {
       <ScrollAnimation />
       <Navbar />
 
-      <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '110px' }}>
+      <main className="site-main-content" style={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
         <section style={{ padding: '40px 0 90px' }}>
           <div
             className="container"
@@ -458,31 +458,37 @@ export default async function BrandsPage() {
 
         @media (max-width: 768px) {
           .brands-logo-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 8px !important;
           }
           .brand-six-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 8px !important;
           }
           .brand-logo-card {
-            height: 95px;
-            padding: 10px 12px;
+            height: 75px !important;
+            padding: 6px 8px !important;
           }
         }
 
         @media (max-width: 480px) {
           .brands-logo-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 10px;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 6px !important;
           }
           .brand-six-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 10px;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 6px !important;
           }
           .brand-logo-card {
-            height: 90px;
-            padding: 8px 10px;
+            height: 62px !important;
+            padding: 4px 6px !important;
+          }
+          .brand-logo-wrapper {
+            max-width: 90% !important;
+          }
+          .brand-logo-img {
+            max-height: 40px !important;
           }
         }
       `}</style>

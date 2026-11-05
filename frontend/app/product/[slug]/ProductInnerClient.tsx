@@ -81,7 +81,8 @@ export default function ProductInnerClient({ product: initialProduct, division, 
             <div className="product-image-container">
               <img
                 src={selectedImage}
-                alt={product.title}
+                alt={product.imageAlt || product.title}
+                title={product.imageTitle || product.title}
                 className="product-main-image"
                 onClick={() => setLightboxOpen(true)}
               />
@@ -113,19 +114,35 @@ export default function ProductInnerClient({ product: initialProduct, division, 
                     className={`thumb-btn ${selectedImage === img ? 'active' : ''}`}
                     title={`View photo ${idx + 1}`}
                   >
-                    <img src={img} alt={`${product.title} photo ${idx + 1}`} />
+                    <img
+                      src={img}
+                      alt={`${product.imageAlt || product.title} photo ${idx + 1}`}
+                      title={`${product.imageTitle || product.title} photo ${idx + 1}`}
+                    />
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Right Column: Category & WhatsApp Button */}
+          {/* Right Column: Category, SKU, Brand & WhatsApp Button */}
           <div className="product-right-panel">
             <div className="product-category-label">
               <span className="cat-prefix">Category:</span>{' '}
               <span className="cat-val">{product.category || division.name}</span>
             </div>
+            {product.sku && (
+              <div className="product-category-label" style={{ marginTop: '6px' }}>
+                <span className="cat-prefix">SKU:</span>{' '}
+                <span className="cat-val" style={{ fontFamily: 'monospace', fontWeight: 600 }}>{product.sku}</span>
+              </div>
+            )}
+            {product.brand && (
+              <div className="product-category-label" style={{ marginTop: '6px' }}>
+                <span className="cat-prefix">Brand:</span>{' '}
+                <span className="cat-val">{product.brand}</span>
+              </div>
+            )}
           </div>
         </div>
 

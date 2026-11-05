@@ -123,7 +123,18 @@ const createProduct = async (req, res) => {
             whatsappMessage: whatsappMessage || `Hello Orient Energy, I am interested in inquiring about ${title}.`,
             isFeatured: Boolean(isFeatured),
             inStock: inStock !== undefined ? Boolean(inStock) : true,
-            catalogueUrl: catalogueUrl || ''
+            catalogueUrl: catalogueUrl || '',
+            // SEO & Search Engine Optimization
+            seoTitle: req.body.seoTitle || '',
+            metaDescription: req.body.metaDescription || '',
+            focusKeyword: req.body.focusKeyword || '',
+            secondaryKeywords: Array.isArray(req.body.secondaryKeywords)
+                ? req.body.secondaryKeywords
+                : (req.body.secondaryKeywords ? req.body.secondaryKeywords.split(',').map((s) => s.trim()).filter(Boolean) : []),
+            imageAlt: req.body.imageAlt || title,
+            imageTitle: req.body.imageTitle || title,
+            brand: req.body.brand || 'Orient Energy',
+            canonicalUrl: req.body.canonicalUrl || '',
         });
         await product.save();
         res.status(201).json({ success: true, data: product });

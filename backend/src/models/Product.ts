@@ -29,6 +29,15 @@ export interface IProduct extends Document {
   isFeatured: boolean;
   inStock: boolean;
   catalogueUrl?: string;
+  // SEO & Google Rich Results Optimization
+  seoTitle?: string;
+  metaDescription?: string;
+  focusKeyword?: string;
+  secondaryKeywords?: string[];
+  imageAlt?: string;
+  imageTitle?: string;
+  brand?: string;
+  canonicalUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -63,6 +72,15 @@ const ProductSchema: Schema = new Schema(
     isFeatured: { type: Boolean, default: false },
     inStock: { type: Boolean, default: true },
     catalogueUrl: { type: String, default: '' },
+    // SEO & Google Rich Results Optimization
+    seoTitle: { type: String, default: '' },
+    metaDescription: { type: String, default: '' },
+    focusKeyword: { type: String, default: '' },
+    secondaryKeywords: [{ type: String }],
+    imageAlt: { type: String, default: '' },
+    imageTitle: { type: String, default: '' },
+    brand: { type: String, default: 'Orient Energy' },
+    canonicalUrl: { type: String, default: '' },
   },
   { timestamps: true }
 );

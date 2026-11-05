@@ -69,25 +69,25 @@ body {
   position: relative;
 }
 
-/* Page Main Wrapper spacing below fixed site-header (topbar + navbar) */
+/* Page Main Wrapper spacing below fixed site-header (navbar) */
 .site-main-content {
   background-color: #ffffff;
   min-height: 100vh;
-  padding-top: 106px;
+  padding-top: 72px;
 }
 @media (max-width: 1024px) {
   .site-main-content {
-    padding-top: 94px !important;
+    padding-top: 64px !important;
   }
 }
 @media (max-width: 768px) {
   .site-main-content {
-    padding-top: 90px !important;
+    padding-top: 60px !important;
   }
 }
 @media (max-width: 480px) {
   .site-main-content {
-    padding-top: 86px !important;
+    padding-top: 58px !important;
   }
 }
 

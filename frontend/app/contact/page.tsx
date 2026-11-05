@@ -16,7 +16,7 @@ export default function ContactPage() {
       <ScrollAnimation />
       <Navbar />
 
-      <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', paddingTop: '100px' }}>
+      <main className="site-main-content" style={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
         <ContactSection />
       </main>
 

@@ -551,6 +551,97 @@ export default function ContactSection() {
             </form>
           </div>
         </div>
+
+        {/* Real Location Google Map */}
+        <div style={{ marginTop: '60px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
+            <div>
+              <div
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: '#2e3191',
+                  marginBottom: '6px',
+                }}
+              >
+                OUR LOCATION
+              </div>
+              <h3
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 'clamp(1.25rem, 2.2vw, 1.6rem)',
+                  fontWeight: 600,
+                  color: '#111827',
+                  margin: 0,
+                }}
+              >
+                Visit Our Office in Al Khobar
+              </h3>
+              <p style={{ margin: '4px 0 0', fontSize: '0.86rem', color: '#64748b' }}>
+                King Abdulaziz Road, Al Khobar, Eastern Province, Kingdom of Saudi Arabia
+              </p>
+            </div>
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Orient+Energy+Trading+Company+Al+Khobar+Saudi+Arabia"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                backgroundColor: '#f8fafc',
+                color: '#2e3191',
+                border: '1px solid #cbd5e1',
+                padding: '9px 18px',
+                borderRadius: '6px',
+                fontSize: '0.84rem',
+                fontWeight: 600,
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#2e3191';
+                e.currentTarget.style.color = '#ffffff';
+                e.currentTarget.style.borderColor = '#2e3191';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f8fafc';
+                e.currentTarget.style.color = '#2e3191';
+                e.currentTarget.style.borderColor = '#cbd5e1';
+              }}
+            >
+              <span>📍 Open in Google Maps</span>
+              <span>↗</span>
+            </a>
+          </div>
+
+          <div
+            style={{
+              width: '100%',
+              height: '380px',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+              border: '1px solid #e2e8f0',
+              position: 'relative',
+              backgroundColor: '#f1f5f9',
+            }}
+            className="contact-map-container"
+          >
+            <iframe
+              src="https://maps.google.com/maps?q=Orient+Energy+Trading+Company,+King+Abdulaziz+Road,+Al+Khobar,+Saudi+Arabia&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Orient Energy Trading Company Google Map"
+            />
+          </div>
+        </div>
       </div>
 
       <style>{`
@@ -558,6 +649,11 @@ export default function ContactSection() {
           .contact-layout-grid {
             grid-template-columns: 1fr !important;
             gap: 48px !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .contact-map-container {
+            height: 280px !important;
           }
         }
         @media (max-width: 560px) {

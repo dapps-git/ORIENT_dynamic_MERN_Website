@@ -27,7 +27,8 @@ const PRODUCTS_DROPDOWN = [
   { label: 'Coatings & Surface Protection Division', href: '/products/coatings-surface-protection' },
   { label: 'Fasteners Division', href: '/products/fasteners-division' },
   { label: 'PPE & Safety Equipment', href: '/products/ppe-safety-equipment' },
-  { label: 'Bearings and Filters', href: '/products/bearings-and-filters' },
+  { label: 'Bearings', href: '/products/bearings' },
+  { label: 'Filters', href: '/products/filters' },
 ];
 
 function NavbarInner() {
@@ -79,7 +80,7 @@ function NavbarInner() {
 
   return (
     <>
-      {/* Fixed Header Wrapper containing Sector Topbar & Nav in Natural Flow (Zero Collision on Scroll) */}
+      {/* Fixed Header Wrapper */}
       <header
         className="site-header"
         style={{
@@ -89,66 +90,8 @@ function NavbarInner() {
           right: 0,
           width: '100%',
           zIndex: 1000,
-          transform: scrolled ? 'translateY(-34px)' : 'translateY(0)',
-          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        {/* Top Navbar Sectors Marquee (Saudi Green background, crisp white text) */}
-        <div
-          className="sectors-topbar"
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '34px',
-            backgroundColor: '#0b7a3d',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            overflow: 'hidden',
-            boxShadow: '0 1px 4px rgba(0, 0, 0, 0.08)',
-          }}
-        >
-          {/* Marquee Train Track Container with Gradient Edge Fades */}
-          <div
-            className="sectors-train-container"
-            style={{
-              position: 'relative',
-              width: '100%',
-              overflow: 'hidden',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              maskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
-              WebkitMaskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
-            }}
-          >
-            <div className="sectors-train-track">
-              {[...SECTORS_DROPDOWN, ...SECTORS_DROPDOWN].map((sector, index) => (
-                <Link
-                  key={`${sector.label}-${index}`}
-                  href={sector.href}
-                  className="sectors-train-item"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    color: '#ffffff',
-                    textDecoration: 'none',
-                    fontSize: '0.78rem',
-                    fontWeight: 600,
-                    letterSpacing: '0.04em',
-                    fontFamily: "'Montserrat', sans-serif",
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  <span>{sector.label}</span>
-                  <span style={{ margin: '0 12px', opacity: 0.55, fontSize: '0.65rem' }}>•</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-
         {/* Main Clean White Navbar */}
         <nav
           className={`navbar${scrolled ? ' scrolled' : ''}`}
@@ -745,28 +688,6 @@ function NavbarInner() {
       <ProductSearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       <style>{`
-        @keyframes sectorsTrainTrack {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        .sectors-train-track {
-          display: flex;
-          align-items: center;
-          gap: 40px;
-          width: max-content;
-          animation: sectorsTrainTrack 38s linear infinite;
-          will-change: transform;
-        }
-        .sectors-train-track:hover {
-          animation-play-state: paused;
-        }
-        .sectors-train-item:hover {
-          color: #005ea6 !important;
-        }
         .navbar-search-btn:hover {
           border-color: #20b512 !important;
           background-color: rgba(32, 181, 18, 0.12) !important;
@@ -824,9 +745,6 @@ function NavbarInner() {
           font-weight: 700;
           background-color: rgba(46, 49, 145, 0.08);
         }
-        .sectors-train-item:hover {
-          color: #86efac !important;
-        }
         @media (max-width: 1024px) {
           .site-header {
             position: fixed !important;
@@ -836,16 +754,6 @@ function NavbarInner() {
             width: 100% !important;
             z-index: 1000 !important;
             transform: none !important;
-          }
-          .sectors-topbar {
-            display: flex !important;
-            height: 32px !important;
-            background-color: #0b7a3d !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
-          }
-          .sectors-train-item {
-            color: #ffffff !important;
-            font-size: 0.74rem !important;
           }
           .navbar__nav {
             display: none !important;
@@ -918,16 +826,6 @@ function NavbarInner() {
             z-index: 1000 !important;
             transform: none !important;
           }
-          .sectors-topbar {
-            display: flex !important;
-            height: 30px !important;
-            background-color: #0b7a3d !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.15) !important;
-          }
-          .sectors-train-item {
-            color: #ffffff !important;
-            font-size: 0.72rem !important;
-          }
           .navbar,
           nav.navbar {
             position: relative !important;
@@ -977,12 +875,6 @@ function NavbarInner() {
           }
         }
         @media (max-width: 480px) {
-          .sectors-topbar {
-            height: 28px !important;
-          }
-          .sectors-train-item {
-            font-size: 0.70rem !important;
-          }
           .navbar,
           nav.navbar {
             height: 58px !important;

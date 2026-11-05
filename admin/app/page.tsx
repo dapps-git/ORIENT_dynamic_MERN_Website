@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 
 // Interfaces
 interface Inquiry {
@@ -37,6 +37,16 @@ interface Product {
   whatsappMessage?: string;
   inStock: boolean;
   featured: boolean;
+  // SEO fields
+  sku?: string;
+  brand?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  focusKeyword?: string;
+  secondaryKeywords?: string[] | string;
+  imageAlt?: string;
+  imageTitle?: string;
+  canonicalUrl?: string;
 }
 
 interface Division {
@@ -583,16 +593,17 @@ const INITIAL_PRODUCTS: Product[] = [
 ];
 
 const INITIAL_DIVISIONS: Division[] = [
-  { id: 'div-1', name: 'Pipe Fittings and Flanges', slug: 'mechanical-division', headline: 'Industrial Mechanical Valves, Pipes, Flanges & Pumps', description: 'Certified valves, seamless pipes, flanges, and fluid pumps.', productCount: 17 },
-  { id: 'div-2', name: 'Welding Division', slug: 'welding-division', headline: 'Industrial Welding Machinery, Gas Apparatus & Consumables', description: 'Cutting torches, regulators, auto helmets, Victor systems.', productCount: 16 },
-  { id: 'div-3', name: 'Electrical Division', slug: 'electrical-division', headline: 'Industrial Power Distribution, UPS Systems & Switchgear', description: 'Circuit breakers, switchgear, UPS systems, cables.', productCount: 12 },
-  { id: 'div-4', name: 'Lifting & Material Handling', slug: 'lifting-material-handling', headline: 'Heavy Lifting Tackles, Hoists & Rigging Equipment', description: 'Chain blocks, hoists, wire rope slings, snatch blocks.', productCount: 8 },
-  { id: 'div-7', name: 'Marine Division', slug: 'marine-division', headline: 'Offshore Deck Hardware, Safety & Marine Operations Support', description: 'Lifejackets, life-saving appliances, deck equipment.', productCount: 4 },
-  { id: 'div-8', name: 'Steel & Structural Materials', slug: 'steel-structural-materials-division', headline: 'Structural Steel Beams, Heavy Plates & Piping Solutions', description: 'Seamless pipes, structural beams, carbon steel products.', productCount: 5 },
-  { id: 'div-9', name: 'Coatings & Surface Protection', slug: 'coatings-surface-protection', headline: 'Protective Coatings, Industrial Paints & Blasting Abrasives', description: 'Jotun, National Paints, intumescent fire coatings.', productCount: 8 },
-  { id: 'div-11', name: 'Fasteners Division', slug: 'fasteners-division', headline: 'High-Tensile Structural Fasteners, Studs & Anchors', description: 'Hex bolts, stud bolts, carriage bolts, anchors.', productCount: 16 },
-  { id: 'div-13', name: 'PPE & Safety Equipment', slug: 'ppe-safety-equipment', headline: 'PPE & Industrial Safety Equipment Supplier in Saudi Arabia', description: 'Certified safety helmets, respiratory masks, protective coveralls, and PPE equipment.', productCount: 24 },
-  { id: 'div-14', name: 'Bearings and Filters', slug: 'bearings-and-filters', headline: 'Industrial Bearings, Mechanical Seals & Filtration Systems', description: 'Ball bearings, roller bearings, hydraulic oil filters, and filtration systems.', productCount: 4 },
+  { id: 'div-1', name: 'Pipe Fittings and Flanges', slug: 'mechanical-division', headline: 'Industrial Mechanical Valves, Pipes, Flanges & Pumps', description: 'Certified valves, seamless pipes, flanges, and fluid pumps.', image: '/categories/mechanical-supply-division.png', productCount: 17 },
+  { id: 'div-2', name: 'Welding Division', slug: 'welding-division', headline: 'Industrial Welding Machinery, Gas Apparatus & Consumables', description: 'Cutting torches, regulators, auto helmets, Victor systems.', image: '/categories/welding-safety.jpg', productCount: 16 },
+  { id: 'div-3', name: 'Electrical Division', slug: 'electrical-division', headline: 'Industrial Power Distribution, UPS Systems & Switchgear', description: 'Circuit breakers, switchgear, UPS systems, cables.', image: '/categories/power-system.jpg', productCount: 12 },
+  { id: 'div-4', name: 'Lifting & Material Handling', slug: 'lifting-material-handling', headline: 'Heavy Lifting Tackles, Hoists & Rigging Equipment', description: 'Chain blocks, hoists, wire rope slings, snatch blocks.', image: '/categories/lifting-material-handling.jpg', productCount: 8 },
+  { id: 'div-7', name: 'Marine Division', slug: 'marine-division', headline: 'Offshore Deck Hardware, Safety & Marine Operations Support', description: 'Lifejackets, life-saving appliances, deck equipment.', image: '/categories/marine-division.jpg', productCount: 4 },
+  { id: 'div-8', name: 'Steel & Structural Materials', slug: 'steel-structural-materials-division', headline: 'Structural Steel Beams, Heavy Plates & Piping Solutions', description: 'Seamless pipes, structural beams, carbon steel products.', image: '/categories/steel-structural-materials-division.jpg', productCount: 5 },
+  { id: 'div-9', name: 'Coatings & Surface Protection', slug: 'coatings-surface-protection', headline: 'Protective Coatings, Industrial Paints & Blasting Abrasives', description: 'Jotun, National Paints, intumescent fire coatings.', image: '/categories/coatings-surface-protection.png', productCount: 8 },
+  { id: 'div-11', name: 'Fasteners Division', slug: 'fasteners-division', headline: 'High-Tensile Structural Fasteners, Studs & Anchors', description: 'Hex bolts, stud bolts, carriage bolts, anchors.', image: '/categories/fasteners.jpg', productCount: 16 },
+  { id: 'div-13', name: 'PPE & Safety Equipment', slug: 'ppe-safety-equipment', headline: 'PPE & Industrial Safety Equipment Supplier in Saudi Arabia', description: 'Certified safety helmets, respiratory masks, protective coveralls, and PPE equipment.', image: '/categories/ppe-safety-equpments.jpg', productCount: 24 },
+  { id: 'div-14', name: 'Bearings', slug: 'bearings', headline: 'Industrial Bearings, Mechanical Seals & Pillow Block Units', description: 'Deep groove ball bearings, spherical roller bearings, tapered bearings, and pillow blocks.', image: '/categories/auxiliary-systems.jpg', productCount: 2 },
+  { id: 'div-15', name: 'Filters', slug: 'filters', headline: 'Industrial Hydraulic, Oil, Fuel & Air Filtration Systems', description: 'Hydraulic return line filter elements, heavy machinery air and fuel filtration systems.', image: '/categories/auxiliary-systems.jpg', productCount: 2 },
 ];
 
 const INITIAL_BLOGS: Blog[] = [
@@ -758,7 +769,7 @@ export const MECHANICAL_13_STATIC_IMAGES = [
 
 export default function AdminApp() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'inquiries' | 'mechanical' | 'products' | 'divisions' | 'blogs' | 'brands' | 'settings'>('mechanical');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'inquiries' | 'mechanical' | 'products' | 'divisions' | 'categories' | 'blogs' | 'brands' | 'settings'>('mechanical');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Login form state
@@ -789,6 +800,7 @@ export default function AdminApp() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [divisionFilter, setDivisionFilter] = useState<string>('all');
   const [staticFilter, setStaticFilter] = useState<string>('mechanical-division');
+  const [categorySearchTerm, setCategorySearchTerm] = useState<string>('');
   const [blogSearchTerm, setBlogSearchTerm] = useState<string>('');
   const [brandSearchTerm, setBrandSearchTerm] = useState<string>('');
   const [brandCategoryFilter, setBrandCategoryFilter] = useState<'all' | 'bearings' | 'filterings' | 'general'>('all');
@@ -837,6 +849,16 @@ export default function AdminApp() {
     whatsappMessage: '',
     inStock: true,
     featured: false,
+    // Google SEO & Rich Results Optimization fields
+    sku: '',
+    brand: 'Orient Energy',
+    seoTitle: '',
+    metaDescription: '',
+    focusKeyword: '',
+    secondaryKeywords: '',
+    imageAlt: '',
+    imageTitle: '',
+    canonicalUrl: '',
   });
 
   // Blog Form state
@@ -855,6 +877,72 @@ export default function AdminApp() {
     conclusion: '',
     isPublished: true,
   });
+
+  const [blogEditorTab, setBlogEditorTab] = useState<'edit' | 'preview'>('edit');
+  const blogContentTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const blogImageFileInputRef = useRef<HTMLInputElement>(null);
+
+  const insertFormatIntoBlog = (openTag: string, closeTag = '', defaultText = '') => {
+    const textarea = blogContentTextareaRef.current;
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentVal = blogForm.introduction;
+    const selectedText = currentVal.substring(start, end) || defaultText;
+    const replacement = `${openTag}${selectedText}${closeTag}`;
+    const newVal = currentVal.substring(0, start) + replacement + currentVal.substring(end);
+    setBlogForm((prev) => ({ ...prev, introduction: newVal }));
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + openTag.length, start + openTag.length + selectedText.length);
+    }, 15);
+  };
+
+  const handleInsertBlogLink = () => {
+    const url = prompt('Enter URL (e.g. https://orientenergy.com or /products):', 'https://');
+    if (!url) return;
+    const textarea = blogContentTextareaRef.current;
+    const selected = textarea ? textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) : '';
+    const text = prompt('Enter link text:', selected || 'Click here') || 'Click here';
+    insertFormatIntoBlog(`<a href="${url}" target="_blank" rel="noopener noreferrer">`, '</a>', text);
+  };
+
+  const handleInsertBlogImageUrl = () => {
+    const url = prompt('Enter Image URL (e.g. /blog/sample.jpg or https://...):', '');
+    if (!url) return;
+    const alt = prompt('Enter Image Alt Text (for SEO):', 'Orient Energy Industrial') || 'Orient Energy Industrial';
+    insertFormatIntoBlog(`\n<img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+  };
+
+  const toolbarBtnStyle: React.CSSProperties = {
+    padding: '5px 9px',
+    fontSize: '0.78rem',
+    fontWeight: 600,
+    backgroundColor: '#ffffff',
+    color: '#334155',
+    border: '1px solid #cbd5e1',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all 0.15s ease',
+  };
+
+  const toolbarDividerStyle: React.CSSProperties = {
+    width: '1px',
+    height: '20px',
+    backgroundColor: '#cbd5e1',
+    margin: '0 4px',
+  };
+
+  const handleBlogContentImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleImageFileChange(e, (uploadedUrl) => {
+      insertFormatIntoBlog(`\n<img src="${uploadedUrl}" alt="Orient Energy Industrial" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+      showToast('Image inserted into blog article!');
+    });
+  };
 
   // Division Form state
   const [divisionForm, setDivisionForm] = useState({
@@ -1156,39 +1244,84 @@ export default function AdminApp() {
     }
   }, [isAuthenticated]);
 
-  // Image Upload helper using /api/upload
+// Fast client-side image compression to dramatically reduce upload time (< 0.5s)
+const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85): Promise<string> => {
+  return new Promise((resolve) => {
+    // SVGs and tiny files (< 80KB) don't need raster compression
+    if (file.type.includes('svg') || file.size < 80 * 1024) {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => resolve('');
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          try {
+            const webpData = canvas.toDataURL('image/webp', quality);
+            if (webpData.startsWith('data:image/webp')) {
+              resolve(webpData);
+              return;
+            }
+          } catch (_) {}
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        } else {
+          resolve(e.target?.result as string);
+        }
+      };
+      img.onerror = () => resolve(e.target?.result as string);
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  });
+};
+
+  // Ultra-fast Image Upload helper using /api/upload
   const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>, onUrlUploaded: (url: string) => void) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsUploadingImage(true);
-    const reader = new FileReader();
-    reader.onload = async () => {
-      try {
-        const base64 = reader.result as string;
-        const res = await fetch(`${API_BASE}/upload`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            image: base64,
-            name: file.name,
-            convertToWebp: autoConvertWebp,
-          }),
-        });
-        const data = await res.json();
-        setIsUploadingImage(false);
-        if (data.success && data.url) {
-          onUrlUploaded(data.url);
-          showToast(`Image uploaded & converted to ${data.format?.toUpperCase() || 'WebP'} on Cloudinary!`);
-        } else {
-          showToast(data.message || 'Image upload failed');
-        }
-      } catch {
-        setIsUploadingImage(false);
-        showToast('Image upload failed');
+    try {
+      const base64 = await compressImageBeforeUpload(file);
+      const res = await fetch(`${API_BASE}/upload`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: base64,
+          name: file.name,
+          convertToWebp: autoConvertWebp,
+        }),
+      });
+      const data = await res.json();
+      setIsUploadingImage(false);
+      if (data.success && data.url) {
+        onUrlUploaded(data.url);
+        showToast(`Image uploaded & converted to ${data.format?.toUpperCase() || 'WebP'} on Cloudinary!`);
+      } else {
+        showToast(data.message || 'Image upload failed');
       }
-    };
-    reader.readAsDataURL(file);
+    } catch {
+      setIsUploadingImage(false);
+      showToast('Image upload failed');
+    }
   };
 
   // Login handler
@@ -1242,15 +1375,18 @@ export default function AdminApp() {
   };
 
   // ---------------- PRODUCT HANDLERS ---------------- //
-  const openAddProductModal = () => {
+  const openAddProductModal = (defaultDivisionSlug?: string | React.MouseEvent) => {
     setEditingProduct(null);
-    setStaticFilter('mechanical-division');
+    const slugStr = typeof defaultDivisionSlug === 'string' ? defaultDivisionSlug : undefined;
+    const targetSlug = slugStr || staticFilter || divisions[0]?.slug || 'mechanical-division';
+    const matchedDiv = divisions.find((d) => d.slug === targetSlug || d.id === targetSlug) || divisions[0];
+    setStaticFilter(matchedDiv ? matchedDiv.slug : 'mechanical-division');
     setProductForm({
       title: '',
       slug: '',
-      division: divisions[0]?.name || 'Pipe Fittings and Flanges',
-      divisionSlug: divisions[0]?.slug || 'mechanical-division',
-      category: 'Valves & Fittings',
+      division: matchedDiv ? matchedDiv.name : (divisions[0]?.name || 'Pipe Fittings and Flanges'),
+      divisionSlug: matchedDiv ? matchedDiv.slug : (divisions[0]?.slug || 'mechanical-division'),
+      category: matchedDiv ? matchedDiv.name : 'Valves & Fittings',
       image: '/categories/all-fittings.jpeg',
       images: ['/categories/all-fittings.jpeg'],
       imagesText: '/categories/all-fittings.jpeg',
@@ -1262,6 +1398,15 @@ export default function AdminApp() {
       whatsappMessage: '',
       inStock: true,
       featured: false,
+      sku: '',
+      brand: 'Orient Energy',
+      seoTitle: '',
+      metaDescription: '',
+      focusKeyword: '',
+      secondaryKeywords: '',
+      imageAlt: '',
+      imageTitle: '',
+      canonicalUrl: '',
     });
     setShowProductModal(true);
   };
@@ -1273,6 +1418,12 @@ export default function AdminApp() {
     if (p.image && !gallery.includes(p.image)) {
       gallery.unshift(p.image);
     }
+    const secKeywords = Array.isArray(p.secondaryKeywords)
+      ? p.secondaryKeywords.join(', ')
+      : typeof p.secondaryKeywords === 'string'
+      ? p.secondaryKeywords
+      : '';
+
     setProductForm({
       title: p.title,
       slug: p.slug || '',
@@ -1290,6 +1441,15 @@ export default function AdminApp() {
       whatsappMessage: p.whatsappMessage || '',
       inStock: p.inStock,
       featured: p.featured,
+      sku: p.sku || '',
+      brand: p.brand || 'Orient Energy',
+      seoTitle: p.seoTitle || '',
+      metaDescription: p.metaDescription || '',
+      focusKeyword: p.focusKeyword || '',
+      secondaryKeywords: secKeywords,
+      imageAlt: p.imageAlt || '',
+      imageTitle: p.imageTitle || '',
+      canonicalUrl: p.canonicalUrl || '',
     });
     setShowProductModal(true);
   };
@@ -1345,16 +1505,10 @@ export default function AdminApp() {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     setIsUploadingImage(true);
-    const newUrls: string[] = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+
+    const uploadPromises = Array.from(files).map(async (file) => {
       try {
-        const base64 = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
+        const base64 = await compressImageBeforeUpload(file);
         const res = await fetch(`${API_BASE}/upload`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1366,14 +1520,16 @@ export default function AdminApp() {
         });
         if (res.ok) {
           const data = await res.json();
-          newUrls.push(data.url);
-        } else {
-          newUrls.push(base64);
+          return data.url || base64;
         }
+        return base64;
       } catch {
-        // fallback
+        return null;
       }
-    }
+    });
+
+    const results = await Promise.all(uploadPromises);
+    const newUrls = results.filter((url): url is string => !!url);
     setIsUploadingImage(false);
     if (newUrls.length > 0) {
       setProductForm((prev) => {
@@ -1414,6 +1570,42 @@ export default function AdminApp() {
     }));
   };
 
+  const handleAutoGenerateSEO = () => {
+    if (!productForm.title) {
+      showToast('Please enter a Product Title first!');
+      return;
+    }
+    const cleanTitle = productForm.title.trim();
+    const cleanSlug = (productForm.slug.trim() || cleanTitle)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    const randomSkuNum = Math.floor(1000 + Math.random() * 9000);
+    const skuCode = `OETC-${cleanSlug.slice(0, 6).toUpperCase()}-${randomSkuNum}`;
+    const autoSeoTitle = `${cleanTitle} Supplier & Stockist Saudi Arabia`;
+    const autoMetaDesc = `Buy certified ${cleanTitle} in Saudi Arabia from Orient Energy Trading Company. High-pressure rated, Aramco & SABIC standards compliant with fast KSA delivery.`;
+    const autoFocus = `${cleanTitle} Saudi Arabia`;
+    const autoSec = `${cleanTitle} supplier, ${productForm.category || 'industrial valves'}, ${productForm.division || 'piping materials'} KSA, Al Khobar industrial supply`;
+    const autoAlt = `${cleanTitle} - Orient Energy Trading Company`;
+    const autoImgTitle = `${cleanTitle} Industrial Supply`;
+    const autoCanonical = `https://orientenergyco.com/product/${cleanSlug}`;
+
+    setProductForm((prev) => ({
+      ...prev,
+      slug: prev.slug || cleanSlug,
+      sku: prev.sku || skuCode,
+      brand: prev.brand || 'Orient Energy',
+      seoTitle: prev.seoTitle || autoSeoTitle,
+      metaDescription: prev.metaDescription || autoMetaDesc,
+      focusKeyword: prev.focusKeyword || autoFocus,
+      secondaryKeywords: prev.secondaryKeywords || autoSec,
+      imageAlt: prev.imageAlt || autoAlt,
+      imageTitle: prev.imageTitle || autoImgTitle,
+      canonicalUrl: prev.canonicalUrl || autoCanonical,
+    }));
+    showToast('✨ All SEO fields auto-generated successfully!');
+  };
+
   const handleSaveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!productForm.title) return;
@@ -1444,6 +1636,11 @@ export default function AdminApp() {
       (d) => d.name === productForm.division || d.slug === productForm.divisionSlug
     );
 
+    const secKeywordsList = productForm.secondaryKeywords
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+
     const payload = {
       title: productForm.title,
       slug: cleanSlug,
@@ -1462,6 +1659,16 @@ export default function AdminApp() {
         `Hello Orient Energy Trading Co., I would like to order or request a quote for: ${productForm.title}.`,
       inStock: productForm.inStock,
       isFeatured: productForm.featured,
+      // SEO & Rich Results Optimization fields
+      sku: productForm.sku.trim() || `OETC-${cleanSlug.toUpperCase().slice(0, 10)}`,
+      brand: productForm.brand.trim() || 'Orient Energy',
+      seoTitle: productForm.seoTitle.trim(),
+      metaDescription: productForm.metaDescription.trim(),
+      focusKeyword: productForm.focusKeyword.trim(),
+      secondaryKeywords: secKeywordsList,
+      imageAlt: productForm.imageAlt.trim() || productForm.title,
+      imageTitle: productForm.imageTitle.trim() || productForm.title,
+      canonicalUrl: productForm.canonicalUrl.trim() || `https://orientenergyco.com/product/${cleanSlug}`,
     };
 
     const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
@@ -1508,6 +1715,15 @@ export default function AdminApp() {
                     whatsappMessage: updated.whatsappMessage,
                     inStock: updated.inStock,
                     featured: updated.isFeatured,
+                    sku: updated.sku || productForm.sku,
+                    brand: updated.brand || productForm.brand,
+                    seoTitle: updated.seoTitle || productForm.seoTitle,
+                    metaDescription: updated.metaDescription || productForm.metaDescription,
+                    focusKeyword: updated.focusKeyword || productForm.focusKeyword,
+                    secondaryKeywords: updated.secondaryKeywords || secKeywordsList,
+                    imageAlt: updated.imageAlt || productForm.imageAlt,
+                    imageTitle: updated.imageTitle || productForm.imageTitle,
+                    canonicalUrl: updated.canonicalUrl || productForm.canonicalUrl,
                   }
                 : item
             );
@@ -1574,6 +1790,15 @@ export default function AdminApp() {
             whatsappMessage: created.whatsappMessage,
             inStock: created.inStock,
             featured: created.isFeatured,
+            sku: created.sku || productForm.sku,
+            brand: created.brand || productForm.brand,
+            seoTitle: created.seoTitle || productForm.seoTitle,
+            metaDescription: created.metaDescription || productForm.metaDescription,
+            focusKeyword: created.focusKeyword || productForm.focusKeyword,
+            secondaryKeywords: created.secondaryKeywords || secKeywordsList,
+            imageAlt: created.imageAlt || productForm.imageAlt,
+            imageTitle: created.imageTitle || productForm.imageTitle,
+            canonicalUrl: created.canonicalUrl || productForm.canonicalUrl,
           };
           setProducts((prev) => {
             const updatedList = [newItem, ...prev];
@@ -1776,13 +2001,59 @@ export default function AdminApp() {
       applicationsText: div.applications ? div.applications.join('\n') : '',
       pillsText: div.pills ? div.pills.join(', ') : '',
     });
-    setDivisionModalTab('products');
+    setDivisionModalTab('general');
     setShowDivisionModal(true);
+  };
+
+  const openAddCategoryModal = () => {
+    setEditingDivision(null);
+    setDivisionForm({
+      id: '',
+      name: '',
+      slug: '',
+      headline: '',
+      descriptionText: '',
+      image: '/categories/all-fittings.jpeg',
+      subcategoriesTitle: 'Product Categories',
+      subcategories: [{ name: '', image: '' }],
+      productRangeTitle: 'Product Range',
+      productRangeText: '',
+      applicationsTitle: 'Applications',
+      applicationsText: '',
+      pillsText: '',
+    });
+    setDivisionModalTab('general');
+    setShowDivisionModal(true);
+  };
+
+  const handleDeleteCategory = async (id: string, name: string) => {
+    if (!window.confirm(`Are you sure you want to delete category "${name}"?`)) return;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+    const reqHeaders: Record<string, string> = {};
+    if (token) reqHeaders['Authorization'] = `Bearer ${token}`;
+
+    try {
+      await fetch(`${API_BASE}/categories/${id}`, {
+        method: 'DELETE',
+        headers: reqHeaders,
+      });
+    } catch {}
+
+    setDivisions((prev) => prev.filter((d) => d.id !== id && d.slug !== id));
+    showToast(`Category "${name}" deleted successfully`);
   };
 
   const handleSaveDivision = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editingDivision) return;
+    if (!divisionForm.name || !divisionForm.name.trim()) {
+      showToast('Please enter a Category Name');
+      return;
+    }
+
+    const cleanSlug = (divisionForm.slug.trim() || divisionForm.name)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
 
     const detailedDescriptions = divisionForm.descriptionText
       .split('\n\n')
@@ -1807,10 +2078,12 @@ export default function AdminApp() {
     const validSubcategories = divisionForm.subcategories.filter((s) => s.name.trim() !== '');
 
     const payload = {
+      name: divisionForm.name.trim(),
+      slug: cleanSlug,
       headline: divisionForm.headline,
-      description: detailedDescriptions[0] || '',
+      description: detailedDescriptions[0] || divisionForm.descriptionText,
       detailedDescriptions,
-      image: divisionForm.image,
+      image: divisionForm.image || '/categories/all-fittings.jpeg',
       subcategoriesTitle: divisionForm.subcategoriesTitle,
       subcategories: validSubcategories,
       productRangeTitle: divisionForm.productRangeTitle,
@@ -1820,30 +2093,81 @@ export default function AdminApp() {
       pills,
     };
 
-    try {
-      const res = await fetch(`${API_BASE}/categories/${editingDivision.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+    const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+    const reqHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) {
+      reqHeaders['Authorization'] = `Bearer ${token}`;
+    }
 
-      if (res.ok) {
-        const resData = await res.json();
-        const updated = resData.data;
-        setDivisions((prev) =>
-          prev.map((d) => (d.id === editingDivision.id ? { ...d, ...updated, id: editingDivision.id } : d))
-        );
-        showToast('Division inner page updated successfully!');
-        setShowDivisionModal(false);
-        return;
-      }
-    } catch {}
+    if (editingDivision) {
+      // Update existing category
+      try {
+        const targetId = editingDivision.id || editingDivision.slug || cleanSlug;
+        const res = await fetch(`${API_BASE}/categories/${targetId}`, {
+          method: 'PUT',
+          headers: reqHeaders,
+          body: JSON.stringify(payload),
+        });
 
-    setDivisions((prev) =>
-      prev.map((d) => (d.id === editingDivision.id ? { ...d, ...payload } : d))
-    );
-    showToast('Division details updated!');
-    setShowDivisionModal(false);
+        if (res.ok) {
+          const resData = await res.json();
+          const updated = resData.data;
+          setDivisions((prev) =>
+            prev.map((d) => (d.id === editingDivision.id || d.slug === editingDivision.slug ? { ...d, ...updated, id: editingDivision.id } : d))
+          );
+          showToast('Category updated successfully!');
+          setShowDivisionModal(false);
+          return;
+        }
+      } catch {}
+
+      setDivisions((prev) =>
+        prev.map((d) => (d.id === editingDivision.id ? { ...d, ...payload } : d))
+      );
+      showToast('Category details updated!');
+      setShowDivisionModal(false);
+    } else {
+      // Create new category
+      try {
+        const res = await fetch(`${API_BASE}/categories`, {
+          method: 'POST',
+          headers: reqHeaders,
+          body: JSON.stringify(payload),
+        });
+
+        if (res.ok) {
+          const resData = await res.json();
+          const created = resData.data;
+          const newCat: Division = {
+            id: created._id || String(Date.now()),
+            name: created.name || payload.name,
+            slug: created.slug || cleanSlug,
+            headline: created.headline || payload.headline,
+            description: created.description || payload.description,
+            detailedDescriptions: created.detailedDescriptions || payload.detailedDescriptions,
+            image: created.image || payload.image,
+            subcategories: created.subcategories || payload.subcategories,
+            productRange: created.productRange || payload.productRange,
+            applications: created.applications || payload.applications,
+            pills: created.pills || payload.pills,
+            productCount: 0,
+          };
+          setDivisions((prev) => [newCat, ...prev]);
+          showToast('New category created successfully!');
+          setShowDivisionModal(false);
+          return;
+        }
+      } catch {}
+
+      const newCat: Division = {
+        id: `div-${Date.now()}`,
+        ...payload,
+        productCount: 0,
+      };
+      setDivisions((prev) => [newCat, ...prev]);
+      showToast('New category created!');
+      setShowDivisionModal(false);
+    }
   };
 
   // ---------------- BRAND LOGO HANDLERS ---------------- //
@@ -2155,13 +2479,13 @@ export default function AdminApp() {
 
             <button
               type="button"
-              className={`nav-item ${activeTab === 'divisions' ? 'active' : ''}`}
+              className={`nav-item ${activeTab === 'divisions' || activeTab === 'categories' ? 'active' : ''}`}
               onClick={() => {
-                setActiveTab('divisions');
+                setActiveTab('categories');
                 setMobileMenuOpen(false);
               }}
             >
-              <span>Divisions &amp; Units</span>
+              <span>Categories</span>
               <span className="badge-count">{divisions.length}</span>
             </button>
 
@@ -2689,59 +3013,180 @@ export default function AdminApp() {
             </div>
           )}
 
-          {/* TAB 4: DIVISIONS & INNER PAGES */}
-          {activeTab === 'divisions' && (
+          {/* TAB 4: CATEGORIES MANAGEMENT */}
+          {(activeTab === 'divisions' || activeTab === 'categories') && (
             <div className="divisions-view">
-              <div className="page-heading flex-between">
+              <div className="page-heading flex-between" style={{ alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
-                  <h1>Divisions &amp; Inner Pages Management</h1>
-                  <p>Customize headlines, descriptions, subcategory photos, product ranges, and applications for all division pages.</p>
+                  <h1>Product Categories Management</h1>
+                  <p>Create new categories, customize category photo cards, headlines, URL slugs, and list products under each category.</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={openAddCategoryModal}
+                  className="btn-primary-action"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontSize: '0.9rem', fontWeight: 700 }}
+                >
+                  <span>➕ Add New Category</span>
+                </button>
+              </div>
+
+              {/* Search & filter toolbar */}
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
+                <div style={{ position: 'relative', flex: 1, minWidth: '260px' }}>
+                  <input
+                    type="text"
+                    placeholder="Search categories by name, slug or keyword..."
+                    value={categorySearchTerm}
+                    onChange={(e) => setCategorySearchTerm(e.target.value)}
+                    className="input-field"
+                    style={{ paddingLeft: '34px', background: '#ffffff' }}
+                  />
+                  <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>🔍</span>
+                </div>
+                <div style={{ fontSize: '0.84rem', color: '#64748b', fontWeight: 600 }}>
+                  Showing {divisions.filter((div) => {
+                    if (!categorySearchTerm.trim()) return true;
+                    const q = categorySearchTerm.toLowerCase();
+                    return div.name.toLowerCase().includes(q) || div.slug.toLowerCase().includes(q) || (div.headline && div.headline.toLowerCase().includes(q));
+                  }).length} of {divisions.length} categories
                 </div>
               </div>
 
               <div className="divisions-grid">
-                {divisions.map((div) => (
-                  <div key={div.id} className="division-card">
-                    <div className="division-card-header">
-                      <h3>{div.name}</h3>
-                      <span className="count-pill">{div.productCount || 0} products</span>
-                    </div>
-                    {div.headline && <div className="div-headline-badge">{div.headline}</div>}
-                    <p>{div.description || 'Dedicated division providing specialized industrial supplies across Saudi Arabia.'}</p>
-                    
-                    <div className="division-card-actions" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <button
-                        type="button"
-                        onClick={() => openEditDivisionModal(div)}
-                        className="btn-edit-div"
-                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                      >
-                        ✏️ Edit Inner Page Details
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const targetSlug = div.slug === 'mechanical-division' ? 'mechanical-division' : div.slug;
-                          setDivisionFilter(targetSlug);
-                          setActiveTab('products');
-                        }}
-                        className="btn-edit-div"
-                        style={{ background: '#f8fafc', color: '#1e293b', border: '1px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                      >
-                        📦 Product Listing Images &amp; Items ({div.productCount || (div.slug === 'mechanical-division' ? 17 : div.slug === 'ppe-safety-equipment' ? 24 : 0)}) &rarr;
-                      </button>
-                      <a
-                        href={`http://localhost:3000/products/${div.slug}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="div-link"
-                        style={{ textAlign: 'center' }}
-                      >
-                        View Live Page &rarr;
-                      </a>
-                    </div>
-                  </div>
-                ))}
+                {divisions
+                  .filter((div) => {
+                    if (!categorySearchTerm.trim()) return true;
+                    const q = categorySearchTerm.toLowerCase();
+                    return (
+                      div.name.toLowerCase().includes(q) ||
+                      div.slug.toLowerCase().includes(q) ||
+                      (div.headline && div.headline.toLowerCase().includes(q))
+                    );
+                  })
+                  .map((div) => {
+                    const productCount = products.filter(
+                      (p) =>
+                        p.divisionSlug === div.slug ||
+                        p.division === div.name ||
+                        p.category === div.name ||
+                        p.category === div.id
+                    ).length || div.productCount || 0;
+
+                    return (
+                      <div key={div.id || div.slug} className="division-card" style={{ padding: 0, overflow: 'hidden' }}>
+                        {/* Category Banner / Card Image */}
+                        <div
+                          style={{
+                            height: '140px',
+                            width: '100%',
+                            position: 'relative',
+                            background: '#f1f5f9',
+                            borderBottom: '1px solid #e2e8f0',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          <img
+                            src={div.image || '/categories/all-fittings.jpeg'}
+                            alt={div.name}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
+                            }}
+                          />
+                          <span
+                            style={{
+                              position: 'absolute',
+                              top: '10px',
+                              right: '10px',
+                              background: 'rgba(15, 23, 42, 0.85)',
+                              color: '#ffffff',
+                              backdropFilter: 'blur(4px)',
+                              padding: '3px 10px',
+                              borderRadius: '12px',
+                              fontSize: '0.74rem',
+                              fontWeight: 700,
+                            }}
+                          >
+                            📦 {productCount} products
+                          </span>
+                        </div>
+
+                        {/* Card Details */}
+                        <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                          <div style={{ marginBottom: '8px' }}>
+                            <h3 style={{ margin: '0 0 6px', fontSize: '1.05rem', fontWeight: 700, color: '#0f172a' }}>{div.name}</h3>
+                            <code style={{ fontSize: '0.74rem', background: '#f8fafc', color: '#2563eb', padding: '2px 8px', borderRadius: '4px', border: '1px solid #bfdbfe', display: 'inline-block' }}>
+                              /products/{div.slug}
+                            </code>
+                          </div>
+
+                          {div.headline && <div className="div-headline-badge" style={{ marginTop: '4px' }}>{div.headline}</div>}
+                          <p style={{ margin: '8px 0 16px', fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
+                            {div.description || 'Dedicated division providing specialized industrial supplies across Saudi Arabia.'}
+                          </p>
+
+                          <div className="division-card-actions" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: 'auto' }}>
+                            <button
+                              type="button"
+                              onClick={() => openEditDivisionModal(div)}
+                              className="btn-edit-div"
+                              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: '#2563eb', color: '#ffffff', border: 'none', fontWeight: 600 }}
+                            >
+                              ✏️ Edit Category &amp; Photo
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => openAddProductModal(div.slug)}
+                              className="btn-edit-div"
+                              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: '#f0fdf4', color: '#166534', border: '1px solid #bbf7d0', fontWeight: 600 }}
+                            >
+                              ➕ Add Product to Category
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setDivisionFilter(div.slug);
+                                setActiveTab('products');
+                              }}
+                              className="btn-edit-div"
+                              style={{ background: '#f8fafc', color: '#1e293b', border: '1px solid #cbd5e1', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                            >
+                              📦 View Products ({productCount}) &rarr;
+                            </button>
+                            <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
+                              <a
+                                href={`http://localhost:3000/products/${div.slug}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="div-link"
+                                style={{ flex: 1, textAlign: 'center', padding: '7px 10px', fontSize: '0.80rem' }}
+                              >
+                                View Live Page &rarr;
+                              </a>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteCategory(div.id || div.slug, div.name)}
+                                style={{
+                                  padding: '7px 12px',
+                                  fontSize: '0.80rem',
+                                  background: '#fee2e2',
+                                  color: '#dc2626',
+                                  border: '1px solid #fecaca',
+                                  borderRadius: '6px',
+                                  cursor: 'pointer',
+                                  fontWeight: 600,
+                                }}
+                                title="Delete this category"
+                              >
+                                🗑️ Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           )}
@@ -3681,6 +4126,40 @@ export default function AdminApp() {
                   </div>
 
                   <div className="clean-fields-stack">
+                    {/* Category Selection Dropdown */}
+                    <div className="form-group">
+                      <label className="field-label">
+                        Product Category / Division *
+                      </label>
+                      <select
+                        value={productForm.divisionSlug || (divisions.find((d) => d.name === productForm.division)?.slug) || ''}
+                        onChange={(e) => {
+                          const selectedSlug = e.target.value;
+                          const matched = divisions.find((d) => d.slug === selectedSlug || d.id === selectedSlug);
+                          if (matched) {
+                            setProductForm({
+                              ...productForm,
+                              division: matched.name,
+                              divisionSlug: matched.slug,
+                              category: matched.name,
+                            });
+                          }
+                        }}
+                        className="input-field"
+                        style={{ fontWeight: 600, background: '#ffffff' }}
+                      >
+                        <option value="" disabled>Select a Category...</option>
+                        {divisions.map((d) => (
+                          <option key={d.id || d.slug} value={d.slug}>
+                            {d.name} ({d.slug})
+                          </option>
+                        ))}
+                      </select>
+                      <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '4px', display: 'block' }}>
+                        Assign this product to one of the categories. It will appear on that category&apos;s page on the live website.
+                      </span>
+                    </div>
+
                     {/* Title */}
                     <div className="form-group">
                       <label className="field-label">
@@ -3741,6 +4220,315 @@ export default function AdminApp() {
                     </div>
                   </div>
                 </div>
+
+                {/* SECTION 5: GOOGLE SEO & RICH RESULTS OPTIMIZATION */}
+                <div className="clean-section-card" style={{ marginTop: '20px' }}>
+                  <div className="clean-section-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span className="step-num" style={{ background: '#2563eb' }}>5</span>
+                      <div>
+                        <strong>🔍 Google SEO &amp; Rich Results Optimization</strong>
+                        <span className="step-subtitle">Configure Google search snippets, schema structured data, focus keywords, and image SEO.</span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleAutoGenerateSEO}
+                      style={{
+                        padding: '6px 14px',
+                        background: 'linear-gradient(135deg, #2563eb, #1d4ed8)',
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '6px',
+                        fontSize: '0.80rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        boxShadow: '0 2px 6px rgba(37,99,235,0.25)',
+                      }}
+                      title="Automatically populate SEO title, description, keywords, alt text, SKU, and canonical URL from product title"
+                    >
+                      ✨ Auto-Fill SEO Fields
+                    </button>
+                  </div>
+
+                  {/* LIVE GOOGLE SERP SEARCH PREVIEW */}
+                  <div
+                    style={{
+                      background: '#ffffff',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '10px',
+                      padding: '16px 20px',
+                      marginTop: '16px',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                      <span style={{ fontSize: '0.74rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#64748b' }}>
+                        Google Search Result Snippet Preview
+                      </span>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <span style={{ fontSize: '0.72rem', background: '#ecfdf5', color: '#059669', padding: '2px 8px', borderRadius: '10px', fontWeight: 600 }}>
+                          ✓ Product Schema Active
+                        </span>
+                        <span style={{ fontSize: '0.72rem', background: '#eff6ff', color: '#2563eb', padding: '2px 8px', borderRadius: '10px', fontWeight: 600 }}>
+                          ✓ Breadcrumb Schema Active
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Google SERP Content Box */}
+                    <div style={{ fontFamily: 'Arial, sans-serif' }}>
+                      {/* Breadcrumb line */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#202124', marginBottom: '4px' }}>
+                        <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: '#f1f3f4', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 700, color: '#1a73e8' }}>
+                          O
+                        </div>
+                        <span style={{ fontWeight: 500 }}>Orient Energy Trading Company</span>
+                        <span style={{ color: '#5f6368' }}>›</span>
+                        <span style={{ color: '#5f6368' }}>product</span>
+                        <span style={{ color: '#5f6368' }}>›</span>
+                        <span style={{ color: '#5f6368' }}>{productForm.slug || 'product-slug'}</span>
+                      </div>
+
+                      {/* Blue Clickable Title */}
+                      <div style={{ fontSize: '18px', color: '#1a0dab', lineHeight: 1.3, fontWeight: 400, cursor: 'pointer', marginBottom: '4px' }}>
+                        {productForm.seoTitle || (productForm.title ? `${productForm.title} | ${productForm.brand || 'Orient Energy'} Saudi Arabia` : 'Product Title — Orient Energy Trading Company')}
+                      </div>
+
+                      {/* Rich Snippet details */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#70757a', marginBottom: '4px' }}>
+                        <span style={{ color: '#e37400' }}>★★★★★ 5.0 (48)</span>
+                        <span>·</span>
+                        <span style={{ color: productForm.inStock ? '#137333' : '#d93025', fontWeight: 500 }}>
+                          {productForm.inStock ? 'In stock' : 'Out of stock'}
+                        </span>
+                        <span>·</span>
+                        <span>SKU: {productForm.sku || 'OETC-0000'}</span>
+                        <span>·</span>
+                        <span>Brand: {productForm.brand || 'Orient Energy'}</span>
+                      </div>
+
+                      {/* Meta Description */}
+                      <div style={{ fontSize: '13px', color: '#4d5156', lineHeight: 1.5 }}>
+                        {productForm.metaDescription || (productForm.shortDescription ? productForm.shortDescription.slice(0, 160) : 'Procure certified industrial equipment, piping materials, and engineering valves in Saudi Arabia from Orient Energy Trading Company.')}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 12 SEO FIELDS GRID */}
+                  <div className="clean-fields-stack" style={{ marginTop: '20px' }}>
+                    {/* Row 1: SEO Title & URL Slug */}
+                    <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '16px' }}>
+                      <div className="form-group">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                          <label className="field-label" style={{ margin: 0 }}>
+                            SEO Title (Google Search Result Title)
+                          </label>
+                          <span style={{ fontSize: '0.72rem', color: (productForm.seoTitle.length >= 50 && productForm.seoTitle.length <= 60) ? '#10b981' : (productForm.seoTitle.length > 60 ? '#ef4444' : '#64748b'), fontWeight: 600 }}>
+                            {productForm.seoTitle.length}/60 chars (Optimal: 50-60)
+                          </span>
+                        </div>
+                        <input
+                          type="text"
+                          placeholder="e.g. Butterfly Valve SS Disc Supplier Saudi Arabia"
+                          value={productForm.seoTitle}
+                          onChange={(e) => setProductForm({ ...productForm, seoTitle: e.target.value })}
+                          className="input-field"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                          <label className="field-label" style={{ margin: 0 }}>
+                            URL Slug (SEO-Friendly Product URL)
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (productForm.title) {
+                                const s = productForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                                setProductForm({ ...productForm, slug: s });
+                              }
+                            }}
+                            style={{ background: 'transparent', border: 'none', color: '#2563eb', fontSize: '0.72rem', cursor: 'pointer', fontWeight: 600, padding: 0 }}
+                          >
+                            🔄 Sync with Title
+                          </button>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <span style={{ padding: '8px 10px', background: '#f1f5f9', border: '1px solid #cbd5e1', borderRight: 'none', borderRadius: '6px 0 0 6px', fontSize: '0.80rem', color: '#64748b' }}>
+                            /product/
+                          </span>
+                          <input
+                            type="text"
+                            placeholder="butterfly-valve-lever-handle-ss"
+                            value={productForm.slug}
+                            onChange={(e) => setProductForm({ ...productForm, slug: e.target.value })}
+                            className="input-field"
+                            style={{ borderRadius: '0 6px 6px 0' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Row 2: Meta Description */}
+                    <div className="form-group">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                        <label className="field-label" style={{ margin: 0 }}>
+                          Meta Description (Google Search Result Description)
+                        </label>
+                        <span style={{ fontSize: '0.72rem', color: (productForm.metaDescription.length >= 140 && productForm.metaDescription.length <= 160) ? '#10b981' : (productForm.metaDescription.length > 160 ? '#ef4444' : '#64748b'), fontWeight: 600 }}>
+                          {productForm.metaDescription.length}/160 chars (Optimal: 150-160)
+                        </span>
+                      </div>
+                      <textarea
+                        rows={3}
+                        placeholder="Concise summary shown under Google title. Mention product type, Saudi Arabia availability, Aramco compliance, and call-to-action."
+                        value={productForm.metaDescription}
+                        onChange={(e) => setProductForm({ ...productForm, metaDescription: e.target.value })}
+                        className="input-field"
+                      />
+                    </div>
+
+                    {/* Row 3: Focus Keyword & Secondary Keywords */}
+                    <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                      <div className="form-group">
+                        <label className="field-label">Focus Keyword (Main Target Keyword)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Butterfly Valve Saudi Arabia"
+                          value={productForm.focusKeyword}
+                          onChange={(e) => setProductForm({ ...productForm, focusKeyword: e.target.value })}
+                          className="input-field"
+                        />
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '3px', display: 'block' }}>
+                          🎯 Primary keyword you want this product to rank for on Google.
+                        </span>
+                      </div>
+
+                      <div className="form-group">
+                        <label className="field-label">Secondary Keywords (Related Search Keywords)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. industrial valves KSA, valve supplier Al Khobar, Aramco approved valve"
+                          value={productForm.secondaryKeywords}
+                          onChange={(e) => setProductForm({ ...productForm, secondaryKeywords: e.target.value })}
+                          className="input-field"
+                        />
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '3px', display: 'block' }}>
+                          🏷️ Comma-separated synonyms, related specifications, and regional terms.
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Row 4: Product SKU & Brand / Manufacturer */}
+                    <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                      <div className="form-group">
+                        <label className="field-label">Product SKU (Product Identification)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. OETC-BVL-6021"
+                          value={productForm.sku}
+                          onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
+                          className="input-field"
+                          style={{ fontFamily: 'monospace' }}
+                        />
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '3px', display: 'block' }}>
+                          📦 Unique SKU used by Google Product Schema to track inventory &amp; rich cards.
+                        </span>
+                      </div>
+
+                      <div className="form-group">
+                        <label className="field-label">Brand / Manufacturer (Brand-Related Searches)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Orient Energy"
+                          value={productForm.brand}
+                          onChange={(e) => setProductForm({ ...productForm, brand: e.target.value })}
+                          className="input-field"
+                        />
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '3px', display: 'block' }}>
+                          🏷️ Brand attribute for Google Shopping and schema rich results.
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Row 5: Image Alt Text & Image Title */}
+                    <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                      <div className="form-group">
+                        <label className="field-label">Image Alt Text (Google Image SEO)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Stainless Steel Disc Butterfly Valve Lever Handle Orient Energy"
+                          value={productForm.imageAlt}
+                          onChange={(e) => setProductForm({ ...productForm, imageAlt: e.target.value })}
+                          className="input-field"
+                        />
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '3px', display: 'block' }}>
+                          🖼️ Ranks your product photo in Google Image Search and screen readers.
+                        </span>
+                      </div>
+
+                      <div className="form-group">
+                        <label className="field-label">Image Title (Image Identification)</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Orient Energy Industrial Valve SS Disc"
+                          value={productForm.imageTitle}
+                          onChange={(e) => setProductForm({ ...productForm, imageTitle: e.target.value })}
+                          className="input-field"
+                        />
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '3px', display: 'block' }}>
+                          ℹ️ Browser tooltip and contextual image identifier.
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Row 6: Canonical URL, Breadcrumbs & Product Schema Status */}
+                    <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '16px' }}>
+                      <div className="form-group">
+                        <label className="field-label">Canonical URL (Duplicate Content Prevention)</label>
+                        <input
+                          type="url"
+                          placeholder="https://orientenergyco.com/product/your-slug"
+                          value={productForm.canonicalUrl}
+                          onChange={(e) => setProductForm({ ...productForm, canonicalUrl: e.target.value })}
+                          className="input-field"
+                        />
+                        <span style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '3px', display: 'block' }}>
+                          🔗 Points search crawlers to the authoritative master URL of this product.
+                        </span>
+                      </div>
+
+                      <div className="form-group">
+                        <label className="field-label">Schema &amp; Breadcrumb Status</label>
+                        <div
+                          style={{
+                            background: '#f8fafc',
+                            border: '1px solid #e2e8f0',
+                            borderRadius: '8px',
+                            padding: '10px 14px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '6px',
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: '#047857' }}>
+                            <span>✓</span>
+                            <span><strong>Product Schema:</strong> JSON-LD auto-injected</span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: '#1d4ed8' }}>
+                            <span>✓</span>
+                            <span><strong>Breadcrumb:</strong> Home &gt; {productForm.division || 'Division'} &gt; Product</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Modal Sticky Footer */}
@@ -3762,14 +4550,18 @@ export default function AdminApp() {
         </div>
       )}
 
-      {/* ================= MODAL: EDIT DIVISION INNER PAGE ================= */}
-      {showDivisionModal && editingDivision && (
+      {/* ================= MODAL: ADD / EDIT CATEGORY & INNER PAGE ================= */}
+      {showDivisionModal && (
         <div className="modal-backdrop">
           <div className="modal-card modal-card-wide">
             <div className="modal-header">
               <div>
-                <h2>Edit Division Inner Page Details</h2>
-                <div className="modal-subtitle">{divisionForm.name} (/products/{divisionForm.slug})</div>
+                <h2>{editingDivision ? `Edit Category: ${divisionForm.name}` : 'Add New Category'}</h2>
+                <div className="modal-subtitle">
+                  {editingDivision
+                    ? `${divisionForm.name} (/products/${divisionForm.slug})`
+                    : 'Create a new product category with photo banner, URL slug and page details'}
+                </div>
               </div>
               <button type="button" onClick={() => setShowDivisionModal(false)} className="btn-close">
                 &times;
@@ -4039,9 +4831,120 @@ export default function AdminApp() {
                 </div>
               )}
 
-              {/* SECTION: GENERAL HEADLINE, DESCRIPTIONS & BANNER */}
+              {/* SECTION: GENERAL CATEGORY INFO, BANNER & DESCRIPTIONS */}
               {(divisionModalTab === 'general' || divisionModalTab === 'all') && (
                 <>
+                  <div className="form-row">
+                    <div className="form-group" style={{ flex: 1 }}>
+                      <label>Category Name *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Mechanical Supply Division"
+                        value={divisionForm.name}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setDivisionForm({
+                            ...divisionForm,
+                            name: val,
+                            slug: !editingDivision && (!divisionForm.slug || divisionForm.slug === divisionForm.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''))
+                              ? val.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+                              : divisionForm.slug,
+                          });
+                        }}
+                        className="input-field"
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ flex: 1 }}>
+                      <label>URL Slug (/products/&lt;slug&gt;) *</label>
+                      <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 600 }}>/products/</span>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. mechanical-division"
+                          value={divisionForm.slug}
+                          onChange={(e) =>
+                            setDivisionForm({
+                              ...divisionForm,
+                              slug: e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+                            })
+                          }
+                          className="input-field"
+                          style={{ flex: 1 }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Category Image / Banner */}
+                  <div className="form-group">
+                    <label>Category Card &amp; Banner Photo *</label>
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '8px' }}>
+                      {divisionForm.image && (
+                        <img
+                          src={divisionForm.image}
+                          alt="Category Preview"
+                          style={{ width: '90px', height: '65px', objectFit: 'cover', borderRadius: '6px', border: '1px solid #cbd5e1' }}
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
+                          }}
+                        />
+                      )}
+                      <div style={{ flex: 1, display: 'flex', gap: '8px' }}>
+                        <input
+                          type="text"
+                          placeholder="Image URL or upload (/categories/...)"
+                          value={divisionForm.image}
+                          onChange={(e) => setDivisionForm({ ...divisionForm, image: e.target.value })}
+                          className="input-field"
+                          style={{ flex: 1 }}
+                        />
+                        <label className="btn-upload-file">
+                          {isUploadingImage ? 'Uploading...' : '📁 Upload Photo'}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={(e) => handleImageFileChange(e, (url) => setDivisionForm({ ...divisionForm, image: url }))}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    {/* Quick selection chips for category images */}
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '6px' }}>
+                      <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600, alignSelf: 'center' }}>Presets:</span>
+                      {[
+                        { label: 'Mechanical', url: '/categories/mechanical-supply-division.png' },
+                        { label: 'Welding & Safety', url: '/categories/welding-safety.jpg' },
+                        { label: 'Power & Motors', url: '/categories/power-system.jpg' },
+                        { label: 'PPE Equipment', url: '/categories/ppe-safety-equpments.jpg' },
+                        { label: 'Tools & Maint.', url: '/categories/tools-maintenance.jpg' },
+                        { label: 'Marine Hardware', url: '/categories/marine-division.jpg' },
+                        { label: 'Steel & Structural', url: '/categories/steel-structural-materials-division.jpg' },
+                        { label: 'Pipes & Fittings', url: '/categories/all-fittings.jpeg' },
+                      ].map((preset, pIdx) => (
+                        <button
+                          key={pIdx}
+                          type="button"
+                          onClick={() => setDivisionForm({ ...divisionForm, image: preset.url })}
+                          style={{
+                            fontSize: '0.70rem',
+                            padding: '3px 8px',
+                            borderRadius: '4px',
+                            background: divisionForm.image === preset.url ? '#2563eb' : '#f1f5f9',
+                            color: divisionForm.image === preset.url ? '#ffffff' : '#334155',
+                            border: '1px solid #cbd5e1',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {preset.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="form-group">
                     <label>Main Headline (Shown on Inner Page) *</label>
                     <input
@@ -4058,33 +4961,11 @@ export default function AdminApp() {
                     <label>Detailed Descriptions (Separate paragraphs by double enter/blank line)</label>
                     <textarea
                       rows={5}
-                      placeholder="Paragraph 1 about division capabilities...&#10;&#10;Paragraph 2 about quality compliance and standards..."
+                      placeholder="Paragraph 1 about category capabilities...&#10;&#10;Paragraph 2 about quality compliance and standards..."
                       value={divisionForm.descriptionText}
                       onChange={(e) => setDivisionForm({ ...divisionForm, descriptionText: e.target.value })}
                       className="input-field"
                     />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Division Banner / Feature Image</label>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <input
-                        type="text"
-                        value={divisionForm.image}
-                        onChange={(e) => setDivisionForm({ ...divisionForm, image: e.target.value })}
-                        className="input-field"
-                        style={{ flex: 1 }}
-                      />
-                      <label className="btn-upload-file">
-                        {isUploadingImage ? 'Uploading...' : '📁 Upload'}
-                        <input
-                          type="file"
-                          accept="image/*"
-                          style={{ display: 'none' }}
-                          onChange={(e) => handleImageFileChange(e, (url) => setDivisionForm({ ...divisionForm, image: url }))}
-                        />
-                      </label>
-                    </div>
                   </div>
                 </>
               )}
@@ -4219,7 +5100,7 @@ export default function AdminApp() {
                   Cancel
                 </button>
                 <button type="submit" className="btn-primary-action">
-                  Save Division Inner Page
+                  {editingDivision ? 'Save Category Details' : 'Create Category'}
                 </button>
               </div>
             </form>
@@ -4346,16 +5227,275 @@ export default function AdminApp() {
                 )}
               </div>
 
-              <div className="form-group">
-                <label>Introduction *</label>
-                <textarea
-                  rows={4}
-                  required
-                  placeholder="Write the introduction paragraph of the article..."
-                  value={blogForm.introduction}
-                  onChange={(e) => setBlogForm({ ...blogForm, introduction: e.target.value })}
-                  className="input-field"
-                />
+              <div className="form-group" style={{ marginBottom: '22px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <label style={{ fontWeight: 700, margin: 0, fontSize: '0.90rem', color: '#1e293b' }}>
+                    Article Content &amp; SEO Rich Text *
+                  </label>
+                  <div style={{ display: 'inline-flex', gap: '4px', backgroundColor: '#f1f5f9', padding: '3px', borderRadius: '6px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setBlogEditorTab('edit')}
+                      style={{
+                        padding: '4px 10px',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        backgroundColor: blogEditorTab === 'edit' ? '#ffffff' : 'transparent',
+                        color: blogEditorTab === 'edit' ? '#0f172a' : '#64748b',
+                        boxShadow: blogEditorTab === 'edit' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                      }}
+                    >
+                      ✏️ Edit Content
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBlogEditorTab('preview')}
+                      style={{
+                        padding: '4px 10px',
+                        fontSize: '0.75rem',
+                        fontWeight: 600,
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        backgroundColor: blogEditorTab === 'preview' ? '#ffffff' : 'transparent',
+                        color: blogEditorTab === 'preview' ? '#0f172a' : '#64748b',
+                        boxShadow: blogEditorTab === 'preview' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                      }}
+                    >
+                      👁️ Live SEO Preview
+                    </button>
+                  </div>
+                </div>
+
+                {blogEditorTab === 'edit' ? (
+                  <div style={{ border: '1px solid #cbd5e1', borderRadius: '8px', overflow: 'hidden' }}>
+                    {/* Rich Formatting Toolbar */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '8px 10px',
+                        backgroundColor: '#f8fafc',
+                        borderBottom: '1px solid #e2e8f0',
+                      }}
+                    >
+                      {/* Bold */}
+                      <button
+                        type="button"
+                        title="Bold (wrap in <strong>)"
+                        onClick={() => insertFormatIntoBlog('<strong>', '</strong>', 'Bold text')}
+                        style={toolbarBtnStyle}
+                      >
+                        <strong>B</strong>
+                      </button>
+
+                      {/* Italic */}
+                      <button
+                        type="button"
+                        title="Italic (wrap in <em>)"
+                        onClick={() => insertFormatIntoBlog('<em>', '</em>', 'Italic text')}
+                        style={{ ...toolbarBtnStyle, fontStyle: 'italic' }}
+                      >
+                        I
+                      </button>
+
+                      {/* Underline */}
+                      <button
+                        type="button"
+                        title="Underline (wrap in <u>)"
+                        onClick={() => insertFormatIntoBlog('<u>', '</u>', 'Underlined text')}
+                        style={{ ...toolbarBtnStyle, textDecoration: 'underline' }}
+                      >
+                        U
+                      </button>
+
+                      <div style={toolbarDividerStyle} />
+
+                      {/* H2 */}
+                      <button
+                        type="button"
+                        title="Heading 2 (Google Major Section)"
+                        onClick={() => insertFormatIntoBlog('\n<h2>', '</h2>\n', 'Major Section Heading')}
+                        style={toolbarBtnStyle}
+                      >
+                        H2
+                      </button>
+
+                      {/* H3 */}
+                      <button
+                        type="button"
+                        title="Heading 3 (Google Subheading)"
+                        onClick={() => insertFormatIntoBlog('\n<h3>', '</h3>\n', 'Sub-section Heading')}
+                        style={toolbarBtnStyle}
+                      >
+                        H3
+                      </button>
+
+                      {/* Paragraph */}
+                      <button
+                        type="button"
+                        title="Paragraph tag"
+                        onClick={() => insertFormatIntoBlog('\n<p>', '</p>\n', 'Article paragraph text...')}
+                        style={toolbarBtnStyle}
+                      >
+                        &para;
+                      </button>
+
+                      <div style={toolbarDividerStyle} />
+
+                      {/* Bullet List */}
+                      <button
+                        type="button"
+                        title="Bullet List"
+                        onClick={() =>
+                          insertFormatIntoBlog(
+                            '\n<ul>\n  <li>',
+                            '</li>\n  <li>Second key point</li>\n</ul>\n',
+                            'First key point'
+                          )
+                        }
+                        style={toolbarBtnStyle}
+                      >
+                        &bull; List
+                      </button>
+
+                      {/* Numbered List */}
+                      <button
+                        type="button"
+                        title="Numbered List"
+                        onClick={() =>
+                          insertFormatIntoBlog(
+                            '\n<ol>\n  <li>',
+                            '</li>\n  <li>Second step</li>\n</ol>\n',
+                            'First step'
+                          )
+                        }
+                        style={toolbarBtnStyle}
+                      >
+                        1. List
+                      </button>
+
+                      {/* Quote */}
+                      <button
+                        type="button"
+                        title="Blockquote"
+                        onClick={() =>
+                          insertFormatIntoBlog(
+                            '\n<blockquote>',
+                            '</blockquote>\n',
+                            'Key industry insight or quote...'
+                          )
+                        }
+                        style={toolbarBtnStyle}
+                      >
+                        &ldquo; Quote
+                      </button>
+
+                      <div style={toolbarDividerStyle} />
+
+                      {/* Insert Link */}
+                      <button
+                        type="button"
+                        title="Insert Hyperlink"
+                        onClick={handleInsertBlogLink}
+                        style={toolbarBtnStyle}
+                      >
+                        🔗 Link
+                      </button>
+
+                      {/* Insert Image URL */}
+                      <button
+                        type="button"
+                        title="Insert Image by URL"
+                        onClick={handleInsertBlogImageUrl}
+                        style={toolbarBtnStyle}
+                      >
+                        🖼️ Image URL
+                      </button>
+
+                      {/* Upload Image to Blog */}
+                      <button
+                        type="button"
+                        title="Upload Image from Computer into Article"
+                        onClick={() => blogImageFileInputRef.current?.click()}
+                        style={{
+                          ...toolbarBtnStyle,
+                          backgroundColor: '#e0f2fe',
+                          color: '#0369a1',
+                          borderColor: '#bae6fd',
+                          fontWeight: 600,
+                        }}
+                      >
+                        📁 {isUploadingImage ? 'Uploading...' : 'Upload Image'}
+                      </button>
+                      <input
+                        ref={blogImageFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={handleBlogContentImageUpload}
+                      />
+                    </div>
+
+                    <textarea
+                      ref={blogContentTextareaRef}
+                      rows={10}
+                      required
+                      placeholder="Write your article body here... Use the toolbar above to add Bold, Italic, Headings (H2/H3), Links, and Images for maximum Google SEO ranking."
+                      value={blogForm.introduction}
+                      onChange={(e) => setBlogForm({ ...blogForm, introduction: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '12px 14px',
+                        border: 'none',
+                        outline: 'none',
+                        fontSize: '0.88rem',
+                        lineHeight: 1.7,
+                        fontFamily: 'monospace',
+                        color: '#0f172a',
+                        backgroundColor: '#ffffff',
+                        boxSizing: 'border-box',
+                        resize: 'vertical',
+                      }}
+                    />
+                  </div>
+                ) : (
+                  /* Live SEO Preview */
+                  <div
+                    style={{
+                      border: '1.5px solid #20b512',
+                      borderRadius: '8px',
+                      padding: '18px 20px',
+                      backgroundColor: '#ffffff',
+                      minHeight: '220px',
+                      maxHeight: '380px',
+                      overflowY: 'auto',
+                      boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)',
+                    }}
+                  >
+                    <div style={{ fontSize: '0.74rem', color: '#16a34a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>
+                      ✔ Google SEO Article Content Preview
+                    </div>
+                    {blogForm.introduction ? (
+                      <div
+                        style={{ fontSize: '0.88rem', lineHeight: 1.75, color: '#334155' }}
+                        dangerouslySetInnerHTML={{ __html: blogForm.introduction }}
+                      />
+                    ) : (
+                      <span style={{ color: '#94a3b8', fontStyle: 'italic', fontSize: '0.84rem' }}>
+                        No content written yet. Switch to &quot;Edit Content&quot; to start drafting your article.
+                      </span>
+                    )}
+                  </div>
+                )}
+                <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '6px', display: 'block' }}>
+                  Tip: Highlight any text and click <strong>Bold</strong> or <em>Italic</em> to format. Use <strong>H2</strong> for Google Search rankings and <strong>Upload Image</strong> to embed photos directly into your article.
+                </span>
               </div>
 
               {/* Fleet & Services Points */}

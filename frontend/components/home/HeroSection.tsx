@@ -68,7 +68,7 @@ export default function HeroSection() {
           }}
         />
 
-        {/* Hero Content: Clean Centered Headline */}
+        {/* Hero Central Container: Glassy Stats Above, Headline Below */}
         <div
           className="hero-video-content"
           style={{
@@ -82,11 +82,189 @@ export default function HeroSection() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '135px 24px 40px',
+            padding: '90px 24px 38px',
             flex: '1 0 auto',
           }}
         >
-          {/* Main Headline: Expertise in Every Trade */}
+          {/* Reduced Transparent Glassmorphic Stats Strip (300+ Brands | 100+ Clients | 10+ Sectors | 28+ Years Exp) */}
+          <div
+            className="hero-glassy-stats-bar"
+            style={{
+              position: 'relative',
+              width: '100%',
+              maxWidth: '820px',
+              margin: '0 auto',
+              background:
+                'linear-gradient(135deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.05) 100%)',
+              backdropFilter: 'blur(20px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+              border: '1px solid rgba(255, 255, 255, 0.22)',
+              borderRadius: '12px',
+              boxShadow:
+                '0 8px 32px 0 rgba(0, 0, 0, 0.28), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35)',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              alignItems: 'center',
+              padding: '10px 16px',
+            }}
+          >
+            {/* Stat 1: 300+ Brands */}
+            <div
+              className="hero-stat-col"
+              style={{
+                textAlign: 'center',
+                padding: '2px 8px',
+                borderRight: '1px solid rgba(255, 255, 255, 0.18)',
+              }}
+            >
+              <div
+                className="hero-stat-number"
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 'clamp(1.25rem, 2.2vw, 1.75rem)',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  lineHeight: 1.15,
+                  letterSpacing: '0.02em',
+                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
+                }}
+              >
+                300+
+              </div>
+              <div
+                className="hero-stat-label"
+                style={{
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: 'clamp(0.58rem, 1.1vw, 0.72rem)',
+                  fontWeight: 500,
+                  color: 'rgba(255, 255, 255, 0.88)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  marginTop: '2px',
+                }}
+              >
+                Brands
+              </div>
+            </div>
+
+            {/* Stat 2: 100+ Clients */}
+            <div
+              className="hero-stat-col"
+              style={{
+                textAlign: 'center',
+                padding: '2px 8px',
+                borderRight: '1px solid rgba(255, 255, 255, 0.18)',
+              }}
+            >
+              <div
+                className="hero-stat-number"
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 'clamp(1.25rem, 2.2vw, 1.75rem)',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  lineHeight: 1.15,
+                  letterSpacing: '0.02em',
+                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
+                }}
+              >
+                100+
+              </div>
+              <div
+                className="hero-stat-label"
+                style={{
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: 'clamp(0.58rem, 1.1vw, 0.72rem)',
+                  fontWeight: 500,
+                  color: 'rgba(255, 255, 255, 0.88)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  marginTop: '2px',
+                }}
+              >
+                Clients
+              </div>
+            </div>
+
+            {/* Stat 3: 10+ Sectors */}
+            <div
+              className="hero-stat-col"
+              style={{
+                textAlign: 'center',
+                padding: '2px 8px',
+                borderRight: '1px solid rgba(255, 255, 255, 0.18)',
+              }}
+            >
+              <div
+                className="hero-stat-number"
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 'clamp(1.25rem, 2.2vw, 1.75rem)',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  lineHeight: 1.15,
+                  letterSpacing: '0.02em',
+                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
+                }}
+              >
+                10+
+              </div>
+              <div
+                className="hero-stat-label"
+                style={{
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: 'clamp(0.58rem, 1.1vw, 0.72rem)',
+                  fontWeight: 500,
+                  color: 'rgba(255, 255, 255, 0.88)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  marginTop: '2px',
+                }}
+              >
+                Sectors
+              </div>
+            </div>
+
+            {/* Stat 4: 28+ Years Exp */}
+            <div
+              className="hero-stat-col"
+              style={{
+                textAlign: 'center',
+                padding: '2px 8px',
+              }}
+            >
+              <div
+                className="hero-stat-number"
+                style={{
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 'clamp(1.25rem, 2.2vw, 1.75rem)',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  lineHeight: 1.15,
+                  letterSpacing: '0.02em',
+                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
+                }}
+              >
+                28+
+              </div>
+              <div
+                className="hero-stat-label"
+                style={{
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: 'clamp(0.58rem, 1.1vw, 0.72rem)',
+                  fontWeight: 500,
+                  color: 'rgba(255, 255, 255, 0.88)',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  marginTop: '2px',
+                }}
+              >
+                Years Exp.
+              </div>
+            </div>
+          </div>
+
+          {/* Main Headline placed BELOW the glassy box: Expertise in Every Trade */}
           <h1
             className="hero-video-title"
             style={{
@@ -98,151 +276,11 @@ export default function HeroSection() {
               letterSpacing: '0.01em',
               textShadow: '0 2px 14px rgba(0, 0, 0, 0.65)',
               maxWidth: '920px',
-              margin: '0 auto',
+              margin: '22px auto 0',
             }}
           >
             Expertise in Every Trade
           </h1>
-        </div>
-
-        {/* Transparent Glassmorphic Stats Strip (Reference Model: 300+ Brands | 30+ Clients | 28+ Years Experience) */}
-        <div
-          className="hero-glassy-stats-bar"
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            width: '100%',
-            maxWidth: '960px',
-            margin: '0 auto 28px',
-            background:
-              'linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%)',
-            backdropFilter: 'blur(20px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-            border: '1px solid rgba(255, 255, 255, 0.22)',
-            borderRadius: '16px',
-            boxShadow:
-              '0 8px 32px 0 rgba(0, 0, 0, 0.28), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35)',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            alignItems: 'center',
-            padding: '16px 20px',
-          }}
-        >
-          {/* Stat 1: 300+ Brands */}
-          <div
-            className="hero-stat-col"
-            style={{
-              textAlign: 'center',
-              padding: '4px 16px',
-              borderRight: '1px solid rgba(255, 255, 255, 0.18)',
-            }}
-          >
-            <div
-              className="hero-stat-number"
-              style={{
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: 'clamp(1.7rem, 3.4vw, 2.5rem)',
-                fontWeight: 700,
-                color: '#ffffff',
-                lineHeight: 1.15,
-                letterSpacing: '0.02em',
-                textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
-              }}
-            >
-              300+
-            </div>
-            <div
-              className="hero-stat-label"
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontSize: 'clamp(0.68rem, 1.4vw, 0.82rem)',
-                fontWeight: 500,
-                color: 'rgba(255, 255, 255, 0.88)',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginTop: '4px',
-              }}
-            >
-              Brands
-            </div>
-          </div>
-
-          {/* Stat 2: 30+ Clients */}
-          <div
-            className="hero-stat-col"
-            style={{
-              textAlign: 'center',
-              padding: '4px 16px',
-              borderRight: '1px solid rgba(255, 255, 255, 0.18)',
-            }}
-          >
-            <div
-              className="hero-stat-number"
-              style={{
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: 'clamp(1.7rem, 3.4vw, 2.5rem)',
-                fontWeight: 700,
-                color: '#ffffff',
-                lineHeight: 1.15,
-                letterSpacing: '0.02em',
-                textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
-              }}
-            >
-              30+
-            </div>
-            <div
-              className="hero-stat-label"
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontSize: 'clamp(0.68rem, 1.4vw, 0.82rem)',
-                fontWeight: 500,
-                color: 'rgba(255, 255, 255, 0.88)',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginTop: '4px',
-              }}
-            >
-              Clients
-            </div>
-          </div>
-
-          {/* Stat 3: 28 Years Experience */}
-          <div
-            className="hero-stat-col"
-            style={{
-              textAlign: 'center',
-              padding: '4px 16px',
-            }}
-          >
-            <div
-              className="hero-stat-number"
-              style={{
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: 'clamp(1.7rem, 3.4vw, 2.5rem)',
-                fontWeight: 700,
-                color: '#ffffff',
-                lineHeight: 1.15,
-                letterSpacing: '0.02em',
-                textShadow: '0 2px 10px rgba(0, 0, 0, 0.55)',
-              }}
-            >
-              28+
-            </div>
-            <div
-              className="hero-stat-label"
-              style={{
-                fontFamily: "'Poppins', sans-serif",
-                fontSize: 'clamp(0.68rem, 1.4vw, 0.82rem)',
-                fontWeight: 500,
-                color: 'rgba(255, 255, 255, 0.88)',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                marginTop: '4px',
-              }}
-            >
-              Years Experience
-            </div>
-          </div>
         </div>
       </section>
 
@@ -392,7 +430,7 @@ export default function HeroSection() {
           }
 
           .hero-video-content {
-            padding: 85px 16px 20px !important;
+            padding: 68px 16px 20px !important;
           }
 
           .hero-video-title {
@@ -402,28 +440,31 @@ export default function HeroSection() {
           }
 
           .hero-glassy-stats-bar {
-            width: calc(100% - 32px) !important;
-            margin: 0 auto 16px !important;
-            padding: 10px 6px !important;
+            width: calc(100% - 20px) !important;
+            max-width: 460px !important;
+            margin: 0 auto !important;
+            padding: 8px 4px !important;
+            grid-template-columns: repeat(4, 1fr) !important;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
             backdrop-filter: blur(16px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
             border: 1px solid rgba(255, 255, 255, 0.24) !important;
-            border-radius: 12px !important;
+            border-radius: 10px !important;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.3) !important;
           }
 
           .hero-stat-col {
-            padding: 2px 4px !important;
+            padding: 2px 3px !important;
           }
 
           .hero-stat-number {
-            font-size: 1.25rem !important;
+            font-size: 1.05rem !important;
           }
 
           .hero-stat-label {
-            font-size: 0.6rem !important;
-            letter-spacing: 0.08em !important;
+            font-size: 0.52rem !important;
+            letter-spacing: 0.05em !important;
+            margin-top: 1px !important;
           }
 
           .clients-deal-section {

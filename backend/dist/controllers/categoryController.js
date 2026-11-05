@@ -87,7 +87,10 @@ const updateCategory = async (req, res) => {
         if (updateData.name && !updateData.slug) {
             updateData.slug = updateData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         }
-        const category = await Category_1.Category.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+        const isObjectId = Boolean(id && id.match(/^[0-9a-fA-F]{24}$/));
+        const category = isObjectId
+            ? await Category_1.Category.findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
+            : await Category_1.Category.findOneAndUpdate({ $or: [{ slug: id }, { name: id }] }, updateData, { new: true, runValidators: true });
         if (!category) {
             return res.status(404).json({ success: false, message: 'Category not found' });
         }
@@ -101,7 +104,10 @@ exports.updateCategory = updateCategory;
 const deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
-        const category = await Category_1.Category.findByIdAndDelete(id);
+        const isObjectId = Boolean(id && id.match(/^[0-9a-fA-F]{24}$/));
+        const category = isObjectId
+            ? await Category_1.Category.findByIdAndDelete(id)
+            : await Category_1.Category.findOneAndDelete({ $or: [{ slug: id }, { name: id }] });
         if (!category) {
             return res.status(404).json({ success: false, message: 'Category not found' });
         }

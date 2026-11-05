@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollAnimation from '@/components/ScrollAnimation';
 import CertificatesGallery from '@/components/about/CertificatesGallery';
+import AboutIntroContent from '@/components/about/AboutIntroContent';
 
 export const metadata: Metadata = {
   title: 'About Us — Orient Energy Trading Company',
@@ -38,20 +37,19 @@ export default function AboutPage() {
       <Navbar />
 
       <main
-        className="about-page"
+        className="about-page site-main-content"
         style={{
           backgroundColor: '#ffffff',
           minHeight: '100vh',
-          paddingTop: '115px',
           fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         }}
       >
-        {/* Section 1: About Orient Energy Trading ("EXPERTISE IN EVERY TRADE") */}
+        {/* Section 1: About Orient Energy Trading (Compact Header Spacing, Read More Toggle, 2-Photo Grid) */}
         <section
           className="about-intro-section"
           style={{
             backgroundColor: '#ffffff',
-            padding: '45px 0 50px',
+            padding: '24px 0 40px',
           }}
         >
           <div
@@ -59,100 +57,21 @@ export default function AboutPage() {
             style={{
               maxWidth: '1360px',
               margin: '0 auto',
-              padding: '0 24px',
+              padding: '0 20px',
             }}
           >
-            <div
-              className="scroll-reveal"
-              style={{
-                maxWidth: '920px',
-                margin: '0 auto',
-              }}
-            >
-              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-                <div
-                  style={{
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.14em',
-                    textTransform: 'uppercase',
-                    color: '#2e3191',
-                    marginBottom: '10px',
-                  }}
-                >
-                  ABOUT
-                </div>
-
-                <h2
-                  style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontSize: 'clamp(2.0rem, 3.2vw, 2.75rem)',
-                    fontWeight: 500,
-                    color: '#1a1f2c',
-                    lineHeight: 1.18,
-                    marginBottom: '16px',
-                    letterSpacing: '0.01em',
-                  }}
-                >
-                  ORIENT ENERGY TRADING
-                </h2>
-
-                <div
-                  style={{
-                    width: '50px',
-                    height: '3px',
-                    backgroundColor: '#20b512',
-                    margin: '0 auto',
-                    borderRadius: '2px',
-                  }}
-                />
-              </div>
-
-              <p className="about-intro-p">
-                Orient Energy is a Saudi Arabia-based industrial supply and engineering solutions
-                company serving the Oil &amp; Gas, Power, Marine, Construction, Infrastructure, and
-                industrial sectors across the Kingdom and the Middle East.
-              </p>
-
-              <p className="about-intro-p">
-                We specialize in industrial supply, global procurement, and engineering support, delivering
-                reliable products and integrated solutions tailored for demanding industrial operations.
-              </p>
-
-              <p className="about-intro-p" style={{ margin: 0 }}>
-                With a strong international sourcing network and industry expertise, we provide
-                certified industrial materials, mechanical and electrical solutions, safety
-                equipment, steel products, welding systems, marine supplies, and maintenance
-                solutions backed by quality, reliability, and technical excellence. At Orient Energy,
-                we are committed to supporting industries with dependable service, operational
-                efficiency, and long-term partnership solutions designed to meet modern industrial
-                demands.
-              </p>
-
-              {/* Showroom Image: Placed directly, cleanly, no border or box, no overlay text */}
-              <div style={{ marginTop: '36px', width: '100%' }}>
-                <Image
-                  src="/about/storefront.png"
-                  alt="Orient Energy Trading Co. Showroom"
-                  width={1200}
-                  height={675}
-                  priority
-                  sizes="(max-width: 1200px) 100vw, 920px"
-                  style={{ width: '100%', height: 'auto', display: 'block' }}
-                />
-              </div>
-            </div>
+            <AboutIntroContent />
           </div>
         </section>
 
         {/* Section 2: Mission & Our Vision (Glassy Modern Background Cards) */}
-        <section style={{ padding: '20px 0 85px', backgroundColor: '#ffffff' }}>
+        <section style={{ padding: '20px 0 65px', backgroundColor: '#ffffff' }}>
           <div
             className="container"
             style={{
               maxWidth: '1360px',
               margin: '0 auto',
-              padding: '0 24px',
+              padding: '0 20px',
             }}
           >
             <div
@@ -172,7 +91,7 @@ export default function AboutPage() {
                   WebkitBackdropFilter: 'blur(16px)',
                   border: '1px solid rgba(255, 255, 255, 0.16)',
                   borderRadius: '16px',
-                  padding: '48px 40px',
+                  padding: '44px 36px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -230,7 +149,7 @@ export default function AboutPage() {
                   WebkitBackdropFilter: 'blur(16px)',
                   border: '1px solid rgba(255, 255, 255, 0.16)',
                   borderRadius: '16px',
-                  padding: '48px 40px',
+                  padding: '44px 36px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -281,10 +200,10 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Section 3: Our Certifications (Clickable with Full View Modal) */}
+        {/* Section 3: Our Certifications (2 in a row on mobile!) */}
         <section
           style={{
-            padding: '75px 0 85px',
+            padding: '65px 0 75px',
             backgroundColor: '#ffffff',
             borderTop: '1px solid #f1f5f9',
           }}
@@ -294,11 +213,11 @@ export default function AboutPage() {
             style={{
               maxWidth: '1360px',
               margin: '0 auto',
-              padding: '0 24px',
+              padding: '0 20px',
             }}
           >
             {/* Header */}
-            <div style={{ textAlign: 'center', marginBottom: '46px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
               <div
                 style={{
                   display: 'inline-flex',
@@ -330,19 +249,19 @@ export default function AboutPage() {
               </h2>
             </div>
 
-            {/* Interactive Certificates with Full View Modal */}
+            {/* Interactive Certificates Gallery with Modal */}
             <CertificatesGallery certificates={CERTIFICATES} />
           </div>
         </section>
 
-        {/* Section 4: What We Do (Improved Alignment & Font Size) */}
-        <section style={{ padding: '75px 0 65px', backgroundColor: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
+        {/* Section 4: What We Do */}
+        <section style={{ padding: '65px 0 60px', backgroundColor: '#ffffff', borderTop: '1px solid #f1f5f9' }}>
           <div
             className="container"
             style={{
               maxWidth: '920px',
               margin: '0 auto',
-              padding: '0 24px',
+              padding: '0 20px',
             }}
           >
             <div style={{ textAlign: 'center', marginBottom: '22px' }}>
@@ -412,51 +331,99 @@ export default function AboutPage() {
           letter-spacing: 0.01em;
         }
 
-        @media (max-width: 1024px) {
-          .about-mission-grid {
-            grid-template-columns: 1fr !important;
-          }
-          .about-certs-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-
         .about-intro-section {
-          padding: 135px 0 65px;
+          padding: 24px 0 40px;
         }
 
         .about-intro-p {
           font-size: 0.94rem;
           line-height: 1.82;
           color: #4b5563;
-          margin-bottom: 20px;
+          margin-bottom: 16px;
           text-align: left;
           letter-spacing: 0.01em;
         }
 
+        /* Enforce 2 certificates per row on mobile & tablet */
+        .about-certs-grid {
+          display: grid !important;
+          grid-template-columns: repeat(4, 1fr) !important;
+          gap: 20px !important;
+        }
+
+        @media (max-width: 1024px) {
+          .about-mission-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
+          }
+          .about-certs-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 16px !important;
+          }
+        }
+
         @media (max-width: 768px) {
           .about-intro-section {
-            padding: 115px 0 32px !important;
+            padding: 12px 0 24px !important;
           }
           .about-intro-p {
             font-size: 0.88rem !important;
             line-height: 1.74 !important;
             text-align: left !important;
-            margin-bottom: 16px !important;
+            margin-bottom: 14px !important;
           }
           .about-what-we-do-p {
             text-align: left !important;
             font-size: 0.86rem !important;
             line-height: 1.74 !important;
           }
+          .about-mission-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+          }
           .about-glass-card {
-            padding: 36px 24px !important;
+            padding: 20px 14px !important;
+            border-radius: 12px !important;
+          }
+          .about-glass-card h3 {
+            font-size: 1.15rem !important;
+            margin-bottom: 8px !important;
+          }
+          .about-glass-card p {
+            font-size: 0.74rem !important;
+            line-height: 1.52 !important;
+          }
+          /* Exactly 2 certificates per row on mobile */
+          .about-certs-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
           }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 480px) {
+          .about-intro-section {
+            padding: 8px 0 20px !important;
+          }
+          .about-mission-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+          }
+          .about-glass-card {
+            padding: 16px 10px !important;
+            border-radius: 10px !important;
+          }
+          .about-glass-card h3 {
+            font-size: 1.02rem !important;
+            margin-bottom: 6px !important;
+          }
+          .about-glass-card p {
+            font-size: 0.68rem !important;
+            line-height: 1.42 !important;
+          }
+          /* Stay 2 certificates per row on small phones */
           .about-certs-grid {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
           }
         }
       `}</style>

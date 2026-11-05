@@ -26,9 +26,11 @@ const SLUG_ALIASES: Record<string, string> = {
   'tools-maintenance': 'mechanical-division',
   'industrial-hoses-hose-couplings': 'mechanical-division',
   'lubricants-chemicals': 'coatings-surface-protection',
-  'bearings-and-filters': 'bearings-and-filters',
-  'bearings-filters': 'bearings-and-filters',
-  'bairing-and-filters': 'bearings-and-filters',
+  'bearings-and-filters': 'bearings',
+  'bearings-filters': 'bearings',
+  'bairing-and-filters': 'bearings',
+  'bearing': 'bearings',
+  'filter': 'filters',
 };
 
 async function getDivisionAsync(slug: string): Promise<DivisionData | undefined> {
@@ -209,14 +211,14 @@ export default async function ProductDivisionInnerPage({
                 fontSize: '0.94rem',
                 lineHeight: 1.8,
                 color: '#475569',
-                marginBottom: '32px',
+                marginBottom: '28px',
               }}
             >
-              {division.description.map((p, idx) => (
-                <p key={idx} style={{ marginBottom: idx < division.description.length - 1 ? '14px' : '0' }}>
-                  {p}
+              {division.description && division.description[0] && (
+                <p style={{ margin: 0 }}>
+                  {division.description[0]}
                 </p>
-              ))}
+              )}
             </div>
 
             {/* Sub-Category Pills (e.g. for Welding) */}

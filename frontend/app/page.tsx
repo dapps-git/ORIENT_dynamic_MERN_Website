@@ -6,7 +6,6 @@ import FeaturedProductsShowcase from '@/components/home/FeaturedProductsShowcase
 import AboutSection from '@/components/home/AboutSection';
 import ApprovedBySection from '@/components/home/ApprovedBySection';
 import IndustriesSection from '@/components/home/IndustriesSection';
-import TrustBannerSection from '@/components/home/TrustBannerSection';
 import WhyChooseSection from '@/components/home/WhyChooseSection';
 import GoogleReviewsSection from '@/components/home/GoogleReviewsSection';
 import ScrollAnimation from '@/components/ScrollAnimation';
@@ -36,9 +35,6 @@ export default function HomePage() {
 
         {/* Industries We Serve (Powering Industry, Driving Progress.) */}
         <IndustriesSection />
-
-        {/* Operational Excellence Built on Trust */}
-        <TrustBannerSection />
 
         {/* Why Choose Orient Energy? (Because Your Operations Deserve the Best.) */}
         <WhyChooseSection />

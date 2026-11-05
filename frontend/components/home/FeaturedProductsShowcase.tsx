@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -14,6 +14,38 @@ interface ShowcaseProduct {
 }
 
 const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
+  {
+    id: 'camlock-type-e',
+    title: 'Aluminium Camlock Type E',
+    slug: 'aluminium-camlock-type-e',
+    category: 'Pipe Fittings and Flanges',
+    image: '/uploads/camlock-type-e.png',
+    href: '/products/pipe-fittings-flanges',
+  },
+  {
+    id: 'camlock-type-d',
+    title: 'Aluminium Camlock Type D',
+    slug: 'aluminium-camlock-type-d',
+    category: 'Pipe Fittings and Flanges',
+    image: '/uploads/camlock-type-d.png',
+    href: '/products/pipe-fittings-flanges',
+  },
+  {
+    id: 'camlock-type-b',
+    title: 'Aluminium Camlock Type B',
+    slug: 'aluminium-camlock-type-b',
+    category: 'Pipe Fittings and Flanges',
+    image: '/uploads/camlock-type-b.png',
+    href: '/products/pipe-fittings-flanges',
+  },
+  {
+    id: 'camlock-type-a',
+    title: 'Aluminium Camlock Type A',
+    slug: 'aluminium-camlock-type-a',
+    category: 'Pipe Fittings and Flanges',
+    image: '/uploads/camlock-type-a.png',
+    href: '/products/pipe-fittings-flanges',
+  },
   {
     id: 'prod-camlock',
     title: 'Aluminum Camlock Couplings',
@@ -48,28 +80,69 @@ const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
   },
 ];
 
+// Grouping into chunks
+const DESKTOP_SLIDES = [
+  SHOWCASE_PRODUCTS.slice(0, 4),
+  SHOWCASE_PRODUCTS.slice(4, 8),
+];
+
 const MOBILE_SLIDES = [
-  [SHOWCASE_PRODUCTS[0], SHOWCASE_PRODUCTS[1]],
-  [SHOWCASE_PRODUCTS[2], SHOWCASE_PRODUCTS[3]],
+  SHOWCASE_PRODUCTS.slice(0, 2),
+  SHOWCASE_PRODUCTS.slice(2, 4),
+  SHOWCASE_PRODUCTS.slice(4, 6),
+  SHOWCASE_PRODUCTS.slice(6, 8),
 ];
 
 export default function FeaturedProductsShowcase() {
-  const [activeSlide, setActiveSlide] = useState(0);
+  const [desktopSlide, setDesktopSlide] = useState(0);
+  const [mobileSlide, setMobileSlide] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Touch gesture state
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
   const touchEndX = useRef<number>(0);
   const touchEndY = useRef<number>(0);
   const isDragging = useRef<boolean>(false);
 
-  // Automatic slide animation every 3.5 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev === 0 ? 1 : 0));
-    }, 3500);
-    return () => clearInterval(timer);
-  }, [activeSlide]);
+  const nextDesktop = useCallback(() => {
+    setDesktopSlide((prev) => (prev + 1) % DESKTOP_SLIDES.length);
+  }, []);
 
-  // Hand swipe / Touch gesture handlers
+  const prevDesktop = useCallback(() => {
+    setDesktopSlide((prev) => (prev - 1 + DESKTOP_SLIDES.length) % DESKTOP_SLIDES.length);
+  }, []);
+
+  const nextMobile = useCallback(() => {
+    setMobileSlide((prev) => (prev + 1) % MOBILE_SLIDES.length);
+  }, []);
+
+  const prevMobile = useCallback(() => {
+    setMobileSlide((prev) => (prev - 1 + MOBILE_SLIDES.length) % MOBILE_SLIDES.length);
+  }, []);
+
+  // Universal next / prev triggers
+  const handleNext = () => {
+    nextDesktop();
+    nextMobile();
+  };
+
+  const handlePrev = () => {
+    prevDesktop();
+    prevMobile();
+  };
+
+  // Auto slide when not hovered
+  useEffect(() => {
+    if (isHovered) return;
+    const timer = setInterval(() => {
+      setDesktopSlide((prev) => (prev + 1) % DESKTOP_SLIDES.length);
+      setMobileSlide((prev) => (prev + 1) % MOBILE_SLIDES.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isHovered]);
+
+  // Touch & Hand Swipe Handlers
   const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
@@ -94,14 +167,16 @@ export default function FeaturedProductsShowcase() {
     const diffX = touchStartX.current - touchEndX.current;
     const diffY = touchStartY.current - touchEndY.current;
 
-    // Trigger slide switch when horizontal swipe > 35px and more horizontal than vertical
+    // Trigger slide switch when horizontal swipe > 35px
     if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY)) {
       if (diffX > 0) {
-        // Swiped left -> show next 2 products
-        setActiveSlide(1);
+        // Swiped left -> next slide
+        nextMobile();
+        nextDesktop();
       } else {
-        // Swiped right -> show first 2 products
-        setActiveSlide(0);
+        // Swiped right -> prev slide
+        prevMobile();
+        prevDesktop();
       }
     }
   };
@@ -110,9 +185,11 @@ export default function FeaturedProductsShowcase() {
     <section
       id="featured-products"
       className="featured-products-showcase"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
         backgroundColor: '#ffffff',
-        padding: '32px 0 44px',
+        padding: '28px 0 38px',
         borderBottom: '1px solid #ECE7DE',
         position: 'relative',
       }}
@@ -125,77 +202,196 @@ export default function FeaturedProductsShowcase() {
           padding: '0 20px',
         }}
       >
-        {/* =========================================================
-            1. DESKTOP / LAPTOP VIEW (4 in ONE ROW - Distinct Card Boxes)
-            ========================================================= */}
-        <div className="featured-showcase-desktop">
-          <div className="featured-desktop-grid">
-            {SHOWCASE_PRODUCTS.map((product) => (
-              <Link
-                key={product.id}
-                href={product.href}
-                className="product-box-card"
-                style={{
-                  backgroundColor: '#ffffff',
-                  border: '1.5px solid #dbe2ea',
-                  borderRadius: '0px',
-                  padding: '22px 20px 20px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03)',
-                  position: 'relative',
-                  cursor: 'pointer',
-                  boxSizing: 'border-box',
-                }}
+        {/* Top Header Row with < > Slide Arrows on the right */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '16px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span
+              style={{
+                width: '4px',
+                height: '22px',
+                backgroundColor: '#20b512',
+                borderRadius: '2px',
+                display: 'inline-block',
+              }}
+            />
+            <h3
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                color: '#071138',
+                margin: 0,
+                letterSpacing: '-0.01em',
+              }}
+            >
+              Featured Industrial Products
+            </h3>
+          </div>
+
+          {/* Slider Arrow Controls < > */}
+          <div
+            className="showcase-arrow-controls"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Previous products"
+              className="slider-nav-btn"
+              style={{
+                width: '34px',
+                height: '34px',
+                backgroundColor: '#ffffff',
+                border: '1.5px solid #cbd5e1',
+                borderRadius: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#1e293b',
+                transition: 'all 0.2s ease',
+                padding: 0,
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                {/* 1. Category / Product Title at Top (Standard Title Case, clean typography) */}
-                <h4 className="product-box-title" title={product.title}>
-                  {product.title}
-                </h4>
-
-                {/* 2. Centered Product Image Showcase */}
-                <div className="product-box-img-wrap">
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    width={240}
-                    height={190}
-                    style={{
-                      maxWidth: '100%',
-                      maxHeight: '100%',
-                      objectFit: 'contain',
-                      display: 'block',
-                    }}
-                    className="product-box-thumb"
-                    priority
-                  />
-                </div>
-
-                {/* 3. Bottom-Left Circular Dark Navy Blue Button with Right Arrow */}
-                <div className="product-box-btn-row">
-                  <div className="product-box-circle-btn">
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Next products"
+              className="slider-nav-btn"
+              style={{
+                width: '34px',
+                height: '34px',
+                backgroundColor: '#ffffff',
+                border: '1.5px solid #cbd5e1',
+                borderRadius: '4px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                color: '#1e293b',
+                transition: 'all 0.2s ease',
+                padding: 0,
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
           </div>
         </div>
 
+        {/* =========================================================
+            1. DESKTOP / LAPTOP VIEW (4 in ONE ROW with Slide Animation)
+            ========================================================= */}
+        <div className="featured-showcase-desktop">
+          <div className="desktop-carousel-viewport" style={{ overflow: 'hidden', width: '100%' }}>
+            <div
+              className="desktop-carousel-track"
+              style={{
+                display: 'flex',
+                width: '100%',
+                transform: `translateX(-${desktopSlide * 100}%)`,
+                transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
+              }}
+            >
+              {DESKTOP_SLIDES.map((slideProducts, slideIdx) => (
+                <div
+                  key={slideIdx}
+                  style={{
+                    flex: '0 0 100%',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <div className="featured-desktop-grid">
+                    {slideProducts.map((product) => (
+                      <Link
+                        key={product.id}
+                        href={product.href}
+                        className="product-box-card"
+                        style={{
+                          backgroundColor: '#ffffff',
+                          border: '1.5px solid #dbe2ea',
+                          borderRadius: '0px',
+                          padding: '20px 18px 22px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          textDecoration: 'none',
+                          color: 'inherit',
+                          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02)',
+                          position: 'relative',
+                          cursor: 'pointer',
+                          boxSizing: 'border-box',
+                          height: '100%',
+                        }}
+                      >
+                        {/* Centered Product Image Showcase */}
+                        <div className="product-box-img-wrap">
+                          <Image
+                            src={product.image}
+                            alt={product.title}
+                            width={240}
+                            height={190}
+                            style={{
+                              maxWidth: '100%',
+                              maxHeight: '100%',
+                              objectFit: 'contain',
+                              display: 'block',
+                            }}
+                            className="product-box-thumb"
+                            priority
+                          />
+                        </div>
+
+                        {/* Product Title Centered/Aligned cleanly */}
+                        <h4 className="product-box-title" title={product.title}>
+                          {product.title}
+                        </h4>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* =========================================================
+            2. MOBILE VIEW (2 per Row with Hand Swipe + <> Navigation)
+            ========================================================= */}
         <div
           className="featured-showcase-mobile"
           onTouchStart={handleTouchStart}
@@ -216,7 +412,7 @@ export default function FeaturedProductsShowcase() {
             <div
               className="mobile-carousel-track"
               style={{
-                transform: `translateX(-${activeSlide * 100}%)`,
+                transform: `translateX(-${mobileSlide * 100}%)`,
               }}
             >
               {MOBILE_SLIDES.map((slideProducts, slideIdx) => (
@@ -242,21 +438,13 @@ export default function FeaturedProductsShowcase() {
                           boxSizing: 'border-box',
                         }}
                       >
-                        {/* Reduced Font Size on Mobile */}
-                        <h4
-                          className="product-box-title-mobile"
-                          title={product.title}
-                        >
-                          {product.title}
-                        </h4>
-
                         {/* Centered Image */}
                         <div className="product-box-img-wrap-mobile">
                           <Image
                             src={product.image}
                             alt={product.title}
                             width={160}
-                            height={115}
+                            height={120}
                             style={{
                               maxWidth: '100%',
                               maxHeight: '100%',
@@ -267,30 +455,49 @@ export default function FeaturedProductsShowcase() {
                           />
                         </div>
 
-                        {/* Bottom Arrow Button */}
-                        <div className="product-box-btn-row">
-                          <div className="product-box-circle-btn product-box-circle-btn-mobile">
-                            <svg
-                              width="12"
-                              height="12"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <line x1="5" y1="12" x2="19" y2="12" />
-                              <polyline points="12 5 19 12 12 19" />
-                            </svg>
-                          </div>
-                        </div>
+                        {/* Title on Mobile */}
+                        <h4
+                          className="product-box-title-mobile"
+                          title={product.title}
+                        >
+                          {product.title}
+                        </h4>
                       </Link>
                     ))}
                   </div>
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Dots Indicator for Mobile */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '6px',
+              marginTop: '12px',
+            }}
+          >
+            {MOBILE_SLIDES.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setMobileSlide(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                style={{
+                  width: mobileSlide === idx ? '18px' : '6px',
+                  height: '6px',
+                  borderRadius: '3px',
+                  backgroundColor: mobileSlide === idx ? '#20b512' : '#cbd5e1',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  transition: 'all 0.25s ease',
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -305,7 +512,7 @@ export default function FeaturedProductsShowcase() {
         .featured-desktop-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
+          gap: 18px;
           width: 100%;
         }
 
@@ -315,22 +522,22 @@ export default function FeaturedProductsShowcase() {
         }
 
         .product-box-card:hover {
-          transform: translateY(-5px) !important;
-          box-shadow: 0 14px 30px rgba(7, 17, 56, 0.12) !important;
+          transform: translateY(-4px) !important;
+          box-shadow: 0 12px 28px rgba(7, 17, 56, 0.1) !important;
           border-color: #2e3191 !important;
         }
 
         .product-box-title {
           font-family: 'Poppins', sans-serif !important;
-          font-size: 0.95rem !important;
+          font-size: 0.92rem !important;
           font-weight: 600 !important;
-          text-transform: none !important;
-          letter-spacing: 0.01em !important;
-          color: #0f172a !important;
+          text-transform: uppercase !important;
+          letter-spacing: 0.02em !important;
+          color: #1e293b !important;
           line-height: 1.35 !important;
-          min-height: 42px !important;
-          margin: 0 0 10px 0 !important;
-          text-align: left !important;
+          min-height: 40px !important;
+          margin: 10px 0 0 0 !important;
+          text-align: center !important;
           display: -webkit-box !important;
           -webkit-line-clamp: 2 !important;
           -webkit-box-orient: vertical !important;
@@ -345,11 +552,11 @@ export default function FeaturedProductsShowcase() {
         .product-box-img-wrap {
           position: relative;
           width: 100%;
-          height: 175px;
+          height: 180px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 4px 0 14px;
+          margin: 4px 0 6px;
           background-color: #ffffff;
           overflow: hidden;
         }
@@ -362,38 +569,10 @@ export default function FeaturedProductsShowcase() {
           transform: scale(1.06) !important;
         }
 
-        .product-box-btn-row {
-          margin-top: auto;
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-        }
-
-        .product-box-circle-btn {
-          width: 38px;
-          height: 38px;
-          border-radius: 50%;
-          background-color: #071138;
-          color: #ffffff;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.25s ease;
-          box-shadow: 0 3px 10px rgba(7, 17, 56, 0.2);
-        }
-
-        .product-box-card:hover .product-box-circle-btn {
-          background-color: #20b512 !important;
-          transform: scale(1.08) !important;
-          box-shadow: 0 4px 14px rgba(32, 181, 18, 0.45) !important;
-        }
-
-        .product-box-circle-btn svg {
-          transition: transform 0.2s ease;
-        }
-
-        .product-box-card:hover .product-box-circle-btn svg {
-          transform: translateX(3px);
+        .slider-nav-btn:hover {
+          background-color: #f1f5f9 !important;
+          border-color: #071138 !important;
+          color: #071138 !important;
         }
 
         /* ================= MOBILE STYLES ================= */
@@ -412,7 +591,7 @@ export default function FeaturedProductsShowcase() {
         .mobile-carousel-track {
           display: flex;
           width: 100%;
-          transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+          transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
           will-change: transform;
         }
 
@@ -426,21 +605,21 @@ export default function FeaturedProductsShowcase() {
         .mobile-grid-2col {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
+          gap: 10px;
           width: 100%;
         }
 
         .product-box-title-mobile {
           font-family: 'Poppins', sans-serif !important;
-          font-size: 0.78rem !important;
+          font-size: 0.75rem !important;
           font-weight: 600 !important;
-          text-transform: none !important;
+          text-transform: uppercase !important;
           letter-spacing: 0.01em !important;
-          color: #0f172a !important;
+          color: #1e293b !important;
           line-height: 1.25 !important;
           min-height: 32px !important;
-          margin: 0 0 6px 0 !important;
-          text-align: left !important;
+          margin: 6px 0 0 0 !important;
+          text-align: center !important;
           display: -webkit-box !important;
           -webkit-line-clamp: 2 !important;
           -webkit-box-orient: vertical !important;
@@ -454,14 +633,9 @@ export default function FeaturedProductsShowcase() {
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 2px 0 10px;
+          margin: 2px 0 4px;
           background-color: #ffffff;
           overflow: hidden;
-        }
-
-        .product-box-circle-btn-mobile {
-          width: 28px !important;
-          height: 28px !important;
         }
 
         /* ================= RESPONSIVE SWITCH ================= */

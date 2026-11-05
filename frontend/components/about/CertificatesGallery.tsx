@@ -85,7 +85,7 @@ export default function CertificatesGallery({ certificates }: CertificatesGaller
               transition: 'transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease',
             }}
           >
-            <div style={{ position: 'relative', width: '100%', height: '390px' }}>
+            <div className="about-cert-img-wrap" style={{ position: 'relative', width: '100%' }}>
               <Image
                 src={cert.image}
                 alt={cert.title}
@@ -360,6 +360,28 @@ export default function CertificatesGallery({ certificates }: CertificatesGaller
       )}
 
       <style jsx>{`
+        .about-cert-img-wrap {
+          height: 380px;
+        }
+
+        @media (max-width: 1024px) {
+          .about-cert-img-wrap {
+            height: 290px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .about-cert-img-wrap {
+            height: 220px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .about-cert-img-wrap {
+            height: 180px;
+          }
+        }
+
         .about-cert-card:hover {
           transform: translateY(-4px);
           box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12) !important;
