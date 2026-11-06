@@ -15,6 +15,22 @@ interface ShowcaseProduct {
 
 const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
   {
+    id: 'prod-ringers-gloves',
+    title: 'Ringers Heavy Duty Impact Safety Gloves',
+    slug: 'ringers-heavy-duty-impact-safety-gloves',
+    category: 'PPE & Safety Equipment',
+    image: '/products/ringers-impact-gloves.jpg',
+    href: '/products/ppe-safety-equipment',
+  },
+  {
+    id: 'prod-tyvek-coverall',
+    title: 'DuPont Tyvek Protective Chemical Coveralls',
+    slug: 'dupont-tyvek-protective-chemical-coveralls',
+    category: 'PPE & Safety Equipment',
+    image: '/products/tyvek-protective-coverall.jpg',
+    href: '/products/ppe-safety-equipment',
+  },
+  {
     id: 'camlock-type-e',
     title: 'Aluminium Camlock Type E',
     slug: 'aluminium-camlock-type-e',
@@ -77,22 +93,6 @@ const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     category: 'Welding Division',
     image: '/uploads/victoroxygenregulator.jpg',
     href: '/product/victor-oxygen-regulator',
-  },
-  {
-    id: 'prod-ringers-gloves',
-    title: 'Ringers Heavy Duty Impact Safety Gloves',
-    slug: 'ringers-heavy-duty-impact-safety-gloves',
-    category: 'PPE & Safety Equipment',
-    image: '/products/ringers-impact-gloves.jpg',
-    href: '/products/ppe-safety-equipment',
-  },
-  {
-    id: 'prod-tyvek-coverall',
-    title: 'DuPont Tyvek Protective Chemical Coveralls',
-    slug: 'dupont-tyvek-protective-chemical-coveralls',
-    category: 'PPE & Safety Equipment',
-    image: '/products/tyvek-protective-coverall.jpg',
-    href: '/products/ppe-safety-equipment',
   },
 ];
 

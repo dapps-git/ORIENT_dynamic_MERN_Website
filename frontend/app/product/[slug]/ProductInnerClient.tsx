@@ -749,17 +749,45 @@ export default function ProductInnerClient({ product: initialProduct, division, 
         @media (max-width: 768px) {
           .product-top-grid {
             grid-template-columns: 1fr;
-            gap: 24px;
+            gap: 16px;
           }
           .product-image-container {
-            height: 260px;
+            height: 250px;
+            padding: 12px;
           }
           .product-right-panel {
-            align-items: center;
-            text-align: center;
+            align-items: flex-start !important;
+            text-align: left !important;
+            padding: 14px 16px !important;
+            background: #f8fafc !important;
+            border-radius: 10px !important;
+            border: 1px solid #edf2f7 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            gap: 8px !important;
           }
           .product-main-card {
-            padding: 24px 18px !important;
+            padding: 18px 16px !important;
+            border-radius: 12px !important;
+          }
+          .product-description-section,
+          .product-specifications-section,
+          .inner-section-card {
+            padding: 18px 16px !important;
+            margin-top: 18px !important;
+            border-radius: 10px !important;
+          }
+          .product-description-section h2,
+          .product-specifications-section h2 {
+            font-size: 1.05rem !important;
+          }
+          .product-rich-description {
+            font-size: 0.90rem !important;
+            line-height: 1.7 !important;
+          }
+          .inner-section-grid {
+            grid-template-columns: 1fr !important;
+            gap: 16px !important;
           }
         }
       `}</style>

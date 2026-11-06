@@ -41,13 +41,13 @@ export default function HeroSection() {
           backgroundColor: '#000000',
         }}
       >
-        {/* Hero Offshore Oil Rig Platform Sunset Image Background */}
+        {/* Hero Offshore Oil Rig Platform Sunset Image Background (Ultra-Clarirty WebP) */}
         <Image
-          src="/hero-bg-rig.jpg"
+          src="/hero-bg-rig.webp"
           alt="Offshore Oil Rig Platform at Sunset"
           fill
           priority
-          quality={90}
+          quality={95}
           sizes="100vw"
           style={{
             objectFit: 'cover',
