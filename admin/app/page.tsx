@@ -776,7 +776,7 @@ export default function AdminApp() {
   const [checkingAuth, setCheckingAuth] = useState<boolean>(true);
   const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
   const [email, setEmail] = useState<string>('orient@adminpanel.com');
-  const [password, setPassword] = useState<string>('orient@admin#1234');
+  const [password, setPassword] = useState<string>('orient@admin');
   const [loginError, setLoginError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
