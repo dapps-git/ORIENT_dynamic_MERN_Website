@@ -41,13 +41,13 @@ export default function HeroSection() {
           backgroundColor: '#000000',
         }}
       >
-        {/* Hero Offshore Oil Rig Platform Sunset Image Background (Ultra-Clarirty WebP) */}
+        {/* Hero Offshore Oil Rig Platform Sunset Image Background */}
         <Image
-          src="/hero-bg-rig.webp"
+          src="/hero-bg-rig.jpg"
           alt="Offshore Oil Rig Platform at Sunset"
           fill
           priority
-          quality={95}
+          quality={90}
           sizes="100vw"
           style={{
             objectFit: 'cover',
@@ -432,7 +432,7 @@ export default function HeroSection() {
           }
 
           .hero-video-content {
-            padding: 85px 16px 22px !important;
+            padding: 45px 14px 14px !important;
             justify-content: flex-end !important;
           }
 
@@ -440,12 +440,13 @@ export default function HeroSection() {
             font-size: clamp(1.3rem, 5.6vw, 1.7rem) !important;
             line-height: 1.25 !important;
             max-width: 340px !important;
+            margin: auto auto 12px !important;
           }
 
           .hero-glassy-stats-bar {
             width: calc(100% - 20px) !important;
             max-width: 460px !important;
-            margin: auto auto 0 !important;
+            margin: 0 auto !important;
             padding: 8px 4px !important;
             grid-template-columns: repeat(4, 1fr) !important;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
