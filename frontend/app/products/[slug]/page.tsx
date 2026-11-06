@@ -33,6 +33,28 @@ const SLUG_ALIASES: Record<string, string> = {
   'filter': 'filters',
 };
 
+const BEARINGS_BRANDS_LOGOS = [
+  { name: 'SKF', logo: '/brands/skf-logo.svg' },
+  { name: 'FAG (Schaeffler)', logo: '/brands/fag-logo.svg' },
+  { name: 'NSK', logo: '/brands/nsk-logo.svg' },
+  { name: 'TIMKEN', logo: '/brands/timken-logo.svg' },
+  { name: 'NTN Bearings', logo: '/brands/ntn-logo.svg' },
+  { name: 'KOYO (JTEKT)', logo: '/brands/koyo-logo.svg' },
+  { name: 'NACHI', logo: '/brands/nachi-logo.svg' },
+  { name: 'INA', logo: '/brands/ina-logo.svg' },
+];
+
+const FILTERS_BRANDS_LOGOS = [
+  { name: 'Donaldson Filtration Solutions', logo: '/brands/donaldson-logo.svg' },
+  { name: 'Parker Filtration', logo: '/brands/parker-filtration-logo.svg' },
+  { name: 'Fleetguard', logo: '/brands/fleetguard-logo.svg' },
+  { name: 'MANN-FILTER', logo: '/brands/mann-filter-logo.svg' },
+  { name: 'Baldwin Filters', logo: '/brands/baldwin-logo.svg' },
+  { name: 'Pall Corporation', logo: '/brands/pall-logo.svg' },
+  { name: 'HYDAC', logo: '/brands/hydac-logo.svg' },
+  { name: 'MAHLE Industry', logo: '/brands/mahle-logo.svg' },
+];
+
 async function getDivisionAsync(slug: string): Promise<DivisionData | undefined> {
   const resolvedId = SLUG_ALIASES[slug] || slug;
   const staticDiv = DIVISIONS_DATA.find((d) => d.id === resolvedId);
@@ -158,6 +180,10 @@ export default async function ProductDivisionInnerPage({
   }
 
   const otherDivisions = DIVISIONS_DATA.filter((d) => d.id !== division.id).slice(0, 4);
+
+  const isBearings = division.id === 'bearings' || slug === 'bearings' || slug === 'bearings-and-filters' || slug === 'bairing-and-filters' || slug === 'bearing';
+  const isFilters = division.id === 'filters' || slug === 'filters' || slug === 'filter';
+  const categoryBrands = isBearings ? BEARINGS_BRANDS_LOGOS : isFilters ? FILTERS_BRANDS_LOGOS : null;
 
   return (
     <>
@@ -417,6 +443,74 @@ export default async function ProductDivisionInnerPage({
               </div>
             )}
 
+            {/* Category Brand Logos (Bearings & Filters) */}
+            {categoryBrands && categoryBrands.length > 0 && (
+              <div
+                style={{
+                  marginBottom: '42px',
+                  padding: '24px 28px',
+                  backgroundColor: '#f8fafc',
+                  borderRadius: '12px',
+                  border: '1px solid #e2e8f0',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    marginBottom: '18px',
+                  }}
+                >
+                  <span
+                    style={{
+                      width: '4px',
+                      height: '20px',
+                      backgroundColor: '#20b512',
+                      borderRadius: '2px',
+                      display: 'inline-block',
+                    }}
+                  />
+                  <h3
+                    style={{
+                      fontSize: '1.05rem',
+                      fontWeight: 700,
+                      color: '#071138',
+                      margin: 0,
+                      fontFamily: "'Poppins', sans-serif",
+                      letterSpacing: '0.02em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Leading {isBearings ? 'Bearings' : 'Filtration'} Brands We Supply
+                  </h3>
+                </div>
+
+                <div className="category-brands-grid">
+                  {categoryBrands.map((brand, idx) => (
+                    <div
+                      key={idx}
+                      className="category-brand-card"
+                      title={brand.name}
+                    >
+                      <img
+                        src={brand.logo}
+                        alt={`${brand.name} Logo`}
+                        style={{
+                          maxHeight: '44px',
+                          maxWidth: '85%',
+                          width: 'auto',
+                          height: 'auto',
+                          objectFit: 'contain',
+                          display: 'block',
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Products Section Header */}
             <div
               style={{
@@ -632,6 +726,52 @@ export default async function ProductDivisionInnerPage({
           display: grid;
           grid-template-columns: repeat(6, 1fr);
           gap: 16px;
+        }
+
+        .category-brands-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+        }
+
+        .category-brand-card {
+          background-color: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          height: 74px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px 18px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .category-brand-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(7, 17, 56, 0.08);
+          border-color: #cbd5e1;
+        }
+
+        @media (max-width: 768px) {
+          .category-brands-grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 10px !important;
+          }
+          .category-brand-card {
+            height: 56px !important;
+            padding: 6px 8px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .category-brands-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+          }
+          .category-brand-card {
+            height: 52px !important;
+          }
         }
 
         .product-catalog-card:hover {
