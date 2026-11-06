@@ -86,23 +86,23 @@ export default function HeroSection() {
             flex: '1 0 auto',
           }}
         >
-          {/* Main Headline placed ABOVE the glassy box: 2 lines in 2 colors (White & Green) */}
+          {/* Main Headline placed ABOVE the glassy box: 2 lines in 2 colors (White & Green), increased font size and extra bold weight */}
           <h1
             className="hero-video-title"
             style={{
               fontFamily: "'Poppins', sans-serif",
-              fontSize: 'clamp(2.0rem, 4.4vw, 44px)',
-              fontWeight: 700,
-              lineHeight: 1.2,
-              letterSpacing: '0.01em',
-              textShadow: '0 3px 18px rgba(0, 0, 0, 0.75)',
-              maxWidth: '920px',
-              margin: 'auto auto 18px',
+              fontSize: 'clamp(2.6rem, 6.2vw, 64px)',
+              fontWeight: 800,
+              lineHeight: 1.12,
+              letterSpacing: '-0.01em',
+              textShadow: '0 4px 24px rgba(0, 0, 0, 0.85), 0 2px 8px rgba(0, 0, 0, 0.95)',
+              maxWidth: '960px',
+              margin: 'auto auto 20px',
               textAlign: 'center',
             }}
           >
-            <span style={{ color: '#ffffff', display: 'block' }}>Expertise in</span>
-            <span style={{ color: '#20b512', display: 'block' }}>Every Trade</span>
+            <span style={{ color: '#ffffff', display: 'block', fontWeight: 800 }}>Expertise in</span>
+            <span style={{ color: '#20b512', display: 'block', fontWeight: 800 }}>Every Trade</span>
           </h1>
 
           {/* Reduced Transparent Glassmorphic Stats Strip (300+ Brands | 100+ Clients | 10+ Sectors | 28+ Years Exp) */}
