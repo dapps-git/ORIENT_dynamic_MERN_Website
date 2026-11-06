@@ -596,14 +596,17 @@ const INITIAL_DIVISIONS: Division[] = [
   { id: 'div-1', name: 'Pipe Fittings and Flanges', slug: 'mechanical-division', headline: 'Industrial Mechanical Valves, Pipes, Flanges & Pumps', description: 'Certified valves, seamless pipes, flanges, and fluid pumps.', image: '/categories/mechanical-supply-division.png', productCount: 17 },
   { id: 'div-2', name: 'Welding Division', slug: 'welding-division', headline: 'Industrial Welding Machinery, Gas Apparatus & Consumables', description: 'Cutting torches, regulators, auto helmets, Victor systems.', image: '/categories/welding-safety.jpg', productCount: 16 },
   { id: 'div-3', name: 'Electrical Division', slug: 'electrical-division', headline: 'Industrial Power Distribution, UPS Systems & Switchgear', description: 'Circuit breakers, switchgear, UPS systems, cables.', image: '/categories/power-system.jpg', productCount: 12 },
+  { id: 'div-5', name: 'Industrial Hoses & Hose Couplings', slug: 'industrial-hoses-hose-couplings', headline: 'Heavy-Duty Industrial Hoses, Camlock Couplings & Quick Fittings', description: 'Chemical transfer hoses, steam hoses, air hoses, Camlock quick couplers, and Bauer fittings.', image: '/categories/industrial-hoses-hose-couplings.jpg', productCount: 8 },
+  { id: 'div-6', name: 'Lubricants & Chemicals Division', slug: 'lubricants-chemicals', headline: 'High-Performance Industrial Oils, Greases & Maintenance Chemicals', description: 'Chevron Delo lubricants, heavy hydraulic oils, synthetic gear oils, and corrosion inhibitors.', image: '/categories/lubricants-chemicals.jpg', productCount: 6 },
+  { id: 'div-10', name: 'Tools & Maintenance Division', slug: 'tools-maintenance', headline: 'Industrial Power Tools, Pneumatic Systems & Plant Maintenance Toolsets', description: 'Heavy-duty power drills, impact wrenches, socket toolsets, and plant overhaul maintenance equipment.', image: '/categories/tools-maintenance.jpg', productCount: 10 },
   { id: 'div-4', name: 'Lifting & Material Handling', slug: 'lifting-material-handling', headline: 'Heavy Lifting Tackles, Hoists & Rigging Equipment', description: 'Chain blocks, hoists, wire rope slings, snatch blocks.', image: '/categories/lifting-material-handling.jpg', productCount: 8 },
   { id: 'div-7', name: 'Marine Division', slug: 'marine-division', headline: 'Offshore Deck Hardware, Safety & Marine Operations Support', description: 'Lifejackets, life-saving appliances, deck equipment.', image: '/categories/marine-division.jpg', productCount: 4 },
   { id: 'div-8', name: 'Steel & Structural Materials', slug: 'steel-structural-materials-division', headline: 'Structural Steel Beams, Heavy Plates & Piping Solutions', description: 'Seamless pipes, structural beams, carbon steel products.', image: '/categories/steel-structural-materials-division.jpg', productCount: 5 },
   { id: 'div-9', name: 'Coatings & Surface Protection', slug: 'coatings-surface-protection', headline: 'Protective Coatings, Industrial Paints & Blasting Abrasives', description: 'Jotun, National Paints, intumescent fire coatings.', image: '/categories/coatings-surface-protection.png', productCount: 8 },
   { id: 'div-11', name: 'Fasteners Division', slug: 'fasteners-division', headline: 'High-Tensile Structural Fasteners, Studs & Anchors', description: 'Hex bolts, stud bolts, carriage bolts, anchors.', image: '/categories/fasteners.jpg', productCount: 16 },
   { id: 'div-13', name: 'PPE & Safety Equipment', slug: 'ppe-safety-equipment', headline: 'PPE & Industrial Safety Equipment Supplier in Saudi Arabia', description: 'Certified safety helmets, respiratory masks, protective coveralls, and PPE equipment.', image: '/categories/ppe-safety-equpments.jpg', productCount: 24 },
-  { id: 'div-14', name: 'Bearings', slug: 'bearings', headline: 'Industrial Bearings, Mechanical Seals & Pillow Block Units', description: 'Deep groove ball bearings, spherical roller bearings, tapered bearings, and pillow blocks.', image: '/categories/auxiliary-systems.jpg', productCount: 2 },
-  { id: 'div-15', name: 'Filters', slug: 'filters', headline: 'Industrial Hydraulic, Oil, Fuel & Air Filtration Systems', description: 'Hydraulic return line filter elements, heavy machinery air and fuel filtration systems.', image: '/categories/auxiliary-systems.jpg', productCount: 2 },
+  { id: 'div-14', name: 'Bearings', slug: 'bearings', headline: 'Industrial Bearings, Mechanical Seals & Pillow Block Units', description: 'Deep groove ball bearings, spherical roller bearings, tapered bearings, and pillow blocks.', image: '/categories/bearings.jpg', productCount: 2 },
+  { id: 'div-15', name: 'Filters', slug: 'filters', headline: 'Industrial Hydraulic, Oil, Fuel & Air Filtration Systems', description: 'Hydraulic return line filter elements, heavy machinery air and fuel filtration systems.', image: '/categories/filters.jpg', productCount: 2 },
 ];
 
 const INITIAL_BLOGS: Blog[] = [
@@ -900,12 +903,14 @@ export default function AdminApp() {
   };
 
   const handleInsertBlogLink = () => {
-    const url = prompt('Enter URL (e.g. https://orientenergy.com or /products):', 'https://');
-    if (!url) return;
+    const rawUrl = prompt('Enter URL (e.g. gravoz.com or https://...):', 'https://');
+    if (!rawUrl || !rawUrl.trim()) return;
+    const url = rawUrl.trim();
+    const cleanUrl = url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/') ? url : `https://${url}`;
     const textarea = blogContentTextareaRef.current;
     const selected = textarea ? textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) : '';
-    const text = prompt('Enter link text:', selected || 'Click here') || 'Click here';
-    insertFormatIntoBlog(`<a href="${url}" target="_blank" rel="noopener noreferrer">`, '</a>', text);
+    const text = prompt('Enter link text:', selected || cleanUrl) || cleanUrl;
+    insertFormatIntoBlog(`<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">`, '</a>', text);
   };
 
   const handleInsertBlogImageUrl = () => {
@@ -941,6 +946,53 @@ export default function AdminApp() {
     handleImageFileChange(e, (uploadedUrl) => {
       insertFormatIntoBlog(`\n<img src="${uploadedUrl}" alt="Orient Energy Industrial" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
       showToast('Image inserted into blog article!');
+    });
+  };
+
+  // Category SEO Content Editor state & handlers
+  const categoryContentTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const categoryImageFileInputRef = useRef<HTMLInputElement>(null);
+  const [categoryEditorTab, setCategoryEditorTab] = useState<'edit' | 'preview'>('edit');
+
+  const insertFormatIntoCategory = (openTag: string, closeTag = '', defaultText = '') => {
+    const textarea = categoryContentTextareaRef.current;
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentVal = divisionForm.descriptionText;
+    const selectedText = currentVal.substring(start, end) || defaultText;
+    const replacement = `${openTag}${selectedText}${closeTag}`;
+    const newVal = currentVal.substring(0, start) + replacement + currentVal.substring(end);
+    setDivisionForm((prev) => ({ ...prev, descriptionText: newVal }));
+
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + openTag.length, start + openTag.length + selectedText.length);
+    }, 25);
+  };
+
+  const handleInsertCategoryLink = () => {
+    const rawUrl = prompt('Enter URL (e.g. gravoz.com or https://...):', 'https://');
+    if (!rawUrl || !rawUrl.trim()) return;
+    const url = rawUrl.trim();
+    const cleanUrl = url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/') ? url : `https://${url}`;
+    const textarea = categoryContentTextareaRef.current;
+    const selected = textarea ? textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) : '';
+    const text = prompt('Enter link text to display:', selected || cleanUrl) || cleanUrl;
+    insertFormatIntoCategory(`<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">`, '</a>', text);
+  };
+
+  const handleInsertCategoryImageUrl = () => {
+    const url = prompt('Enter Image URL (e.g. /categories/sample.jpg or https://...):', '');
+    if (!url) return;
+    const alt = prompt('Enter Image Alt Text (for SEO):', divisionForm.name || 'Industrial Category') || 'Industrial Category';
+    insertFormatIntoCategory(`\n<img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+  };
+
+  const handleCategoryContentImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleImageFileChange(e, (uploadedUrl) => {
+      insertFormatIntoCategory(`\n<img src="${uploadedUrl}" alt="${divisionForm.name || 'Industrial Category'}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+      showToast('Image inserted into category description!');
     });
   };
 
@@ -4957,15 +5009,238 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label>Detailed Descriptions (Separate paragraphs by double enter/blank line)</label>
-                    <textarea
-                      rows={5}
-                      placeholder="Paragraph 1 about category capabilities...&#10;&#10;Paragraph 2 about quality compliance and standards..."
-                      value={divisionForm.descriptionText}
-                      onChange={(e) => setDivisionForm({ ...divisionForm, descriptionText: e.target.value })}
-                      className="input-field"
-                    />
+                  <div className="form-group" style={{ marginBottom: '18px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                      <label style={{ fontWeight: 600, color: '#334155', margin: 0 }}>
+                        Category Content &amp; SEO Rich Text (HTML / Markdown / Links)
+                      </label>
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        <button
+                          type="button"
+                          onClick={() => setCategoryEditorTab('edit')}
+                          style={{
+                            padding: '4px 10px',
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            borderRadius: '4px',
+                            border: '1px solid #cbd5e1',
+                            backgroundColor: categoryEditorTab === 'edit' ? '#2563eb' : '#ffffff',
+                            color: categoryEditorTab === 'edit' ? '#ffffff' : '#475569',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          ✏️ Edit Content
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCategoryEditorTab('preview')}
+                          style={{
+                            padding: '4px 10px',
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            borderRadius: '4px',
+                            border: '1px solid #cbd5e1',
+                            backgroundColor: categoryEditorTab === 'preview' ? '#20b512' : '#ffffff',
+                            color: categoryEditorTab === 'preview' ? '#ffffff' : '#475569',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          👁️ Live SEO Preview
+                        </button>
+                      </div>
+                    </div>
+
+                    {categoryEditorTab === 'edit' ? (
+                      <div style={{ border: '1px solid #cbd5e1', borderRadius: '8px', overflow: 'hidden' }}>
+                        {/* Rich Formatting Toolbar */}
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            alignItems: 'center',
+                            gap: '4px',
+                            padding: '8px 10px',
+                            backgroundColor: '#f8fafc',
+                            borderBottom: '1px solid #e2e8f0',
+                          }}
+                        >
+                          {/* Bold */}
+                          <button
+                            type="button"
+                            title="Bold"
+                            onClick={() => insertFormatIntoCategory('<strong>', '</strong>', 'Bold text')}
+                            style={toolbarBtnStyle}
+                          >
+                            <strong>B</strong>
+                          </button>
+
+                          {/* Italic */}
+                          <button
+                            type="button"
+                            title="Italic"
+                            onClick={() => insertFormatIntoCategory('<em>', '</em>', 'Italic text')}
+                            style={{ ...toolbarBtnStyle, fontStyle: 'italic' }}
+                          >
+                            I
+                          </button>
+
+                          {/* Underline */}
+                          <button
+                            type="button"
+                            title="Underline"
+                            onClick={() => insertFormatIntoCategory('<u>', '</u>', 'Underlined text')}
+                            style={{ ...toolbarBtnStyle, textDecoration: 'underline' }}
+                          >
+                            U
+                          </button>
+
+                          <div style={toolbarDividerStyle} />
+
+                          {/* H2 */}
+                          <button
+                            type="button"
+                            title="Heading 2"
+                            onClick={() => insertFormatIntoCategory('\n<h2>', '</h2>\n', 'Major Category Heading')}
+                            style={toolbarBtnStyle}
+                          >
+                            H2
+                          </button>
+
+                          {/* H3 */}
+                          <button
+                            type="button"
+                            title="Heading 3"
+                            onClick={() => insertFormatIntoCategory('\n<h3>', '</h3>\n', 'Category Subheading')}
+                            style={toolbarBtnStyle}
+                          >
+                            H3
+                          </button>
+
+                          {/* Paragraph */}
+                          <button
+                            type="button"
+                            title="Paragraph"
+                            onClick={() => insertFormatIntoCategory('\n<p>', '</p>\n', 'Category paragraph description...')}
+                            style={toolbarBtnStyle}
+                          >
+                            &para;
+                          </button>
+
+                          <div style={toolbarDividerStyle} />
+
+                          {/* Bullet List */}
+                          <button
+                            type="button"
+                            title="Bullet List"
+                            onClick={() =>
+                              insertFormatIntoCategory(
+                                '\n<ul>\n  <li>',
+                                '</li>\n  <li>Second key supply item</li>\n</ul>\n',
+                                'First key supply item'
+                              )
+                            }
+                            style={toolbarBtnStyle}
+                          >
+                            &bull; List
+                          </button>
+
+                          {/* Insert Link */}
+                          <button
+                            type="button"
+                            title="Insert Link"
+                            onClick={handleInsertCategoryLink}
+                            style={toolbarBtnStyle}
+                          >
+                            🔗 Link
+                          </button>
+
+                          {/* Insert Image URL */}
+                          <button
+                            type="button"
+                            title="Insert Image by URL"
+                            onClick={handleInsertCategoryImageUrl}
+                            style={toolbarBtnStyle}
+                          >
+                            🖼️ Image URL
+                          </button>
+
+                          {/* Upload Image Button */}
+                          <button
+                            type="button"
+                            title="Upload and Insert Image"
+                            onClick={() => categoryImageFileInputRef.current?.click()}
+                            style={{
+                              ...toolbarBtnStyle,
+                              backgroundColor: '#eff6ff',
+                              borderColor: '#bfdbfe',
+                              color: '#1d4ed8',
+                              fontWeight: 700,
+                            }}
+                          >
+                            📁 Upload Image
+                          </button>
+                          <input
+                            type="file"
+                            ref={categoryImageFileInputRef}
+                            style={{ display: 'none' }}
+                            accept="image/*"
+                            onChange={handleCategoryContentImageUpload}
+                          />
+                        </div>
+
+                        {/* Editor Textarea */}
+                        <textarea
+                          ref={categoryContentTextareaRef}
+                          rows={6}
+                          placeholder="Describe this category's products, quality standards, supply capabilities, or insert links and images..."
+                          value={divisionForm.descriptionText}
+                          onChange={(e) => setDivisionForm({ ...divisionForm, descriptionText: e.target.value })}
+                          style={{
+                            width: '100%',
+                            padding: '12px 14px',
+                            border: 'none',
+                            outline: 'none',
+                            fontFamily: 'inherit',
+                            fontSize: '0.88rem',
+                            lineHeight: 1.65,
+                            resize: 'vertical',
+                            boxSizing: 'border-box',
+                            color: '#1e293b',
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      /* Live SEO Preview */
+                      <div
+                        style={{
+                          border: '1.5px solid #20b512',
+                          borderRadius: '8px',
+                          padding: '16px 18px',
+                          backgroundColor: '#ffffff',
+                          minHeight: '160px',
+                          maxHeight: '320px',
+                          overflowY: 'auto',
+                          boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)',
+                        }}
+                      >
+                        <div
+                          className="category-preview-html"
+                          style={{
+                            fontSize: '0.90rem',
+                            lineHeight: 1.7,
+                            color: '#1e293b',
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              divisionForm.descriptionText ||
+                              '<span style="color:#94a3b8; font-style:italic;">No description written yet. Type content or click toolbar buttons above.</span>',
+                          }}
+                        />
+                      </div>
+                    )}
+                    <small style={{ color: '#64748b', fontSize: '0.74rem', marginTop: '4px', display: 'block' }}>
+                      Highlight text and click Bold, Italic, Link, or Upload Image. Links will automatically render in blue with underline on the user side.
+                    </small>
                   </div>
                 </>
               )}

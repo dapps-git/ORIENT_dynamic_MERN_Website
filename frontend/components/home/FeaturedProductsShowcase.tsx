@@ -78,20 +78,35 @@ const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     image: '/uploads/victoroxygenregulator.jpg',
     href: '/product/victor-oxygen-regulator',
   },
+  {
+    id: 'prod-ringers-gloves',
+    title: 'Ringers Heavy Duty Impact Safety Gloves',
+    slug: 'ringers-heavy-duty-impact-safety-gloves',
+    category: 'PPE & Safety Equipment',
+    image: '/products/ringers-impact-gloves.jpg',
+    href: '/products/ppe-safety-equipment',
+  },
+  {
+    id: 'prod-tyvek-coverall',
+    title: 'DuPont Tyvek Protective Chemical Coveralls',
+    slug: 'dupont-tyvek-protective-chemical-coveralls',
+    category: 'PPE & Safety Equipment',
+    image: '/products/tyvek-protective-coverall.jpg',
+    href: '/products/ppe-safety-equipment',
+  },
 ];
 
-// Grouping into chunks
-const DESKTOP_SLIDES = [
-  SHOWCASE_PRODUCTS.slice(0, 4),
-  SHOWCASE_PRODUCTS.slice(4, 8),
-];
+const chunkArray = <T,>(arr: T[], size: number): T[][] => {
+  const chunks: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
+};
 
-const MOBILE_SLIDES = [
-  SHOWCASE_PRODUCTS.slice(0, 2),
-  SHOWCASE_PRODUCTS.slice(2, 4),
-  SHOWCASE_PRODUCTS.slice(4, 6),
-  SHOWCASE_PRODUCTS.slice(6, 8),
-];
+// Grouping into chunks dynamically
+const DESKTOP_SLIDES = chunkArray(SHOWCASE_PRODUCTS, 4);
+const MOBILE_SLIDES = chunkArray(SHOWCASE_PRODUCTS, 2);
 
 export default function FeaturedProductsShowcase() {
   const [desktopSlide, setDesktopSlide] = useState(0);

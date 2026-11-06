@@ -9,10 +9,65 @@ interface Props {
   waUrl: string;
 }
 
+function formatRichHtml(content: string): string {
+  if (!content) return '';
+  let formatted = content;
+
+  // Auto-link plain URLs like gravoz.com or https://... if not already inside an <a> tag
+  formatted = formatted.replace(
+    /(?<!href=["'])(https?:\/\/[^\s<>"']+)/gi,
+    '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 500;">$1</a>'
+  );
+  formatted = formatted.replace(
+    /(?<!href=["']|https?:\/\/)\b((?:[a-zA-Z0-9-]+\.)+(?:com|org|net|io|co|sa|gov|edu|info|ae|me))\b(\/[^\s<>"']*)?/gi,
+    '<a href="https://$1$2" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 500;">$1$2</a>'
+  );
+  formatted = formatted.replace(
+    /<a\s+(?!style=)([^>]+)>/gi,
+    '<a style="color: #2563eb; text-decoration: underline; font-weight: 500;" target="_blank" rel="noopener noreferrer" $1>'
+  );
+
+  // If plain text (no HTML tags), format newlines as <br/>
+  if (!/<[a-z][\s\S]*>/i.test(content)) {
+    formatted = formatted.replace(/\n\n/g, '<br/><br/>').replace(/\n/g, '<br/>');
+  }
+
+  return formatted;
+}
+
 export default function ProductInnerClient({ product: initialProduct, division, waUrl }: Props) {
   const [product, setProduct] = useState<ProductItem>(initialProduct);
 
-  // Sync with live admin updates from localStorage
+  // Sync with live backend updates so admin edits/deletes reflect immediately on user side
+  useEffect(() => {
+    const cleanSlug = initialProduct.slug;
+    if (!cleanSlug) return;
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api";
+    fetch(`${apiUrl}/products/${cleanSlug}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          const p = data.data;
+          setProduct((prev) => ({
+            ...prev,
+            title: p.title || prev.title,
+            fullDescription: p.fullDescription || prev.fullDescription,
+            shortDescription: p.shortDescription || prev.shortDescription,
+            features: p.features && p.features.length > 0 ? p.features : prev.features,
+            innerSections: p.innerSections && p.innerSections.length > 0 ? p.innerSections : prev.innerSections,
+            image: p.image || prev.image,
+            images: p.images && p.images.length > 0 ? p.images : prev.images,
+            sku: p.sku || prev.sku,
+            brand: p.brand || prev.brand,
+            category: p.categoryName || prev.category,
+            inStock: p.inStock !== undefined ? p.inStock : prev.inStock,
+          }));
+        }
+      })
+      .catch(() => {});
+  }, [initialProduct.slug]);
+
+  // Sync with live admin updates from localStorage fallback
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedProducts = localStorage.getItem('orient_admin_products');
@@ -25,12 +80,12 @@ export default function ProductInnerClient({ product: initialProduct, division, 
               (p.title && p.title.toLowerCase().trim() === initialProduct.title.toLowerCase().trim())
           );
           if (found) {
-            setProduct({
-              ...initialProduct,
+            setProduct((prev) => ({
+              ...prev,
               ...found,
-              images: found.images && found.images.length > 0 ? found.images : initialProduct.images,
-              innerSections: found.innerSections || initialProduct.innerSections,
-            });
+              images: found.images && found.images.length > 0 ? found.images : prev.images,
+              innerSections: found.innerSections || prev.innerSections,
+            }));
           }
         } catch {}
       }
@@ -129,7 +184,18 @@ export default function ProductInnerClient({ product: initialProduct, division, 
           <div className="product-right-panel">
             <div className="product-category-label">
               <span className="cat-prefix">Category:</span>{' '}
-              <span className="cat-val">{product.category || division.name}</span>
+              <a
+                href={`/products/${division.id || product.divisionSlug || 'pipe-fittings-and-flanges'}`}
+                className="cat-val-link"
+                style={{
+                  color: '#2563eb',
+                  textDecoration: 'underline',
+                  fontWeight: 600,
+                  transition: 'color 0.2s',
+                }}
+              >
+                {product.category || division.name}
+              </a>
             </div>
             {product.sku && (
               <div className="product-category-label" style={{ marginTop: '6px' }}>
@@ -146,7 +212,121 @@ export default function ProductInnerClient({ product: initialProduct, division, 
           </div>
         </div>
 
+        {/* Product Inner Page Description Section */}
+        {(product.fullDescription || product.shortDescription) && (
+          <div
+            className="product-description-section"
+            style={{
+              marginTop: '32px',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '12px',
+              padding: '28px 32px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+              <span style={{ width: '4px', height: '20px', backgroundColor: '#20b512', borderRadius: '2px', display: 'inline-block' }} />
+              <h2
+                style={{
+                  fontSize: '1.25rem',
+                  fontWeight: 700,
+                  color: '#0f172a',
+                  margin: 0,
+                  fontFamily: "'Montserrat', sans-serif",
+                }}
+              >
+                Product Description
+              </h2>
+            </div>
+            <div
+              className="product-rich-description"
+              style={{
+                fontSize: '0.96rem',
+                lineHeight: 1.8,
+                color: '#334155',
+                fontFamily: "'Montserrat', sans-serif",
+              }}
+              dangerouslySetInnerHTML={{
+                __html: formatRichHtml(product.fullDescription || product.shortDescription || ''),
+              }}
+            />
+          </div>
+        )}
 
+        {/* Key Specifications & Features */}
+        {features && features.length > 0 && (
+          <div
+            className="product-specifications-section"
+            style={{
+              marginTop: '28px',
+              backgroundColor: '#ffffff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '12px',
+              padding: '28px 32px',
+              boxShadow: '0 2px 10px rgba(0, 0, 0, 0.03)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
+              <span style={{ width: '4px', height: '20px', backgroundColor: '#20b512', borderRadius: '2px', display: 'inline-block' }} />
+              <h2
+                style={{
+                  fontSize: '1.25rem',
+                  fontWeight: 700,
+                  color: '#0f172a',
+                  margin: 0,
+                  fontFamily: "'Montserrat', sans-serif",
+                }}
+              >
+                Key Specifications &amp; Features
+              </h2>
+            </div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
+                gap: '14px 24px',
+              }}
+            >
+              {features.map((feat, fIdx) => (
+                <div
+                  key={fIdx}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '10px',
+                    padding: '8px 12px',
+                    backgroundColor: '#f8fafc',
+                    borderRadius: '8px',
+                    border: '1px solid #edf2f7',
+                  }}
+                >
+                  <span
+                    style={{
+                      color: '#20b512',
+                      fontSize: '1.05rem',
+                      lineHeight: 1.2,
+                      fontWeight: 800,
+                      flexShrink: 0,
+                    }}
+                  >
+                    ✓
+                  </span>
+                  <span
+                    style={{
+                      fontSize: '0.90rem',
+                      lineHeight: 1.6,
+                      color: '#334155',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {feat}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Custom Inner Sections Configured From Admin Panel */}
         {product.innerSections && product.innerSections.length > 0 && (
@@ -188,16 +368,17 @@ export default function ProductInnerClient({ product: initialProduct, division, 
                   }}
                 >
                   <div
+                    className="inner-section-rich-text"
                     style={{
                       fontSize: '0.94rem',
                       lineHeight: 1.7,
                       color: '#334155',
-                      whiteSpace: 'pre-line',
                       fontFamily: "'Montserrat', sans-serif",
                     }}
-                  >
-                    {sec.content}
-                  </div>
+                    dangerouslySetInnerHTML={{
+                      __html: formatRichHtml(sec.content),
+                    }}
+                  />
 
                   {sec.image && (
                     <div
@@ -488,6 +669,28 @@ export default function ProductInnerClient({ product: initialProduct, division, 
 
         .bullet-text {
           color: #334155;
+        }
+
+        .product-rich-description a,
+        .inner-section-rich-text a {
+          color: #2563eb !important;
+          text-decoration: underline !important;
+          font-weight: 500 !important;
+          transition: color 0.15s ease;
+        }
+
+        .product-rich-description a:hover,
+        .inner-section-rich-text a:hover {
+          color: #1d4ed8 !important;
+        }
+
+        .product-rich-description img,
+        .inner-section-rich-text img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+          margin: 12px 0;
+          box-shadow: 0 4px 14px rgba(0,0,0,0.06);
         }
 
         /* Lightbox */

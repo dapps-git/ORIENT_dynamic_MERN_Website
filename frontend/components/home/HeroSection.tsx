@@ -68,7 +68,7 @@ export default function HeroSection() {
           }}
         />
 
-        {/* Hero Central Container: Glassy Stats Above, Headline Below */}
+        {/* Hero Central Container: Headline Above in 2 lines, Glassy Stats Below */}
         <div
           className="hero-video-content"
           style={{
@@ -86,26 +86,45 @@ export default function HeroSection() {
             flex: '1 0 auto',
           }}
         >
+          {/* Main Headline placed ABOVE the glassy box: 2 lines in 2 colors (White & Green) */}
+          <h1
+            className="hero-video-title"
+            style={{
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: 'clamp(2.0rem, 4.4vw, 44px)',
+              fontWeight: 700,
+              lineHeight: 1.2,
+              letterSpacing: '0.01em',
+              textShadow: '0 3px 18px rgba(0, 0, 0, 0.75)',
+              maxWidth: '920px',
+              margin: 'auto auto 18px',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{ color: '#ffffff', display: 'block' }}>Expertise in</span>
+            <span style={{ color: '#20b512', display: 'block' }}>Every Trade</span>
+          </h1>
+
           {/* Reduced Transparent Glassmorphic Stats Strip (300+ Brands | 100+ Clients | 10+ Sectors | 28+ Years Exp) */}
           <div
             className="hero-glassy-stats-bar"
             style={{
               position: 'relative',
               width: '100%',
-              maxWidth: '820px',
-              margin: 'auto auto 0',
+              maxWidth: '720px',
+              margin: '0 auto',
               background:
-                'linear-gradient(135deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.05) 100%)',
-              backdropFilter: 'blur(20px) saturate(180%)',
-              WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                'linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%)',
+              backdropFilter: 'blur(22px) saturate(190%)',
+              WebkitBackdropFilter: 'blur(22px) saturate(190%)',
               border: '1px solid rgba(255, 255, 255, 0.22)',
               borderRadius: '12px',
               boxShadow:
-                '0 8px 32px 0 rgba(0, 0, 0, 0.28), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35)',
+                '0 8px 32px 0 rgba(0, 0, 0, 0.32), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35)',
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
               alignItems: 'center',
-              padding: '10px 16px',
+              padding: '8px 14px',
             }}
           >
             {/* Stat 1: 300+ Brands */}
@@ -263,24 +282,6 @@ export default function HeroSection() {
               </div>
             </div>
           </div>
-
-          {/* Main Headline placed BELOW the glassy box: Expertise in Every Trade */}
-          <h1
-            className="hero-video-title"
-            style={{
-              fontFamily: "'Poppins', sans-serif",
-              fontSize: 'clamp(1.9rem, 4.2vw, 46px)',
-              fontWeight: 600,
-              lineHeight: 1.25,
-              color: '#ffffff',
-              letterSpacing: '0.01em',
-              textShadow: '0 2px 14px rgba(0, 0, 0, 0.65)',
-              maxWidth: '920px',
-              margin: '22px auto 0',
-            }}
-          >
-            Expertise in Every Trade
-          </h1>
         </div>
       </section>
 

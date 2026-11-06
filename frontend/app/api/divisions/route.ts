@@ -17,6 +17,8 @@ const DEFAULT_DIVISIONS = [
   { id: 'steel-structural-materials-division', slug: 'steel-structural-materials-division', name: 'Steel & Structural Materials Division', image: '/categories/steel-structural-materials-division.jpg', productCount: 5 },
   { id: 'fasteners-division', slug: 'fasteners-division', name: 'Fasteners Division', image: '/categories/fasteners.jpg', productCount: 16 },
   { id: 'coatings-surface-protection', slug: 'coatings-surface-protection', name: 'Coatings & Surface Protection', image: '/categories/coatings-surface-protection.png', productCount: 8 },
+  { id: 'bearings', slug: 'bearings', name: 'Bearings', image: '/categories/bearings.jpg', productCount: 2 },
+  { id: 'filters', slug: 'filters', name: 'Filters', image: '/categories/filters.jpg', productCount: 2 },
 ];
 
 function getStoredDivisions() {

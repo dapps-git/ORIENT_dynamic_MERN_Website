@@ -25,6 +25,8 @@ const DEFAULT_DIVISIONS: DivisionCard[] = [
   { id: 'steel-structural-materials-division', slug: 'steel-structural-materials-division', name: 'Steel & Structural Materials Division', image: '/categories/steel-structural-materials-division.jpg' },
   { id: 'fasteners-division', slug: 'fasteners-division', name: 'Fasteners Division', image: '/categories/fasteners.jpg' },
   { id: 'coatings-surface-protection', slug: 'coatings-surface-protection', name: 'Coatings & Surface Protection', image: '/categories/coatings-surface-protection.png' },
+  { id: 'bearings', slug: 'bearings', name: 'Bearings', image: '/categories/bearings.jpg' },
+  { id: 'filters', slug: 'filters', name: 'Filters', image: '/categories/filters.jpg' },
 ];
 
 const FAQ_ITEMS = [
@@ -94,25 +96,49 @@ export default function ProductsCatalogClient() {
   const [divisions, setDivisions] = useState<DivisionCard[]>(DEFAULT_DIVISIONS);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(3); // 4th item open by default like screenshot 3
 
-  // Load custom/admin updated division images if available
+  // Load custom/admin updated division images directly from backend API
   useEffect(() => {
-    fetch('/api/divisions')
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api";
+    fetch(`${apiUrl}/categories`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.data) && data.data.length > 0) {
-          setDivisions(data.data);
+          const backendCats: any[] = data.data;
+          setDivisions((prev) => {
+            return prev.map((def) => {
+              const matched = backendCats.find(
+                (c) => c.slug === def.slug || c.slug === def.id || c.name.toLowerCase() === def.name.toLowerCase()
+              );
+              if (matched) {
+                return {
+                  ...def,
+                  name: matched.name || def.name,
+                  image: matched.image && matched.image.trim() ? matched.image : def.image,
+                  productCount: matched.productCount !== undefined ? matched.productCount : def.productCount,
+                };
+              }
+              return def;
+            });
+          });
         }
       })
       .catch(() => {
-        // Fallback to localStorage if offline
-        const local = localStorage.getItem('orient_custom_divisions');
-        if (local) {
-          try {
-            setDivisions(JSON.parse(local));
-          } catch {
-            // keep defaults
-          }
-        }
+        // Fallback to internal api/divisions
+        fetch('/api/divisions')
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+              setDivisions(data.data);
+            }
+          })
+          .catch(() => {
+            const local = localStorage.getItem('orient_custom_divisions');
+            if (local) {
+              try {
+                setDivisions(JSON.parse(local));
+              } catch {}
+            }
+          });
       });
   }, []);
 

@@ -167,6 +167,28 @@ export async function generateMetadata({
   };
 }
 
+function formatCategoryDescription(desc: string | string[]): string {
+  if (!desc) return '';
+  const text = Array.isArray(desc) ? desc.join('<br/><br/>') : desc;
+  let formatted = text;
+
+  // Auto-link plain URLs like gravoz.com or https://... if not already in <a>
+  formatted = formatted.replace(
+    /(?<!href=["'])(https?:\/\/[^\s<>"']+)/gi,
+    '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 500;">$1</a>'
+  );
+  formatted = formatted.replace(
+    /(?<!href=["']|https?:\/\/)\b((?:[a-zA-Z0-9-]+\.)+(?:com|org|net|io|co|sa|gov|edu|info|ae|me))\b(\/[^\s<>"']*)?/gi,
+    '<a href="https://$1$2" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 500;">$1$2</a>'
+  );
+  formatted = formatted.replace(
+    /<a\s+(?!style=)([^>]+)>/gi,
+    '<a style="color: #2563eb; text-decoration: underline; font-weight: 500;" target="_blank" rel="noopener noreferrer" $1>'
+  );
+
+  return formatted;
+}
+
 export default async function ProductDivisionInnerPage({
   params,
 }: {
@@ -232,6 +254,7 @@ export default async function ProductDivisionInnerPage({
             </h1>
 
             <div
+              className="category-rich-description"
               style={{
                 maxWidth: '1100px',
                 fontSize: '0.94rem',
@@ -239,13 +262,10 @@ export default async function ProductDivisionInnerPage({
                 color: '#475569',
                 marginBottom: '28px',
               }}
-            >
-              {division.description && division.description[0] && (
-                <p style={{ margin: 0 }}>
-                  {division.description[0]}
-                </p>
-              )}
-            </div>
+              dangerouslySetInnerHTML={{
+                __html: formatCategoryDescription(division.description),
+              }}
+            />
 
             {/* Sub-Category Pills (e.g. for Welding) */}
             {division.pills && division.pills.length > 0 && (
@@ -772,6 +792,23 @@ export default async function ProductDivisionInnerPage({
           .category-brand-card {
             height: 52px !important;
           }
+        }
+
+        .category-rich-description a {
+          color: #2563eb !important;
+          text-decoration: underline !important;
+          font-weight: 500 !important;
+        }
+
+        .category-rich-description a:hover {
+          color: #1d4ed8 !important;
+        }
+
+        .category-rich-description img {
+          max-width: 100%;
+          border-radius: 8px;
+          margin: 12px 0;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
         }
 
         .product-catalog-card:hover {
