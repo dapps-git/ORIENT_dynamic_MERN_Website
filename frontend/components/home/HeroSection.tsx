@@ -35,7 +35,7 @@ export default function HeroSection() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           color: '#ffffff',
           overflow: 'hidden',
           backgroundColor: '#000000',
@@ -81,8 +81,8 @@ export default function HeroSection() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            padding: '90px 24px 38px',
+            justifyContent: 'flex-end',
+            padding: '110px 24px 34px',
             flex: '1 0 auto',
           }}
         >
@@ -93,7 +93,7 @@ export default function HeroSection() {
               position: 'relative',
               width: '100%',
               maxWidth: '820px',
-              margin: '0 auto',
+              margin: 'auto auto 0',
               background:
                 'linear-gradient(135deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.05) 100%)',
               backdropFilter: 'blur(20px) saturate(180%)',
@@ -424,13 +424,15 @@ export default function HeroSection() {
         /* Mobile Landscape Aspect Ratio Model */
         @media (max-width: 768px) {
           .hero-video-section {
-            min-height: 380px !important;
-            max-height: 500px !important;
+            min-height: 400px !important;
+            max-height: 520px !important;
             height: auto !important;
+            justify-content: flex-end !important;
           }
 
           .hero-video-content {
-            padding: 68px 16px 20px !important;
+            padding: 85px 16px 22px !important;
+            justify-content: flex-end !important;
           }
 
           .hero-video-title {
@@ -442,7 +444,7 @@ export default function HeroSection() {
           .hero-glassy-stats-bar {
             width: calc(100% - 20px) !important;
             max-width: 460px !important;
-            margin: 0 auto !important;
+            margin: auto auto 0 !important;
             padding: 8px 4px !important;
             grid-template-columns: repeat(4, 1fr) !important;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
