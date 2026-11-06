@@ -20,7 +20,7 @@ const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     slug: 'aluminium-camlock-type-e',
     category: 'Pipe Fittings and Flanges',
     image: '/uploads/camlock-type-e.png',
-    href: '/products/pipe-fittings-flanges',
+    href: '/products/pipe-fittings-and-flanges',
   },
   {
     id: 'camlock-type-d',
@@ -28,7 +28,7 @@ const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     slug: 'aluminium-camlock-type-d',
     category: 'Pipe Fittings and Flanges',
     image: '/uploads/camlock-type-d.png',
-    href: '/products/pipe-fittings-flanges',
+    href: '/products/pipe-fittings-and-flanges',
   },
   {
     id: 'camlock-type-b',
@@ -36,7 +36,7 @@ const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     slug: 'aluminium-camlock-type-b',
     category: 'Pipe Fittings and Flanges',
     image: '/uploads/camlock-type-b.png',
-    href: '/products/pipe-fittings-flanges',
+    href: '/products/pipe-fittings-and-flanges',
   },
   {
     id: 'camlock-type-a',
@@ -44,7 +44,7 @@ const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     slug: 'aluminium-camlock-type-a',
     category: 'Pipe Fittings and Flanges',
     image: '/uploads/camlock-type-a.png',
-    href: '/products/pipe-fittings-flanges',
+    href: '/products/pipe-fittings-and-flanges',
   },
   {
     id: 'prod-camlock',
