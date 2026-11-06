@@ -124,59 +124,108 @@ export default function AboutIntroContent() {
         </div>
       )}
 
-      {/* 2 Facility Photos as a Grid */}
-      <div
-        className="about-photos-grid"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '16px',
-          marginTop: '28px',
-          width: '100%',
-        }}
-      >
+      {/* Facility & Storefront Showcase: Storefront, Warehouse Exterior, and 2 Interior/Pipes in small size */}
+      <div style={{ marginTop: '28px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+        {/* 1. First image after text: Main Storefront */}
         <div
-          className="about-photo-card"
+          className="about-featured-photo-card"
           style={{
             position: 'relative',
             width: '100%',
-            height: '280px',
-            borderRadius: '10px',
+            height: '420px',
+            borderRadius: '12px',
             overflow: 'hidden',
-            boxShadow: '0 8px 24px rgba(7, 17, 56, 0.08)',
+            boxShadow: '0 10px 30px rgba(7, 17, 56, 0.10)',
             border: '1px solid #e2e8f0',
             backgroundColor: '#f8fafc',
           }}
         >
           <Image
-            src="/about/orient-warehouse-pipes.jpg"
-            alt="Orient Energy Pipe Fittings & Industrial Storage Facility"
+            src="/about/orient-storefront-main.jpg"
+            alt="Orient Energy Trading Co. Main Storefront"
             fill
-            sizes="(max-width: 768px) 100vw, 450px"
+            priority
+            sizes="(max-width: 960px) 100vw, 920px"
             style={{ objectFit: 'cover' }}
           />
         </div>
 
+        {/* 2. Then this image: Warehouse Exterior */}
         <div
-          className="about-photo-card"
+          className="about-featured-photo-card"
           style={{
             position: 'relative',
             width: '100%',
-            height: '280px',
-            borderRadius: '10px',
+            height: '380px',
+            borderRadius: '12px',
             overflow: 'hidden',
-            boxShadow: '0 8px 24px rgba(7, 17, 56, 0.08)',
+            boxShadow: '0 10px 30px rgba(7, 17, 56, 0.10)',
             border: '1px solid #e2e8f0',
             backgroundColor: '#f8fafc',
           }}
         >
           <Image
-            src="/about/orient-showroom-counter.jpg"
-            alt="Orient Energy Showroom & Client Service Center"
+            src="/about/orient-warehouse-exterior.jpg"
+            alt="Orient Energy Trading Co. Central Logistics & Storage Warehouse"
             fill
-            sizes="(max-width: 768px) 100vw, 450px"
+            sizes="(max-width: 960px) 100vw, 920px"
             style={{ objectFit: 'cover' }}
           />
+        </div>
+
+        {/* 3. Then another 2 images in small size: Side-by-side grid */}
+        <div
+          className="about-small-photos-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '14px',
+            width: '100%',
+          }}
+        >
+          <div
+            className="about-small-photo-card"
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '210px',
+              borderRadius: '10px',
+              overflow: 'hidden',
+              boxShadow: '0 6px 20px rgba(7, 17, 56, 0.08)',
+              border: '1px solid #e2e8f0',
+              backgroundColor: '#f8fafc',
+            }}
+          >
+            <Image
+              src="/about/orient-warehouse-pipes.jpg"
+              alt="Orient Energy Pipe Fittings & Industrial Storage Facility"
+              fill
+              sizes="(max-width: 768px) 50vw, 450px"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
+
+          <div
+            className="about-small-photo-card"
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '210px',
+              borderRadius: '10px',
+              overflow: 'hidden',
+              boxShadow: '0 6px 20px rgba(7, 17, 56, 0.08)',
+              border: '1px solid #e2e8f0',
+              backgroundColor: '#f8fafc',
+            }}
+          >
+            <Image
+              src="/about/orient-showroom-counter.jpg"
+              alt="Orient Energy Showroom & Client Service Center"
+              fill
+              sizes="(max-width: 768px) 50vw, 450px"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
         </div>
       </div>
 
@@ -185,13 +234,15 @@ export default function AboutIntroContent() {
           color: #20b512 !important;
         }
 
-        .about-photo-card {
+        .about-featured-photo-card,
+        .about-small-photo-card {
           transition: transform 0.28s ease, box-shadow 0.28s ease;
         }
 
-        .about-photo-card:hover {
+        .about-featured-photo-card:hover,
+        .about-small-photo-card:hover {
           transform: translateY(-3px);
-          box-shadow: 0 12px 30px rgba(7, 17, 56, 0.14) !important;
+          box-shadow: 0 14px 34px rgba(7, 17, 56, 0.14) !important;
         }
 
         @keyframes fadeInAboutText {
@@ -205,15 +256,28 @@ export default function AboutIntroContent() {
           }
         }
 
-        @media (max-width: 640px) {
-          .about-photos-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 10px !important;
-            margin-top: 20px !important;
+        @media (max-width: 768px) {
+          .about-featured-photo-card {
+            height: 220px !important;
+            border-radius: 10px !important;
           }
-          .about-photo-card {
-            height: 160px !important;
+          .about-small-photo-card {
+            height: 140px !important;
             border-radius: 8px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .about-featured-photo-card {
+            height: 185px !important;
+            border-radius: 8px !important;
+          }
+          .about-small-photos-grid {
+            gap: 8px !important;
+          }
+          .about-small-photo-card {
+            height: 120px !important;
+            border-radius: 6px !important;
           }
         }
       `}</style>
