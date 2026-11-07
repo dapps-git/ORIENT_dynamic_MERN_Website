@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import mongoose from 'mongoose';
 import { Blog } from '../models/Blog';
 
 export const getBlogs = async (req: Request, res: Response) => {
@@ -50,7 +51,10 @@ export const getBlogs = async (req: Request, res: Response) => {
 export const getBlogBySlug = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
-    const blog = await Blog.findOne({ slug });
+    let blog = await Blog.findOne({ slug });
+    if (!blog && mongoose.Types.ObjectId.isValid(slug)) {
+      blog = await Blog.findById(slug);
+    }
     if (!blog) {
       return res.status(404).json({ success: false, message: 'Article not found' });
     }
@@ -142,7 +146,13 @@ export const updateBlog = async (req: Request, res: Response) => {
         .replace(/(^-|-$)/g, '');
     }
 
-    const blog = await Blog.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    let blog = null;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      blog = await Blog.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    }
+    if (!blog) {
+      blog = await Blog.findOneAndUpdate({ slug: id }, updateData, { new: true, runValidators: true });
+    }
     if (!blog) {
       return res.status(404).json({ success: false, message: 'Blog not found' });
     }
@@ -156,7 +166,16 @@ export const updateBlog = async (req: Request, res: Response) => {
 export const deleteBlog = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const blog = await Blog.findByIdAndDelete(id);
+    let blog = null;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      blog = await Blog.findByIdAndDelete(id);
+    }
+    if (!blog) {
+      blog = await Blog.findOneAndDelete({ slug: id });
+    }
+    if (!blog) {
+      blog = await Blog.findOneAndDelete({ title: new RegExp(`^${id}$`, 'i') });
+    }
     if (!blog) {
       return res.status(404).json({ success: false, message: 'Blog not found' });
     }

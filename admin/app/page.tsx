@@ -2259,36 +2259,71 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     setBlogEditorTab('visual');
     setShowBlogModal(true);
     setTimeout(() => {
-      if (blogVisualEditorRef.current) {
-        blogVisualEditorRef.current.innerHTML = '';
+      try {
+        if (blogVisualEditorRef.current) {
+          blogVisualEditorRef.current.innerHTML = '';
+        }
+      } catch (err) {
+        console.warn('[WYSIWYG init]', err);
       }
-    }, 20);
+    }, 30);
   };
 
   const openEditBlogModal = (b: Blog) => {
     setEditingBlog(b);
+
+    // Safely sanitize fleetPoints to ensure valid array of { label, text }
+    const rawFleet = Array.isArray(b?.fleetPoints) ? b.fleetPoints : [];
+    const safeFleet = rawFleet
+      .filter((fp) => fp !== null && fp !== undefined)
+      .map((fp: any) => {
+        if (typeof fp === 'object' && fp !== null) {
+          return {
+            label: typeof fp.label === 'string' ? fp.label : (typeof fp.title === 'string' ? fp.title : ''),
+            text: typeof fp.text === 'string' ? fp.text : (typeof fp.content === 'string' ? fp.content : String(fp.description || '')),
+          };
+        }
+        return { label: '', text: String(fp || '') };
+      });
+
+    // Safely sanitize whyChoosePoints to ensure valid array of strings
+    const rawWhy = Array.isArray(b?.whyChoosePoints) ? b.whyChoosePoints : [];
+    const safeWhy = rawWhy
+      .filter((wp) => wp !== null && wp !== undefined)
+      .map((wp: any) => {
+        if (typeof wp === 'object' && wp !== null) {
+          return typeof wp.text === 'string' ? wp.text : (typeof wp.point === 'string' ? wp.point : JSON.stringify(wp));
+        }
+        return String(wp || '');
+      });
+
     setBlogForm({
-      title: b.title,
-      subtitle: b.subtitle || '',
-      slug: b.slug,
-      category: b.category,
-      author: b.author || 'Orient Energy Editorial',
-      readTime: b.readTime || '8 Minute Read',
-      image: b.image || '/blog/blog-1.jpg',
-      introduction: b.introduction,
-      fleetTitle: b.fleetTitle || 'Fleet and Services:',
-      fleetPoints: b.fleetPoints && b.fleetPoints.length > 0 ? b.fleetPoints : [{ label: '', text: '' }],
-      whyChoosePoints: b.whyChoosePoints && b.whyChoosePoints.length > 0 ? b.whyChoosePoints : [''],
-      conclusion: b.conclusion || '',
-      isPublished: b.isPublished,
+      title: b?.title || '',
+      subtitle: b?.subtitle || '',
+      slug: b?.slug || '',
+      category: b?.category || 'Heavy Equipment Rental',
+      author: b?.author || 'Orient Energy Editorial',
+      readTime: b?.readTime || '8 Minute Read',
+      image: b?.image || '/blog/blog-1.jpg',
+      introduction: b?.introduction || '',
+      fleetTitle: b?.fleetTitle || 'Fleet and Services:',
+      fleetPoints: safeFleet.length > 0 ? safeFleet : [{ label: '', text: '' }],
+      whyChoosePoints: safeWhy.length > 0 ? safeWhy : [''],
+      conclusion: b?.conclusion || '',
+      isPublished: b?.isPublished !== false,
     });
     setBlogEditorTab('visual');
     setShowBlogModal(true);
+
     setTimeout(() => {
-      if (blogVisualEditorRef.current) {
-        blogVisualEditorRef.current.innerHTML = b.introduction || '';
+      try {
+        if (blogVisualEditorRef.current) {
+          blogVisualEditorRef.current.innerHTML = b?.introduction || '';
+        }
+      } catch (err) {
+        console.warn('[WYSIWYG init]', err);
       }
-    }, 20);
+    }, 30);
   };
 
   const handleSaveBlog = async (e: React.FormEvent) => {
@@ -2297,43 +2332,60 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
 
     const finalIntroduction = (blogEditorTab === 'visual' && blogVisualEditorRef.current)
       ? blogVisualEditorRef.current.innerHTML
-      : blogForm.introduction;
+      : (blogForm.introduction || '');
+
+    const safeFleetPoints = (blogForm.fleetPoints || [])
+      .filter((fp) => fp && (fp.label?.trim() || fp.text?.trim()))
+      .map((fp) => ({ label: fp.label || '', text: fp.text || '' }));
+
+    const safeWhyChoose = (blogForm.whyChoosePoints || [])
+      .map((pt) => (typeof pt === 'string' ? pt.trim() : String(pt || '').trim()))
+      .filter((pt) => pt !== '');
 
     const payload = {
       title: blogForm.title,
-      subtitle: blogForm.subtitle,
+      subtitle: blogForm.subtitle || '',
       slug: blogForm.slug || blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
       category: blogForm.category,
-      author: blogForm.author,
-      readTime: blogForm.readTime,
+      author: blogForm.author || 'Orient Energy Editorial',
+      readTime: blogForm.readTime || '8 Minute Read',
       image: blogForm.image || '/blog/blog-1.jpg',
       introduction: finalIntroduction,
-      fleetTitle: blogForm.fleetTitle,
-      fleetPoints: blogForm.fleetPoints.filter((fp) => fp.label || fp.text),
-      whyChoosePoints: blogForm.whyChoosePoints.filter((pt) => pt.trim() !== ''),
-      conclusion: blogForm.conclusion,
+      fleetTitle: blogForm.fleetTitle || 'Fleet and Services:',
+      fleetPoints: safeFleetPoints,
+      whyChoosePoints: safeWhyChoose,
+      conclusion: blogForm.conclusion || '',
       isPublished: blogForm.isPublished,
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     };
 
+    const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+    const authHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+
     if (editingBlog) {
       try {
-        const res = await fetch(`${API_BASE}/blogs/${editingBlog.id}`, {
+        const targetId = editingBlog.id || (editingBlog as any)._id || editingBlog.slug;
+        const res = await fetch(`${API_BASE}/blogs/${targetId}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders,
           body: JSON.stringify(payload),
         });
         if (res.ok) {
           const resData = await res.json();
           const updated = resData.data;
           setBlogs((prev) =>
-            prev.map((b) => (b.id === editingBlog.id ? { ...b, ...updated, id: editingBlog.id } : b))
+            prev.map((b) => (b.id === editingBlog.id || b.slug === editingBlog.slug ? { ...b, ...updated, id: editingBlog.id } : b))
           );
           showToast('Blog article updated successfully!');
           setShowBlogModal(false);
           return;
         }
-      } catch {}
+      } catch (err) {
+        console.warn('Update blog network request failed:', err);
+      }
 
       setBlogs((prev) =>
         prev.map((b) => (b.id === editingBlog.id ? { ...b, ...payload, id: editingBlog.id } : b))
@@ -2344,7 +2396,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       try {
         const res = await fetch(`${API_BASE}/blogs`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders,
           body: JSON.stringify(payload),
         });
         if (res.ok) {
@@ -2359,7 +2411,9 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
           setShowBlogModal(false);
           return;
         }
-      } catch {}
+      } catch (err) {
+        console.warn('Create blog network request failed:', err);
+      }
 
       const newBlog: Blog = {
         id: String(Date.now()),
@@ -2371,13 +2425,37 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     }
   };
 
-  const handleDeleteBlog = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this blog article?')) return;
+  const handleDeleteBlog = async (blogItem: Blog | string) => {
+    const b = typeof blogItem === 'object' ? blogItem : blogs.find((x) => x.id === blogItem);
+    const id = typeof blogItem === 'object' ? (blogItem.id || (blogItem as any)._id) : blogItem;
+    const slug = b?.slug;
+
+    if (!confirm('Are you sure you want to delete this blog article? It will be permanently removed from both the Admin Panel and the live user-side website.')) return;
+
+    const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+    const authHeaders: Record<string, string> = {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+
     try {
-      await fetch(`${API_BASE}/blogs/${id}`, { method: 'DELETE' });
-    } catch {}
-    setBlogs((prev) => prev.filter((b) => b.id !== id));
-    showToast('Blog article deleted');
+      if (id) {
+        await fetch(`${API_BASE}/blogs/${id}`, {
+          method: 'DELETE',
+          headers: authHeaders,
+        });
+      }
+      if (slug && slug !== id) {
+        await fetch(`${API_BASE}/blogs/${slug}`, {
+          method: 'DELETE',
+          headers: authHeaders,
+        }).catch(() => {});
+      }
+    } catch (err) {
+      console.error('Delete blog failed:', err);
+    }
+
+    setBlogs((prev) => prev.filter((item) => item.id !== id && (slug ? item.slug !== slug : true)));
+    showToast('Blog article deleted from Admin and live website!');
   };
 
   // ---------------- DIVISION / INNER PAGE HANDLERS ---------------- //
@@ -3680,7 +3758,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                                 Edit
                               </button>
                               <a
-                                href={`http://localhost:3000/blog/${b.slug}`}
+                                href={`/blog/${b.slug}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn-view-live"
@@ -3689,7 +3767,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                               </a>
                               <button
                                 type="button"
-                                onClick={() => handleDeleteBlog(b.id)}
+                                onClick={() => handleDeleteBlog(b)}
                                 className="btn-delete"
                               >
                                 Delete
@@ -6317,7 +6395,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     onClick={() =>
                       setBlogForm({
                         ...blogForm,
-                        fleetPoints: [...blogForm.fleetPoints, { label: '', text: '' }],
+                        fleetPoints: [...(blogForm.fleetPoints || []), { label: '', text: '' }],
                       })
                     }
                     className="btn-add-inline"
@@ -6329,20 +6407,20 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                   <input
                     type="text"
                     placeholder="Section Title (e.g. Fleet and Services:)"
-                    value={blogForm.fleetTitle}
+                    value={blogForm.fleetTitle || ''}
                     onChange={(e) => setBlogForm({ ...blogForm, fleetTitle: e.target.value })}
                     className="input-field"
                   />
                 </div>
-                {blogForm.fleetPoints.map((pt, idx) => (
+                {(blogForm.fleetPoints || []).map((pt, idx) => (
                   <div key={idx} className="subcat-row">
                     <input
                       type="text"
                       placeholder="Label (e.g. Extensive Fleet)"
-                      value={pt.label}
+                      value={pt?.label ?? ''}
                       onChange={(e) => {
-                        const updated = [...blogForm.fleetPoints];
-                        updated[idx].label = e.target.value;
+                        const updated = [...(blogForm.fleetPoints || [])];
+                        updated[idx] = { ...updated[idx], label: e.target.value };
                         setBlogForm({ ...blogForm, fleetPoints: updated });
                       }}
                       className="input-field"
@@ -6351,10 +6429,10 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     <input
                       type="text"
                       placeholder="Description text..."
-                      value={pt.text}
+                      value={pt?.text ?? ''}
                       onChange={(e) => {
-                        const updated = [...blogForm.fleetPoints];
-                        updated[idx].text = e.target.value;
+                        const updated = [...(blogForm.fleetPoints || [])];
+                        updated[idx] = { ...updated[idx], text: e.target.value };
                         setBlogForm({ ...blogForm, fleetPoints: updated });
                       }}
                       className="input-field"
@@ -6363,7 +6441,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     <button
                       type="button"
                       onClick={() => {
-                        const updated = blogForm.fleetPoints.filter((_, i) => i !== idx);
+                        const updated = (blogForm.fleetPoints || []).filter((_, i) => i !== idx);
                         setBlogForm({ ...blogForm, fleetPoints: updated });
                       }}
                       className="btn-remove-inline"
@@ -6383,7 +6461,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     onClick={() =>
                       setBlogForm({
                         ...blogForm,
-                        whyChoosePoints: [...blogForm.whyChoosePoints, ''],
+                        whyChoosePoints: [...(blogForm.whyChoosePoints || []), ''],
                       })
                     }
                     className="btn-add-inline"
@@ -6391,14 +6469,14 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     + Add Highlight
                   </button>
                 </div>
-                {blogForm.whyChoosePoints.map((pt, idx) => (
+                {(blogForm.whyChoosePoints || []).map((pt, idx) => (
                   <div key={idx} className="subcat-row">
                     <input
                       type="text"
                       placeholder="e.g. ISO-certified operations and SAP-driven management."
-                      value={pt}
+                      value={typeof pt === 'string' ? pt : String(pt ?? '')}
                       onChange={(e) => {
-                        const updated = [...blogForm.whyChoosePoints];
+                        const updated = [...(blogForm.whyChoosePoints || [])];
                         updated[idx] = e.target.value;
                         setBlogForm({ ...blogForm, whyChoosePoints: updated });
                       }}
@@ -6408,7 +6486,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     <button
                       type="button"
                       onClick={() => {
-                        const updated = blogForm.whyChoosePoints.filter((_, i) => i !== idx);
+                        const updated = (blogForm.whyChoosePoints || []).filter((_, i) => i !== idx);
                         setBlogForm({ ...blogForm, whyChoosePoints: updated });
                       }}
                       className="btn-remove-inline"

@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteBlog = exports.updateBlog = exports.createBlog = exports.getBlogBySlug = exports.getBlogs = void 0;
+const mongoose_1 = __importDefault(require("mongoose"));
 const Blog_1 = require("../models/Blog");
 const getBlogs = async (req, res) => {
     try {
@@ -46,7 +50,10 @@ exports.getBlogs = getBlogs;
 const getBlogBySlug = async (req, res) => {
     try {
         const { slug } = req.params;
-        const blog = await Blog_1.Blog.findOne({ slug });
+        let blog = await Blog_1.Blog.findOne({ slug });
+        if (!blog && mongoose_1.default.Types.ObjectId.isValid(slug)) {
+            blog = await Blog_1.Blog.findById(slug);
+        }
         if (!blog) {
             return res.status(404).json({ success: false, message: 'Article not found' });
         }
@@ -116,7 +123,13 @@ const updateBlog = async (req, res) => {
                 .replace(/[^a-z0-9]+/g, '-')
                 .replace(/(^-|-$)/g, '');
         }
-        const blog = await Blog_1.Blog.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+        let blog = null;
+        if (mongoose_1.default.Types.ObjectId.isValid(id)) {
+            blog = await Blog_1.Blog.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+        }
+        if (!blog) {
+            blog = await Blog_1.Blog.findOneAndUpdate({ slug: id }, updateData, { new: true, runValidators: true });
+        }
         if (!blog) {
             return res.status(404).json({ success: false, message: 'Blog not found' });
         }
@@ -130,7 +143,16 @@ exports.updateBlog = updateBlog;
 const deleteBlog = async (req, res) => {
     try {
         const { id } = req.params;
-        const blog = await Blog_1.Blog.findByIdAndDelete(id);
+        let blog = null;
+        if (mongoose_1.default.Types.ObjectId.isValid(id)) {
+            blog = await Blog_1.Blog.findByIdAndDelete(id);
+        }
+        if (!blog) {
+            blog = await Blog_1.Blog.findOneAndDelete({ slug: id });
+        }
+        if (!blog) {
+            blog = await Blog_1.Blog.findOneAndDelete({ title: new RegExp(`^${id}$`, 'i') });
+        }
         if (!blog) {
             return res.status(404).json({ success: false, message: 'Blog not found' });
         }

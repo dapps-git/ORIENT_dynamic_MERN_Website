@@ -126,6 +126,10 @@ async function getArticle(slug: string): Promise<ArticleData | null> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/blogs/${slug}`, {
       cache: 'no-store',
     });
+    if (res.status === 404) {
+      // Blog article was explicitly deleted or does not exist
+      return null;
+    }
     if (res.ok) {
       const data = await res.json();
       if (data.success && data.data) {
@@ -138,14 +142,15 @@ async function getArticle(slug: string): Promise<ArticleData | null> {
           comments: '0 Comment',
           introduction: b.introduction || '',
           fleetTitle: b.fleetTitle || 'Key Capabilities & Offerings:',
-          fleetPoints: b.fleetPoints || [],
-          whyChoosePoints: b.whyChoosePoints || [],
+          fleetPoints: Array.isArray(b.fleetPoints) ? b.fleetPoints : [],
+          whyChoosePoints: Array.isArray(b.whyChoosePoints) ? b.whyChoosePoints : [],
           conclusion: b.conclusion || '',
         };
       }
     }
   } catch {
-    // Backend offline: use static fallback
+    // Only if backend is totally unreachable (e.g. offline dev), check static fallback
+    return ARTICLES[slug] || null;
   }
 
   return ARTICLES[slug] || null;
@@ -172,7 +177,7 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = await getArticle(slug) || ARTICLES['reliable-heavy-equipment-rental-across-saudi-arabia'];
+  const article = await getArticle(slug);
 
   if (!article) notFound();
 

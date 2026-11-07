@@ -36,13 +36,15 @@ export default function BlogSection() {
   const [blogs, setBlogs] = useState<BlogPost[]>(POSTS);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/blogs`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/blogs`, {
+      cache: 'no-store',
+    })
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.data && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data)) {
           setBlogs(
             data.data.map((b: any) => ({
-              title: b.title.toUpperCase(),
+              title: (b.title || '').toUpperCase(),
               image: b.image || '/blog/blog-1.jpg',
               readTime: b.readTime || '8 Minute Read',
               slug: b.slug,
@@ -51,7 +53,7 @@ export default function BlogSection() {
         }
       })
       .catch(() => {
-        // Fallback to static posts
+        // Fallback to static posts only if offline
       });
   }, []);
 
@@ -111,9 +113,14 @@ export default function BlogSection() {
           }}
           className="blog-cards-grid"
         >
-          {POSTS.map((post, i) => (
+          {blogs.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b', gridColumn: '1 / -1' }}>
+              <p style={{ fontSize: '1rem', margin: 0 }}>No blog articles currently published.</p>
+            </div>
+          ) : (
+            blogs.map((post, i) => (
             <Link
-              key={i}
+              key={post.slug || i}
               href={`/blog/${post.slug}`}
               className="scroll-reveal"
               style={{
@@ -203,7 +210,7 @@ export default function BlogSection() {
                 </div>
               </div>
             </Link>
-          ))}
+          )))}
         </div>
       </div>
 
