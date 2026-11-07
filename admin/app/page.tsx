@@ -1004,9 +1004,13 @@ export default function AdminApp() {
 
   // Sync contentEditable innerHTML whenever blog modal opens or editor tab switches to visual
   useEffect(() => {
-    if (showBlogModal && blogEditorTab === 'visual' && blogVisualEditorRef.current) {
-      if (blogVisualEditorRef.current.innerHTML !== blogForm.introduction) {
-        blogVisualEditorRef.current.innerHTML = blogForm.introduction || '';
+    if (showBlogModal && blogEditorTab === 'visual') {
+      try {
+        if (blogVisualEditorRef.current && blogVisualEditorRef.current.innerHTML !== (blogForm.introduction || '')) {
+          blogVisualEditorRef.current.innerHTML = blogForm.introduction || '';
+        }
+      } catch (err) {
+        console.warn('WYSIWYG blog sync:', err);
       }
     }
   }, [showBlogModal, blogEditorTab]);
@@ -1033,8 +1037,13 @@ export default function AdminApp() {
       const editor = blogVisualEditorRef.current;
       if (!editor) return;
       editor.focus();
-      document.execCommand(command, false, value);
-      setBlogForm((prev) => ({ ...prev, introduction: editor.innerHTML }));
+      try {
+        document.execCommand(command, false, value);
+      } catch (err) {
+        console.warn('execCommand failed:', err);
+      }
+      const html = editor.innerHTML;
+      setBlogForm((prev) => ({ ...prev, introduction: html }));
     } else {
       insertFormatIntoBlog(tagOpen, tagClose, defaultText);
     }
@@ -1059,23 +1068,28 @@ export default function AdminApp() {
         cleanUrl = `https://${cleanUrl}`;
       }
 
-      if (selectedText) {
-        document.execCommand('createLink', false, cleanUrl);
-        const links = editor.querySelectorAll(`a[href="${cleanUrl}"]`);
-        links.forEach((a) => {
-          a.setAttribute('target', '_blank');
-          a.setAttribute('rel', 'noopener noreferrer');
-          (a as HTMLElement).style.color = '#2563eb';
-          (a as HTMLElement).style.textDecoration = 'underline';
-          (a as HTMLElement).style.fontWeight = '600';
-        });
-      } else {
-        const text = prompt('Enter link text to display (e.g. "Orient Energy Website" or "hello"):', cleanUrl) || cleanUrl;
-        const linkHtml = `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 600;">${text}</a>&nbsp;`;
-        document.execCommand('insertHTML', false, linkHtml);
+      try {
+        if (selectedText) {
+          document.execCommand('createLink', false, cleanUrl);
+          const links = editor.querySelectorAll(`a[href="${cleanUrl}"]`);
+          links.forEach((a) => {
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+            (a as HTMLElement).style.color = '#2563eb';
+            (a as HTMLElement).style.textDecoration = 'underline';
+            (a as HTMLElement).style.fontWeight = '600';
+          });
+        } else {
+          const text = prompt('Enter link text to display (e.g. "Orient Energy Website" or "hello"):', cleanUrl) || cleanUrl;
+          const linkHtml = `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 600;">${text}</a>&nbsp;`;
+          document.execCommand('insertHTML', false, linkHtml);
+        }
+      } catch (err) {
+        console.warn('execCommand createLink failed:', err);
       }
 
-      setBlogForm((prev) => ({ ...prev, introduction: editor.innerHTML }));
+      const html = editor.innerHTML;
+      setBlogForm((prev) => ({ ...prev, introduction: html }));
       showToast('Link inserted! Click the link in editor to test route.');
     } else {
       const rawUrl = prompt('Enter website URL (e.g. orient.com or https://...):', 'https://');
@@ -1103,8 +1117,13 @@ export default function AdminApp() {
       const editor = blogVisualEditorRef.current;
       if (editor) {
         editor.focus();
-        document.execCommand('insertHTML', false, imgHtml);
-        setBlogForm((prev) => ({ ...prev, introduction: editor.innerHTML }));
+        try {
+          document.execCommand('insertHTML', false, imgHtml);
+        } catch (err) {
+          console.warn('insertHTML failed:', err);
+        }
+        const html = editor.innerHTML;
+        setBlogForm((prev) => ({ ...prev, introduction: html }));
       }
     } else {
       insertFormatIntoBlog(`\n<img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
@@ -1141,8 +1160,13 @@ export default function AdminApp() {
         if (editor) {
           editor.focus();
           const imgHtml = `<p><img src="${uploadedUrl}" alt="Orient Energy Industrial" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block; box-shadow: 0 4px 16px rgba(0,0,0,0.08);" /></p><p><br/></p>`;
-          document.execCommand('insertHTML', false, imgHtml);
-          setBlogForm((prev) => ({ ...prev, introduction: editor.innerHTML }));
+          try {
+            document.execCommand('insertHTML', false, imgHtml);
+          } catch (err) {
+            console.warn('insertHTML failed:', err);
+          }
+          const html = editor.innerHTML;
+          setBlogForm((prev) => ({ ...prev, introduction: html }));
         }
       } else {
         insertFormatIntoBlog(`\n<img src="${uploadedUrl}" alt="Orient Energy Industrial" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
@@ -1158,9 +1182,13 @@ export default function AdminApp() {
   const categoryImageFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (showDivisionModal && categoryEditorTab === 'visual' && categoryVisualEditorRef.current) {
-      if (categoryVisualEditorRef.current.innerHTML !== divisionForm.descriptionText) {
-        categoryVisualEditorRef.current.innerHTML = divisionForm.descriptionText || '';
+    if (showDivisionModal && categoryEditorTab === 'visual') {
+      try {
+        if (categoryVisualEditorRef.current && categoryVisualEditorRef.current.innerHTML !== (divisionForm.descriptionText || '')) {
+          categoryVisualEditorRef.current.innerHTML = divisionForm.descriptionText || '';
+        }
+      } catch (err) {
+        console.warn('WYSIWYG category sync:', err);
       }
     }
   }, [showDivisionModal, categoryEditorTab]);
@@ -1187,8 +1215,13 @@ export default function AdminApp() {
       const editor = categoryVisualEditorRef.current;
       if (!editor) return;
       editor.focus();
-      document.execCommand(command, false, value);
-      setDivisionForm((prev) => ({ ...prev, descriptionText: editor.innerHTML }));
+      try {
+        document.execCommand(command, false, value);
+      } catch (err) {
+        console.warn('execCommand failed:', err);
+      }
+      const html = editor.innerHTML;
+      setDivisionForm((prev) => ({ ...prev, descriptionText: html }));
     } else {
       insertFormatIntoCategory(tagOpen, tagClose, defaultText);
     }
@@ -1213,23 +1246,28 @@ export default function AdminApp() {
         cleanUrl = `https://${cleanUrl}`;
       }
 
-      if (selectedText) {
-        document.execCommand('createLink', false, cleanUrl);
-        const links = editor.querySelectorAll(`a[href="${cleanUrl}"]`);
-        links.forEach((a) => {
-          a.setAttribute('target', '_blank');
-          a.setAttribute('rel', 'noopener noreferrer');
-          (a as HTMLElement).style.color = '#2563eb';
-          (a as HTMLElement).style.textDecoration = 'underline';
-          (a as HTMLElement).style.fontWeight = '600';
-        });
-      } else {
-        const text = prompt('Enter link text to display:', cleanUrl) || cleanUrl;
-        const linkHtml = `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 600;">${text}</a>&nbsp;`;
-        document.execCommand('insertHTML', false, linkHtml);
+      try {
+        if (selectedText) {
+          document.execCommand('createLink', false, cleanUrl);
+          const links = editor.querySelectorAll(`a[href="${cleanUrl}"]`);
+          links.forEach((a) => {
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+            (a as HTMLElement).style.color = '#2563eb';
+            (a as HTMLElement).style.textDecoration = 'underline';
+            (a as HTMLElement).style.fontWeight = '600';
+          });
+        } else {
+          const text = prompt('Enter link text to display:', cleanUrl) || cleanUrl;
+          const linkHtml = `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 600;">${text}</a>&nbsp;`;
+          document.execCommand('insertHTML', false, linkHtml);
+        }
+      } catch (err) {
+        console.warn('createLink failed:', err);
       }
 
-      setDivisionForm((prev) => ({ ...prev, descriptionText: editor.innerHTML }));
+      const html = editor.innerHTML;
+      setDivisionForm((prev) => ({ ...prev, descriptionText: html }));
       showToast('Link inserted! Click the link to test route.');
     } else {
       const rawUrl = prompt('Enter URL (e.g. orient.com or https://...):', 'https://');
@@ -1257,8 +1295,13 @@ export default function AdminApp() {
       const editor = categoryVisualEditorRef.current;
       if (editor) {
         editor.focus();
-        document.execCommand('insertHTML', false, imgHtml);
-        setDivisionForm((prev) => ({ ...prev, descriptionText: editor.innerHTML }));
+        try {
+          document.execCommand('insertHTML', false, imgHtml);
+        } catch (err) {
+          console.warn('insertHTML failed:', err);
+        }
+        const html = editor.innerHTML;
+        setDivisionForm((prev) => ({ ...prev, descriptionText: html }));
       }
     } else {
       insertFormatIntoCategory(`\n<img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
@@ -1273,8 +1316,13 @@ export default function AdminApp() {
         if (editor) {
           editor.focus();
           const imgHtml = `<p><img src="${uploadedUrl}" alt="${divisionForm.name || 'Industrial Category'}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block; box-shadow: 0 4px 16px rgba(0,0,0,0.08);" /></p><p><br/></p>`;
-          document.execCommand('insertHTML', false, imgHtml);
-          setDivisionForm((prev) => ({ ...prev, descriptionText: editor.innerHTML }));
+          try {
+            document.execCommand('insertHTML', false, imgHtml);
+          } catch (err) {
+            console.warn('insertHTML failed:', err);
+          }
+          const html = editor.innerHTML;
+          setDivisionForm((prev) => ({ ...prev, descriptionText: html }));
         }
       } else {
         insertFormatIntoCategory(`\n<img src="${uploadedUrl}" alt="${divisionForm.name || 'Industrial Category'}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
@@ -1521,27 +1569,33 @@ export default function AdminApp() {
           const missingDefaults = INITIAL_PRODUCTS.filter((ip) => !apiSlugs.has(ip.slug));
           setProducts([...apiProducts, ...missingDefaults]);
 
-          // Auto-sync missing default products to backend API
-          missingDefaults.forEach((mp) => {
-            fetch(`${API_BASE}/products`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                title: mp.title,
-                slug: mp.slug,
-                divisionSlug: mp.divisionSlug,
-                categoryName: mp.category,
-                image: mp.image,
-                images: mp.images || [mp.image],
-                shortDescription: mp.shortDescription,
-                fullDescription: mp.fullDescription,
-                features: mp.features,
-                innerSections: mp.innerSections,
-                inStock: mp.inStock,
-                isFeatured: mp.featured,
-              }),
-            }).catch(() => {});
-          });
+          // Auto-sync missing default products to backend API only if authenticated
+          const adminAuthToken = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+          if (adminAuthToken && missingDefaults.length > 0) {
+            missingDefaults.forEach((mp) => {
+              fetch(`${API_BASE}/products`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${adminAuthToken}`,
+                },
+                body: JSON.stringify({
+                  title: mp.title,
+                  slug: mp.slug,
+                  divisionSlug: mp.divisionSlug,
+                  categoryName: mp.category,
+                  image: mp.image,
+                  images: mp.images || [mp.image],
+                  shortDescription: mp.shortDescription,
+                  fullDescription: mp.fullDescription,
+                  features: mp.features,
+                  innerSections: mp.innerSections,
+                  inStock: mp.inStock,
+                  isFeatured: mp.featured,
+                }),
+              }).catch(() => {});
+            });
+          }
         }
       })
       .catch(() => {});
@@ -1573,13 +1627,19 @@ export default function AdminApp() {
           const missingDefaultCats = INITIAL_DIVISIONS.filter((d) => !apiCatSlugs.has(d.slug));
           setDivisions([...apiCats, ...missingDefaultCats]);
 
-          missingDefaultCats.forEach((missing) => {
-            fetch(`${API_BASE}/categories`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(missing),
-            }).catch(() => {});
-          });
+          const adminAuthToken = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+          if (adminAuthToken && missingDefaultCats.length > 0) {
+            missingDefaultCats.forEach((missing) => {
+              fetch(`${API_BASE}/categories`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${adminAuthToken}`,
+                },
+                body: JSON.stringify(missing),
+              }).catch(() => {});
+            });
+          }
         }
       })
       .catch(() => {});
@@ -2484,8 +2544,12 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     setDivisionModalTab('general');
     setShowDivisionModal(true);
     setTimeout(() => {
-      if (categoryVisualEditorRef.current) {
-        categoryVisualEditorRef.current.innerHTML = descriptions || '';
+      try {
+        if (categoryVisualEditorRef.current) {
+          categoryVisualEditorRef.current.innerHTML = descriptions || '';
+        }
+      } catch (err) {
+        console.warn('category visual init:', err);
       }
     }, 20);
   };
@@ -2511,8 +2575,12 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     setDivisionModalTab('general');
     setShowDivisionModal(true);
     setTimeout(() => {
-      if (categoryVisualEditorRef.current) {
-        categoryVisualEditorRef.current.innerHTML = '';
+      try {
+        if (categoryVisualEditorRef.current) {
+          categoryVisualEditorRef.current.innerHTML = '';
+        }
+      } catch (err) {
+        console.warn('category visual init:', err);
       }
     }, 20);
   };
@@ -5463,8 +5531,12 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           onClick={() => {
                             setCategoryEditorTab('visual');
                             setTimeout(() => {
-                              if (categoryVisualEditorRef.current) {
-                                categoryVisualEditorRef.current.innerHTML = divisionForm.descriptionText || '';
+                              try {
+                                if (categoryVisualEditorRef.current) {
+                                  categoryVisualEditorRef.current.innerHTML = divisionForm.descriptionText || '';
+                                }
+                              } catch (err) {
+                                console.warn('Category visual tab switch:', err);
                               }
                             }, 10);
                           }}
@@ -5488,9 +5560,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                         <button
                           type="button"
                           onClick={() => {
-                            if (categoryEditorTab === 'visual' && categoryVisualEditorRef.current) {
-                              setDivisionForm((prev) => ({ ...prev, descriptionText: categoryVisualEditorRef.current?.innerHTML || '' }));
-                            }
+                            const html = categoryVisualEditorRef.current ? categoryVisualEditorRef.current.innerHTML : divisionForm.descriptionText;
+                            setDivisionForm((prev) => ({ ...prev, descriptionText: html }));
                             setCategoryEditorTab('code');
                           }}
                           style={{
@@ -5513,9 +5584,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                         <button
                           type="button"
                           onClick={() => {
-                            if (categoryEditorTab === 'visual' && categoryVisualEditorRef.current) {
-                              setDivisionForm((prev) => ({ ...prev, descriptionText: categoryVisualEditorRef.current?.innerHTML || '' }));
-                            }
+                            const html = categoryVisualEditorRef.current ? categoryVisualEditorRef.current.innerHTML : divisionForm.descriptionText;
+                            setDivisionForm((prev) => ({ ...prev, descriptionText: html }));
                             setCategoryEditorTab('preview');
                           }}
                           style={{
@@ -5684,10 +5754,12 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                             contentEditable={true}
                             suppressContentEditableWarning={true}
                             onInput={(e) => {
-                              setDivisionForm((prev) => ({ ...prev, descriptionText: e.currentTarget.innerHTML }));
+                              const html = (e.currentTarget as HTMLElement)?.innerHTML || '';
+                              setDivisionForm((prev) => ({ ...prev, descriptionText: html }));
                             }}
                             onBlur={(e) => {
-                              setDivisionForm((prev) => ({ ...prev, descriptionText: e.currentTarget.innerHTML }));
+                              const html = (e.currentTarget as HTMLElement)?.innerHTML || '';
+                              setDivisionForm((prev) => ({ ...prev, descriptionText: html }));
                             }}
                             onClick={(e) => {
                               const target = e.target as HTMLElement;
@@ -6039,8 +6111,12 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       onClick={() => {
                         setBlogEditorTab('visual');
                         setTimeout(() => {
-                          if (blogVisualEditorRef.current) {
-                            blogVisualEditorRef.current.innerHTML = blogForm.introduction || '';
+                          try {
+                            if (blogVisualEditorRef.current) {
+                              blogVisualEditorRef.current.innerHTML = blogForm.introduction || '';
+                            }
+                          } catch (err) {
+                            console.warn('Blog visual tab switch:', err);
                           }
                         }, 10);
                       }}
@@ -6064,9 +6140,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     <button
                       type="button"
                       onClick={() => {
-                        if (blogEditorTab === 'visual' && blogVisualEditorRef.current) {
-                          setBlogForm((prev) => ({ ...prev, introduction: blogVisualEditorRef.current?.innerHTML || '' }));
-                        }
+                        const html = blogVisualEditorRef.current ? blogVisualEditorRef.current.innerHTML : blogForm.introduction;
+                        setBlogForm((prev) => ({ ...prev, introduction: html }));
                         setBlogEditorTab('code');
                       }}
                       style={{
@@ -6089,9 +6164,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                     <button
                       type="button"
                       onClick={() => {
-                        if (blogEditorTab === 'visual' && blogVisualEditorRef.current) {
-                          setBlogForm((prev) => ({ ...prev, introduction: blogVisualEditorRef.current?.innerHTML || '' }));
-                        }
+                        const html = blogVisualEditorRef.current ? blogVisualEditorRef.current.innerHTML : blogForm.introduction;
+                        setBlogForm((prev) => ({ ...prev, introduction: html }));
                         setBlogEditorTab('preview');
                       }}
                       style={{
@@ -6298,10 +6372,12 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                         contentEditable={true}
                         suppressContentEditableWarning={true}
                         onInput={(e) => {
-                          setBlogForm((prev) => ({ ...prev, introduction: e.currentTarget.innerHTML }));
+                          const html = (e.currentTarget as HTMLElement)?.innerHTML || '';
+                          setBlogForm((prev) => ({ ...prev, introduction: html }));
                         }}
                         onBlur={(e) => {
-                          setBlogForm((prev) => ({ ...prev, introduction: e.currentTarget.innerHTML }));
+                          const html = (e.currentTarget as HTMLElement)?.innerHTML || '';
+                          setBlogForm((prev) => ({ ...prev, introduction: html }));
                         }}
                         onClick={(e) => {
                           const target = e.target as HTMLElement;
