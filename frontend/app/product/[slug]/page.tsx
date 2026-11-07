@@ -42,14 +42,28 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
               d.name.toLowerCase() === (p.categoryName || '').toLowerCase()
           ) || DIVISIONS_DATA[0];
 
+        const isStaticPlaceholder = (u?: string) =>
+          !u ||
+          u.startsWith('/categories/') ||
+          u.includes('all-fittings.jpeg') ||
+          u.includes('bearings.jpg') ||
+          u.includes('filters.jpg');
+
+        const rawImgs: string[] = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+        const dynamicOnly = rawImgs.filter((img) => !isStaticPlaceholder(img));
+        const finalImages = dynamicOnly.length > 0 ? dynamicOnly : (rawImgs.length > 0 ? rawImgs : ['/categories/all-fittings.jpeg']);
+        const finalCover = dynamicOnly.length > 0
+          ? (!isStaticPlaceholder(p.image) ? p.image : dynamicOnly[0])
+          : (p.image || finalImages[0] || '/categories/all-fittings.jpeg');
+
         const product: ProductItem = {
           id: p._id || p.id,
           title: p.title,
           slug: p.slug || cleanSlug,
           sku: p.sku || `OETC-${(p.slug || cleanSlug).toUpperCase().slice(0, 10)}`,
           brand: p.brand || 'Orient Energy',
-          image: p.image || (p.images && p.images[0]) || '/categories/all-fittings.jpeg',
-          images: p.images && p.images.length > 0 ? p.images : [p.image || '/categories/all-fittings.jpeg'],
+          image: finalCover,
+          images: finalImages,
           category: p.categoryName || (p.category && p.category.name) || matchedDivision.name,
           divisionSlug: matchedDivision.id,
           divisionName: matchedDivision.name,
@@ -89,15 +103,23 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
 
         const related: ProductItem[] =
           p.relatedProducts && p.relatedProducts.length > 0
-            ? p.relatedProducts.map((rel: any) => ({
-                id: rel._id || rel.slug,
-                title: rel.title,
-                slug: rel.slug || getProductSlug(rel.title),
-                image: rel.image || (rel.images && rel.images[0]) || '/categories/all-fittings.jpeg',
-                category: rel.categoryName || matchedDivision.name,
-                divisionSlug: matchedDivision.id,
-                divisionName: matchedDivision.name,
-              }))
+            ? p.relatedProducts.map((rel: any) => {
+                const relRaw: string[] = Array.isArray(rel.images) && rel.images.length > 0 ? rel.images : (rel.image ? [rel.image] : []);
+                const relDynamic = relRaw.filter((u: string) => !isStaticPlaceholder(u));
+                const relCover = relDynamic.length > 0
+                  ? (!isStaticPlaceholder(rel.image) ? rel.image : relDynamic[0])
+                  : (rel.image || relRaw[0] || '/categories/all-fittings.jpeg');
+                return {
+                  id: rel._id || rel.slug,
+                  title: rel.title,
+                  slug: rel.slug || getProductSlug(rel.title),
+                  image: relCover,
+                  images: relDynamic.length > 0 ? relDynamic : relRaw,
+                  category: rel.categoryName || matchedDivision.name,
+                  divisionSlug: matchedDivision.id,
+                  divisionName: matchedDivision.name,
+                };
+              })
             : (() => {
                 const sameCat = matchedDivision.products.filter(
                   (item) =>

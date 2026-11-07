@@ -104,14 +104,50 @@ const chunkArray = <T,>(arr: T[], size: number): T[][] => {
   return chunks;
 };
 
-// Grouping into chunks dynamically
-const DESKTOP_SLIDES = chunkArray(SHOWCASE_PRODUCTS, 4);
-const MOBILE_SLIDES = chunkArray(SHOWCASE_PRODUCTS, 2);
+const isStaticImage = (u?: string) =>
+  !u ||
+  u.startsWith('/categories/') ||
+  u.includes('all-fittings.jpeg') ||
+  u.includes('bearings.jpg') ||
+  u.includes('filters.jpg');
 
 export default function FeaturedProductsShowcase() {
+  const [products, setProducts] = useState<ShowcaseProduct[]>(SHOWCASE_PRODUCTS);
   const [desktopSlide, setDesktopSlide] = useState(0);
   const [mobileSlide, setMobileSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api";
+    fetch(`${apiUrl}/products`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          const feat = data.data.filter((p: any) => p.isFeatured || p.featured);
+          const list = feat.length > 0 ? feat : data.data.slice(0, 12);
+          const mapped: ShowcaseProduct[] = list.map((p: any) => {
+            const raw = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+            const dyn = raw.filter((u: string) => !isStaticImage(u));
+            const img = dyn.length > 0 ? (!isStaticImage(p.image) ? p.image : dyn[0]) : (p.image || raw[0] || '/categories/all-fittings.jpeg');
+            return {
+              id: p._id || p.id || p.slug,
+              title: p.title,
+              slug: p.slug,
+              category: p.categoryName || (p.category && p.category.name) || p.division || 'Industrial Supply',
+              image: img,
+              href: `/product/${p.slug}`,
+            };
+          });
+          if (mapped.length > 0) {
+            setProducts(mapped);
+          }
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const desktopSlides = chunkArray(products, 4);
+  const mobileSlides = chunkArray(products, 2);
 
   // Touch gesture state
   const touchStartX = useRef<number>(0);
@@ -121,20 +157,20 @@ export default function FeaturedProductsShowcase() {
   const isDragging = useRef<boolean>(false);
 
   const nextDesktop = useCallback(() => {
-    setDesktopSlide((prev) => (prev + 1) % DESKTOP_SLIDES.length);
-  }, []);
+    setDesktopSlide((prev) => (prev + 1) % desktopSlides.length);
+  }, [desktopSlides.length]);
 
   const prevDesktop = useCallback(() => {
-    setDesktopSlide((prev) => (prev - 1 + DESKTOP_SLIDES.length) % DESKTOP_SLIDES.length);
-  }, []);
+    setDesktopSlide((prev) => (prev - 1 + desktopSlides.length) % desktopSlides.length);
+  }, [desktopSlides.length]);
 
   const nextMobile = useCallback(() => {
-    setMobileSlide((prev) => (prev + 1) % MOBILE_SLIDES.length);
-  }, []);
+    setMobileSlide((prev) => (prev + 1) % mobileSlides.length);
+  }, [mobileSlides.length]);
 
   const prevMobile = useCallback(() => {
-    setMobileSlide((prev) => (prev - 1 + MOBILE_SLIDES.length) % MOBILE_SLIDES.length);
-  }, []);
+    setMobileSlide((prev) => (prev - 1 + mobileSlides.length) % mobileSlides.length);
+  }, [mobileSlides.length]);
 
   // Universal next / prev triggers
   const handleNext = () => {
@@ -151,11 +187,11 @@ export default function FeaturedProductsShowcase() {
   useEffect(() => {
     if (isHovered) return;
     const timer = setInterval(() => {
-      setDesktopSlide((prev) => (prev + 1) % DESKTOP_SLIDES.length);
-      setMobileSlide((prev) => (prev + 1) % MOBILE_SLIDES.length);
+      setDesktopSlide((prev) => (prev + 1) % desktopSlides.length);
+      setMobileSlide((prev) => (prev + 1) % mobileSlides.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, [isHovered]);
+  }, [isHovered, desktopSlides.length, mobileSlides.length]);
 
   // Touch & Hand Swipe Handlers
   const handleTouchStart = (e: React.TouchEvent | React.MouseEvent) => {
@@ -342,7 +378,7 @@ export default function FeaturedProductsShowcase() {
                 transition: 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)',
               }}
             >
-              {DESKTOP_SLIDES.map((slideProducts, slideIdx) => (
+              {desktopSlides.map((slideProducts, slideIdx) => (
                 <div
                   key={slideIdx}
                   style={{
@@ -430,7 +466,7 @@ export default function FeaturedProductsShowcase() {
                 transform: `translateX(-${mobileSlide * 100}%)`,
               }}
             >
-              {MOBILE_SLIDES.map((slideProducts, slideIdx) => (
+              {mobileSlides.map((slideProducts, slideIdx) => (
                 <div key={slideIdx} className="mobile-carousel-slide">
                   <div className="mobile-grid-2col">
                     {slideProducts.map((product) => (
@@ -495,7 +531,7 @@ export default function FeaturedProductsShowcase() {
               marginTop: '12px',
             }}
           >
-            {MOBILE_SLIDES.map((_, idx) => (
+            {mobileSlides.map((_, idx) => (
               <button
                 key={idx}
                 type="button"

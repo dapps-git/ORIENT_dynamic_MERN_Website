@@ -1899,18 +1899,29 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     setShowProductModal(true);
   };
 
+  const isStaticPlaceholderImage = (u?: string) =>
+    !u ||
+    u.startsWith('/categories/') ||
+    u.includes('all-fittings.jpeg') ||
+    u.includes('bearings.jpg') ||
+    u.includes('filters.jpg');
+
   const handleAddInnerImage = (url: string) => {
     if (!url || !url.trim()) return;
     const cleanUrl = url.trim();
     setProductForm((prev) => {
-      const curImages = prev.images.length > 0 ? prev.images : (prev.image ? [prev.image] : []);
+      const existingImages = prev.images.length > 0 ? prev.images : (prev.image ? [prev.image] : []);
+      // When adding dynamic photo, automatically purge static placeholders
+      const curImages = existingImages.filter((img) => !isStaticPlaceholderImage(img));
       if (curImages.includes(cleanUrl)) {
         showToast('Photo already in inner gallery');
         return prev;
       }
       const updated = [...curImages, cleanUrl];
+      const newCover = isStaticPlaceholderImage(prev.image) ? cleanUrl : prev.image;
       return {
         ...prev,
+        image: newCover,
         images: updated,
         imagesText: updated.join('\n'),
         newInnerImgUrl: '',
@@ -1935,7 +1946,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
 
   const handleSetCoverPhoto = (url: string) => {
     setProductForm((prev) => {
-      const curImages = prev.images.filter((img) => img !== url);
+      const curImages = prev.images.filter((img) => img !== url && !isStaticPlaceholderImage(img));
       return {
         ...prev,
         image: url,
@@ -1978,10 +1989,14 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     setIsUploadingImage(false);
     if (newUrls.length > 0) {
       setProductForm((prev) => {
-        const curImages = prev.images.length > 0 ? prev.images : (prev.image ? [prev.image] : []);
+        const existingImages = prev.images.length > 0 ? prev.images : (prev.image ? [prev.image] : []);
+        // Automatically remove static placeholder images when dynamic images are uploaded
+        const curImages = existingImages.filter((img) => !isStaticPlaceholderImage(img));
         const updated = [...curImages, ...newUrls];
+        const newCover = isStaticPlaceholderImage(prev.image) ? newUrls[0] : prev.image;
         return {
           ...prev,
+          image: newCover,
           images: updated,
           imagesText: updated.join('\n'),
         };
@@ -2065,15 +2080,26 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       .map((s) => s.trim())
       .filter(Boolean);
 
-    const galleryList = (productForm.images && productForm.images.length > 0)
+    let galleryList = (productForm.images && productForm.images.length > 0)
       ? [...productForm.images]
       : productForm.imagesText
           .split('\n')
           .map((s) => s.trim())
           .filter(Boolean);
 
-    if (productForm.image && !galleryList.includes(productForm.image)) {
-      galleryList.unshift(productForm.image);
+    // If dynamic photos are added, completely remove any static placeholder images
+    const hasDynamicImages = galleryList.some((u) => !isStaticPlaceholderImage(u)) || (!isStaticPlaceholderImage(productForm.image) && !!productForm.image);
+    if (hasDynamicImages) {
+      galleryList = galleryList.filter((u) => !isStaticPlaceholderImage(u));
+    }
+
+    let mainCover = productForm.image;
+    if (hasDynamicImages && isStaticPlaceholderImage(mainCover)) {
+      mainCover = galleryList[0] || '';
+    }
+
+    if (mainCover && !galleryList.includes(mainCover) && (!hasDynamicImages || !isStaticPlaceholderImage(mainCover))) {
+      galleryList.unshift(mainCover);
     }
 
     const allDivs = divisions.length > 0 ? divisions : INITIAL_DIVISIONS;
@@ -2093,8 +2119,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       divisionSlug: matchedDiv ? matchedDiv.slug : productForm.divisionSlug,
       category: matchedDiv ? matchedDiv.id : undefined,
       categoryName: productForm.category || productForm.division,
-      image: productForm.image || (galleryList[0] || '/categories/all-fittings.jpeg'),
-      images: galleryList.length > 0 ? galleryList : [productForm.image || '/categories/all-fittings.jpeg'],
+      image: mainCover || productForm.image || (galleryList[0] || '/categories/all-fittings.jpeg'),
+      images: galleryList.length > 0 ? galleryList : [mainCover || productForm.image || '/categories/all-fittings.jpeg'],
       innerSections: productForm.innerSections || [],
       shortDescription: productForm.shortDescription,
       fullDescription: productForm.fullDescription,
@@ -4340,11 +4366,16 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           style={{ display: 'none' }}
                           onChange={(e) =>
                             handleImageFileChange(e, (url) => {
-                              setProductForm((prev) => ({
-                                ...prev,
-                                image: url,
-                                images: prev.images && prev.images.includes(url) ? prev.images : [url, ...(prev.images || [])],
-                              }));
+                              setProductForm((prev) => {
+                                const curImages = (prev.images || []).filter((img) => !isStaticPlaceholderImage(img));
+                                const updated = [url, ...curImages.filter((img) => img !== url)];
+                                return {
+                                  ...prev,
+                                  image: url,
+                                  images: updated,
+                                  imagesText: updated.join('\n'),
+                                };
+                              });
                               showToast('Main product image updated!');
                             })
                           }

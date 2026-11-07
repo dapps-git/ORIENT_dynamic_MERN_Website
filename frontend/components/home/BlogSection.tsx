@@ -33,7 +33,8 @@ const POSTS: BlogPost[] = [
 ];
 
 export default function BlogSection() {
-  const [blogs, setBlogs] = useState<BlogPost[]>(POSTS);
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/blogs`, {
@@ -50,10 +51,16 @@ export default function BlogSection() {
               slug: b.slug,
             }))
           );
+        } else {
+          setBlogs(POSTS);
         }
       })
       .catch(() => {
         // Fallback to static posts only if offline
+        setBlogs(POSTS);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -104,7 +111,7 @@ export default function BlogSection() {
           </h2>
         </div>
 
-        {/* 3 Blog Cards Grid */}
+        {/* 3 Blog Cards Grid / Skeletons */}
         <div
           style={{
             display: 'grid',
@@ -113,7 +120,34 @@ export default function BlogSection() {
           }}
           className="blog-cards-grid"
         >
-          {blogs.length === 0 ? (
+          {loading ? (
+            [0, 1, 2].map((k) => (
+              <div
+                key={k}
+                className="orient-skeleton-card"
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '380px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #f1f5f9',
+                }}
+              >
+                <div
+                  className="orient-skeleton"
+                  style={{ width: '100%', height: '235px', borderRadius: 0 }}
+                />
+                <div style={{ padding: '22px 22px 18px', display: 'flex', flexDirection: 'column', gap: '12px', flex: 1 }}>
+                  <div className="orient-skeleton" style={{ width: '88%', height: '18px', borderRadius: '4px' }} />
+                  <div className="orient-skeleton" style={{ width: '58%', height: '14px', borderRadius: '4px' }} />
+                  <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div className="orient-skeleton" style={{ width: '90px', height: '12px', borderRadius: '4px' }} />
+                    <div className="orient-skeleton" style={{ width: '24px', height: '24px', borderRadius: '4px' }} />
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : blogs.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b', gridColumn: '1 / -1' }}>
               <p style={{ fontSize: '1rem', margin: 0 }}>No blog articles currently published.</p>
             </div>

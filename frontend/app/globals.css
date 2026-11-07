@@ -1561,3 +1561,29 @@ textarea.form-control {
   box-shadow: 0 14px 30px rgba(7, 17, 56, 0.12) !important;
   border-color: #2e3191 !important;
 }
+
+/* Universal High-Performance Shimmer Skeleton Loading */
+@keyframes orientShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.orient-skeleton {
+  background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background-size: 200% 100%;
+  animation: orientShimmer 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  border-radius: 6px;
+  display: block;
+}
+
+.orient-skeleton-card {
+  background-color: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+}

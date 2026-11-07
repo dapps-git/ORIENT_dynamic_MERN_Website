@@ -35,8 +35,29 @@ function formatRichHtml(content: string): string {
   return formatted;
 }
 
+const isStaticPlaceholder = (u?: string) =>
+  !u ||
+  u.startsWith('/categories/') ||
+  u.includes('all-fittings.jpeg') ||
+  u.includes('bearings.jpg') ||
+  u.includes('filters.jpg');
+
 export default function ProductInnerClient({ product: initialProduct, division, waUrl }: Props) {
-  const [product, setProduct] = useState<ProductItem>(initialProduct);
+  // Purge any static placeholders from initialProduct if dynamic photos exist
+  const initRaw = initialProduct.images && initialProduct.images.length > 0
+    ? initialProduct.images
+    : (initialProduct.image ? [initialProduct.image] : []);
+  const initDynamic = initRaw.filter((u) => !isStaticPlaceholder(u));
+  const initFinalImages = initDynamic.length > 0 ? initDynamic : initRaw;
+  const initFinalCover = initDynamic.length > 0
+    ? (!isStaticPlaceholder(initialProduct.image) ? initialProduct.image : initDynamic[0])
+    : (initialProduct.image || initFinalImages[0] || '/categories/all-fittings.jpeg');
+
+  const [product, setProduct] = useState<ProductItem>({
+    ...initialProduct,
+    image: initFinalCover,
+    images: initFinalImages.length > 0 ? initFinalImages : [initFinalCover],
+  });
 
   // Sync with live backend updates so admin edits/deletes reflect immediately on user side
   useEffect(() => {
@@ -48,6 +69,13 @@ export default function ProductInnerClient({ product: initialProduct, division, 
       .then((data) => {
         if (data.success && data.data) {
           const p = data.data;
+          const pRaw = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+          const pDynamic = pRaw.filter((u: string) => !isStaticPlaceholder(u));
+          const pFinalImages = pDynamic.length > 0 ? pDynamic : pRaw;
+          const pFinalCover = pDynamic.length > 0
+            ? (!isStaticPlaceholder(p.image) ? p.image : pDynamic[0])
+            : (p.image || pFinalImages[0] || '/categories/all-fittings.jpeg');
+
           setProduct((prev) => ({
             ...prev,
             title: p.title || prev.title,
@@ -55,8 +83,8 @@ export default function ProductInnerClient({ product: initialProduct, division, 
             shortDescription: p.shortDescription || prev.shortDescription,
             features: p.features && p.features.length > 0 ? p.features : prev.features,
             innerSections: p.innerSections && p.innerSections.length > 0 ? p.innerSections : prev.innerSections,
-            image: p.image || prev.image,
-            images: p.images && p.images.length > 0 ? p.images : prev.images,
+            image: pFinalCover,
+            images: pFinalImages.length > 0 ? pFinalImages : prev.images,
             sku: p.sku || prev.sku,
             brand: p.brand || prev.brand,
             category: p.categoryName || prev.category,
@@ -80,10 +108,18 @@ export default function ProductInnerClient({ product: initialProduct, division, 
               (p.title && p.title.toLowerCase().trim() === initialProduct.title.toLowerCase().trim())
           );
           if (found) {
+            const fRaw = Array.isArray(found.images) && found.images.length > 0 ? found.images : (found.image ? [found.image] : []);
+            const fDynamic = fRaw.filter((u: string) => !isStaticPlaceholder(u));
+            const fFinalImages = fDynamic.length > 0 ? fDynamic : fRaw;
+            const fFinalCover = fDynamic.length > 0
+              ? (!isStaticPlaceholder(found.image) ? found.image : fDynamic[0])
+              : (found.image || fFinalImages[0]);
+
             setProduct((prev) => ({
               ...prev,
               ...found,
-              images: found.images && found.images.length > 0 ? found.images : prev.images,
+              image: fFinalCover || prev.image,
+              images: fFinalImages.length > 0 ? fFinalImages : prev.images,
               innerSections: found.innerSections || prev.innerSections,
             }));
           }
@@ -92,18 +128,25 @@ export default function ProductInnerClient({ product: initialProduct, division, 
     }
   }, [initialProduct]);
 
-  const allImages =
-    product.images && product.images.length > 0
-      ? product.images
-      : [product.image || '/categories/all-fittings.jpeg'];
-  const [selectedImage, setSelectedImage] = useState(allImages[0] || product.image);
+  const rawImages = product.images && product.images.length > 0
+    ? product.images
+    : [product.image || '/categories/all-fittings.jpeg'];
+  const dynamicImages = rawImages.filter((img) => !isStaticPlaceholder(img));
+  const allImages = dynamicImages.length > 0 ? dynamicImages : rawImages;
+  const initialMain = dynamicImages.length > 0
+    ? (!isStaticPlaceholder(product.image) ? product.image : dynamicImages[0])
+    : (product.image || allImages[0]);
+
+  const [selectedImage, setSelectedImage] = useState(initialMain);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
-    if (allImages.length > 0 && !allImages.includes(selectedImage)) {
-      setSelectedImage(allImages[0]);
+    if (allImages.length > 0) {
+      if (!allImages.includes(selectedImage) || (dynamicImages.length > 0 && isStaticPlaceholder(selectedImage))) {
+        setSelectedImage(allImages[0]);
+      }
     }
-  }, [product, allImages, selectedImage]);
+  }, [product, allImages, selectedImage, dynamicImages.length]);
 
   const features =
     product.features && product.features.length > 0
@@ -133,12 +176,25 @@ export default function ProductInnerClient({ product: initialProduct, division, 
         <div className="product-top-grid">
           {/* Product Image Section with Main Photo & Gallery Thumbnails */}
           <div className="product-image-wrapper">
-            <div className="product-image-container">
+            <div className="product-image-container" style={{ position: 'relative', overflow: 'hidden' }}>
+              {/* Shimmer skeleton behind photo for instant 0ms feedback */}
+              <div
+                className="orient-skeleton"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  zIndex: 0,
+                  borderRadius: '8px',
+                }}
+              />
               <img
                 src={selectedImage}
                 alt={product.imageAlt || product.title}
                 title={product.imageTitle || product.title}
                 className="product-main-image"
+                style={{ position: 'relative', zIndex: 1 }}
                 onClick={() => setLightboxOpen(true)}
               />
               {/* Zoom Icon Button */}
@@ -148,6 +204,7 @@ export default function ProductInnerClient({ product: initialProduct, division, 
                 className="zoom-btn"
                 title="Click to view full image"
                 aria-label="Zoom Image"
+                style={{ zIndex: 2 }}
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
@@ -168,11 +225,17 @@ export default function ProductInnerClient({ product: initialProduct, division, 
                     onClick={() => setSelectedImage(img)}
                     className={`thumb-btn ${selectedImage === img ? 'active' : ''}`}
                     title={`View photo ${idx + 1}`}
+                    style={{ position: 'relative', overflow: 'hidden' }}
                   >
+                    <div
+                      className="orient-skeleton"
+                      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }}
+                    />
                     <img
                       src={img}
                       alt={`${product.imageAlt || product.title} photo ${idx + 1}`}
                       title={`${product.imageTitle || product.title} photo ${idx + 1}`}
+                      style={{ position: 'relative', zIndex: 1 }}
                     />
                   </button>
                 ))}

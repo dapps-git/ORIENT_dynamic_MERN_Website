@@ -75,18 +75,34 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
         const staticRemainder = (staticDiv?.products || []).filter(
           (sp) => !existingTitles.has(sp.title.toLowerCase().trim())
         );
-        const mappedCatProducts = (cat.products || []).map((p: any) => ({
-          id: p._id ? String(p._id) : p.slug,
-          title: p.title,
-          slug: p.slug || getProductSlug(p.title),
-          image: p.image || (p.images && p.images[0]) || '/categories/all-fittings.jpeg',
-          images: p.images || [p.image || '/categories/all-fittings.jpeg'],
-          category: p.categoryName || cat.name,
-          features: p.features || [],
-          shortDescription: p.shortDescription || '',
-          fullDescription: p.fullDescription || '',
-          whatsappMessage: p.whatsappMessage,
-        }));
+        const isStaticPlaceholder = (u?: string) =>
+          !u ||
+          u.startsWith('/categories/') ||
+          u.includes('all-fittings.jpeg') ||
+          u.includes('bearings.jpg') ||
+          u.includes('filters.jpg');
+
+        const mappedCatProducts = (cat.products || []).map((p: any) => {
+          const rawImgs: string[] = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+          const dynamicOnly = rawImgs.filter((img) => !isStaticPlaceholder(img));
+          const finalImages = dynamicOnly.length > 0 ? dynamicOnly : (rawImgs.length > 0 ? rawImgs : ['/categories/all-fittings.jpeg']);
+          const finalCover = dynamicOnly.length > 0
+            ? (!isStaticPlaceholder(p.image) ? p.image : dynamicOnly[0])
+            : (p.image || finalImages[0] || '/categories/all-fittings.jpeg');
+
+          return {
+            id: p._id ? String(p._id) : p.slug,
+            title: p.title,
+            slug: p.slug || getProductSlug(p.title),
+            image: finalCover,
+            images: finalImages,
+            category: p.categoryName || cat.name,
+            features: p.features || [],
+            shortDescription: p.shortDescription || '',
+            fullDescription: p.fullDescription || '',
+            whatsappMessage: p.whatsappMessage,
+          };
+        });
         const productsList = [...mappedCatProducts, ...staticRemainder];
 
         return {
