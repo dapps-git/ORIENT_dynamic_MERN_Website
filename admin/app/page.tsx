@@ -590,6 +590,122 @@ const INITIAL_PRODUCTS: Product[] = [
   { id: 'ppe-22', title: 'Catridge Filter 6059', slug: 'catridge-filter-6059', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-6059-multi-gas-vapor-filter.png', inStock: true, featured: false },
   { id: 'ppe-23', title: 'Disposable Masks (Box Pack)', slug: 'disposable-masks-box', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-disposable-particulate-respirator-masks-box.png', inStock: true, featured: false },
   { id: 'ppe-24', title: 'Disposable Particulate Masks', slug: 'disposable-masks', division: 'PPE & Safety Equipment', divisionSlug: 'ppe-safety-equipment', category: 'Respiratory Protection', image: '/products/ppe/3m-disposable-particulate-respirator-masks.png', inStock: true, featured: false },
+
+  // Bearings Division Products
+  {
+    id: 'bf-1',
+    title: 'Deep Groove Ball Bearing 6200 Series',
+    slug: 'deep-groove-ball-bearing-6200-series',
+    division: 'Bearings',
+    divisionSlug: 'bearings',
+    category: 'Ball Bearings',
+    image: '/categories/bearings.jpg',
+    images: ['/categories/bearings.jpg'],
+    shortDescription: 'High-speed precision deep groove radial ball bearing with low friction torque for industrial machinery.',
+    fullDescription: 'Orient Energy supplies high-precision single row deep groove ball bearings engineered for high radial and axial loads at extreme rotational speeds. Sourced from world-leading manufacturers including SKF, FAG, NSK, and TIMKEN, these bearings feature vacuum-degassed chrome steel (GCr15), optimized raceway geometry, and quiet C3 internal clearance.',
+    features: [
+      'High Precision Chrome Steel (GCr15) Construction',
+      'Double Rubber Seals (2RS) or Metal Shields (ZZ)',
+      'Low Friction Torque and Quiet C3 Internal Clearance',
+      'Wide Operating Temperature: -30°C to +120°C',
+      'Pre-Lubricated with High-Performance Synthetic Grease',
+    ],
+    innerSections: [
+      {
+        title: 'Precision Radial Raceways & High Speed Capability',
+        content: 'Engineered with uninterrupted deep raceway grooves that deliver superior dynamic load ratings and minimal rolling resistance. Essential for industrial electric motors, centrifugal process pumps, and heavy gearboxes operating across Saudi industrial facilities.',
+        image: '/categories/bearings.jpg',
+      },
+    ],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: 'bf-2',
+    title: 'Heavy Duty Pillow Block Bearing UCP Series',
+    slug: 'heavy-duty-pillow-block-bearing-ucp-series',
+    division: 'Bearings',
+    divisionSlug: 'bearings',
+    category: 'Pillow Blocks',
+    image: '/categories/bearings.jpg',
+    images: ['/categories/bearings.jpg'],
+    shortDescription: 'Cast iron self-aligning pillow block mounted bearing unit with grease fitting for conveyor and drives.',
+    fullDescription: 'Heavy-duty self-aligning pillow block bearing unit featuring an ASTM Class 30 gray cast iron housing (HT200) and a precision spherical chrome steel insert bearing. Features dual set screw shaft locking and a brass grease zerk fitting for convenient on-site relubrication in harsh quarry, mining, and manufacturing environments.',
+    features: [
+      'Heavy Cast Iron Rigid Housing (HT200)',
+      'Self-Aligning Spherical Insert Bearing with Dual Set Screws',
+      'Brass Grease Zerk Nipple for Easy Relubrication',
+      'Dual Contact Rubber Flinger Dust Seals',
+      'High Shock & Vibration Resistance',
+    ],
+    innerSections: [
+      {
+        title: 'Self-Aligning Mounting & Flinger Dust Protection',
+        content: 'Accommodates up to ±2 degrees of initial mounting angular misalignment without binding. Heavy-duty cast iron foot pads absorb shock loads from belt-driven conveyors, aggregate sorting screens, and plant overhaul machinery.',
+        image: '/categories/bearings.jpg',
+      },
+    ],
+    inStock: true,
+    featured: true,
+  },
+
+  // Filters Division Products
+  {
+    id: 'bf-3',
+    title: 'High-Pressure Hydraulic Return Line Filter Element',
+    slug: 'high-pressure-hydraulic-return-line-filter-element',
+    division: 'Filters',
+    divisionSlug: 'filters',
+    category: 'Hydraulic Filters',
+    image: '/categories/filters.jpg',
+    images: ['/categories/filters.jpg'],
+    shortDescription: 'Microglass fiber hydraulic filter element for high-pressure fluid cleanliness in industrial systems.',
+    fullDescription: 'High dirt-holding capacity inorganic microglass filter cartridge engineered to capture particulate contamination down to 3, 5, 10, or 25 microns absolute. Extensively multi-pass tested per ISO 16889 to protect proportional servo valves and hydrostatic pumps from abrasive wear.',
+    features: [
+      'Multi-Layer Inorganic Microglass Depth Media',
+      'Beta Ratio βx(c) >= 1000 per ISO 16889 Multi-Pass Testing',
+      'Collapse Pressure Rating up to 210 Bar (3045 PSI)',
+      'Compatible with Petroleum Oils, Water Glycols & Synthetic Fluids',
+      'Zinc-Plated Steel End Caps with Buna-N O-Ring Seals',
+    ],
+    innerSections: [
+      {
+        title: 'Contamination Control for Severe Hydraulic Power Units',
+        content: 'Provides maximum fluid cleanliness in high-pressure oil & gas HPUs, offshore drilling rig iron roughnecks, and plastic injection molding machinery, preventing expensive downtime.',
+        image: '/categories/filters.jpg',
+      },
+    ],
+    inStock: true,
+    featured: true,
+  },
+  {
+    id: 'bf-4',
+    title: 'Heavy Industrial Machinery Air & Fuel Filter Assembly',
+    slug: 'heavy-industrial-machinery-air-fuel-filter-assembly',
+    division: 'Filters',
+    divisionSlug: 'filters',
+    category: 'Air & Fuel Filters',
+    image: '/categories/filters.jpg',
+    images: ['/categories/filters.jpg'],
+    shortDescription: 'Dual-stage intake air and diesel fuel water separator assembly for heavy industrial engines.',
+    fullDescription: 'Heavy-duty filtration assembly designed for diesel generator sets, heavy earth-moving equipment, and marine propulsion engines. Combines radial seal air filtration with high-efficiency water-separating diesel fuel filtration to ensure clean combustion in dusty desert operations.',
+    features: [
+      'Radial Seal Polyurethane Air End Caps',
+      'Hydrophobic Water Separating Cellulose Media (>= 98% Water Stripping)',
+      'High Particle Separation Efficiency >= 99.9%',
+      'Corrosion-Resistant Coated Steel Housing with Self-Venting Drain',
+      'Spin-On Design for Fast Maintenance Turnarounds',
+    ],
+    innerSections: [
+      {
+        title: 'Desert Dust & Moisture Protection for Heavy Engines',
+        content: 'Specially engineered for extreme Middle East operating conditions where fine silica sand and fuel storage condensation threaten diesel fuel injectors and cylinder liners.',
+        image: '/categories/filters.jpg',
+      },
+    ],
+    inStock: true,
+    featured: true,
+  },
 ];
 
 const INITIAL_DIVISIONS: Division[] = [
@@ -881,9 +997,19 @@ export default function AdminApp() {
     isPublished: true,
   });
 
-  const [blogEditorTab, setBlogEditorTab] = useState<'edit' | 'preview'>('edit');
+  const [blogEditorTab, setBlogEditorTab] = useState<'visual' | 'code' | 'preview'>('visual');
+  const blogVisualEditorRef = useRef<HTMLDivElement>(null);
   const blogContentTextareaRef = useRef<HTMLTextAreaElement>(null);
   const blogImageFileInputRef = useRef<HTMLInputElement>(null);
+
+  // Sync contentEditable innerHTML whenever blog modal opens or editor tab switches to visual
+  useEffect(() => {
+    if (showBlogModal && blogEditorTab === 'visual' && blogVisualEditorRef.current) {
+      if (blogVisualEditorRef.current.innerHTML !== blogForm.introduction) {
+        blogVisualEditorRef.current.innerHTML = blogForm.introduction || '';
+      }
+    }
+  }, [showBlogModal, blogEditorTab]);
 
   const insertFormatIntoBlog = (openTag: string, closeTag = '', defaultText = '') => {
     const textarea = blogContentTextareaRef.current;
@@ -902,22 +1028,88 @@ export default function AdminApp() {
     }, 15);
   };
 
+  const executeBlogFormat = (command: string, value: string | undefined = undefined, tagOpen = '', tagClose = '', defaultText = '') => {
+    if (blogEditorTab === 'visual') {
+      const editor = blogVisualEditorRef.current;
+      if (!editor) return;
+      editor.focus();
+      document.execCommand(command, false, value);
+      setBlogForm((prev) => ({ ...prev, introduction: editor.innerHTML }));
+    } else {
+      insertFormatIntoBlog(tagOpen, tagClose, defaultText);
+    }
+  };
+
   const handleInsertBlogLink = () => {
-    const rawUrl = prompt('Enter URL (e.g. gravoz.com or https://...):', 'https://');
-    if (!rawUrl || !rawUrl.trim()) return;
-    const url = rawUrl.trim();
-    const cleanUrl = url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/') ? url : `https://${url}`;
-    const textarea = blogContentTextareaRef.current;
-    const selected = textarea ? textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) : '';
-    const text = prompt('Enter link text:', selected || cleanUrl) || cleanUrl;
-    insertFormatIntoBlog(`<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">`, '</a>', text);
+    if (blogEditorTab === 'visual') {
+      const editor = blogVisualEditorRef.current;
+      if (!editor) return;
+      editor.focus();
+      const sel = window.getSelection();
+      const selectedText = sel ? sel.toString().trim() : '';
+
+      const promptMsg = selectedText
+        ? `Enter website URL to link "${selectedText}" to (e.g. orient.com or https://...):`
+        : 'Enter website URL (e.g. orient.com or https://...):';
+      const rawUrl = prompt(promptMsg, 'https://');
+      if (!rawUrl || !rawUrl.trim()) return;
+
+      let cleanUrl = rawUrl.trim();
+      if (!cleanUrl.match(/^https?:\/\//i) && !cleanUrl.startsWith('/')) {
+        cleanUrl = `https://${cleanUrl}`;
+      }
+
+      if (selectedText) {
+        document.execCommand('createLink', false, cleanUrl);
+        const links = editor.querySelectorAll(`a[href="${cleanUrl}"]`);
+        links.forEach((a) => {
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+          (a as HTMLElement).style.color = '#2563eb';
+          (a as HTMLElement).style.textDecoration = 'underline';
+          (a as HTMLElement).style.fontWeight = '600';
+        });
+      } else {
+        const text = prompt('Enter link text to display (e.g. "Orient Energy Website" or "hello"):', cleanUrl) || cleanUrl;
+        const linkHtml = `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 600;">${text}</a>&nbsp;`;
+        document.execCommand('insertHTML', false, linkHtml);
+      }
+
+      setBlogForm((prev) => ({ ...prev, introduction: editor.innerHTML }));
+      showToast('Link inserted! Click the link in editor to test route.');
+    } else {
+      const rawUrl = prompt('Enter website URL (e.g. orient.com or https://...):', 'https://');
+      if (!rawUrl || !rawUrl.trim()) return;
+      let cleanUrl = rawUrl.trim();
+      if (!cleanUrl.match(/^https?:\/\//i) && !cleanUrl.startsWith('/')) {
+        cleanUrl = `https://${cleanUrl}`;
+      }
+      const textarea = blogContentTextareaRef.current;
+      const selected = textarea ? textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) : '';
+      const text = prompt('Enter link text to display:', selected || cleanUrl) || cleanUrl;
+      insertFormatIntoBlog(`<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 600;">`, '</a>', text);
+      showToast('Link inserted into HTML code!');
+    }
   };
 
   const handleInsertBlogImageUrl = () => {
-    const url = prompt('Enter Image URL (e.g. /blog/sample.jpg or https://...):', '');
-    if (!url) return;
+    const rawUrl = prompt('Enter Image URL (e.g. /blog/sample.jpg or https://...):', '');
+    if (!rawUrl || !rawUrl.trim()) return;
+    const url = rawUrl.trim();
     const alt = prompt('Enter Image Alt Text (for SEO):', 'Orient Energy Industrial') || 'Orient Energy Industrial';
-    insertFormatIntoBlog(`\n<img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+    const imgHtml = `<p><img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block; box-shadow: 0 4px 16px rgba(0,0,0,0.08);" /></p><p><br/></p>`;
+
+    if (blogEditorTab === 'visual') {
+      const editor = blogVisualEditorRef.current;
+      if (editor) {
+        editor.focus();
+        document.execCommand('insertHTML', false, imgHtml);
+        setBlogForm((prev) => ({ ...prev, introduction: editor.innerHTML }));
+      }
+    } else {
+      insertFormatIntoBlog(`\n<img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+    }
+    showToast('Image inserted!');
   };
 
   const toolbarBtnStyle: React.CSSProperties = {
@@ -944,15 +1136,34 @@ export default function AdminApp() {
 
   const handleBlogContentImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleImageFileChange(e, (uploadedUrl) => {
-      insertFormatIntoBlog(`\n<img src="${uploadedUrl}" alt="Orient Energy Industrial" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
-      showToast('Image inserted into blog article!');
+      if (blogEditorTab === 'visual') {
+        const editor = blogVisualEditorRef.current;
+        if (editor) {
+          editor.focus();
+          const imgHtml = `<p><img src="${uploadedUrl}" alt="Orient Energy Industrial" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block; box-shadow: 0 4px 16px rgba(0,0,0,0.08);" /></p><p><br/></p>`;
+          document.execCommand('insertHTML', false, imgHtml);
+          setBlogForm((prev) => ({ ...prev, introduction: editor.innerHTML }));
+        }
+      } else {
+        insertFormatIntoBlog(`\n<img src="${uploadedUrl}" alt="Orient Energy Industrial" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+      }
+      showToast('Image uploaded and inserted visually into article!');
     });
   };
 
   // Category SEO Content Editor state & handlers
+  const [categoryEditorTab, setCategoryEditorTab] = useState<'visual' | 'code' | 'preview'>('visual');
+  const categoryVisualEditorRef = useRef<HTMLDivElement>(null);
   const categoryContentTextareaRef = useRef<HTMLTextAreaElement>(null);
   const categoryImageFileInputRef = useRef<HTMLInputElement>(null);
-  const [categoryEditorTab, setCategoryEditorTab] = useState<'edit' | 'preview'>('edit');
+
+  useEffect(() => {
+    if (showDivisionModal && categoryEditorTab === 'visual' && categoryVisualEditorRef.current) {
+      if (categoryVisualEditorRef.current.innerHTML !== divisionForm.descriptionText) {
+        categoryVisualEditorRef.current.innerHTML = divisionForm.descriptionText || '';
+      }
+    }
+  }, [showDivisionModal, categoryEditorTab]);
 
   const insertFormatIntoCategory = (openTag: string, closeTag = '', defaultText = '') => {
     const textarea = categoryContentTextareaRef.current;
@@ -971,27 +1182,103 @@ export default function AdminApp() {
     }, 25);
   };
 
+  const executeCategoryFormat = (command: string, value: string | undefined = undefined, tagOpen = '', tagClose = '', defaultText = '') => {
+    if (categoryEditorTab === 'visual') {
+      const editor = categoryVisualEditorRef.current;
+      if (!editor) return;
+      editor.focus();
+      document.execCommand(command, false, value);
+      setDivisionForm((prev) => ({ ...prev, descriptionText: editor.innerHTML }));
+    } else {
+      insertFormatIntoCategory(tagOpen, tagClose, defaultText);
+    }
+  };
+
   const handleInsertCategoryLink = () => {
-    const rawUrl = prompt('Enter URL (e.g. gravoz.com or https://...):', 'https://');
-    if (!rawUrl || !rawUrl.trim()) return;
-    const url = rawUrl.trim();
-    const cleanUrl = url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/') ? url : `https://${url}`;
-    const textarea = categoryContentTextareaRef.current;
-    const selected = textarea ? textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) : '';
-    const text = prompt('Enter link text to display:', selected || cleanUrl) || cleanUrl;
-    insertFormatIntoCategory(`<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline;">`, '</a>', text);
+    if (categoryEditorTab === 'visual') {
+      const editor = categoryVisualEditorRef.current;
+      if (!editor) return;
+      editor.focus();
+      const sel = window.getSelection();
+      const selectedText = sel ? sel.toString().trim() : '';
+
+      const promptMsg = selectedText
+        ? `Enter website URL to link "${selectedText}" to (e.g. orient.com or https://...):`
+        : 'Enter website URL (e.g. orient.com or https://...):';
+      const rawUrl = prompt(promptMsg, 'https://');
+      if (!rawUrl || !rawUrl.trim()) return;
+
+      let cleanUrl = rawUrl.trim();
+      if (!cleanUrl.match(/^https?:\/\//i) && !cleanUrl.startsWith('/')) {
+        cleanUrl = `https://${cleanUrl}`;
+      }
+
+      if (selectedText) {
+        document.execCommand('createLink', false, cleanUrl);
+        const links = editor.querySelectorAll(`a[href="${cleanUrl}"]`);
+        links.forEach((a) => {
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+          (a as HTMLElement).style.color = '#2563eb';
+          (a as HTMLElement).style.textDecoration = 'underline';
+          (a as HTMLElement).style.fontWeight = '600';
+        });
+      } else {
+        const text = prompt('Enter link text to display:', cleanUrl) || cleanUrl;
+        const linkHtml = `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 600;">${text}</a>&nbsp;`;
+        document.execCommand('insertHTML', false, linkHtml);
+      }
+
+      setDivisionForm((prev) => ({ ...prev, descriptionText: editor.innerHTML }));
+      showToast('Link inserted! Click the link to test route.');
+    } else {
+      const rawUrl = prompt('Enter URL (e.g. orient.com or https://...):', 'https://');
+      if (!rawUrl || !rawUrl.trim()) return;
+      let cleanUrl = rawUrl.trim();
+      if (!cleanUrl.match(/^https?:\/\//i) && !cleanUrl.startsWith('/')) {
+        cleanUrl = `https://${cleanUrl}`;
+      }
+      const textarea = categoryContentTextareaRef.current;
+      const selected = textarea ? textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) : '';
+      const text = prompt('Enter link text to display:', selected || cleanUrl) || cleanUrl;
+      insertFormatIntoCategory(`<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 600;">`, '</a>', text);
+      showToast('Link inserted into category description code!');
+    }
   };
 
   const handleInsertCategoryImageUrl = () => {
-    const url = prompt('Enter Image URL (e.g. /categories/sample.jpg or https://...):', '');
-    if (!url) return;
+    const rawUrl = prompt('Enter Image URL (e.g. /categories/sample.jpg or https://...):', '');
+    if (!rawUrl || !rawUrl.trim()) return;
+    const url = rawUrl.trim();
     const alt = prompt('Enter Image Alt Text (for SEO):', divisionForm.name || 'Industrial Category') || 'Industrial Category';
-    insertFormatIntoCategory(`\n<img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+    const imgHtml = `<p><img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block; box-shadow: 0 4px 16px rgba(0,0,0,0.08);" /></p><p><br/></p>`;
+
+    if (categoryEditorTab === 'visual') {
+      const editor = categoryVisualEditorRef.current;
+      if (editor) {
+        editor.focus();
+        document.execCommand('insertHTML', false, imgHtml);
+        setDivisionForm((prev) => ({ ...prev, descriptionText: editor.innerHTML }));
+      }
+    } else {
+      insertFormatIntoCategory(`\n<img src="${url}" alt="${alt}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+    }
+    showToast('Image inserted!');
   };
 
   const handleCategoryContentImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleImageFileChange(e, (uploadedUrl) => {
-      insertFormatIntoCategory(`\n<img src="${uploadedUrl}" alt="${divisionForm.name || 'Industrial Category'}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+      if (categoryEditorTab === 'visual') {
+        const editor = categoryVisualEditorRef.current;
+        if (editor) {
+          editor.focus();
+          const imgHtml = `<p><img src="${uploadedUrl}" alt="${divisionForm.name || 'Industrial Category'}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block; box-shadow: 0 4px 16px rgba(0,0,0,0.08);" /></p><p><br/></p>`;
+          document.execCommand('insertHTML', false, imgHtml);
+          setDivisionForm((prev) => ({ ...prev, descriptionText: editor.innerHTML }));
+        }
+      } else {
+        insertFormatIntoCategory(`\n<img src="${uploadedUrl}" alt="${divisionForm.name || 'Industrial Category'}" style="max-width:100%; height:auto; border-radius:8px; margin: 16px 0; display:block;" />\n`);
+      }
       showToast('Image inserted into category description!');
     });
   };
@@ -1187,38 +1474,74 @@ export default function AdminApp() {
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {
           const allDivs = divisions.length > 0 ? divisions : INITIAL_DIVISIONS;
-          setProducts(
-            data.data.map((p: any) => {
-              let divName = 'Pipe Fittings and Flanges';
-              let divSlug = p.divisionSlug || (p.category && p.category.slug) || 'mechanical-division';
+          const apiProducts = data.data.map((p: any) => {
+            let divName = 'Pipe Fittings and Flanges';
+            let divSlug = p.divisionSlug || (p.category && p.category.slug) || 'mechanical-division';
 
-              if (p.category && typeof p.category === 'object' && p.category.name) {
-                divName = p.category.name;
-              } else if (p.divisionSlug) {
-                const match = allDivs.find((d) => d.slug === p.divisionSlug);
-                if (match) divName = match.name;
-              }
+            if (p.category && typeof p.category === 'object' && p.category.name) {
+              divName = p.category.name;
+            } else if (p.divisionSlug) {
+              const match = allDivs.find((d) => d.slug === p.divisionSlug);
+              if (match) divName = match.name;
+            }
 
-              const imageGallery = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+            const imageGallery = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
 
-              return {
-                id: p._id || p.id,
-                title: p.title,
-                slug: p.slug,
-                division: divName,
-                divisionSlug: divSlug,
-                category: p.categoryName || 'General Industrial',
-                image: p.image || (imageGallery[0]) || '/categories/all-fittings.jpeg',
-                images: imageGallery,
-                shortDescription: p.shortDescription || '',
-                fullDescription: p.fullDescription || '',
-                features: Array.isArray(p.features) ? p.features : [],
-                whatsappMessage: p.whatsappMessage || '',
-                inStock: p.inStock !== false,
-                featured: Boolean(p.isFeatured),
-              };
-            })
-          );
+            return {
+              id: p._id || p.id,
+              title: p.title,
+              slug: p.slug,
+              division: divName,
+              divisionSlug: divSlug,
+              category: p.categoryName || 'General Industrial',
+              image: p.image || (imageGallery[0]) || '/categories/all-fittings.jpeg',
+              images: imageGallery,
+              innerSections: Array.isArray(p.innerSections) && p.innerSections.length > 0 ? p.innerSections : [],
+              specifications: Array.isArray(p.specifications) ? p.specifications : [],
+              shortDescription: p.shortDescription || '',
+              fullDescription: p.fullDescription || '',
+              features: Array.isArray(p.features) ? p.features : [],
+              whatsappMessage: p.whatsappMessage || '',
+              inStock: p.inStock !== false,
+              featured: Boolean(p.isFeatured),
+              sku: p.sku || '',
+              brand: p.brand || 'Orient Energy',
+              seoTitle: p.seoTitle || '',
+              metaDescription: p.metaDescription || '',
+              focusKeyword: p.focusKeyword || '',
+              secondaryKeywords: Array.isArray(p.secondaryKeywords) ? p.secondaryKeywords.join(', ') : (p.secondaryKeywords || ''),
+              imageAlt: p.imageAlt || '',
+              imageTitle: p.imageTitle || '',
+              canonicalUrl: p.canonicalUrl || '',
+            };
+          });
+
+          // Merge: ensure Bearings, Filters & any initial products are preserved
+          const apiSlugs = new Set(apiProducts.map((p: any) => p.slug));
+          const missingDefaults = INITIAL_PRODUCTS.filter((ip) => !apiSlugs.has(ip.slug));
+          setProducts([...apiProducts, ...missingDefaults]);
+
+          // Auto-sync missing default products to backend API
+          missingDefaults.forEach((mp) => {
+            fetch(`${API_BASE}/products`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                title: mp.title,
+                slug: mp.slug,
+                divisionSlug: mp.divisionSlug,
+                categoryName: mp.category,
+                image: mp.image,
+                images: mp.images || [mp.image],
+                shortDescription: mp.shortDescription,
+                fullDescription: mp.fullDescription,
+                features: mp.features,
+                innerSections: mp.innerSections,
+                inStock: mp.inStock,
+                isFeatured: mp.featured,
+              }),
+            }).catch(() => {});
+          });
         }
       })
       .catch(() => {});
@@ -1228,25 +1551,35 @@ export default function AdminApp() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.data && data.data.length > 0) {
-          setDivisions(
-            data.data.map((cat: any) => ({
-              id: cat._id || cat.id,
-              name: cat.name,
-              slug: cat.slug,
-              headline: cat.headline || cat.name,
-              description: cat.description || '',
-              detailedDescriptions: cat.detailedDescriptions || [],
-              image: cat.image || '',
-              subcategoriesTitle: cat.subcategoriesTitle || 'Categories',
-              subcategories: cat.subcategories || [],
-              productRangeTitle: cat.productRangeTitle || 'Product Range',
-              productRange: cat.productRange || [],
-              applicationsTitle: cat.applicationsTitle || 'Applications',
-              applications: cat.applications || [],
-              pills: cat.pills || [],
-              productCount: cat.productCount || 0,
-            }))
-          );
+          const apiCats = data.data.map((cat: any) => ({
+            id: cat._id || cat.id,
+            name: cat.name,
+            slug: cat.slug,
+            headline: cat.headline || cat.name,
+            description: cat.description || '',
+            detailedDescriptions: cat.detailedDescriptions || [],
+            image: cat.image || '',
+            subcategoriesTitle: cat.subcategoriesTitle || 'Categories',
+            subcategories: cat.subcategories || [],
+            productRangeTitle: cat.productRangeTitle || 'Product Range',
+            productRange: cat.productRange || [],
+            applicationsTitle: cat.applicationsTitle || 'Applications',
+            applications: cat.applications || [],
+            pills: cat.pills || [],
+            productCount: cat.productCount || 0,
+          }));
+
+          const apiCatSlugs = new Set(apiCats.map((c: any) => c.slug));
+          const missingDefaultCats = INITIAL_DIVISIONS.filter((d) => !apiCatSlugs.has(d.slug));
+          setDivisions([...apiCats, ...missingDefaultCats]);
+
+          missingDefaultCats.forEach((missing) => {
+            fetch(`${API_BASE}/categories`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(missing),
+            }).catch(() => {});
+          });
         }
       })
       .catch(() => {});
@@ -1923,7 +2256,13 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       conclusion: '',
       isPublished: true,
     });
+    setBlogEditorTab('visual');
     setShowBlogModal(true);
+    setTimeout(() => {
+      if (blogVisualEditorRef.current) {
+        blogVisualEditorRef.current.innerHTML = '';
+      }
+    }, 20);
   };
 
   const openEditBlogModal = (b: Blog) => {
@@ -1943,12 +2282,22 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       conclusion: b.conclusion || '',
       isPublished: b.isPublished,
     });
+    setBlogEditorTab('visual');
     setShowBlogModal(true);
+    setTimeout(() => {
+      if (blogVisualEditorRef.current) {
+        blogVisualEditorRef.current.innerHTML = b.introduction || '';
+      }
+    }, 20);
   };
 
   const handleSaveBlog = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!blogForm.title) return;
+
+    const finalIntroduction = (blogEditorTab === 'visual' && blogVisualEditorRef.current)
+      ? blogVisualEditorRef.current.innerHTML
+      : blogForm.introduction;
 
     const payload = {
       title: blogForm.title,
@@ -1958,7 +2307,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       author: blogForm.author,
       readTime: blogForm.readTime,
       image: blogForm.image || '/blog/blog-1.jpg',
-      introduction: blogForm.introduction,
+      introduction: finalIntroduction,
       fleetTitle: blogForm.fleetTitle,
       fleetPoints: blogForm.fleetPoints.filter((fp) => fp.label || fp.text),
       whyChoosePoints: blogForm.whyChoosePoints.filter((pt) => pt.trim() !== ''),
@@ -2053,8 +2402,14 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       applicationsText: div.applications ? div.applications.join('\n') : '',
       pillsText: div.pills ? div.pills.join(', ') : '',
     });
+    setCategoryEditorTab('visual');
     setDivisionModalTab('general');
     setShowDivisionModal(true);
+    setTimeout(() => {
+      if (categoryVisualEditorRef.current) {
+        categoryVisualEditorRef.current.innerHTML = descriptions || '';
+      }
+    }, 20);
   };
 
   const openAddCategoryModal = () => {
@@ -2074,8 +2429,14 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       applicationsText: '',
       pillsText: '',
     });
+    setCategoryEditorTab('visual');
     setDivisionModalTab('general');
     setShowDivisionModal(true);
+    setTimeout(() => {
+      if (categoryVisualEditorRef.current) {
+        categoryVisualEditorRef.current.innerHTML = '';
+      }
+    }, 20);
   };
 
   const handleDeleteCategory = async (id: string, name: string) => {
@@ -2107,7 +2468,11 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
 
-    const detailedDescriptions = divisionForm.descriptionText
+    const finalDescText = (categoryEditorTab === 'visual' && categoryVisualEditorRef.current)
+      ? categoryVisualEditorRef.current.innerHTML
+      : divisionForm.descriptionText;
+
+    const detailedDescriptions = finalDescText
       .split('\n\n')
       .map((s) => s.trim())
       .filter((s) => s.length > 0);
@@ -2133,8 +2498,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       name: divisionForm.name.trim(),
       slug: cleanSlug,
       headline: divisionForm.headline,
-      description: detailedDescriptions[0] || divisionForm.descriptionText,
-      detailedDescriptions,
+      description: detailedDescriptions[0] || finalDescText,
+      detailedDescriptions: detailedDescriptions.length > 0 ? detailedDescriptions : [finalDescText],
       image: divisionForm.image || '/categories/all-fittings.jpeg',
       subcategoriesTitle: divisionForm.subcategoriesTitle,
       subcategories: validSubcategories,
@@ -5010,47 +5375,92 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                   </div>
 
                   <div className="form-group" style={{ marginBottom: '18px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
                       <label style={{ fontWeight: 600, color: '#334155', margin: 0 }}>
                         Category Content &amp; SEO Rich Text (HTML / Markdown / Links)
                       </label>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ display: 'inline-flex', gap: '4px', backgroundColor: '#f1f5f9', padding: '3px', borderRadius: '6px' }}>
                         <button
                           type="button"
-                          onClick={() => setCategoryEditorTab('edit')}
+                          onClick={() => {
+                            setCategoryEditorTab('visual');
+                            setTimeout(() => {
+                              if (categoryVisualEditorRef.current) {
+                                categoryVisualEditorRef.current.innerHTML = divisionForm.descriptionText || '';
+                              }
+                            }, 10);
+                          }}
                           style={{
                             padding: '4px 10px',
                             fontSize: '0.75rem',
-                            fontWeight: 600,
+                            fontWeight: 700,
                             borderRadius: '4px',
-                            border: '1px solid #cbd5e1',
-                            backgroundColor: categoryEditorTab === 'edit' ? '#2563eb' : '#ffffff',
-                            color: categoryEditorTab === 'edit' ? '#ffffff' : '#475569',
+                            border: 'none',
+                            backgroundColor: categoryEditorTab === 'visual' ? '#2563eb' : 'transparent',
+                            color: categoryEditorTab === 'visual' ? '#ffffff' : '#64748b',
+                            boxShadow: categoryEditorTab === 'visual' ? '0 1px 3px rgba(37,99,235,0.25)' : 'none',
                             cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
                           }}
                         >
-                          ✏️ Edit Content
+                          <span>📝</span> Visual Editor
                         </button>
                         <button
                           type="button"
-                          onClick={() => setCategoryEditorTab('preview')}
+                          onClick={() => {
+                            if (categoryEditorTab === 'visual' && categoryVisualEditorRef.current) {
+                              setDivisionForm((prev) => ({ ...prev, descriptionText: categoryVisualEditorRef.current?.innerHTML || '' }));
+                            }
+                            setCategoryEditorTab('code');
+                          }}
                           style={{
                             padding: '4px 10px',
                             fontSize: '0.75rem',
-                            fontWeight: 600,
+                            fontWeight: 700,
                             borderRadius: '4px',
-                            border: '1px solid #cbd5e1',
-                            backgroundColor: categoryEditorTab === 'preview' ? '#20b512' : '#ffffff',
-                            color: categoryEditorTab === 'preview' ? '#ffffff' : '#475569',
+                            border: 'none',
+                            backgroundColor: categoryEditorTab === 'code' ? '#2563eb' : 'transparent',
+                            color: categoryEditorTab === 'code' ? '#ffffff' : '#64748b',
+                            boxShadow: categoryEditorTab === 'code' ? '0 1px 3px rgba(37,99,235,0.25)' : 'none',
                             cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
                           }}
                         >
-                          👁️ Live SEO Preview
+                          <span>💻</span> HTML Code
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (categoryEditorTab === 'visual' && categoryVisualEditorRef.current) {
+                              setDivisionForm((prev) => ({ ...prev, descriptionText: categoryVisualEditorRef.current?.innerHTML || '' }));
+                            }
+                            setCategoryEditorTab('preview');
+                          }}
+                          style={{
+                            padding: '4px 10px',
+                            fontSize: '0.75rem',
+                            fontWeight: 700,
+                            borderRadius: '4px',
+                            border: 'none',
+                            backgroundColor: categoryEditorTab === 'preview' ? '#20b512' : 'transparent',
+                            color: categoryEditorTab === 'preview' ? '#ffffff' : '#64748b',
+                            boxShadow: categoryEditorTab === 'preview' ? '0 1px 3px rgba(32,181,18,0.25)' : 'none',
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          <span>👁️</span> Live SEO Preview
                         </button>
                       </div>
                     </div>
 
-                    {categoryEditorTab === 'edit' ? (
+                    {categoryEditorTab !== 'preview' ? (
                       <div style={{ border: '1px solid #cbd5e1', borderRadius: '8px', overflow: 'hidden' }}>
                         {/* Rich Formatting Toolbar */}
                         <div
@@ -5068,7 +5478,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           <button
                             type="button"
                             title="Bold"
-                            onClick={() => insertFormatIntoCategory('<strong>', '</strong>', 'Bold text')}
+                            onClick={() => executeCategoryFormat('bold', undefined, '<strong>', '</strong>', 'Bold text')}
                             style={toolbarBtnStyle}
                           >
                             <strong>B</strong>
@@ -5078,8 +5488,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           <button
                             type="button"
                             title="Italic"
-                            onClick={() => insertFormatIntoCategory('<em>', '</em>', 'Italic text')}
-                            style={{ ...toolbarBtnStyle, fontStyle: 'italic' }}
+                            onClick={() => executeCategoryFormat('italic', undefined, '<em>', '</em>', 'Italic text')}
+                            style={{ ...toolbarBtnStyle, fontStyle: 'italic', fontWeight: 700 }}
                           >
                             I
                           </button>
@@ -5088,8 +5498,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           <button
                             type="button"
                             title="Underline"
-                            onClick={() => insertFormatIntoCategory('<u>', '</u>', 'Underlined text')}
-                            style={{ ...toolbarBtnStyle, textDecoration: 'underline' }}
+                            onClick={() => executeCategoryFormat('underline', undefined, '<u>', '</u>', 'Underlined text')}
+                            style={{ ...toolbarBtnStyle, textDecoration: 'underline', fontWeight: 700 }}
                           >
                             U
                           </button>
@@ -5100,7 +5510,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           <button
                             type="button"
                             title="Heading 2"
-                            onClick={() => insertFormatIntoCategory('\n<h2>', '</h2>\n', 'Major Category Heading')}
+                            onClick={() => executeCategoryFormat('formatBlock', '<h2>', '\n<h2>', '</h2>\n', 'Major Category Heading')}
                             style={toolbarBtnStyle}
                           >
                             H2
@@ -5110,7 +5520,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           <button
                             type="button"
                             title="Heading 3"
-                            onClick={() => insertFormatIntoCategory('\n<h3>', '</h3>\n', 'Category Subheading')}
+                            onClick={() => executeCategoryFormat('formatBlock', '<h3>', '\n<h3>', '</h3>\n', 'Category Subheading')}
                             style={toolbarBtnStyle}
                           >
                             H3
@@ -5120,7 +5530,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           <button
                             type="button"
                             title="Paragraph"
-                            onClick={() => insertFormatIntoCategory('\n<p>', '</p>\n', 'Category paragraph description...')}
+                            onClick={() => executeCategoryFormat('formatBlock', '<p>', '\n<p>', '</p>\n', 'Category paragraph description...')}
                             style={toolbarBtnStyle}
                           >
                             &para;
@@ -5133,7 +5543,9 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                             type="button"
                             title="Bullet List"
                             onClick={() =>
-                              insertFormatIntoCategory(
+                              executeCategoryFormat(
+                                'insertUnorderedList',
+                                undefined,
                                 '\n<ul>\n  <li>',
                                 '</li>\n  <li>Second key supply item</li>\n</ul>\n',
                                 'First key supply item'
@@ -5149,35 +5561,25 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                             type="button"
                             title="Insert Link"
                             onClick={handleInsertCategoryLink}
-                            style={toolbarBtnStyle}
+                            style={{ ...toolbarBtnStyle, backgroundColor: '#eff6ff', color: '#1d4ed8', borderColor: '#bfdbfe' }}
                           >
                             🔗 Link
-                          </button>
-
-                          {/* Insert Image URL */}
-                          <button
-                            type="button"
-                            title="Insert Image by URL"
-                            onClick={handleInsertCategoryImageUrl}
-                            style={toolbarBtnStyle}
-                          >
-                            🖼️ Image URL
                           </button>
 
                           {/* Upload Image Button */}
                           <button
                             type="button"
-                            title="Upload and Insert Image"
+                            title="Upload and Insert Image from File"
                             onClick={() => categoryImageFileInputRef.current?.click()}
                             style={{
                               ...toolbarBtnStyle,
-                              backgroundColor: '#eff6ff',
-                              borderColor: '#bfdbfe',
-                              color: '#1d4ed8',
+                              backgroundColor: '#2563eb',
+                              borderColor: '#1d4ed8',
+                              color: '#ffffff',
                               fontWeight: 700,
                             }}
                           >
-                            📁 Upload Image
+                            📁 {isUploadingImage ? 'Uploading...' : 'Upload Image from File'}
                           </button>
                           <input
                             type="file"
@@ -5186,28 +5588,74 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                             accept="image/*"
                             onChange={handleCategoryContentImageUpload}
                           />
+
+                          {/* Insert Image URL */}
+                          <button
+                            type="button"
+                            title="Insert Image by Web URL"
+                            onClick={handleInsertCategoryImageUrl}
+                            style={toolbarBtnStyle}
+                          >
+                            🖼️ Image URL
+                          </button>
                         </div>
 
-                        {/* Editor Textarea */}
-                        <textarea
-                          ref={categoryContentTextareaRef}
-                          rows={6}
-                          placeholder="Describe this category's products, quality standards, supply capabilities, or insert links and images..."
-                          value={divisionForm.descriptionText}
-                          onChange={(e) => setDivisionForm({ ...divisionForm, descriptionText: e.target.value })}
-                          style={{
-                            width: '100%',
-                            padding: '12px 14px',
-                            border: 'none',
-                            outline: 'none',
-                            fontFamily: 'inherit',
-                            fontSize: '0.88rem',
-                            lineHeight: 1.65,
-                            resize: 'vertical',
-                            boxSizing: 'border-box',
-                            color: '#1e293b',
-                          }}
-                        />
+                        {categoryEditorTab === 'visual' ? (
+                          <div
+                            ref={categoryVisualEditorRef}
+                            contentEditable={true}
+                            suppressContentEditableWarning={true}
+                            onInput={(e) => {
+                              setDivisionForm((prev) => ({ ...prev, descriptionText: e.currentTarget.innerHTML }));
+                            }}
+                            onBlur={(e) => {
+                              setDivisionForm((prev) => ({ ...prev, descriptionText: e.currentTarget.innerHTML }));
+                            }}
+                            onClick={(e) => {
+                              const target = e.target as HTMLElement;
+                              const a = target.closest('a');
+                              if (a && a.href) {
+                                if (confirm(`Open link in new tab?\n\nURL: ${a.href}`)) {
+                                  window.open(a.href, '_blank', 'noopener,noreferrer');
+                                }
+                              }
+                            }}
+                            className="category-wysiwyg-canvas"
+                            style={{
+                              minHeight: '180px',
+                              maxHeight: '340px',
+                              overflowY: 'auto',
+                              padding: '14px 16px',
+                              backgroundColor: '#ffffff',
+                              outline: 'none',
+                              fontSize: '0.90rem',
+                              lineHeight: 1.7,
+                              fontFamily: 'inherit',
+                              color: '#0f172a',
+                              boxSizing: 'border-box',
+                            }}
+                          />
+                        ) : (
+                          <textarea
+                            ref={categoryContentTextareaRef}
+                            rows={6}
+                            placeholder="Describe this category's products in HTML..."
+                            value={divisionForm.descriptionText}
+                            onChange={(e) => setDivisionForm({ ...divisionForm, descriptionText: e.target.value })}
+                            style={{
+                              width: '100%',
+                              padding: '12px 14px',
+                              border: 'none',
+                              outline: 'none',
+                              fontFamily: 'monospace',
+                              fontSize: '0.88rem',
+                              lineHeight: 1.65,
+                              resize: 'vertical',
+                              boxSizing: 'border-box',
+                              color: '#1e293b',
+                            }}
+                          />
+                        )}
                       </div>
                     ) : (
                       /* Live SEO Preview */
@@ -5503,49 +5951,92 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
               </div>
 
               <div className="form-group" style={{ marginBottom: '22px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
                   <label style={{ fontWeight: 700, margin: 0, fontSize: '0.90rem', color: '#1e293b' }}>
                     Article Content &amp; SEO Rich Text *
                   </label>
                   <div style={{ display: 'inline-flex', gap: '4px', backgroundColor: '#f1f5f9', padding: '3px', borderRadius: '6px' }}>
                     <button
                       type="button"
-                      onClick={() => setBlogEditorTab('edit')}
+                      onClick={() => {
+                        setBlogEditorTab('visual');
+                        setTimeout(() => {
+                          if (blogVisualEditorRef.current) {
+                            blogVisualEditorRef.current.innerHTML = blogForm.introduction || '';
+                          }
+                        }, 10);
+                      }}
                       style={{
-                        padding: '4px 10px',
+                        padding: '4px 11px',
                         fontSize: '0.75rem',
-                        fontWeight: 600,
+                        fontWeight: 700,
                         border: 'none',
                         borderRadius: '4px',
                         cursor: 'pointer',
-                        backgroundColor: blogEditorTab === 'edit' ? '#ffffff' : 'transparent',
-                        color: blogEditorTab === 'edit' ? '#0f172a' : '#64748b',
-                        boxShadow: blogEditorTab === 'edit' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                        backgroundColor: blogEditorTab === 'visual' ? '#2563eb' : 'transparent',
+                        color: blogEditorTab === 'visual' ? '#ffffff' : '#64748b',
+                        boxShadow: blogEditorTab === 'visual' ? '0 1px 3px rgba(37,99,235,0.25)' : 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
                       }}
                     >
-                      ✏️ Edit Content
+                      <span>📝</span> Visual Editor
                     </button>
                     <button
                       type="button"
-                      onClick={() => setBlogEditorTab('preview')}
+                      onClick={() => {
+                        if (blogEditorTab === 'visual' && blogVisualEditorRef.current) {
+                          setBlogForm((prev) => ({ ...prev, introduction: blogVisualEditorRef.current?.innerHTML || '' }));
+                        }
+                        setBlogEditorTab('code');
+                      }}
                       style={{
-                        padding: '4px 10px',
+                        padding: '4px 11px',
                         fontSize: '0.75rem',
-                        fontWeight: 600,
+                        fontWeight: 700,
                         border: 'none',
                         borderRadius: '4px',
                         cursor: 'pointer',
-                        backgroundColor: blogEditorTab === 'preview' ? '#ffffff' : 'transparent',
-                        color: blogEditorTab === 'preview' ? '#0f172a' : '#64748b',
-                        boxShadow: blogEditorTab === 'preview' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                        backgroundColor: blogEditorTab === 'code' ? '#2563eb' : 'transparent',
+                        color: blogEditorTab === 'code' ? '#ffffff' : '#64748b',
+                        boxShadow: blogEditorTab === 'code' ? '0 1px 3px rgba(37,99,235,0.25)' : 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
                       }}
                     >
-                      👁️ Live SEO Preview
+                      <span>💻</span> HTML Code
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (blogEditorTab === 'visual' && blogVisualEditorRef.current) {
+                          setBlogForm((prev) => ({ ...prev, introduction: blogVisualEditorRef.current?.innerHTML || '' }));
+                        }
+                        setBlogEditorTab('preview');
+                      }}
+                      style={{
+                        padding: '4px 11px',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        backgroundColor: blogEditorTab === 'preview' ? '#20b512' : 'transparent',
+                        color: blogEditorTab === 'preview' ? '#ffffff' : '#64748b',
+                        boxShadow: blogEditorTab === 'preview' ? '0 1px 3px rgba(32,181,18,0.25)' : 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                      }}
+                    >
+                      <span>👁️</span> Live SEO Preview
                     </button>
                   </div>
                 </div>
 
-                {blogEditorTab === 'edit' ? (
+                {blogEditorTab !== 'preview' ? (
                   <div style={{ border: '1px solid #cbd5e1', borderRadius: '8px', overflow: 'hidden' }}>
                     {/* Rich Formatting Toolbar */}
                     <div
@@ -5562,8 +6053,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       {/* Bold */}
                       <button
                         type="button"
-                        title="Bold (wrap in <strong>)"
-                        onClick={() => insertFormatIntoBlog('<strong>', '</strong>', 'Bold text')}
+                        title="Bold (Highlight text and click B)"
+                        onClick={() => executeBlogFormat('bold', undefined, '<strong>', '</strong>', 'Bold text')}
                         style={toolbarBtnStyle}
                       >
                         <strong>B</strong>
@@ -5572,9 +6063,9 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       {/* Italic */}
                       <button
                         type="button"
-                        title="Italic (wrap in <em>)"
-                        onClick={() => insertFormatIntoBlog('<em>', '</em>', 'Italic text')}
-                        style={{ ...toolbarBtnStyle, fontStyle: 'italic' }}
+                        title="Italic (Highlight text and click I)"
+                        onClick={() => executeBlogFormat('italic', undefined, '<em>', '</em>', 'Italic text')}
+                        style={{ ...toolbarBtnStyle, fontStyle: 'italic', fontWeight: 700 }}
                       >
                         I
                       </button>
@@ -5582,9 +6073,9 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       {/* Underline */}
                       <button
                         type="button"
-                        title="Underline (wrap in <u>)"
-                        onClick={() => insertFormatIntoBlog('<u>', '</u>', 'Underlined text')}
-                        style={{ ...toolbarBtnStyle, textDecoration: 'underline' }}
+                        title="Underline (Highlight text and click U)"
+                        onClick={() => executeBlogFormat('underline', undefined, '<u>', '</u>', 'Underlined text')}
+                        style={{ ...toolbarBtnStyle, textDecoration: 'underline', fontWeight: 700 }}
                       >
                         U
                       </button>
@@ -5595,7 +6086,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       <button
                         type="button"
                         title="Heading 2 (Google Major Section)"
-                        onClick={() => insertFormatIntoBlog('\n<h2>', '</h2>\n', 'Major Section Heading')}
+                        onClick={() => executeBlogFormat('formatBlock', '<h2>', '\n<h2>', '</h2>\n', 'Major Section Heading')}
                         style={toolbarBtnStyle}
                       >
                         H2
@@ -5605,7 +6096,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       <button
                         type="button"
                         title="Heading 3 (Google Subheading)"
-                        onClick={() => insertFormatIntoBlog('\n<h3>', '</h3>\n', 'Sub-section Heading')}
+                        onClick={() => executeBlogFormat('formatBlock', '<h3>', '\n<h3>', '</h3>\n', 'Sub-section Heading')}
                         style={toolbarBtnStyle}
                       >
                         H3
@@ -5614,8 +6105,8 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       {/* Paragraph */}
                       <button
                         type="button"
-                        title="Paragraph tag"
-                        onClick={() => insertFormatIntoBlog('\n<p>', '</p>\n', 'Article paragraph text...')}
+                        title="Paragraph"
+                        onClick={() => executeBlogFormat('formatBlock', '<p>', '\n<p>', '</p>\n', 'Article paragraph text...')}
                         style={toolbarBtnStyle}
                       >
                         &para;
@@ -5628,7 +6119,9 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                         type="button"
                         title="Bullet List"
                         onClick={() =>
-                          insertFormatIntoBlog(
+                          executeBlogFormat(
+                            'insertUnorderedList',
+                            undefined,
                             '\n<ul>\n  <li>',
                             '</li>\n  <li>Second key point</li>\n</ul>\n',
                             'First key point'
@@ -5644,7 +6137,9 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                         type="button"
                         title="Numbered List"
                         onClick={() =>
-                          insertFormatIntoBlog(
+                          executeBlogFormat(
+                            'insertOrderedList',
+                            undefined,
                             '\n<ol>\n  <li>',
                             '</li>\n  <li>Second step</li>\n</ol>\n',
                             'First step'
@@ -5660,7 +6155,9 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                         type="button"
                         title="Blockquote"
                         onClick={() =>
-                          insertFormatIntoBlog(
+                          executeBlogFormat(
+                            'formatBlock',
+                            '<blockquote>',
                             '\n<blockquote>',
                             '</blockquote>\n',
                             'Key industry insight or quote...'
@@ -5676,37 +6173,27 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       {/* Insert Link */}
                       <button
                         type="button"
-                        title="Insert Hyperlink"
+                        title="Insert Real Hyperlink (select text like 'hello' and enter URL)"
                         onClick={handleInsertBlogLink}
-                        style={toolbarBtnStyle}
+                        style={{ ...toolbarBtnStyle, backgroundColor: '#eff6ff', color: '#1d4ed8', borderColor: '#bfdbfe' }}
                       >
                         🔗 Link
                       </button>
 
-                      {/* Insert Image URL */}
+                      {/* Upload Image from Computer */}
                       <button
                         type="button"
-                        title="Insert Image by URL"
-                        onClick={handleInsertBlogImageUrl}
-                        style={toolbarBtnStyle}
-                      >
-                        🖼️ Image URL
-                      </button>
-
-                      {/* Upload Image to Blog */}
-                      <button
-                        type="button"
-                        title="Upload Image from Computer into Article"
+                        title="Upload photo from Computer and insert visually into article"
                         onClick={() => blogImageFileInputRef.current?.click()}
                         style={{
                           ...toolbarBtnStyle,
-                          backgroundColor: '#e0f2fe',
-                          color: '#0369a1',
-                          borderColor: '#bae6fd',
-                          fontWeight: 600,
+                          backgroundColor: '#2563eb',
+                          color: '#ffffff',
+                          borderColor: '#1d4ed8',
+                          fontWeight: 700,
                         }}
                       >
-                        📁 {isUploadingImage ? 'Uploading...' : 'Upload Image'}
+                        📁 {isUploadingImage ? 'Uploading...' : 'Upload Image from File'}
                       </button>
                       <input
                         ref={blogImageFileInputRef}
@@ -5715,29 +6202,76 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                         style={{ display: 'none' }}
                         onChange={handleBlogContentImageUpload}
                       />
+
+                      {/* Insert Image URL */}
+                      <button
+                        type="button"
+                        title="Insert Image by Web URL"
+                        onClick={handleInsertBlogImageUrl}
+                        style={toolbarBtnStyle}
+                      >
+                        🖼️ Image URL
+                      </button>
                     </div>
 
-                    <textarea
-                      ref={blogContentTextareaRef}
-                      rows={10}
-                      required
-                      placeholder="Write your article body here... Use the toolbar above to add Bold, Italic, Headings (H2/H3), Links, and Images for maximum Google SEO ranking."
-                      value={blogForm.introduction}
-                      onChange={(e) => setBlogForm({ ...blogForm, introduction: e.target.value })}
-                      style={{
-                        width: '100%',
-                        padding: '12px 14px',
-                        border: 'none',
-                        outline: 'none',
-                        fontSize: '0.88rem',
-                        lineHeight: 1.7,
-                        fontFamily: 'monospace',
-                        color: '#0f172a',
-                        backgroundColor: '#ffffff',
-                        boxSizing: 'border-box',
-                        resize: 'vertical',
-                      }}
-                    />
+                    {blogEditorTab === 'visual' ? (
+                      <div
+                        ref={blogVisualEditorRef}
+                        contentEditable={true}
+                        suppressContentEditableWarning={true}
+                        onInput={(e) => {
+                          setBlogForm((prev) => ({ ...prev, introduction: e.currentTarget.innerHTML }));
+                        }}
+                        onBlur={(e) => {
+                          setBlogForm((prev) => ({ ...prev, introduction: e.currentTarget.innerHTML }));
+                        }}
+                        onClick={(e) => {
+                          const target = e.target as HTMLElement;
+                          const a = target.closest('a');
+                          if (a && a.href) {
+                            if (confirm(`Open link in new tab?\n\nURL: ${a.href}`)) {
+                              window.open(a.href, '_blank', 'noopener,noreferrer');
+                            }
+                          }
+                        }}
+                        className="blog-wysiwyg-canvas"
+                        style={{
+                          minHeight: '260px',
+                          maxHeight: '460px',
+                          overflowY: 'auto',
+                          padding: '16px 18px',
+                          backgroundColor: '#ffffff',
+                          outline: 'none',
+                          fontSize: '0.94rem',
+                          lineHeight: 1.8,
+                          fontFamily: "'Poppins', sans-serif",
+                          color: '#0f172a',
+                          boxSizing: 'border-box',
+                        }}
+                      />
+                    ) : (
+                      <textarea
+                        ref={blogContentTextareaRef}
+                        rows={10}
+                        required
+                        placeholder="Write your article body here in HTML..."
+                        value={blogForm.introduction}
+                        onChange={(e) => setBlogForm({ ...blogForm, introduction: e.target.value })}
+                        style={{
+                          width: '100%',
+                          padding: '12px 14px',
+                          border: 'none',
+                          outline: 'none',
+                          fontSize: '0.88rem',
+                          lineHeight: 1.7,
+                          fontFamily: 'monospace',
+                          color: '#0f172a',
+                          backgroundColor: '#ffffff',
+                          boxSizing: 'border-box',
+                          resize: 'vertical',
+                        }}
+                      />
+                    )}
                   </div>
                 ) : (
                   /* Live SEO Preview */
@@ -5747,29 +6281,30 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       borderRadius: '8px',
                       padding: '18px 20px',
                       backgroundColor: '#ffffff',
-                      minHeight: '220px',
-                      maxHeight: '380px',
+                      minHeight: '260px',
+                      maxHeight: '460px',
                       overflowY: 'auto',
                       boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.05)',
                     }}
                   >
                     <div style={{ fontSize: '0.74rem', color: '#16a34a', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>
-                      ✔ Google SEO Article Content Preview
+                      ✔ Google SEO Article Content Preview (Live Website Styling)
                     </div>
                     {blogForm.introduction ? (
                       <div
-                        style={{ fontSize: '0.88rem', lineHeight: 1.75, color: '#334155' }}
+                        className="blog-wysiwyg-canvas"
+                        style={{ fontSize: '0.92rem', lineHeight: 1.8, color: '#334155' }}
                         dangerouslySetInnerHTML={{ __html: blogForm.introduction }}
                       />
                     ) : (
                       <span style={{ color: '#94a3b8', fontStyle: 'italic', fontSize: '0.84rem' }}>
-                        No content written yet. Switch to &quot;Edit Content&quot; to start drafting your article.
+                        No content written yet. Switch to &quot;Visual Editor&quot; to draft your article with live bold, italics, links, and photos.
                       </span>
                     )}
                   </div>
                 )}
                 <span style={{ fontSize: '0.74rem', color: '#64748b', marginTop: '6px', display: 'block' }}>
-                  Tip: Highlight any text and click <strong>Bold</strong> or <em>Italic</em> to format. Use <strong>H2</strong> for Google Search rankings and <strong>Upload Image</strong> to embed photos directly into your article.
+                  Tip: In Visual Editor, highlight text and click <strong>B</strong> or <em>I</em> for real-time bold &amp; italic. Click <strong>🔗 Link</strong> to turn any word (e.g. &quot;hello&quot;) into a real clickable link, and <strong>📁 Upload Image from File</strong> to insert real pictures directly from your computer.
                 </span>
               </div>
 
@@ -8191,6 +8726,103 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
           background: #f8fafc;
           color: #1e293b;
           border-color: #cbd5e1;
+        }
+
+        /* WYSIWYG Live Visual Canvas Styles */
+        .blog-wysiwyg-canvas strong,
+        .blog-wysiwyg-canvas b,
+        .category-wysiwyg-canvas strong,
+        .category-wysiwyg-canvas b {
+          font-weight: 700 !important;
+          color: #0f172a !important;
+        }
+
+        .blog-wysiwyg-canvas em,
+        .blog-wysiwyg-canvas i,
+        .category-wysiwyg-canvas em,
+        .category-wysiwyg-canvas i {
+          font-style: italic !important;
+        }
+
+        .blog-wysiwyg-canvas u,
+        .category-wysiwyg-canvas u {
+          text-decoration: underline !important;
+        }
+
+        .blog-wysiwyg-canvas a,
+        .category-wysiwyg-canvas a {
+          color: #2563eb !important;
+          text-decoration: underline !important;
+          font-weight: 600 !important;
+          cursor: pointer !important;
+        }
+
+        .blog-wysiwyg-canvas a:hover,
+        .category-wysiwyg-canvas a:hover {
+          color: #1d4ed8 !important;
+        }
+
+        .blog-wysiwyg-canvas h2,
+        .category-wysiwyg-canvas h2 {
+          font-size: 1.35rem !important;
+          font-weight: 700 !important;
+          color: #0f172a !important;
+          margin: 18px 0 8px !important;
+        }
+
+        .blog-wysiwyg-canvas h3,
+        .category-wysiwyg-canvas h3 {
+          font-size: 1.15rem !important;
+          font-weight: 600 !important;
+          color: #0f172a !important;
+          margin: 14px 0 6px !important;
+        }
+
+        .blog-wysiwyg-canvas p,
+        .category-wysiwyg-canvas p {
+          margin: 8px 0 !important;
+        }
+
+        .blog-wysiwyg-canvas ul,
+        .category-wysiwyg-canvas ul {
+          list-style: disc !important;
+          padding-left: 24px !important;
+          margin: 10px 0 !important;
+        }
+
+        .blog-wysiwyg-canvas ol,
+        .category-wysiwyg-canvas ol {
+          list-style: decimal !important;
+          padding-left: 24px !important;
+          margin: 10px 0 !important;
+        }
+
+        .blog-wysiwyg-canvas li,
+        .category-wysiwyg-canvas li {
+          margin: 4px 0 !important;
+        }
+
+        .blog-wysiwyg-canvas blockquote,
+        .category-wysiwyg-canvas blockquote {
+          border-left: 4px solid #20b512 !important;
+          padding-left: 14px !important;
+          margin: 12px 0 !important;
+          color: #475569 !important;
+          font-style: italic !important;
+          background: #f8fafc !important;
+          padding-top: 6px !important;
+          padding-bottom: 6px !important;
+          border-radius: 0 6px 6px 0 !important;
+        }
+
+        .blog-wysiwyg-canvas img,
+        .category-wysiwyg-canvas img {
+          max-width: 100% !important;
+          height: auto !important;
+          border-radius: 8px !important;
+          margin: 14px 0 !important;
+          display: block !important;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
         }
 
         /* Responsive Mobile Styles */
