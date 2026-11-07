@@ -725,68 +725,7 @@ const INITIAL_DIVISIONS: Division[] = [
   { id: 'div-15', name: 'Filters', slug: 'filters', headline: 'Industrial Hydraulic, Oil, Fuel & Air Filtration Systems', description: 'Hydraulic return line filter elements, heavy machinery air and fuel filtration systems.', image: '/categories/filters.jpg', productCount: 2 },
 ];
 
-const INITIAL_BLOGS: Blog[] = [
-  {
-    id: 'b-1',
-    title: 'Reliable Heavy Equipment Rental Across Saudi Arabia',
-    slug: 'reliable-heavy-equipment-rental-across-saudi-arabia',
-    subtitle: 'Why Orient Energy Co. is the Go-To Heavy Equipment Rental Provider in Saudi Arabia',
-    image: '/blog/blog-1.jpg',
-    readTime: '11 Minute Read',
-    date: 'May 23, 2026',
-    author: 'Orient Energy Heavy Equipment Division',
-    category: 'Heavy Equipment Rental',
-    introduction: 'In Saudi Arabia’s fast-paced industrial landscape, having reliable heavy equipment is crucial. Orient Energy Trading Company offers top-tier machinery and equipment rental solutions.',
-    fleetTitle: 'Fleet and Services:',
-    fleetPoints: [
-      { label: 'Extensive Fleet', text: 'Thousands of specialized equipment units, from mobile cranes to bulldozers.' },
-      { label: 'Rental Flexibility', text: 'Options for short-term projects, long-term contracts, and emergency requirements.' },
-    ],
-    whyChoosePoints: ['ISO-certified operations', 'Aramco-certified operators', 'Kingdom-wide coverage'],
-    conclusion: 'For industries seeking dependable heavy machinery, Orient Energy provides a one-stop rental solution.',
-    isPublished: true,
-  },
-  {
-    id: 'b-2',
-    title: 'Comprehensive Industrial Supply Solutions',
-    slug: 'comprehensive-industrial-supply-solutions',
-    subtitle: 'How Orient Energy Supports Industrial Growth Across Saudi Arabia',
-    image: '/blog/blog-2.jpg',
-    readTime: '10 Minute Read',
-    date: 'May 20, 2026',
-    author: 'Orient Energy Procurement Engineering Team',
-    category: 'Industrial Supply',
-    introduction: 'Orient Energy Co. is a leading industrial products supplier in Saudi Arabia, catering to demanding sectors including oil & gas and petrochemical.',
-    fleetTitle: 'Material Portfolio & Capabilities:',
-    fleetPoints: [
-      { label: 'Mechanical & Piping', text: 'Certified valves, flanges, seamless pipes, and specialized alloy fittings.' },
-      { label: 'Electrical & Switchgear', text: 'Explosion-proof enclosures, switchgear, cabling, and sensors.' },
-    ],
-    whyChoosePoints: ['Global OEM vendor relationships', 'Eastern Province fulfillment hubs', 'Dedicated technical engineers'],
-    conclusion: 'By streamlining procurement, Orient Energy empowers Saudi industrial operators.',
-    isPublished: true,
-  },
-  {
-    id: 'b-3',
-    title: 'Integrated Engineering & Procurement Solutions',
-    slug: 'integrated-engineering-procurement-solutions',
-    subtitle: 'Your Partner for Industrial Efficiency and Operational Excellence',
-    image: '/blog/blog-3.jpg',
-    readTime: '9 Minute Read',
-    date: 'May 16, 2026',
-    author: 'Orient Energy Operations & Technical Services',
-    category: 'Engineering & Procurement',
-    introduction: 'Modern industrial infrastructure requires turnkey engineering expertise, synchronized global supply chains, and seasoned on-site coordination.',
-    fleetTitle: 'Integrated Solutions Scope:',
-    fleetPoints: [
-      { label: 'Procurement Engineering', text: 'Translating complex client drawings into audited vendor packages.' },
-      { label: 'Shutdown & Turnaround Support', text: 'Pre-shutdown inventory staging and rapid tool delivery.' },
-    ],
-    whyChoosePoints: ['Over two decades of proven delivery', 'Strict international compliance', 'Single-point accountability'],
-    conclusion: 'Orient Energy delivers integrated solutions that maximize uptime and long-term asset reliability.',
-    isPublished: true,
-  },
-];
+const INITIAL_BLOGS: Blog[] = [];
 
 interface StaticImageItem {
   id: string;
@@ -1648,7 +1587,7 @@ export default function AdminApp() {
     fetch(`${API_BASE}/blogs`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.data && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data)) {
           setBlogs(
             data.data.map((b: any) => ({
               id: b._id || b.id,
@@ -1668,9 +1607,13 @@ export default function AdminApp() {
               isPublished: b.isPublished !== false,
             }))
           );
+        } else {
+          setBlogs([]);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        setBlogs([]);
+      });
 
     // 5. Fetch Brands
     fetch(`${API_BASE}/brands`)

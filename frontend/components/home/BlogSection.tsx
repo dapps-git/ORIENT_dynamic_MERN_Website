@@ -11,27 +11,6 @@ interface BlogPost {
   slug: string;
 }
 
-const POSTS: BlogPost[] = [
-  {
-    title: 'RELIABLE HEAVY EQUIPMENT RENTAL ACROSS SAUDI ARABIA',
-    image: '/blog/blog-1.jpg',
-    readTime: '11 Minute Read',
-    slug: 'reliable-heavy-equipment-rental-across-saudi-arabia',
-  },
-  {
-    title: 'COMPREHENSIVE INDUSTRIAL SUPPLY SOLUTIONS',
-    image: '/blog/blog-2.jpg',
-    readTime: '10 Minute Read',
-    slug: 'comprehensive-industrial-supply-solutions',
-  },
-  {
-    title: 'INTEGRATED ENGINEERING & PROCUREMENT SOLUTIONS',
-    image: '/blog/blog-3.jpg',
-    readTime: '9 Minute Read',
-    slug: 'integrated-engineering-procurement-solutions',
-  },
-];
-
 export default function BlogSection() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -52,12 +31,11 @@ export default function BlogSection() {
             }))
           );
         } else {
-          setBlogs(POSTS);
+          setBlogs([]);
         }
       })
       .catch(() => {
-        // Fallback to static posts only if offline
-        setBlogs(POSTS);
+        setBlogs([]);
       })
       .finally(() => {
         setLoading(false);

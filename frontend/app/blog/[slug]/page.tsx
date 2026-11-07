@@ -19,106 +19,21 @@ interface ArticleData {
   conclusion: string;
 }
 
-const ARTICLES: Record<string, ArticleData> = {
-  'reliable-heavy-equipment-rental-across-saudi-arabia': {
-    title: 'Reliable Heavy Equipment Rental Across Saudi Arabia',
-    subtitle: 'Why Orient Energy Co. is the Go-To Heavy Equipment Rental Provider in Saudi Arabia',
-    image: '/blog/blog-1.jpg',
-    date: 'May 23, 2026',
-    comments: '0 Comment',
-    introduction:
-      'In Saudi Arabia’s fast-paced industrial landscape, having reliable heavy equipment is crucial. Orient Energy Trading Company (OETC) – Rental Equipments Division offers top-tier machinery and equipment rental solutions for construction, oil & gas, and industrial projects.',
-    fleetTitle: 'Fleet and Services:',
-    fleetPoints: [
-      {
-        label: 'Extensive Fleet',
-        text: 'Thousands of specialized equipment units, from mobile cranes and bulldozers to earth-moving machines and rollers.',
-      },
-      {
-        label: 'Rental Flexibility',
-        text: 'Options for short-term projects, long-term contracts, and emergency requirements.',
-      },
-      {
-        label: 'Support Services',
-        text: 'Equipment maintenance, heavy lifting solutions, industrial cleaning, dewatering services, and temporary site facilities.',
-      },
-    ],
-    whyChoosePoints: [
-      'ISO-certified operations and SAP-driven management.',
-      'Aramco-certified operators ensuring safety and expertise.',
-      'Coverage across urban and rural project sites throughout Saudi Arabia.',
-    ],
-    conclusion:
-      'For industries seeking dependable, efficient, and well-maintained heavy machinery, Orient Energy Co. provides a one-stop rental solution tailored to meet the rigorous demands of Saudi Arabia’s industrial sector.',
-  },
-  'comprehensive-industrial-supply-solutions': {
-    title: 'Comprehensive Industrial Supply Solutions',
-    subtitle: 'How Orient Energy Supports Industrial Growth Across Saudi Arabia',
-    image: '/blog/blog-2.jpg',
-    date: 'May 20, 2026',
-    comments: '0 Comment',
-    introduction:
-      'Orient Energy Co. is a leading industrial products supplier in Saudi Arabia, catering to demanding sectors including oil & gas, petrochemical, manufacturing, and energy infrastructure. With rapid project expansions under Vision 2030, timely access to certified materials and mechanical parts is the difference between seamless operations and costly delays.',
-    fleetTitle: 'Material Portfolio & Supply Capabilities:',
-    fleetPoints: [
-      {
-        label: 'Mechanical & Piping',
-        text: 'Certified valves, flanges, seamless pipes, and specialized alloy fittings compliant with ASTM, API, and DIN standards.',
-      },
-      {
-        label: 'Electrical & Instrumentation',
-        text: 'Explosion-proof enclosures, switchgear, cabling, sensors, and telemetry modules for high-hazard processing plants.',
-      },
-      {
-        label: 'Safety & Welding',
-        text: 'Complete PPE assortments, multi-operator welding machines, consumables, and site containment equipment.',
-      },
-    ],
-    whyChoosePoints: [
-      'Global OEM vendor relationships with traceable mill test certificates.',
-      'Robust warehousing and rapid fulfillment hubs in Eastern Province.',
-      'Dedicated technical engineers assisting with product cross-referencing and specifications.',
-    ],
-    conclusion:
-      'By streamlining the procurement lifecycle and maintaining relentless quality control, Orient Energy empowers Saudi industrial operators to execute their most demanding facilities with complete assurance.',
-  },
-  'integrated-engineering-procurement-solutions': {
-    title: 'Integrated Engineering & Procurement Solutions',
-    subtitle: 'Your Partner for Industrial Efficiency and Operational Excellence',
-    image: '/blog/blog-3.jpg',
-    date: 'May 16, 2026',
-    comments: '0 Comment',
-    introduction:
-      'Modern industrial infrastructure requires more than standalone parts—it demands turnkey engineering expertise, synchronized global supply chains, and seasoned on-site coordination. Orient Energy Trading Company bridges the gap between engineering design and project execution.',
-    fleetTitle: 'Integrated Solutions Scope:',
-    fleetPoints: [
-      {
-        label: 'Procurement Engineering',
-        text: 'Translating complex client drawings and data sheets into audited vendor packages with strict quality assurance.',
-      },
-      {
-        label: 'Shutdown & Turnaround Support',
-        text: 'Pre-shutdown inventory staging, rapid tool delivery, emergency plant outage supplies, and critical equipment backups.',
-      },
-      {
-        label: 'Logistics & Compliance',
-        text: 'End-to-end customs clearance, SASO Saber registration compliance, and bonded site delivery throughout the Kingdom.',
-      },
-    ],
-    whyChoosePoints: [
-      'Over two decades of proven delivery across SABIC, Saudi Aramco, and SEC contractor supply chains.',
-      'Strict adherence to international safety, environmental, and quality certifications.',
-      'Single-point accountability from initial RFQ to final site handover.',
-    ],
-    conclusion:
-      'As Saudi Arabia accelerates mega-industrial developments, Orient Energy remains committed to delivering integrated engineering and supply solutions that maximize uptime, safety, and long-term asset reliability.',
-  },
-};
+export const dynamic = 'force-dynamic';
 
-export function generateStaticParams() {
-  return Object.keys(ARTICLES).map((slug) => ({
-    slug,
-  }));
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/blogs`, {
+      cache: 'no-store',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        return data.data.map((b: any) => ({ slug: b.slug }));
+      }
+    }
+  } catch {}
+  return [];
 }
 
 async function getArticle(slug: string): Promise<ArticleData | null> {
@@ -126,34 +41,30 @@ async function getArticle(slug: string): Promise<ArticleData | null> {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/blogs/${slug}`, {
       cache: 'no-store',
     });
-    if (res.status === 404) {
-      // Blog article was explicitly deleted or does not exist
+    if (!res.ok) {
       return null;
     }
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success && data.data) {
-        const b = data.data;
-        return {
-          title: b.title,
-          subtitle: b.subtitle || '',
-          image: b.image || '/blog/blog-1.jpg',
-          date: b.date || 'Orient Energy Insight',
-          comments: '0 Comment',
-          introduction: b.introduction || '',
-          fleetTitle: b.fleetTitle || 'Key Capabilities & Offerings:',
-          fleetPoints: Array.isArray(b.fleetPoints) ? b.fleetPoints : [],
-          whyChoosePoints: Array.isArray(b.whyChoosePoints) ? b.whyChoosePoints : [],
-          conclusion: b.conclusion || '',
-        };
-      }
+    const data = await res.json();
+    if (data.success && data.data) {
+      const b = data.data;
+      return {
+        title: b.title,
+        subtitle: b.subtitle || '',
+        image: b.image || '/blog/blog-1.jpg',
+        date: b.date || 'Orient Energy Insight',
+        comments: '0 Comment',
+        introduction: b.introduction || '',
+        fleetTitle: b.fleetTitle || 'Key Capabilities & Offerings:',
+        fleetPoints: Array.isArray(b.fleetPoints) ? b.fleetPoints : [],
+        whyChoosePoints: Array.isArray(b.whyChoosePoints) ? b.whyChoosePoints : [],
+        conclusion: b.conclusion || '',
+      };
     }
   } catch {
-    // Only if backend is totally unreachable (e.g. offline dev), check static fallback
-    return ARTICLES[slug] || null;
+    return null;
   }
 
-  return ARTICLES[slug] || null;
+  return null;
 }
 
 export async function generateMetadata({
