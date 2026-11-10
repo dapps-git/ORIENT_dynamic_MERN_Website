@@ -55,6 +55,26 @@ const FILTERS_BRANDS_LOGOS = [
   { name: 'MAHLE Industry', logo: '/brands/mahle-logo.svg' },
 ];
 
+async function getCategoryBrands(categoryType: 'bearings' | 'filterings'): Promise<{ name: string; logo: string }[]> {
+  const fallback = categoryType === 'bearings' ? BEARINGS_BRANDS_LOGOS : FILTERS_BRANDS_LOGOS;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/brands?category=${categoryType}&active=true`, {
+      cache: 'no-store',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        const dynamicList = data.data.map((b: any) => ({ name: b.name, logo: b.logo }));
+        const dynNames = new Set(dynamicList.map((d: any) => (d.name || '').toLowerCase().trim()));
+        const dynLogos = new Set(dynamicList.map((d: any) => (d.logo || '').toLowerCase().trim()));
+        const remainder = fallback.filter((f) => !dynNames.has(f.name.toLowerCase().trim()) && !dynLogos.has(f.logo.toLowerCase().trim()));
+        return [...dynamicList, ...remainder];
+      }
+    }
+  } catch {}
+  return fallback;
+}
+
 async function getDivisionAsync(slug: string): Promise<DivisionData | undefined> {
   const resolvedId = SLUG_ALIASES[slug] || slug;
   const staticDiv = DIVISIONS_DATA.find((d) => d.id === resolvedId);
@@ -221,7 +241,11 @@ export default async function ProductDivisionInnerPage({
 
   const isBearings = division.id === 'bearings' || slug === 'bearings' || slug === 'bearings-and-filters' || slug === 'bairing-and-filters' || slug === 'bearing';
   const isFilters = division.id === 'filters' || slug === 'filters' || slug === 'filter';
-  const categoryBrands = isBearings ? BEARINGS_BRANDS_LOGOS : isFilters ? FILTERS_BRANDS_LOGOS : null;
+  const categoryBrands = isBearings
+    ? await getCategoryBrands('bearings')
+    : isFilters
+    ? await getCategoryBrands('filterings')
+    : null;
 
   return (
     <>

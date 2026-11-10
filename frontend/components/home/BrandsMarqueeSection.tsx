@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -43,8 +44,23 @@ const MARQUEE_LOGOS: string[] = [
 ];
 
 export default function BrandsMarqueeSection() {
+  const [logos, setLogos] = useState<string[]>(MARQUEE_LOGOS);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/brands?active=true`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+          const dynamicLogos = data.data.map((b: any) => b.logo).filter(Boolean);
+          const all = Array.from(new Set([...dynamicLogos, ...MARQUEE_LOGOS]));
+          setLogos(all);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Duplicate for seamless infinite train scroll
-  const marqueeItems = [...MARQUEE_LOGOS, ...MARQUEE_LOGOS];
+  const marqueeItems = [...logos, ...logos];
 
   return (
     <section

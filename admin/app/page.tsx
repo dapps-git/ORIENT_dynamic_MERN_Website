@@ -101,16 +101,154 @@ interface Brand {
   isActive?: boolean;
 }
 
+function extractBrandNameFromUrl(url: string): string {
+  if (!url) return 'Partner Brand';
+  try {
+    const filename = url.split('/').pop()?.split('?')[0] || '';
+    const clean = filename
+      .replace(/\.[^/.]+$/, '')
+      .replace(/[-_]/g, ' ')
+      .replace(/\b\d+x\d+\b/gi, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!clean) return 'Partner Brand';
+    return clean
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  } catch {
+    return 'Partner Brand';
+  }
+}
+
+const DEFAULT_GENERAL_BRAND_LOGOS: string[] = [
+  '/brandslogo/3M-01-1-768x777.png',
+  '/brandslogo/3M-03-01-768x770.jpg',
+  '/brandslogo/3M-03-02-768x769.jpg',
+  '/brandslogo/3M-03-03-768x769.jpg',
+  '/brandslogo/3M-03-04-768x769.jpg',
+  '/brandslogo/3M-03-05-768x770.jpg',
+  '/brandslogo/3M-03-06-768x769.jpg',
+  '/brandslogo/3M-03-07-768x769.jpg',
+  '/brandslogo/3M-03-09-768x770.jpg',
+  '/brandslogo/3M-03-10-768x769.jpg',
+  '/brandslogo/3M-03-12-768x769.jpg',
+  '/brandslogo/3M-03-14-768x769.jpg',
+  '/brandslogo/3M-03-15-768x769.jpg',
+  '/brandslogo/3M-03-16-768x770.jpg',
+  '/brandslogo/3M-03-17-768x769.jpg',
+  '/brandslogo/3M-03-18-768x769.jpg',
+  '/brandslogo/3M-03-19-768x769.jpg',
+  '/brandslogo/3M-03-21-768x769.jpg',
+  '/brandslogo/3M-03-22-768x770.jpg',
+  '/brandslogo/3M-03-23-768x769.jpg',
+  '/brandslogo/3M-03-24-768x769.jpg',
+  '/brandslogo/3M-03-768x777.png',
+  '/brandslogo/3M-04-768x777.png',
+  '/brandslogo/3M-05-768x777.png',
+  '/brandslogo/3M-06-1-768x777.png',
+  '/brandslogo/3M-07-768x777.png',
+  '/brandslogo/3M-08-768x777.png',
+  '/brandslogo/3M-09-768x777.png',
+  '/brandslogo/3M-10-768x777.png',
+  '/brandslogo/3M-11-768x777.png',
+  '/brandslogo/3M-12-768x777.png',
+  '/brandslogo/3M-13-768x777.png',
+  '/brandslogo/3M-14-768x777.png',
+  '/brandslogo/3M-15-768x777.png',
+  '/brandslogo/3M-16-1-768x777.png',
+  '/brandslogo/3M-17-768x777.png',
+  '/brandslogo/3M-18-1-768x777.png',
+  '/brandslogo/3M-19-768x777.png',
+  '/brandslogo/3M-20-768x777.png',
+  '/brandslogo/3M-22-768x777.png',
+  '/brandslogo/3M-23-768x777.png',
+  '/brandslogo/3M-25-768x777.png',
+  '/brandslogo/3M-27-768x777.png',
+  '/brandslogo/3M-28-1-768x777.png',
+  '/brandslogo/3M-32-768x777.png',
+  '/brandslogo/3M-33-768x777.png',
+  '/brandslogo/3M-34-768x777.png',
+  '/brandslogo/3M-35-768x777.png',
+  '/brandslogo/3M-37-768x777.png',
+  '/brandslogo/3M-39-01-1-768x777.jpg',
+  '/brandslogo/3M-39-02-1-768x777.jpg',
+  '/brandslogo/3M-39-04-768x777.jpg',
+  '/brandslogo/3M-39-06-768x777.jpg',
+  '/brandslogo/3M-39-07-768x777.jpg',
+  '/brandslogo/3M-39-08-768x777.jpg',
+  '/brandslogo/3M-39-09-768x777.jpg',
+  '/brandslogo/3M-39-10-768x777.jpg',
+  '/brandslogo/3M-39-11-768x777.jpg',
+  '/brandslogo/3M-39-14-768x777.jpg',
+  '/brandslogo/3M-39-16-768x777.jpg',
+  '/brandslogo/3M-39-17-768x777.jpg',
+  '/brandslogo/3M-39-19-768x777.jpg',
+  '/brandslogo/3M-39-20-768x777.jpg',
+  '/brandslogo/3M-39-23-768x777.jpg',
+  '/brandslogo/3M-39-24-768x777.jpg',
+  '/brandslogo/3M-39-25-768x777.jpg',
+  '/brandslogo/3M-39-26-768x777.jpg',
+  '/brandslogo/3M-39-27-768x777.jpg',
+  '/brandslogo/3M-39-28-768x777.jpg',
+  '/brandslogo/3M-39-29-768x777.jpg',
+  '/brandslogo/3M-39-30-768x777.jpg',
+  '/brandslogo/3M-39-31-768x777.jpg',
+  '/brandslogo/3M-39-32-768x777.jpg',
+  '/brandslogo/3M-39-33-768x777.jpg',
+  '/brandslogo/3M-39-34-768x777.jpg',
+  '/brandslogo/3M-39-35-768x777.jpg',
+  '/brandslogo/3M-39-36-768x777.jpg',
+  '/brandslogo/3M-39-37-768x777.jpg',
+  '/brandslogo/3M-39-38-768x777.jpg',
+  '/brandslogo/3M-39-40-768x777.jpg',
+  '/brandslogo/3M-39-41-768x777.jpg',
+  '/brandslogo/3M-39-42-768x777.jpg',
+  '/brandslogo/3M-39-43-768x777.jpg',
+  '/brandslogo/3M-39-44-768x777.jpg',
+  '/brandslogo/3M-39-46-768x777.jpg',
+  '/brandslogo/3M-39-48-768x777.jpg',
+  '/brandslogo/3M-39-49-768x777.jpg',
+  '/brandslogo/3M-41-768x777.png',
+  '/brandslogo/3M-43-768x777%20(1).png',
+  '/brandslogo/3M-45-768x777.png',
+  '/brandslogo/3M-48-768x777.png',
+  '/brandslogo/3M-49-768x777.png',
+  '/brandslogo/3M-50-1-768x777.png',
+  '/brandslogo/logo-hh-01-768x769.jpg',
+  '/brandslogo/logo-hh-02-768x769.jpg',
+];
+
 const INITIAL_BRANDS: Brand[] = [
-  { _id: 'b-1', name: 'SKF', category: 'bearings', logo: '/brands/skf-logo.svg', websiteUrl: 'https://www.skf.com', description: 'World leader in rolling bearings and seals', order: 1, isActive: true },
-  { _id: 'b-2', name: 'FAG (Schaeffler)', category: 'bearings', logo: '/brands/fag-logo.svg', websiteUrl: 'https://www.schaeffler.com', description: 'Precision ball and roller bearings', order: 2, isActive: true },
-  { _id: 'b-3', name: 'NSK', category: 'bearings', logo: '/brands/nsk-logo.svg', websiteUrl: 'https://www.nsk.com', description: 'High-precision motion & control bearings', order: 3, isActive: true },
-  { _id: 'b-4', name: 'TIMKEN', category: 'bearings', logo: '/brands/timken-logo.svg', websiteUrl: 'https://www.timken.com', description: 'Engineered tapered roller bearings', order: 4, isActive: true },
-  { _id: 'b-5', name: 'NTN Bearings', category: 'bearings', logo: '/brands/ntn-logo.svg', websiteUrl: 'https://www.ntnglobal.com', description: 'Global precision bearings', order: 5, isActive: true },
-  { _id: 'b-6', name: 'KOYO (JTEKT)', category: 'bearings', logo: '/brands/koyo-logo.svg', websiteUrl: 'https://koyo.jtekt.co.jp/en/', description: 'Heavy machinery and automotive bearings', order: 6, isActive: true },
-  { _id: 'b-7', name: 'Donaldson Filtration Solutions', category: 'filterings', logo: '/brands/donaldson-logo.svg', websiteUrl: 'https://www.donaldson.com', description: 'Engine and industrial filtration systems', order: 1, isActive: true },
-  { _id: 'b-8', name: 'Parker Filtration', category: 'filterings', logo: '/brands/parker-filtration-logo.svg', websiteUrl: 'https://www.parker.com', description: 'Advanced hydraulic and process filtration', order: 2, isActive: true },
-  { _id: 'b-9', name: 'Fleetguard', category: 'filterings', logo: '/brands/fleetguard-logo.svg', websiteUrl: 'https://www.cumminsfiltration.com', description: 'Heavy-duty Cummins filtration', order: 3, isActive: true },
+  // Bearings (8 brands)
+  { _id: 'b-brg-1', name: 'SKF', category: 'bearings', logo: '/brands/skf-logo.svg', order: 1, isActive: true },
+  { _id: 'b-brg-2', name: 'FAG (Schaeffler)', category: 'bearings', logo: '/brands/fag-logo.svg', order: 2, isActive: true },
+  { _id: 'b-brg-3', name: 'NSK', category: 'bearings', logo: '/brands/nsk-logo.svg', order: 3, isActive: true },
+  { _id: 'b-brg-4', name: 'TIMKEN', category: 'bearings', logo: '/brands/timken-logo.svg', order: 4, isActive: true },
+  { _id: 'b-brg-5', name: 'NTN Bearings', category: 'bearings', logo: '/brands/ntn-logo.svg', order: 5, isActive: true },
+  { _id: 'b-brg-6', name: 'KOYO (JTEKT)', category: 'bearings', logo: '/brands/koyo-logo.svg', order: 6, isActive: true },
+  { _id: 'b-brg-7', name: 'NACHI', category: 'bearings', logo: '/brands/nachi-logo.svg', order: 7, isActive: true },
+  { _id: 'b-brg-8', name: 'INA', category: 'bearings', logo: '/brands/ina-logo.svg', order: 8, isActive: true },
+
+  // Filterings (8 brands)
+  { _id: 'b-flt-1', name: 'Donaldson Filtration Solutions', category: 'filterings', logo: '/brands/donaldson-logo.svg', order: 1, isActive: true },
+  { _id: 'b-flt-2', name: 'Parker Filtration', category: 'filterings', logo: '/brands/parker-filtration-logo.svg', order: 2, isActive: true },
+  { _id: 'b-flt-3', name: 'Fleetguard', category: 'filterings', logo: '/brands/fleetguard-logo.svg', order: 3, isActive: true },
+  { _id: 'b-flt-4', name: 'MANN-FILTER', category: 'filterings', logo: '/brands/mann-filter-logo.svg', order: 4, isActive: true },
+  { _id: 'b-flt-5', name: 'Baldwin Filters', category: 'filterings', logo: '/brands/baldwin-logo.svg', order: 5, isActive: true },
+  { _id: 'b-flt-6', name: 'Pall Corporation', category: 'filterings', logo: '/brands/pall-logo.svg', order: 6, isActive: true },
+  { _id: 'b-flt-7', name: 'HYDAC', category: 'filterings', logo: '/brands/hydac-logo.svg', order: 7, isActive: true },
+  { _id: 'b-flt-8', name: 'MAHLE Industry', category: 'filterings', logo: '/brands/mahle-logo.svg', order: 8, isActive: true },
+
+  // General Brands (95 brands from /brandslogo/)
+  ...DEFAULT_GENERAL_BRAND_LOGOS.map((path, idx) => ({
+    _id: `b-gen-${idx + 1}`,
+    name: extractBrandNameFromUrl(path),
+    category: 'general' as const,
+    logo: path,
+    order: idx + 1,
+    isActive: true,
+  })),
 ];
 
 const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'https://orient-dynamic-mern-website.onrender.com/api').replace(/\/+$/, '');
@@ -1619,8 +1757,14 @@ export default function AdminApp() {
     fetch(`${API_BASE}/brands`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
-          setBrands(data.data);
+        if (data.success && Array.isArray(data.data)) {
+          const backendBrands: Brand[] = data.data;
+          const existingLogos = new Set(backendBrands.map((b) => (b.logo || '').toLowerCase().trim()));
+          const existingNames = new Set(backendBrands.map((b) => (b.name || '').toLowerCase().trim()));
+          const missingDefaults = INITIAL_BRANDS.filter(
+            (def) => !existingLogos.has(def.logo.toLowerCase().trim()) && !existingNames.has(def.name.toLowerCase().trim())
+          );
+          setBrands([...backendBrands, ...missingDefaults]);
         }
       })
       .catch(() => {});
@@ -2708,10 +2852,10 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     setBrandForm({
       name: '',
       category: defaultCat,
-      logo: defaultCat === 'bearings' ? '/brands/skf-logo.svg' : '/brands/donaldson-logo.svg',
+      logo: '',
       websiteUrl: '',
       description: '',
-      order: brands.length + 1,
+      order: 0,
       isActive: true,
     });
     setShowBrandModal(true);
@@ -2733,10 +2877,26 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
 
   const handleSaveBrand = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!brandForm.name.trim() || !brandForm.logo.trim()) {
-      showToast('Please provide brand name and logo URL');
+    const logoUrl = brandForm.logo.trim();
+    if (!logoUrl) {
+      showToast('Please upload or enter a brand logo image');
       return;
     }
+
+    const cleanName = brandForm.name?.trim() || extractBrandNameFromUrl(logoUrl);
+    const cleanCategory = (['bearings', 'filterings', 'general'].includes(brandForm.category)
+      ? brandForm.category
+      : 'general') as 'general' | 'bearings' | 'filterings';
+
+    const payload = {
+      name: cleanName,
+      category: cleanCategory,
+      logo: logoUrl,
+      websiteUrl: '',
+      description: '',
+      order: 0,
+      isActive: true,
+    };
 
     const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
     const headers: any = { 'Content-Type': 'application/json' };
@@ -2747,7 +2907,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
         const res = await fetch(`${API_BASE}/brands/${editingBrand._id}`, {
           method: 'PUT',
           headers,
-          body: JSON.stringify(brandForm),
+          body: JSON.stringify(payload),
         });
         if (res.ok) {
           const resData = await res.json();
@@ -2761,7 +2921,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       } catch {}
 
       setBrands((prev) =>
-        prev.map((b) => (b._id === editingBrand._id ? { ...b, ...brandForm } : b))
+        prev.map((b) => (b._id === editingBrand._id ? { ...b, ...payload } : b))
       );
       showToast('Brand logo updated');
       setShowBrandModal(false);
@@ -2770,7 +2930,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
         const res = await fetch(`${API_BASE}/brands`, {
           method: 'POST',
           headers,
-          body: JSON.stringify(brandForm),
+          body: JSON.stringify(payload),
         });
         if (res.ok) {
           const resData = await res.json();
@@ -2783,10 +2943,10 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
 
       const newBrand: Brand = {
         _id: `b-${Date.now()}`,
-        ...brandForm,
+        ...payload,
       };
       setBrands((prev) => [newBrand, ...prev]);
-      showToast('Brand logo added');
+      showToast('Brand logo added successfully!');
       setShowBrandModal(false);
     }
   };
@@ -6581,36 +6741,102 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
         </div>
       )}
 
-      {/* BRAND MODAL */}
+      {/* BRAND MODAL (Clean Centered Popup - Only Category & Logo) */}
       {showBrandModal && (
-        <div className="modal-overlay">
-          <div className="modal-box" style={{ maxWidth: '540px' }}>
-            <div className="modal-header">
-              <h2>{editingBrand ? 'Edit Brand Logo' : 'Add New Brand Logo'}</h2>
-              <button type="button" onClick={() => setShowBrandModal(false)} className="btn-close">
+        <div
+          className="modal-backdrop"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.70)',
+            backdropFilter: 'blur(5px)',
+            WebkitBackdropFilter: 'blur(5px)',
+            zIndex: 99999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowBrandModal(false);
+          }}
+        >
+          <div
+            className="modal-card"
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              width: '100%',
+              maxWidth: '480px',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+              border: '1px solid #e2e8f0',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              margin: 'auto',
+            }}
+          >
+            <div
+              className="modal-header"
+              style={{
+                padding: '20px 24px',
+                borderBottom: '1px solid #f1f5f9',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                  {editingBrand ? 'Edit Brand Logo' : 'Add Brand Logo'}
+                </h2>
+                <span style={{ fontSize: '0.78rem', color: '#64748b', marginTop: '2px', display: 'block' }}>
+                  Select the category and upload the logo image.
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowBrandModal(false)}
+                className="btn-close"
+                style={{
+                  background: '#f1f5f9',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '32px',
+                  height: '32px',
+                  fontSize: '1.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#64748b',
+                  lineHeight: 1,
+                }}
+              >
                 &times;
               </button>
             </div>
 
-            <form onSubmit={handleSaveBrand} className="modal-form">
-              <div className="form-group">
-                <label>Brand Name *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. SKF, Donaldson, Timken"
-                  value={brandForm.name}
-                  onChange={(e) => setBrandForm({ ...brandForm, name: e.target.value })}
-                  className="input-field"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Brand Category *</label>
+            <form onSubmit={handleSaveBrand} className="modal-form" style={{ padding: '24px' }}>
+              {/* Field 1: Brand Category */}
+              <div className="form-group" style={{ marginBottom: '18px' }}>
+                <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 600, color: '#0f172a', marginBottom: '6px' }}>
+                  Brand Category *
+                </label>
                 <select
                   value={brandForm.category}
                   onChange={(e) => setBrandForm({ ...brandForm, category: e.target.value as any })}
                   className="input-field"
+                  style={{
+                    width: '100%',
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '0.88rem',
+                    backgroundColor: '#ffffff',
+                    color: '#0f172a',
+                    fontWeight: 500,
+                  }}
                 >
                   <option value="bearings">Bearings (Rotating &amp; Precision Equipment)</option>
                   <option value="filterings">Filterings (Industrial &amp; Hydraulic Filters)</option>
@@ -6618,17 +6844,27 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                 </select>
               </div>
 
-              <div className="form-group">
-                <label>Brand Logo Image *</label>
-                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              {/* Field 2: Brand Logo Image (Upload + URL) */}
+              <div className="form-group" style={{ marginBottom: '14px' }}>
+                <label style={{ display: 'block', fontSize: '0.84rem', fontWeight: 600, color: '#0f172a', marginBottom: '6px' }}>
+                  Brand Logo Image *
+                </label>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                   <input
                     type="text"
                     required
-                    placeholder="e.g. /brands/skf-logo.svg or Cloudinary URL"
+                    placeholder="e.g. /brands/skf-logo.svg or upload below"
                     value={brandForm.logo}
-                    onChange={(e) => setBrandForm({ ...brandForm, logo: e.target.value })}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setBrandForm((prev) => ({
+                        ...prev,
+                        logo: val,
+                        name: prev.name || extractBrandNameFromUrl(val),
+                      }));
+                    }}
                     className="input-field"
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, padding: '10px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.84rem' }}
                   />
                   <label
                     style={{
@@ -6636,13 +6872,16 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       color: '#ffffff',
                       padding: '10px 14px',
                       borderRadius: '8px',
-                      fontSize: '0.80rem',
+                      fontSize: '0.82rem',
                       fontWeight: 600,
                       cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
                       whiteSpace: 'nowrap',
                     }}
                   >
-                    {isUploadingImage ? 'Uploading...' : '📁 Upload'}
+                    <span>{isUploadingImage ? 'Uploading...' : '📁 Upload Logo'}</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -6650,7 +6889,11 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                       disabled={isUploadingImage}
                       onChange={(e) =>
                         handleImageFileChange(e, (url) => {
-                          setBrandForm((prev) => ({ ...prev, logo: url }));
+                          setBrandForm((prev) => ({
+                            ...prev,
+                            logo: url,
+                            name: prev.name || extractBrandNameFromUrl(url),
+                          }));
                         })
                       }
                     />
@@ -6658,70 +6901,77 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                 </div>
               </div>
 
-              {/* Live Preview */}
+              {/* Logo Live Preview */}
               {brandForm.logo && (
-                <div style={{ padding: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '8px', textAlign: 'center', marginBottom: '14px' }}>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginBottom: '6px' }}>Logo Live Preview:</div>
+                <div
+                  style={{
+                    padding: '16px',
+                    background: '#f8fafc',
+                    border: '1.5px dashed #cbd5e1',
+                    borderRadius: '10px',
+                    textAlign: 'center',
+                    marginBottom: '18px',
+                  }}
+                >
+                  <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '8px' }}>
+                    Logo Live Preview
+                  </div>
                   <div style={{ height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img
                       src={brandForm.logo}
                       alt="Brand preview"
                       style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
+                      }}
                     />
                   </div>
                 </div>
               )}
 
-              <div className="form-group">
-                <label>Website URL (optional)</label>
-                <input
-                  type="url"
-                  placeholder="https://www.example.com"
-                  value={brandForm.websiteUrl}
-                  onChange={(e) => setBrandForm({ ...brandForm, websiteUrl: e.target.value })}
-                  className="input-field"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Short Description (optional)</label>
-                <textarea
-                  rows={2}
-                  placeholder="e.g. World leader in rolling bearings, seals, and lubrication..."
-                  value={brandForm.description}
-                  onChange={(e) => setBrandForm({ ...brandForm, description: e.target.value })}
-                  className="input-field"
-                />
-              </div>
-
-              <div className="form-row">
-                <div className="form-group" style={{ flex: 1 }}>
-                  <label>Display Sort Order</label>
-                  <input
-                    type="number"
-                    value={brandForm.order}
-                    onChange={(e) => setBrandForm({ ...brandForm, order: Number(e.target.value) })}
-                    className="input-field"
-                  />
-                </div>
-                <div className="form-group" style={{ flex: 1, display: 'flex', alignItems: 'center', marginTop: '24px' }}>
-                  <label className="checkbox-label" style={{ margin: 0 }}>
-                    <input
-                      type="checkbox"
-                      checked={brandForm.isActive}
-                      onChange={(e) => setBrandForm({ ...brandForm, isActive: e.target.checked })}
-                    />
-                    <span>Active on Live Website</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="modal-actions">
-                <button type="button" onClick={() => setShowBrandModal(false)} className="btn-cancel">
+              <div
+                className="modal-actions"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: '10px',
+                  marginTop: '10px',
+                  paddingTop: '16px',
+                  borderTop: '1px solid #f1f5f9',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => setShowBrandModal(false)}
+                  className="btn-cancel"
+                  style={{
+                    padding: '9px 18px',
+                    borderRadius: '8px',
+                    border: '1px solid #cbd5e1',
+                    background: '#ffffff',
+                    color: '#475569',
+                    fontWeight: 600,
+                    fontSize: '0.85rem',
+                    cursor: 'pointer',
+                  }}
+                >
                   Cancel
                 </button>
-                <button type="submit" className="btn-primary-action">
-                  {editingBrand ? 'Save Brand Changes' : 'Add Brand Logo'}
+                <button
+                  type="submit"
+                  className="btn-primary-action"
+                  style={{
+                    padding: '9px 20px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: '#005ea6',
+                    color: '#ffffff',
+                    fontWeight: 600,
+                    fontSize: '0.85rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {editingBrand ? 'Save Brand Logo' : 'Add Brand Logo'}
                 </button>
               </div>
             </form>

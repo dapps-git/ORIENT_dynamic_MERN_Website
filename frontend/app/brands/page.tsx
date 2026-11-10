@@ -142,10 +142,12 @@ const FALLBACK_FILTERINGS: BrandItem[] = [
   { name: 'MAHLE Industry', category: 'filterings', logo: '/brands/mahle-logo.svg', websiteUrl: 'https://www.mahle.com', description: 'Industrial filtration for process fluids, hydraulic power, and dust collection.' },
 ];
 
+export const dynamic = 'force-dynamic';
+
 async function fetchDynamicBrands(): Promise<BrandItem[]> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/brands?active=true`, {
-      next: { revalidate: 30 },
+      cache: 'no-store',
     });
     if (res.ok) {
       const json = await res.json();
@@ -162,16 +164,28 @@ async function fetchDynamicBrands(): Promise<BrandItem[]> {
 export default async function BrandsPage() {
   const dynamicBrands = await fetchDynamicBrands();
 
-  // Dynamic + Fallback Bearings
+  // Dynamic + Fallback Bearings (New dynamic brands appear first)
   const dynamicBearings = dynamicBrands.filter((b) => b.category === 'bearings');
-  const bearingsList = dynamicBearings.length > 0 ? dynamicBearings : FALLBACK_BEARINGS;
+  const dynamicBearingsNames = new Set(dynamicBearings.map((b) => (b.name || '').toLowerCase().trim()));
+  const dynamicBearingsLogos = new Set(dynamicBearings.map((b) => (b.logo || '').toLowerCase().trim()));
+  const bearingsRemainder = FALLBACK_BEARINGS.filter(
+    (b) => !dynamicBearingsNames.has(b.name.toLowerCase().trim()) && !dynamicBearingsLogos.has(b.logo.toLowerCase().trim())
+  );
+  const bearingsList = [...dynamicBearings, ...bearingsRemainder];
 
-  // Dynamic + Fallback Filterings
+  // Dynamic + Fallback Filterings (New dynamic brands appear first)
   const dynamicFilterings = dynamicBrands.filter((b) => b.category === 'filterings');
-  const filteringsList = dynamicFilterings.length > 0 ? dynamicFilterings : FALLBACK_FILTERINGS;
+  const dynamicFilteringsNames = new Set(dynamicFilterings.map((b) => (b.name || '').toLowerCase().trim()));
+  const dynamicFilteringsLogos = new Set(dynamicFilterings.map((b) => (b.logo || '').toLowerCase().trim()));
+  const filteringsRemainder = FALLBACK_FILTERINGS.filter(
+    (b) => !dynamicFilteringsNames.has(b.name.toLowerCase().trim()) && !dynamicFilteringsLogos.has(b.logo.toLowerCase().trim())
+  );
+  const filteringsList = [...dynamicFilterings, ...filteringsRemainder];
 
-  // Dynamic General Brands added via admin
+  // Dynamic General Brands added via admin (Rendered first so user sees new brands immediately!)
   const dynamicGeneral = dynamicBrands.filter((b) => b.category === 'general');
+  const dynamicGeneralLogos = new Set(dynamicGeneral.map((b) => (b.logo || '').toLowerCase().trim()));
+  const staticGeneralRemainder = BRAND_LOGOS.filter((logo) => !dynamicGeneralLogos.has(logo.toLowerCase().trim()));
 
   return (
     <>
@@ -209,32 +223,30 @@ export default async function BrandsPage() {
 
             {/* Brands Logo Grid - Only Clean Brand Logos */}
             <div className="brands-logo-grid">
-              {BRAND_LOGOS.map((logoPath, i) => (
-                <div key={`static-${i}`} className="brand-logo-card">
+              {/* Dynamic General Brands added via Admin Panel (Rendered First!) */}
+              {dynamicGeneral.map((brand, idx) => (
+                <div key={brand._id || `gen-${idx}`} className="brand-logo-card">
                   <div className="brand-logo-wrapper">
-                    <Image
-                      src={logoPath}
-                      alt="Brand Partner Logo"
-                      width={180}
-                      height={90}
+                    <img
+                      src={brand.logo}
+                      alt={brand.name}
                       className="brand-logo-img"
-                      loading={i < 24 ? 'eager' : 'lazy'}
+                      style={{ maxHeight: '75px', maxWidth: '85%', objectFit: 'contain' }}
                     />
                   </div>
                 </div>
               ))}
 
-              {/* Dynamic General Brands added via Admin Panel */}
-              {dynamicGeneral.map((brand, idx) => (
-                <div key={brand._id || `gen-${idx}`} className="brand-logo-card">
+              {/* Default General Brand Logos */}
+              {staticGeneralRemainder.map((logoPath, i) => (
+                <div key={`static-${i}`} className="brand-logo-card">
                   <div className="brand-logo-wrapper">
-                    <Image
-                      src={brand.logo}
-                      alt={brand.name}
-                      width={180}
-                      height={90}
+                    <img
+                      src={logoPath}
+                      alt="Brand Partner Logo"
                       className="brand-logo-img"
-                      unoptimized={brand.logo.endsWith('.svg')}
+                      loading={i < 24 ? 'eager' : 'lazy'}
+                      style={{ maxHeight: '75px', maxWidth: '85%', objectFit: 'contain' }}
                     />
                   </div>
                 </div>
