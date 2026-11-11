@@ -35,12 +35,29 @@ function formatRichHtml(content: string): string {
   return formatted;
 }
 
-const isStaticPlaceholder = (u?: string) =>
-  !u ||
-  u.startsWith('/categories/') ||
-  u.includes('all-fittings.jpeg') ||
-  u.includes('bearings.jpg') ||
-  u.includes('filters.jpg');
+const isStaticPlaceholder = (u?: string): boolean => {
+  if (!u) return true;
+  const s = u.trim();
+  if (
+    s.startsWith('http://') ||
+    s.startsWith('https://') ||
+    s.startsWith('data:image/') ||
+    s.startsWith('blob:')
+  ) {
+    if (
+      s.includes('/products/') ||
+      s.includes('/categories/') ||
+      s.includes('all-fittings.jpeg') ||
+      s.includes('bearings.jpg') ||
+      s.includes('filters.jpg') ||
+      s.includes('pumps-motors.jpg')
+    ) {
+      return true;
+    }
+    return false;
+  }
+  return true;
+};
 
 export default function ProductInnerClient({ product: initialProduct, division, waUrl }: Props) {
   // Purge any static placeholders from initialProduct if dynamic photos exist

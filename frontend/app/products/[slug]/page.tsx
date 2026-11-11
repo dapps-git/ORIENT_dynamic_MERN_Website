@@ -95,12 +95,29 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
         const staticRemainder = (staticDiv?.products || []).filter(
           (sp) => !existingTitles.has(sp.title.toLowerCase().trim())
         );
-        const isStaticPlaceholder = (u?: string) =>
-          !u ||
-          u.startsWith('/categories/') ||
-          u.includes('all-fittings.jpeg') ||
-          u.includes('bearings.jpg') ||
-          u.includes('filters.jpg');
+        const isStaticPlaceholder = (u?: string): boolean => {
+          if (!u) return true;
+          const s = u.trim();
+          if (
+            s.startsWith('http://') ||
+            s.startsWith('https://') ||
+            s.startsWith('data:image/') ||
+            s.startsWith('blob:')
+          ) {
+            if (
+              s.includes('/products/') ||
+              s.includes('/categories/') ||
+              s.includes('all-fittings.jpeg') ||
+              s.includes('bearings.jpg') ||
+              s.includes('filters.jpg') ||
+              s.includes('pumps-motors.jpg')
+            ) {
+              return true;
+            }
+            return false;
+          }
+          return true;
+        };
 
         const mappedCatProducts = (cat.products || []).map((p: any) => {
           const rawImgs: string[] = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);

@@ -42,12 +42,29 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
               d.name.toLowerCase() === (p.categoryName || '').toLowerCase()
           ) || DIVISIONS_DATA[0];
 
-        const isStaticPlaceholder = (u?: string) =>
-          !u ||
-          u.startsWith('/categories/') ||
-          u.includes('all-fittings.jpeg') ||
-          u.includes('bearings.jpg') ||
-          u.includes('filters.jpg');
+        const isStaticPlaceholder = (u?: string): boolean => {
+          if (!u) return true;
+          const s = u.trim();
+          if (
+            s.startsWith('http://') ||
+            s.startsWith('https://') ||
+            s.startsWith('data:image/') ||
+            s.startsWith('blob:')
+          ) {
+            if (
+              s.includes('/products/') ||
+              s.includes('/categories/') ||
+              s.includes('all-fittings.jpeg') ||
+              s.includes('bearings.jpg') ||
+              s.includes('filters.jpg') ||
+              s.includes('pumps-motors.jpg')
+            ) {
+              return true;
+            }
+            return false;
+          }
+          return true;
+        };
 
         const rawImgs: string[] = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
         const dynamicOnly = rawImgs.filter((img) => !isStaticPlaceholder(img));

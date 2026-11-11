@@ -93,7 +93,20 @@ const FAQ_ITEMS = [
 ];
 
 export default function ProductsCatalogClient() {
-  const [divisions, setDivisions] = useState<DivisionCard[]>(DEFAULT_DIVISIONS);
+  const [divisions, setDivisions] = useState<DivisionCard[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const local = localStorage.getItem('orient_custom_divisions');
+        if (local) {
+          const parsed = JSON.parse(local);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+      } catch {}
+    }
+    return DEFAULT_DIVISIONS;
+  });
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(3); // 4th item open by default like screenshot 3
 
   // Load custom/admin updated division images directly from backend API
@@ -105,7 +118,7 @@ export default function ProductsCatalogClient() {
         if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           const backendCats: any[] = data.data;
           setDivisions((prev) => {
-            return prev.map((def) => {
+            const updated = prev.map((def) => {
               const matched = backendCats.find(
                 (c) => c.slug === def.slug || c.slug === def.id || c.name.toLowerCase() === def.name.toLowerCase()
               );
@@ -119,6 +132,12 @@ export default function ProductsCatalogClient() {
               }
               return def;
             });
+            if (typeof window !== 'undefined') {
+              try {
+                localStorage.setItem('orient_custom_divisions', JSON.stringify(updated));
+              } catch {}
+            }
+            return updated;
           });
         }
       })
@@ -129,6 +148,11 @@ export default function ProductsCatalogClient() {
           .then((data) => {
             if (data.success && Array.isArray(data.data) && data.data.length > 0) {
               setDivisions(data.data);
+              if (typeof window !== 'undefined') {
+                try {
+                  localStorage.setItem('orient_custom_divisions', JSON.stringify(data.data));
+                } catch {}
+              }
             }
           })
           .catch(() => {

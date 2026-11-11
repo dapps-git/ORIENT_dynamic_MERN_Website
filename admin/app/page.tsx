@@ -987,8 +987,30 @@ export default function AdminApp() {
 
   // Core App data states
   const [inquiries, setInquiries] = useState<Inquiry[]>(INITIAL_INQUIRIES);
-  const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
-  const [divisions, setDivisions] = useState<Division[]>(INITIAL_DIVISIONS);
+  const [products, setProducts] = useState<Product[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('orient_admin_products');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch {}
+    }
+    return INITIAL_PRODUCTS;
+  });
+  const [divisions, setDivisions] = useState<Division[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('orient_custom_divisions');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch {}
+    }
+    return INITIAL_DIVISIONS;
+  });
   const [blogs, setBlogs] = useState<Blog[]>(INITIAL_BLOGS);
   const [brands, setBrands] = useState<Brand[]>(INITIAL_BRANDS);
 
@@ -1441,6 +1463,30 @@ export default function AdminApp() {
     setTimeout(() => setToastMessage(''), 3500);
   };
 
+  const isStaticPlaceholderImage = (u?: string): boolean => {
+    if (!u) return true;
+    const s = u.trim();
+    if (
+      s.startsWith('http://') ||
+      s.startsWith('https://') ||
+      s.startsWith('data:image/') ||
+      s.startsWith('blob:')
+    ) {
+      if (
+        s.includes('/products/') ||
+        s.includes('/categories/') ||
+        s.includes('all-fittings.jpeg') ||
+        s.includes('bearings.jpg') ||
+        s.includes('filters.jpg') ||
+        s.includes('pumps-motors.jpg')
+      ) {
+        return true;
+      }
+      return false;
+    }
+    return true;
+  };
+
   // Dedicated list of the 13 Mechanical Products
   const mechanical13List = useMemo(() => {
     return MECHANICAL_13_STATIC_IMAGES.map((item, index) => {
@@ -1451,21 +1497,35 @@ export default function AdminApp() {
           (p.title && p.title.toLowerCase().trim() === item.name.toLowerCase().trim())
       );
       if (found) {
+        const foundRaw = Array.isArray(found.images) && found.images.length > 0 ? found.images : (found.image ? [found.image] : []);
+        const foundDynamic = foundRaw.filter((u: string) => !isStaticPlaceholderImage(u));
+        const dynamicCover = !isStaticPlaceholderImage(found.image)
+          ? found.image
+          : (foundDynamic[0] || null);
+
         return {
           ...found,
           num: index + 1,
           staticName: item.name,
-          image: found.image || item.url,
+          image: dynamicCover || item.url,
+          images: foundDynamic.length > 0 ? foundDynamic : foundRaw,
           slug: found.slug || item.slug,
         };
       }
       // 2. Look in INITIAL_PRODUCTS
       const initFound = INITIAL_PRODUCTS.find((p) => p.slug === item.slug) || INITIAL_PRODUCTS[index];
+      const initRaw = Array.isArray(initFound?.images) && initFound.images.length > 0 ? initFound.images : (initFound?.image ? [initFound.image] : []);
+      const initDynamic = initRaw.filter((u: string) => !isStaticPlaceholderImage(u));
+      const initCover = !isStaticPlaceholderImage(initFound?.image)
+        ? initFound?.image
+        : (initDynamic[0] || null);
+
       return {
         ...initFound,
         num: index + 1,
         staticName: item.name,
-        image: initFound?.image || item.url,
+        image: initCover || item.url,
+        images: initDynamic.length > 0 ? initDynamic : initRaw,
         slug: initFound?.slug || item.slug,
       };
     });
@@ -1508,10 +1568,12 @@ export default function AdminApp() {
   }, [editingDivision, products]);
 
   const handleQuickProductImageChange = async (productId: string, newImageUrl: string) => {
-    setProducts((prev) =>
-      prev.map((p) => {
-        if (p.id === productId) {
-          const updatedImages = p.images && p.images.length > 0 ? [newImageUrl, ...p.images.slice(1)] : [newImageUrl];
+    setProducts((prev) => {
+      const updatedList = prev.map((p) => {
+        if (p.id === productId || p.slug === productId) {
+          const rawImgs = p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+          const dynImgs = rawImgs.filter((img) => !isStaticPlaceholderImage(img) && img !== newImageUrl);
+          const updatedImages = [newImageUrl, ...dynImgs];
           return {
             ...p,
             image: newImageUrl,
@@ -1519,8 +1581,14 @@ export default function AdminApp() {
           };
         }
         return p;
-      })
-    );
+      });
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('orient_admin_products', JSON.stringify(updatedList));
+        } catch {}
+      }
+      return updatedList;
+    });
 
     try {
       await fetch(`${API_BASE}/products/${productId}`, {
@@ -1610,7 +1678,13 @@ export default function AdminApp() {
               if (match) divName = match.name;
             }
 
-            const imageGallery = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+            const rawGallery = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+            const dynamicGallery = rawGallery.filter((u: string) => !isStaticPlaceholderImage(u));
+            const hasDynamic = dynamicGallery.length > 0 || (!isStaticPlaceholderImage(p.image) && !!p.image);
+            const imageGallery = hasDynamic ? dynamicGallery : rawGallery;
+            const coverImage = !isStaticPlaceholderImage(p.image)
+              ? p.image
+              : (imageGallery[0] || '/categories/all-fittings.jpeg');
 
             return {
               id: p._id || p.id,
@@ -1619,7 +1693,7 @@ export default function AdminApp() {
               division: divName,
               divisionSlug: divSlug,
               category: p.categoryName || 'General Industrial',
-              image: p.image || (imageGallery[0]) || '/categories/all-fittings.jpeg',
+              image: coverImage,
               images: imageGallery,
               innerSections: Array.isArray(p.innerSections) && p.innerSections.length > 0 ? p.innerSections : [],
               specifications: Array.isArray(p.specifications) ? p.specifications : [],
@@ -1644,7 +1718,13 @@ export default function AdminApp() {
           // Merge: ensure Bearings, Filters & any initial products are preserved
           const apiSlugs = new Set(apiProducts.map((p: any) => p.slug));
           const missingDefaults = INITIAL_PRODUCTS.filter((ip) => !apiSlugs.has(ip.slug));
-          setProducts([...apiProducts, ...missingDefaults]);
+          const mergedProducts = [...apiProducts, ...missingDefaults];
+          setProducts(mergedProducts);
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('orient_admin_products', JSON.stringify(mergedProducts));
+            } catch {}
+          }
 
           // Auto-sync missing default products to backend API only if authenticated
           const adminAuthToken = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
@@ -1702,7 +1782,13 @@ export default function AdminApp() {
 
           const apiCatSlugs = new Set(apiCats.map((c: any) => c.slug));
           const missingDefaultCats = INITIAL_DIVISIONS.filter((d) => !apiCatSlugs.has(d.slug));
-          setDivisions([...apiCats, ...missingDefaultCats]);
+          const mergedCats = [...apiCats, ...missingDefaultCats];
+          setDivisions(mergedCats);
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('orient_custom_divisions', JSON.stringify(mergedCats));
+            } catch {}
+          }
 
           const adminAuthToken = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
           if (adminAuthToken && missingDefaultCats.length > 0) {
@@ -1946,9 +2032,13 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
   const openEditProductModal = (p: Product) => {
     setEditingProduct(p);
     setStaticFilter(p.divisionSlug || 'mechanical-division');
-    const gallery = Array.isArray(p.images) && p.images.length > 0 ? [...p.images] : (p.image ? [p.image] : []);
-    if (p.image && !gallery.includes(p.image)) {
-      gallery.unshift(p.image);
+    const rawGallery = Array.isArray(p.images) && p.images.length > 0 ? [...p.images] : (p.image ? [p.image] : []);
+    const dynamicGallery = rawGallery.filter((u) => !isStaticPlaceholderImage(u));
+    const hasDynamic = dynamicGallery.length > 0 || (!isStaticPlaceholderImage(p.image) && !!p.image);
+    const gallery = hasDynamic ? dynamicGallery : rawGallery;
+    let coverImg = !isStaticPlaceholderImage(p.image) ? p.image : (gallery[0] || (hasDynamic ? '' : '/categories/all-fittings.jpeg'));
+    if (coverImg && !gallery.includes(coverImg) && (!hasDynamic || !isStaticPlaceholderImage(coverImg))) {
+      gallery.unshift(coverImg);
     }
     const secKeywords = Array.isArray(p.secondaryKeywords)
       ? p.secondaryKeywords.join(', ')
@@ -1962,7 +2052,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       division: p.division,
       divisionSlug: p.divisionSlug || 'mechanical-division',
       category: p.category || 'General Industrial',
-      image: p.image || gallery[0] || '/categories/all-fittings.jpeg',
+      image: coverImg,
       images: gallery,
       imagesText: gallery.join('\n'),
       innerSections: Array.isArray(p.innerSections) ? p.innerSections : [],
@@ -1985,13 +2075,6 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     });
     setShowProductModal(true);
   };
-
-  const isStaticPlaceholderImage = (u?: string) =>
-    !u ||
-    u.startsWith('/categories/') ||
-    u.includes('all-fittings.jpeg') ||
-    u.includes('bearings.jpg') ||
-    u.includes('filters.jpg');
 
   const handleAddInnerImage = (url: string) => {
     if (!url || !url.trim()) return;
@@ -2788,18 +2871,30 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
         if (res.ok) {
           const resData = await res.json();
           const updated = resData.data;
-          setDivisions((prev) =>
-            prev.map((d) => (d.id === editingDivision.id || d.slug === editingDivision.slug ? { ...d, ...updated, id: editingDivision.id } : d))
-          );
+          setDivisions((prev) => {
+            const updatedList = prev.map((d) => (d.id === editingDivision.id || d.slug === editingDivision.slug ? { ...d, ...updated, id: editingDivision.id } : d));
+            if (typeof window !== 'undefined') {
+              try {
+                localStorage.setItem('orient_custom_divisions', JSON.stringify(updatedList));
+              } catch {}
+            }
+            return updatedList;
+          });
           showToast('Category updated successfully!');
           setShowDivisionModal(false);
           return;
         }
       } catch {}
 
-      setDivisions((prev) =>
-        prev.map((d) => (d.id === editingDivision.id ? { ...d, ...payload } : d))
-      );
+      setDivisions((prev) => {
+        const updatedList = prev.map((d) => (d.id === editingDivision.id ? { ...d, ...payload } : d));
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('orient_custom_divisions', JSON.stringify(updatedList));
+          } catch {}
+        }
+        return updatedList;
+      });
       showToast('Category details updated!');
       setShowDivisionModal(false);
     } else {
@@ -2828,7 +2923,15 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
             pills: created.pills || payload.pills,
             productCount: 0,
           };
-          setDivisions((prev) => [newCat, ...prev]);
+          setDivisions((prev) => {
+            const updatedList = [newCat, ...prev];
+            if (typeof window !== 'undefined') {
+              try {
+                localStorage.setItem('orient_custom_divisions', JSON.stringify(updatedList));
+              } catch {}
+            }
+            return updatedList;
+          });
           showToast('New category created successfully!');
           setShowDivisionModal(false);
           return;
@@ -2840,7 +2943,15 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
         ...payload,
         productCount: 0,
       };
-      setDivisions((prev) => [newCat, ...prev]);
+      setDivisions((prev) => {
+        const updatedList = [newCat, ...prev];
+        if (typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('orient_custom_divisions', JSON.stringify(updatedList));
+          } catch {}
+        }
+        return updatedList;
+      });
       showToast('New category created!');
       setShowDivisionModal(false);
     }
