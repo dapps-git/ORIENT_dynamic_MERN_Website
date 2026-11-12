@@ -1013,6 +1013,26 @@ export default function AdminApp() {
   });
   const [blogs, setBlogs] = useState<Blog[]>(INITIAL_BLOGS);
   const [brands, setBrands] = useState<Brand[]>(INITIAL_BRANDS);
+  const [isProductsLoading, setIsProductsLoading] = useState<boolean>(true);
+
+  // Helper to get or set known dynamic images map by product slug or id
+  const getDynamicImagesMap = (): Record<string, string> => {
+    if (typeof window === 'undefined') return {};
+    try {
+      const raw = localStorage.getItem('orient_product_dynamic_images');
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    return {};
+  };
+
+  const saveDynamicImage = (key: string, url: string) => {
+    if (typeof window === 'undefined' || !key || !url) return;
+    try {
+      const cur = getDynamicImagesMap();
+      cur[key] = url;
+      localStorage.setItem('orient_product_dynamic_images', JSON.stringify(cur));
+    } catch {}
+  };
 
   // Filters & Toast
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -1489,6 +1509,7 @@ export default function AdminApp() {
 
   // Dedicated list of the 13 Mechanical Products
   const mechanical13List = useMemo(() => {
+    const dynMap = getDynamicImagesMap();
     return MECHANICAL_13_STATIC_IMAGES.map((item, index) => {
       // 1. Look in loaded products state (MongoDB / API)
       const found = products.find(
@@ -1501,35 +1522,40 @@ export default function AdminApp() {
         const foundDynamic = foundRaw.filter((u: string) => !isStaticPlaceholderImage(u));
         const dynamicCover = !isStaticPlaceholderImage(found.image)
           ? found.image
-          : (foundDynamic[0] || null);
+          : (foundDynamic[0] || dynMap[item.slug] || (found.slug ? dynMap[found.slug] : null) || null);
+
+        // If dynamicCover exists, use it! NEVER fallback to static item.url if user has added image
+        // If still loading products, do not flash static item.url, use dynamicCover or '' (so skeleton displays)
+        const finalImage = dynamicCover
+          ? dynamicCover
+          : (isProductsLoading ? '' : item.url);
 
         return {
           ...found,
           num: index + 1,
           staticName: item.name,
-          image: dynamicCover || item.url,
+          image: finalImage,
           images: foundDynamic.length > 0 ? foundDynamic : foundRaw,
           slug: found.slug || item.slug,
         };
       }
       // 2. Look in INITIAL_PRODUCTS
       const initFound = INITIAL_PRODUCTS.find((p) => p.slug === item.slug) || INITIAL_PRODUCTS[index];
-      const initRaw = Array.isArray(initFound?.images) && initFound.images.length > 0 ? initFound.images : (initFound?.image ? [initFound.image] : []);
-      const initDynamic = initRaw.filter((u: string) => !isStaticPlaceholderImage(u));
-      const initCover = !isStaticPlaceholderImage(initFound?.image)
-        ? initFound?.image
-        : (initDynamic[0] || null);
+      const cachedDyn = dynMap[item.slug] || (initFound?.slug ? dynMap[initFound.slug] : null);
+      const finalImage = cachedDyn
+        ? cachedDyn
+        : (isProductsLoading ? '' : (initFound?.image || item.url));
 
       return {
         ...initFound,
         num: index + 1,
         staticName: item.name,
-        image: initCover || item.url,
-        images: initDynamic.length > 0 ? initDynamic : initRaw,
+        image: finalImage,
+        images: cachedDyn ? [cachedDyn] : [],
         slug: initFound?.slug || item.slug,
       };
     });
-  }, [products]);
+  }, [products, isProductsLoading]);
 
   // Products belonging to the division currently open in Edit Division Inner Page modal
   const currentDivisionProducts = useMemo(() => {
@@ -1589,6 +1615,10 @@ export default function AdminApp() {
       }
       return updatedList;
     });
+
+    if (!isStaticPlaceholderImage(newImageUrl)) {
+      saveDynamicImage(productId, newImageUrl);
+    }
 
     try {
       await fetch(`${API_BASE}/products/${productId}`, {
@@ -1657,9 +1687,13 @@ export default function AdminApp() {
               status: inq.status || 'new',
             }))
           );
+        } else {
+          setIsProductsLoading(false);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        setIsProductsLoading(false);
+      });
 
     // 2. Fetch Products
     fetch(`${API_BASE}/products?limit=200`)
@@ -1715,11 +1749,19 @@ export default function AdminApp() {
             };
           });
 
+          // Cache dynamic images
+          apiProducts.forEach((p: any) => {
+            if (!isStaticPlaceholderImage(p.image)) {
+              saveDynamicImage(p.slug, p.image);
+            }
+          });
+
           // Merge: ensure Bearings, Filters & any initial products are preserved
           const apiSlugs = new Set(apiProducts.map((p: any) => p.slug));
           const missingDefaults = INITIAL_PRODUCTS.filter((ip) => !apiSlugs.has(ip.slug));
           const mergedProducts = [...apiProducts, ...missingDefaults];
           setProducts(mergedProducts);
+          setIsProductsLoading(false);
           if (typeof window !== 'undefined') {
             try {
               localStorage.setItem('orient_admin_products', JSON.stringify(mergedProducts));
@@ -1753,9 +1795,13 @@ export default function AdminApp() {
               }).catch(() => {});
             });
           }
+        } else {
+          setIsProductsLoading(false);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        setIsProductsLoading(false);
+      });
 
     // 3. Fetch Categories / Divisions
     fetch(`${API_BASE}/categories`)
@@ -1803,9 +1849,13 @@ export default function AdminApp() {
               }).catch(() => {});
             });
           }
+        } else {
+          setIsProductsLoading(false);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        setIsProductsLoading(false);
+      });
 
     // 4. Fetch Blogs
     fetch(`${API_BASE}/blogs`)
@@ -1851,9 +1901,13 @@ export default function AdminApp() {
             (def) => !existingLogos.has(def.logo.toLowerCase().trim()) && !existingNames.has(def.name.toLowerCase().trim())
           );
           setBrands([...backendBrands, ...missingDefaults]);
+        } else {
+          setIsProductsLoading(false);
         }
       })
-      .catch(() => {});
+      .catch(() => {
+        setIsProductsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -2316,6 +2370,13 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     const reqHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
     if (token) {
       reqHeaders['Authorization'] = `Bearer ${token}`;
+    }
+
+    if (mainCover && !isStaticPlaceholderImage(mainCover)) {
+      saveDynamicImage(cleanSlug, mainCover);
+      if (productForm.slug) saveDynamicImage(productForm.slug, mainCover);
+      if (editingProduct?.slug) saveDynamicImage(editingProduct.slug, mainCover);
+      if (editingProduct?.id) saveDynamicImage(editingProduct.id, mainCover);
     }
 
     if (editingProduct) {
@@ -3573,14 +3634,28 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
 
                       {/* Product Image Showcase Frame */}
                       <div className="mech-img-frame">
-                        <img
-                          src={product.image || '/categories/all-fittings.jpeg'}
-                          alt={product.title}
-                          className="mech-img"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
-                          }}
-                        />
+                        {!product.image ? (
+                          <div
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              minHeight: '160px',
+                              background: 'linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%)',
+                              backgroundSize: '200% 100%',
+                              animation: 'shimmer 1.5s infinite',
+                              borderRadius: '8px',
+                            }}
+                          />
+                        ) : (
+                          <img
+                            src={product.image}
+                            alt={product.title}
+                            className="mech-img"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = '/categories/all-fittings.jpeg';
+                            }}
+                          />
+                        )}
                       </div>
 
                       {/* Product Content */}
