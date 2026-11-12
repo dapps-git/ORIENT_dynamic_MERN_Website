@@ -104,43 +104,120 @@ const chunkArray = <T,>(arr: T[], size: number): T[][] => {
   return chunks;
 };
 
-const isStaticImage = (u?: string) =>
-  !u ||
-  u.startsWith('/categories/') ||
-  u.includes('all-fittings.jpeg') ||
-  u.includes('bearings.jpg') ||
-  u.includes('filters.jpg');
+const isStaticImage = (u?: string): boolean => {
+  if (!u) return true;
+  const s = u.trim();
+  if (
+    s.startsWith('http://') ||
+    s.startsWith('https://') ||
+    s.startsWith('data:image/') ||
+    s.startsWith('blob:')
+  ) {
+    if (
+      s.includes('/products/') ||
+      s.includes('/categories/') ||
+      s.includes('all-fittings.jpeg') ||
+      s.includes('bearings.jpg') ||
+      s.includes('filters.jpg') ||
+      s.includes('pumps-motors.jpg')
+    ) {
+      return true;
+    }
+    return false;
+  }
+  return true;
+};
 
 export default function FeaturedProductsShowcase() {
-  const [products, setProducts] = useState<ShowcaseProduct[]>(SHOWCASE_PRODUCTS);
+  const [products, setProducts] = useState<ShowcaseProduct[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('orient_admin_products');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return SHOWCASE_PRODUCTS.map((item) => {
+              const match = parsed.find(
+                (p: any) =>
+                  p.slug === item.slug ||
+                  (p.title && p.title.toLowerCase().trim() === item.title.toLowerCase().trim())
+              );
+              if (match) {
+                const raw = Array.isArray(match.images) && match.images.length > 0 ? match.images : (match.image ? [match.image] : []);
+                const dyn = raw.filter((u: string) => !isStaticImage(u));
+                const newImg = dyn.length > 0 ? (!isStaticImage(match.image) ? match.image : dyn[0]) : null;
+                if (newImg) {
+                  return { ...item, image: newImg };
+                }
+              }
+              return item;
+            });
+          }
+        }
+      } catch {}
+    }
+    return SHOWCASE_PRODUCTS;
+  });
   const [desktopSlide, setDesktopSlide] = useState(0);
   const [mobileSlide, setMobileSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
+    // 1. Sync from localStorage if present
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('orient_admin_products');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setProducts((prev) =>
+              prev.map((item) => {
+                const match = parsed.find(
+                  (p: any) =>
+                    p.slug === item.slug ||
+                    (p.title && p.title.toLowerCase().trim() === item.title.toLowerCase().trim())
+                );
+                if (match) {
+                  const raw = Array.isArray(match.images) && match.images.length > 0 ? match.images : (match.image ? [match.image] : []);
+                  const dyn = raw.filter((u: string) => !isStaticImage(u));
+                  const newImg = dyn.length > 0 ? (!isStaticImage(match.image) ? match.image : dyn[0]) : null;
+                  if (newImg) {
+                    return { ...item, image: newImg };
+                  }
+                }
+                return item;
+              })
+            );
+          }
+        }
+      } catch {}
+    }
+
+    // 2. Fetch backend updates and ONLY update matching products if they have dynamic photos
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api";
     fetch(`${apiUrl}/products`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.data) && data.data.length > 0) {
-          const feat = data.data.filter((p: any) => p.isFeatured || p.featured);
-          const list = feat.length > 0 ? feat : data.data.slice(0, 12);
-          const mapped: ShowcaseProduct[] = list.map((p: any) => {
-            const raw = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
-            const dyn = raw.filter((u: string) => !isStaticImage(u));
-            const img = dyn.length > 0 ? (!isStaticImage(p.image) ? p.image : dyn[0]) : (p.image || raw[0] || '/categories/all-fittings.jpeg');
-            return {
-              id: p._id || p.id || p.slug,
-              title: p.title,
-              slug: p.slug,
-              category: p.categoryName || (p.category && p.category.name) || p.division || 'Industrial Supply',
-              image: img,
-              href: `/product/${p.slug}`,
-            };
-          });
-          if (mapped.length > 0) {
-            setProducts(mapped);
-          }
+          const backendProducts: any[] = data.data;
+          setProducts((prev) =>
+            prev.map((item) => {
+              const match = backendProducts.find(
+                (p: any) =>
+                  p.slug === item.slug ||
+                  (p.title && p.title.toLowerCase().trim() === item.title.toLowerCase().trim())
+              );
+              if (match) {
+                const raw = Array.isArray(match.images) && match.images.length > 0 ? match.images : (match.image ? [match.image] : []);
+                const dyn = raw.filter((u: string) => !isStaticImage(u));
+                const newImg = dyn.length > 0 ? (!isStaticImage(match.image) ? match.image : dyn[0]) : null;
+                if (newImg) {
+                  return { ...item, image: newImg };
+                }
+              }
+              return item;
+            })
+          );
         }
       })
       .catch(() => {});
