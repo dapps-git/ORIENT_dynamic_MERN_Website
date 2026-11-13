@@ -10,6 +10,9 @@ export const metadata: Metadata = {
     'Industrial insights, supply chain news, and heavy equipment rental updates from Orient Energy in Saudi Arabia.',
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function BlogListPage() {
   return (
     <>

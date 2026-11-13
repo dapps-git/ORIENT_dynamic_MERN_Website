@@ -117,21 +117,20 @@ export default function ProductsCatalogClient() {
       .then((data) => {
         if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           const backendCats: any[] = data.data;
-          setDivisions((prev) => {
-            const updated = prev.map((def) => {
-              const matched = backendCats.find(
-                (c) => c.slug === def.slug || c.slug === def.id || c.name.toLowerCase() === def.name.toLowerCase()
-              );
-              if (matched) {
-                return {
-                  ...def,
-                  name: matched.name || def.name,
-                  image: matched.image && matched.image.trim() ? matched.image : def.image,
-                  productCount: matched.productCount !== undefined ? matched.productCount : def.productCount,
-                };
-              }
-              return def;
+          setDivisions(() => {
+            const backendSlugSet = new Set(backendCats.map((c: any) => c.slug || c.id));
+            const mappedBackend = backendCats.map((cat: any) => {
+              const matchedDef = DEFAULT_DIVISIONS.find((d) => d.slug === cat.slug || d.id === cat.slug);
+              return {
+                id: cat.slug || cat._id,
+                slug: cat.slug,
+                name: cat.name,
+                image: (cat.image && cat.image.trim()) ? cat.image : (matchedDef?.image || '/categories/all-fittings.jpeg'),
+                productCount: cat.productCount !== undefined ? cat.productCount : (matchedDef?.productCount || 0),
+              };
             });
+            const missingDefaults = DEFAULT_DIVISIONS.filter((d) => !backendSlugSet.has(d.slug) && !backendSlugSet.has(d.id));
+            const updated = [...mappedBackend, ...missingDefaults];
             if (typeof window !== 'undefined') {
               try {
                 localStorage.setItem('orient_custom_divisions', JSON.stringify(updated));

@@ -1,6 +1,9 @@
 import ProductDetailPage, { generateMetadata as generateProductMetadata } from '@/app/product/[slug]/page';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function generateMetadata({
   params,
 }: {

@@ -193,7 +193,10 @@ exports.updateProduct = updateProduct;
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await Product_1.Product.findByIdAndDelete(id);
+        const isObjectId = Boolean(id && id.match(/^[0-9a-fA-F]{24}$/));
+        const product = isObjectId
+            ? await Product_1.Product.findByIdAndDelete(id)
+            : await Product_1.Product.findOneAndDelete({ $or: [{ slug: id }, { title: id }] });
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }

@@ -2551,7 +2551,18 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     try {
       await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
     } catch {}
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+    setProducts((prev) => {
+      const updated = prev.filter((p) => p.id !== id && p.slug !== id);
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('orient_admin_products', JSON.stringify(updated));
+          const dynMap = getDynamicImagesMap();
+          delete dynMap[id];
+          localStorage.setItem('orient_product_dynamic_images', JSON.stringify(dynMap));
+        } catch {}
+      }
+      return updated;
+    });
     showToast('Product deleted');
   };
 
@@ -2855,7 +2866,15 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
       });
     } catch {}
 
-    setDivisions((prev) => prev.filter((d) => d.id !== id && d.slug !== id));
+    setDivisions((prev) => {
+      const updated = prev.filter((d) => d.id !== id && d.slug !== id);
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('orient_custom_divisions', JSON.stringify(updated));
+        } catch {}
+      }
+      return updated;
+    });
     showToast(`Category "${name}" deleted successfully`);
   };
 

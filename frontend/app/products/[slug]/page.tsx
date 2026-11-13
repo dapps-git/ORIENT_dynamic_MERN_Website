@@ -7,6 +7,9 @@ import Footer from '@/components/Footer';
 import ScrollAnimation from '@/components/ScrollAnimation';
 import { DIVISIONS_DATA, DivisionData, getProductSlug } from '@/lib/divisionsData';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const WHATSAPP_PHONE = '966552400778';
 
 // Aliases mapping for common category URLs
@@ -88,13 +91,6 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
       if (data.success && data.data) {
         const cat = data.data;
 
-        // Merge backend products with static products
-        const existingTitles = new Set(
-          (cat.products || []).map((p: any) => p.title.toLowerCase().trim())
-        );
-        const staticRemainder = (staticDiv?.products || []).filter(
-          (sp) => !existingTitles.has(sp.title.toLowerCase().trim())
-        );
         const isStaticPlaceholder = (u?: string): boolean => {
           if (!u) return true;
           const s = u.trim();
@@ -140,7 +136,10 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
             whatsappMessage: p.whatsappMessage,
           };
         });
-        const productsList = [...mappedCatProducts, ...staticRemainder];
+
+        const productsList = Array.isArray(cat.products)
+          ? mappedCatProducts
+          : (staticDiv?.products || []);
 
         return {
           id: cat.slug || resolvedId,

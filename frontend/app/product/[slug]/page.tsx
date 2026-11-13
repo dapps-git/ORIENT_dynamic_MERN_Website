@@ -14,6 +14,9 @@ import {
 } from '@/lib/divisionsData';
 import ProductInnerClient from './ProductInnerClient';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const WHATSAPP_PHONE = '966552400778';
 
 interface ProductDetailPageData {
@@ -155,6 +158,9 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
 
         return { product, division: matchedDivision, related };
       }
+    } else if (res.status === 404) {
+      // Product was explicitly deleted or not found in live database
+      return null;
     }
   } catch {
     // Backend offline: fallback to static lookup

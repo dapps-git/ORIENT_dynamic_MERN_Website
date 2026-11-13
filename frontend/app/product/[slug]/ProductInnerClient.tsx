@@ -76,14 +76,23 @@ export default function ProductInnerClient({ product: initialProduct, division, 
     images: initFinalImages.length > 0 ? initFinalImages : [initFinalCover],
   });
 
+  const [isDeleted, setIsDeleted] = useState(false);
+
   // Sync with live backend updates so admin edits/deletes reflect immediately on user side
   useEffect(() => {
     const cleanSlug = initialProduct.slug;
     if (!cleanSlug) return;
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api";
     fetch(`${apiUrl}/products/${cleanSlug}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 404) {
+          setIsDeleted(true);
+          return null;
+        }
+        return res.json();
+      })
       .then((data) => {
+        if (!data) return;
         if (data.success && data.data) {
           const p = data.data;
           const pRaw = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
@@ -107,6 +116,8 @@ export default function ProductInnerClient({ product: initialProduct, division, 
             category: p.categoryName || prev.category,
             inStock: p.inStock !== undefined ? p.inStock : prev.inStock,
           }));
+        } else if (data.success === false) {
+          setIsDeleted(true);
         }
       })
       .catch(() => {});
@@ -175,6 +186,36 @@ export default function ProductInnerClient({ product: initialProduct, division, 
           'CGA Connectors',
           'Isolation Valves',
         ];
+
+  if (isDeleted) {
+    return (
+      <div style={{ maxWidth: '800px', margin: '80px auto', textAlign: 'center', padding: '60px 24px', background: '#ffffff', borderRadius: '14px', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.04)' }}>
+        <div style={{ fontSize: '3rem', marginBottom: '16px' }}>📦</div>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}>
+          Product No Longer Available
+        </h2>
+        <p style={{ color: '#64748b', fontSize: '1.05rem', marginBottom: '28px', lineHeight: 1.6 }}>
+          This item has been removed or updated from our active industrial supply catalog.
+        </p>
+        <a
+          href="/products"
+          style={{
+            display: 'inline-block',
+            padding: '12px 28px',
+            background: '#2563eb',
+            color: '#ffffff',
+            borderRadius: '8px',
+            fontWeight: 600,
+            textDecoration: 'none',
+            fontSize: '0.95rem',
+            transition: 'background 0.2s',
+          }}
+        >
+          Browse Products Catalog ↗
+        </a>
+      </div>
+    );
+  }
 
   return (
     <>

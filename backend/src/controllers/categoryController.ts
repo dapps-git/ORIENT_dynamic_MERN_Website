@@ -23,16 +23,56 @@ export const getCategories = async (req: Request, res: Response) => {
   }
 };
 
+const SLUG_ALIASES: Record<string, string> = {
+  'pipe-fittings-and-flanges': 'mechanical-division',
+  'pipe-fittings-flanges': 'mechanical-division',
+  'pipe-fittings': 'mechanical-division',
+  'pumps-motors': 'mechanical-division',
+  'mechanical-supply-division': 'mechanical-division',
+  'welding-safety': 'welding-division',
+  'electrical-ups-systems': 'electrical-division',
+  'fasteners': 'fasteners-division',
+  'industrial-consumables': 'marine-division',
+  'ppe-safety-equpments': 'ppe-safety-equipment',
+  'ppe-safety-equipment': 'ppe-safety-equipment',
+  'all-fittings': 'mechanical-division',
+  'tools-maintenance': 'tools-maintenance',
+  'industrial-hoses-hose-couplings': 'industrial-hoses-hose-couplings',
+  'lubricants-chemicals': 'lubricants-chemicals',
+  'bearings-and-filters': 'bearings',
+  'bearings-filters': 'bearings',
+  'bairing-and-filters': 'bearings',
+  'bearing': 'bearings',
+  'filter': 'filters',
+};
+
 export const getCategoryBySlug = async (req: Request, res: Response) => {
   try {
     const { slug } = req.params;
-    const category = await Category.findOne({ slug });
+    const resolvedSlug = SLUG_ALIASES[slug] || slug;
+    const cleanSearchName = slug.replace(/-/g, ' ').trim();
+
+    const category = await Category.findOne({
+      $or: [
+        { slug },
+        { slug: resolvedSlug },
+        { name: new RegExp(`^${cleanSearchName}$`, 'i') }
+      ]
+    });
+
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found' });
     }
+
     const products = await Product.find({
-      $or: [{ category: category._id }, { divisionSlug: category.slug }]
+      $or: [
+        { category: category._id },
+        { divisionSlug: category.slug },
+        { divisionSlug: slug },
+        { divisionSlug: resolvedSlug }
+      ]
     }).sort({ createdAt: -1 });
+
     res.json({
       success: true,
       data: {

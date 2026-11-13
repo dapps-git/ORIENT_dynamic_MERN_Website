@@ -217,7 +217,10 @@ export const updateProduct = async (req: Request, res: Response) => {
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const product = await Product.findByIdAndDelete(id);
+    const isObjectId = Boolean(id && id.match(/^[0-9a-fA-F]{24}$/));
+    const product = isObjectId
+      ? await Product.findByIdAndDelete(id)
+      : await Product.findOneAndDelete({ $or: [{ slug: id }, { title: id }] });
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
