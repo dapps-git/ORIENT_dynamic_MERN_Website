@@ -118,7 +118,6 @@ export default function ProductsCatalogClient() {
         if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           const backendCats: any[] = data.data;
           setDivisions(() => {
-            const backendSlugSet = new Set(backendCats.map((c: any) => c.slug || c.id));
             const mappedBackend = backendCats.map((cat: any) => {
               const matchedDef = DEFAULT_DIVISIONS.find((d) => d.slug === cat.slug || d.id === cat.slug);
               return {
@@ -129,14 +128,12 @@ export default function ProductsCatalogClient() {
                 productCount: cat.productCount !== undefined ? cat.productCount : (matchedDef?.productCount || 0),
               };
             });
-            const missingDefaults = DEFAULT_DIVISIONS.filter((d) => !backendSlugSet.has(d.slug) && !backendSlugSet.has(d.id));
-            const updated = [...mappedBackend, ...missingDefaults];
             if (typeof window !== 'undefined') {
               try {
-                localStorage.setItem('orient_custom_divisions', JSON.stringify(updated));
+                localStorage.setItem('orient_custom_divisions', JSON.stringify(mappedBackend));
               } catch {}
             }
-            return updated;
+            return mappedBackend;
           });
         }
       })

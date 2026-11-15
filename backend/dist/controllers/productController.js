@@ -193,14 +193,27 @@ exports.updateProduct = updateProduct;
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const isObjectId = Boolean(id && id.match(/^[0-9a-fA-F]{24}$/));
-        const product = isObjectId
-            ? await Product_1.Product.findByIdAndDelete(id)
-            : await Product_1.Product.findOneAndDelete({ $or: [{ slug: id }, { title: id }] });
+        let product = null;
+        if (id && id.match(/^[0-9a-fA-F]{24}$/)) {
+            product = await Product_1.Product.findByIdAndDelete(id);
+        }
+        if (!product) {
+            const escapedId = id.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const cleanSlug = id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            product = await Product_1.Product.findOneAndDelete({
+                $or: [
+                    { slug: id },
+                    { slug: cleanSlug },
+                    { title: id },
+                    { title: new RegExp(`^${escapedId}$`, 'i') },
+                    { sku: id },
+                ],
+            });
+        }
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }
-        res.json({ success: true, message: 'Product deleted successfully' });
+        res.json({ success: true, message: 'Product deleted successfully', data: product });
     }
     catch (error) {
         res.status(500).json({ success: false, message: error.message });

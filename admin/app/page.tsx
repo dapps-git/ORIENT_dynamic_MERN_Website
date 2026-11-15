@@ -1034,6 +1034,50 @@ export default function AdminApp() {
     } catch {}
   };
 
+  const getDeletedProductSlugs = (): Set<string> => {
+    if (typeof window === 'undefined') return new Set();
+    try {
+      const raw = localStorage.getItem('orient_deleted_product_slugs');
+      if (raw) {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) return new Set(arr);
+      }
+    } catch {}
+    return new Set();
+  };
+
+  const saveDeletedProductSlug = (slugOrId: string) => {
+    if (typeof window === 'undefined' || !slugOrId) return;
+    try {
+      const set = getDeletedProductSlugs();
+      set.add(slugOrId);
+      set.add(slugOrId.toLowerCase().trim());
+      localStorage.setItem('orient_deleted_product_slugs', JSON.stringify(Array.from(set)));
+    } catch {}
+  };
+
+  const getDeletedCategorySlugs = (): Set<string> => {
+    if (typeof window === 'undefined') return new Set();
+    try {
+      const raw = localStorage.getItem('orient_deleted_category_slugs');
+      if (raw) {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) return new Set(arr);
+      }
+    } catch {}
+    return new Set();
+  };
+
+  const saveDeletedCategorySlug = (slugOrId: string) => {
+    if (typeof window === 'undefined' || !slugOrId) return;
+    try {
+      const set = getDeletedCategorySlugs();
+      set.add(slugOrId);
+      set.add(slugOrId.toLowerCase().trim());
+      localStorage.setItem('orient_deleted_category_slugs', JSON.stringify(Array.from(set)));
+    } catch {}
+  };
+
   // Filters & Toast
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [divisionFilter, setDivisionFilter] = useState<string>('all');
@@ -1510,7 +1554,21 @@ export default function AdminApp() {
   // Dedicated list of the 13 Mechanical Products
   const mechanical13List = useMemo(() => {
     const dynMap = getDynamicImagesMap();
-    return MECHANICAL_13_STATIC_IMAGES.map((item, index) => {
+    const deletedSlugs = getDeletedProductSlugs();
+    return MECHANICAL_13_STATIC_IMAGES
+      .filter((item) => {
+        if (deletedSlugs.has(item.slug) || deletedSlugs.has(item.name.toLowerCase().trim())) {
+          return false;
+        }
+        if (!isProductsLoading) {
+          const exists = products.some(
+            (p) => p.slug === item.slug || (p.title && p.title.toLowerCase().trim() === item.name.toLowerCase().trim())
+          );
+          if (!exists) return false;
+        }
+        return true;
+      })
+      .map((item, index) => {
       // 1. Look in loaded products state (MongoDB / API)
       const found = products.find(
         (p) =>
@@ -1621,9 +1679,13 @@ export default function AdminApp() {
     }
 
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
       await fetch(`${API_BASE}/products/${productId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ image: newImageUrl }),
       });
     } catch {
@@ -1756,9 +1818,17 @@ export default function AdminApp() {
             }
           });
 
-          // Merge: ensure Bearings, Filters & any initial products are preserved
+          // Merge: ensure Bearings, Filters & any initial products are preserved ONLY if not deleted
           const apiSlugs = new Set(apiProducts.map((p: any) => p.slug));
-          const missingDefaults = INITIAL_PRODUCTS.filter((ip) => !apiSlugs.has(ip.slug));
+          const deletedSlugs = getDeletedProductSlugs();
+          const missingDefaults = INITIAL_PRODUCTS.filter(
+            (ip) =>
+              ip.slug &&
+              !apiSlugs.has(ip.slug) &&
+              !deletedSlugs.has(ip.slug) &&
+              !deletedSlugs.has(ip.id || '') &&
+              !deletedSlugs.has(ip.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''))
+          );
           const mergedProducts = [...apiProducts, ...missingDefaults];
           setProducts(mergedProducts);
           setIsProductsLoading(false);
@@ -1766,34 +1836,6 @@ export default function AdminApp() {
             try {
               localStorage.setItem('orient_admin_products', JSON.stringify(mergedProducts));
             } catch {}
-          }
-
-          // Auto-sync missing default products to backend API only if authenticated
-          const adminAuthToken = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
-          if (adminAuthToken && missingDefaults.length > 0) {
-            missingDefaults.forEach((mp) => {
-              fetch(`${API_BASE}/products`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${adminAuthToken}`,
-                },
-                body: JSON.stringify({
-                  title: mp.title,
-                  slug: mp.slug,
-                  divisionSlug: mp.divisionSlug,
-                  categoryName: mp.category,
-                  image: mp.image,
-                  images: mp.images || [mp.image],
-                  shortDescription: mp.shortDescription,
-                  fullDescription: mp.fullDescription,
-                  features: mp.features,
-                  innerSections: mp.innerSections,
-                  inStock: mp.inStock,
-                  isFeatured: mp.featured,
-                }),
-              }).catch(() => {});
-            });
           }
         } else {
           setIsProductsLoading(false);
@@ -1827,27 +1869,20 @@ export default function AdminApp() {
           }));
 
           const apiCatSlugs = new Set(apiCats.map((c: any) => c.slug));
-          const missingDefaultCats = INITIAL_DIVISIONS.filter((d) => !apiCatSlugs.has(d.slug));
+          const deletedCatSlugs = getDeletedCategorySlugs();
+          const missingDefaultCats = INITIAL_DIVISIONS.filter(
+            (d) =>
+              !apiCatSlugs.has(d.slug) &&
+              !deletedCatSlugs.has(d.slug) &&
+              !deletedCatSlugs.has(d.id) &&
+              !deletedCatSlugs.has(d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''))
+          );
           const mergedCats = [...apiCats, ...missingDefaultCats];
           setDivisions(mergedCats);
           if (typeof window !== 'undefined') {
             try {
               localStorage.setItem('orient_custom_divisions', JSON.stringify(mergedCats));
             } catch {}
-          }
-
-          const adminAuthToken = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
-          if (adminAuthToken && missingDefaultCats.length > 0) {
-            missingDefaultCats.forEach((missing) => {
-              fetch(`${API_BASE}/categories`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${adminAuthToken}`,
-                },
-                body: JSON.stringify(missing),
-              }).catch(() => {});
-            });
           }
         } else {
           setIsProductsLoading(false);
@@ -2546,24 +2581,61 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
     }
   };
 
-  const handleDeleteProduct = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+  const handleDeleteProduct = async (productOrId: Product | string) => {
+    const p = typeof productOrId === 'string'
+      ? products.find((x) => x.id === productOrId || x.slug === productOrId || (x as any)._id === productOrId)
+      : productOrId;
+    const title = p?.title || (typeof productOrId === 'string' ? productOrId : '');
+    const id = typeof productOrId === 'string' ? productOrId : ((p as any)?._id || p?.id || '');
+    const slug = p?.slug || (typeof productOrId === 'string' ? productOrId : undefined);
+
+    if (!confirm(`Are you sure you want to delete "${title || id}"? It will be permanently removed from both Admin and the live user-side website.`)) return;
+
+    const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
+    const headers: Record<string, string> = {};
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     try {
-      await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
-    } catch {}
+      const mongoId = (p as any)?._id;
+      if (mongoId) {
+        await fetch(`${API_BASE}/products/${mongoId}`, { method: 'DELETE', headers }).catch(() => {});
+      }
+      if (slug && slug !== mongoId) {
+        await fetch(`${API_BASE}/products/${slug}`, { method: 'DELETE', headers }).catch(() => {});
+      }
+      if (id && id !== mongoId && id !== slug) {
+        await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE', headers }).catch(() => {});
+      }
+    } catch (err) {
+      console.warn('Backend product delete failed:', err);
+    }
+
+    if (slug) saveDeletedProductSlug(slug);
+    if (id) saveDeletedProductSlug(id);
+    if (title) saveDeletedProductSlug(title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
+
     setProducts((prev) => {
-      const updated = prev.filter((p) => p.id !== id && p.slug !== id);
+      const updated = prev.filter(
+        (item) =>
+          item.id !== id &&
+          item.slug !== id &&
+          (item as any)._id !== id &&
+          (!slug || item.slug !== slug) &&
+          (!title || item.title.toLowerCase().trim() !== title.toLowerCase().trim())
+      );
       if (typeof window !== 'undefined') {
         try {
           localStorage.setItem('orient_admin_products', JSON.stringify(updated));
           const dynMap = getDynamicImagesMap();
           delete dynMap[id];
+          if (slug) delete dynMap[slug];
           localStorage.setItem('orient_product_dynamic_images', JSON.stringify(dynMap));
         } catch {}
       }
       return updated;
     });
-    showToast('Product deleted');
+
+    showToast('Product permanently deleted');
   };
 
   // ---------------- BLOG HANDLERS ---------------- //
@@ -2854,20 +2926,31 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
   };
 
   const handleDeleteCategory = async (id: string, name: string) => {
-    if (!window.confirm(`Are you sure you want to delete category "${name}"?`)) return;
+    if (!window.confirm(`Are you sure you want to delete category "${name}"? It will be permanently removed from both Admin and the live user-side website.`)) return;
     const token = typeof window !== 'undefined' ? localStorage.getItem('orient_admin_token') : null;
     const reqHeaders: Record<string, string> = {};
     if (token) reqHeaders['Authorization'] = `Bearer ${token}`;
+
+    const catSlug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     try {
       await fetch(`${API_BASE}/categories/${id}`, {
         method: 'DELETE',
         headers: reqHeaders,
-      });
+      }).catch(() => {});
+      if (catSlug && catSlug !== id) {
+        await fetch(`${API_BASE}/categories/${catSlug}`, {
+          method: 'DELETE',
+          headers: reqHeaders,
+        }).catch(() => {});
+      }
     } catch {}
 
+    saveDeletedCategorySlug(id);
+    if (catSlug) saveDeletedCategorySlug(catSlug);
+
     setDivisions((prev) => {
-      const updated = prev.filter((d) => d.id !== id && d.slug !== id);
+      const updated = prev.filter((d) => d.id !== id && d.slug !== id && (!catSlug || d.slug !== catSlug));
       if (typeof window !== 'undefined') {
         try {
           localStorage.setItem('orient_custom_divisions', JSON.stringify(updated));
@@ -3722,6 +3805,33 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                         >
                           <span>View ↗</span>
                         </a>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const foundInState = products.find(
+                              (p) => p.slug === product.slug || (p.title && p.title.toLowerCase().trim() === product.title.toLowerCase().trim())
+                            );
+                            handleDeleteProduct(foundInState || product);
+                          }}
+                          className="btn-delete"
+                          title="Delete Product"
+                          style={{
+                            background: '#fff1f2',
+                            color: '#e11d48',
+                            border: '1px solid #fecdd3',
+                            borderRadius: '8px',
+                            padding: '8px 12px',
+                            fontSize: '0.9rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.2s ease',
+                          }}
+                        >
+                          🗑️
+                        </button>
                       </div>
                     </div>
                   );
@@ -3893,7 +4003,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                               </a>
                               <button
                                 type="button"
-                                onClick={() => handleDeleteProduct(p.id)}
+                                onClick={() => handleDeleteProduct(p)}
                                 className="btn-delete"
                                 title="Delete Product"
                               >
