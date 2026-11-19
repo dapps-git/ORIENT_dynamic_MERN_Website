@@ -1078,6 +1078,22 @@ export default function AdminApp() {
     } catch {}
   };
 
+  const stripHtml = (html?: string): string => {
+    if (!html) return '';
+    return html
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
   // Filters & Toast
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [divisionFilter, setDivisionFilter] = useState<string>('all');
@@ -3769,7 +3785,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           {product.title}
                         </h3>
                         <p className="mech-description">
-                          {product.shortDescription || (product.fullDescription ? product.fullDescription.slice(0, 95) + '...' : 'Heavy-duty industrial mechanical equipment.')}
+                          {stripHtml(product.shortDescription) || (product.fullDescription ? stripHtml(product.fullDescription).slice(0, 95) + '...' : 'Heavy-duty industrial mechanical equipment.')}
                         </p>
 
                         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: 'auto' }}>
@@ -3969,7 +3985,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                             )}
                             {p.shortDescription && (
                               <div className="cell-sub" style={{ marginTop: '4px', maxWidth: '380px' }}>
-                                {p.shortDescription}
+                                {stripHtml(p.shortDescription)}
                               </div>
                             )}
                           </td>
@@ -4129,8 +4145,19 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                           </div>
 
                           {div.headline && <div className="div-headline-badge" style={{ marginTop: '4px' }}>{div.headline}</div>}
-                          <p style={{ margin: '8px 0 16px', fontSize: '0.84rem', color: '#64748b', lineHeight: 1.5 }}>
-                            {div.description || 'Dedicated division providing specialized industrial supplies across Saudi Arabia.'}
+                          <p
+                            style={{
+                              margin: '8px 0 16px',
+                              fontSize: '0.84rem',
+                              color: '#64748b',
+                              lineHeight: 1.5,
+                              display: '-webkit-box',
+                              WebkitLineClamp: 3,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                            }}
+                          >
+                            {stripHtml(div.description) || 'Dedicated division providing specialized industrial supplies across Saudi Arabia.'}
                           </p>
 
                           <div className="division-card-actions" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: 'auto' }}>
