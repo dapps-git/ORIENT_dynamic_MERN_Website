@@ -1127,7 +1127,7 @@ export default function AdminApp() {
 
   const [showDivisionModal, setShowDivisionModal] = useState<boolean>(false);
   const [editingDivision, setEditingDivision] = useState<Division | null>(null);
-  const [divisionModalTab, setDivisionModalTab] = useState<'products' | 'general' | 'subcategories' | 'range' | 'all'>('products');
+  const [divisionModalTab, setDivisionModalTab] = useState<'products' | 'general' | 'range' | 'all'>('products');
 
   // Product Form state
   const [productForm, setProductForm] = useState({
@@ -5668,22 +5668,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                 📝 Headline &amp; Descriptions
               </button>
 
-              <button
-                type="button"
-                onClick={() => setDivisionModalTab('subcategories')}
-                style={{
-                  padding: '8px 14px',
-                  borderRadius: '6px',
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  background: divisionModalTab === 'subcategories' ? '#2563eb' : '#ffffff',
-                  color: divisionModalTab === 'subcategories' ? '#ffffff' : '#334155',
-                  border: divisionModalTab === 'subcategories' ? '1px solid #2563eb' : '1px solid #cbd5e1',
-                }}
-              >
-                📑 Sub-Categories Photo Cards ({divisionForm.subcategories.length})
-              </button>
+
 
               <button
                 type="button"
@@ -6319,90 +6304,7 @@ const compressImageBeforeUpload = (file: File, maxWidth = 1400, quality = 0.85):
                 </>
               )}
 
-              {/* SECTION: SUBCATEGORIES (IMAGES & TITLES) */}
-              {(divisionModalTab === 'subcategories' || divisionModalTab === 'all') && (
-                <div className="inner-section-box">
-                  <div className="inner-section-head">
-                    <label style={{ fontWeight: 700 }}>Subcategories Photo Cards</label>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setDivisionForm({
-                          ...divisionForm,
-                          subcategories: [...divisionForm.subcategories, { name: '', image: '' }],
-                        })
-                      }
-                      className="btn-add-inline"
-                    >
-                      + Add Subcategory
-                    </button>
-                  </div>
-                  <div className="form-group" style={{ marginBottom: '12px' }}>
-                    <input
-                      type="text"
-                      placeholder="Subcategories Section Title (e.g. Mechanical Product Categories)"
-                      value={divisionForm.subcategoriesTitle}
-                      onChange={(e) => setDivisionForm({ ...divisionForm, subcategoriesTitle: e.target.value })}
-                      className="input-field"
-                    />
-                  </div>
-                  <div className="dynamic-subcat-list">
-                    {divisionForm.subcategories.map((sub, idx) => (
-                      <div key={idx} className="subcat-row">
-                        <input
-                          type="text"
-                          placeholder="Subcategory Name (e.g. Industrial Valves)"
-                          value={sub.name}
-                          onChange={(e) => {
-                            const updated = [...divisionForm.subcategories];
-                            updated[idx].name = e.target.value;
-                            setDivisionForm({ ...divisionForm, subcategories: updated });
-                          }}
-                          className="input-field"
-                          style={{ flex: 1 }}
-                        />
-                        <input
-                          type="text"
-                          placeholder="Image URL (/categories/...)"
-                          value={sub.image}
-                          onChange={(e) => {
-                            const updated = [...divisionForm.subcategories];
-                            updated[idx].image = e.target.value;
-                            setDivisionForm({ ...divisionForm, subcategories: updated });
-                          }}
-                          className="input-field"
-                          style={{ flex: 1 }}
-                        />
-                        <label className="btn-upload-file" style={{ padding: '8px 12px' }}>
-                          📁
-                          <input
-                            type="file"
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                            onChange={(e) =>
-                              handleImageFileChange(e, (url) => {
-                                const updated = [...divisionForm.subcategories];
-                                updated[idx].image = url;
-                                setDivisionForm({ ...divisionForm, subcategories: updated });
-                              })
-                            }
-                          />
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const updated = divisionForm.subcategories.filter((_, i) => i !== idx);
-                            setDivisionForm({ ...divisionForm, subcategories: updated });
-                          }}
-                          className="btn-remove-inline"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+
 
               {/* SECTION: PRODUCT RANGE & APPLICATIONS */}
               {(divisionModalTab === 'range' || divisionModalTab === 'all') && (
