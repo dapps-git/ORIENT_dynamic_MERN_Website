@@ -24,11 +24,7 @@ const SLUG_ALIASES: Record<string, string> = {
   'fasteners': 'fasteners-division',
   'industrial-consumables': 'marine-division',
   'ppe-safety-equpments': 'ppe-safety-equipment',
-  'ppe-safety-equipment': 'ppe-safety-equipment',
   'all-fittings': 'mechanical-division',
-  'tools-maintenance': 'mechanical-division',
-  'industrial-hoses-hose-couplings': 'mechanical-division',
-  'lubricants-chemicals': 'coatings-surface-protection',
   'bearings-and-filters': 'bearings',
   'bearings-filters': 'bearings',
   'bairing-and-filters': 'bearings',
@@ -534,111 +530,152 @@ export default async function ProductDivisionInnerPage({
             </div>
 
             {/* Product Catalog Grid (Clean Category / Product Cards matching reference image) */}
-            <div className="product-grid-4col">
-              {division.products.map((product) => {
-                const prodSlug = product.slug || getProductSlug(product.title);
+            {division.products.length === 0 ? (
+              <div
+                style={{
+                  textAlign: 'center',
+                  padding: '60px 24px',
+                  backgroundColor: '#f8fafc',
+                  borderRadius: '16px',
+                  border: '1px dashed #cbd5e1',
+                  margin: '10px 0 40px',
+                }}
+              >
+                <div style={{ fontSize: '3rem', marginBottom: '12px' }}>📦</div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>
+                  Products Being Updated
+                </h3>
+                <p style={{ color: '#64748b', fontSize: '0.92rem', maxWidth: '480px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+                  Our catalog for {division.name} is currently being updated with certified specifications. Inquire with our procurement team directly for immediate stock availability and pricing.
+                </p>
+                <a
+                  href={`https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(`Hello Orient Energy, I am inquiring about product availability for ${division.name}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    backgroundColor: '#2563eb',
+                    color: '#ffffff',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    fontWeight: 600,
+                    fontSize: '0.92rem',
+                    textDecoration: 'none',
+                    boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)',
+                  }}
+                >
+                  <span>💬 Inquire via WhatsApp</span>
+                </a>
+              </div>
+            ) : (
+              <div className="product-grid-4col">
+                {division.products.map((product) => {
+                  const prodSlug = product.slug || getProductSlug(product.title);
 
-                return (
-                  <Link
-                    key={product.id}
-                    href={`/product/${prodSlug}`}
-                    className="product-catalog-card"
-                    style={{
-                      backgroundColor: '#ffffff',
-                      border: '1px solid #e2e8f0',
-                      borderRadius: '12px',
-                      padding: '18px 18px 16px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      textDecoration: 'none',
-                      color: 'inherit',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                      transition: 'all 0.25s ease',
-                      position: 'relative',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {/* 1. Category / Product Title at Top (Uppercase, bold, left aligned) */}
-                    <h4
+                  return (
+                    <Link
+                      key={product.id}
+                      href={`/product/${prodSlug}`}
+                      className="product-catalog-card"
                       style={{
-                        fontFamily: "'Montserrat', sans-serif",
-                        fontSize: '0.82rem',
-                        fontWeight: 700,
-                        letterSpacing: '0.04em',
-                        textTransform: 'uppercase',
-                        color: '#0f172a',
-                        lineHeight: 1.35,
-                        minHeight: '38px',
-                        margin: '0 0 12px 0',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                        textAlign: 'left',
-                        transition: 'color 0.2s ease',
-                      }}
-                      title={product.title}
-                      className="product-card-title"
-                    >
-                      {product.title}
-                    </h4>
-
-                    {/* 2. Centered Product Image Showcase */}
-                    <div
-                      style={{
-                        position: 'relative',
-                        width: '100%',
-                        height: '160px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: '4px 0 14px',
                         backgroundColor: '#ffffff',
-                        overflow: 'hidden',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '12px',
+                        padding: '18px 18px 16px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                        transition: 'all 0.25s ease',
+                        position: 'relative',
+                        cursor: 'pointer',
                       }}
                     >
-                      <Image
-                        src={product.image}
-                        alt={product.title}
-                        width={160}
-                        height={150}
+                      {/* 1. Category / Product Title at Top (Uppercase, bold, left aligned) */}
+                      <h4
                         style={{
-                          maxWidth: '100%',
-                          maxHeight: '100%',
-                          objectFit: 'contain',
-                          transition: 'transform 0.28s ease',
+                          fontFamily: "'Montserrat', sans-serif",
+                          fontSize: '0.82rem',
+                          fontWeight: 700,
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase',
+                          color: '#0f172a',
+                          lineHeight: 1.35,
+                          minHeight: '38px',
+                          margin: '0 0 12px 0',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          textAlign: 'left',
+                          transition: 'color 0.2s ease',
                         }}
-                        className="product-catalog-thumb"
-                      />
-                    </div>
+                        title={product.title}
+                        className="product-card-title"
+                      >
+                        {product.title}
+                      </h4>
 
-                    {/* 3. Bottom-Left Circular Dark Navy Blue Button with Right Arrow */}
-                    <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                      {/* 2. Centered Product Image Showcase */}
                       <div
-                        className="product-circle-arrow-btn"
                         style={{
-                          width: '38px',
-                          height: '38px',
-                          borderRadius: '50%',
-                          backgroundColor: '#071138',
-                          color: '#ffffff',
+                          position: 'relative',
+                          width: '100%',
+                          height: '160px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          transition: 'all 0.25s ease',
-                          boxShadow: '0 3px 10px rgba(7, 17, 56, 0.2)',
+                          margin: '4px 0 14px',
+                          backgroundColor: '#ffffff',
+                          overflow: 'hidden',
                         }}
                       >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="5" y1="12" x2="19" y2="12" />
-                          <polyline points="12 5 19 12 12 19" />
-                        </svg>
+                        <Image
+                          src={product.image}
+                          alt={product.title}
+                          width={160}
+                          height={150}
+                          style={{
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            objectFit: 'contain',
+                            transition: 'transform 0.28s ease',
+                          }}
+                          className="product-catalog-thumb"
+                        />
                       </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
+
+                      {/* 3. Bottom-Left Circular Dark Navy Blue Button with Right Arrow */}
+                      <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+                        <div
+                          className="product-circle-arrow-btn"
+                          style={{
+                            width: '38px',
+                            height: '38px',
+                            borderRadius: '50%',
+                            backgroundColor: '#071138',
+                            color: '#ffffff',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transition: 'all 0.25s ease',
+                            boxShadow: '0 3px 10px rgba(7, 17, 56, 0.2)',
+                          }}
+                        >
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                          </svg>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Other Divisions Navigation Links */}
             <div style={{ marginTop: '70px', paddingTop: '40px', borderTop: '1px solid #f1f5f9' }}>
