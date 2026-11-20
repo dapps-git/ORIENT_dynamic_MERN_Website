@@ -217,21 +217,24 @@ export async function generateMetadata({
 
 function formatCategoryDescription(desc: string | string[]): string {
   if (!desc) return '';
-  const text = Array.isArray(desc) ? desc.join('<br/><br/>') : desc;
+  let text = Array.isArray(desc) ? desc.join('\n\n') : desc;
+
+  const hasHtml = /<[a-z][\s\S]*>/i.test(text);
+  if (!hasHtml) {
+    const paragraphs = text.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+    text = paragraphs.map((p) => `<p>${p.replace(/\n/g, '<br/>')}</p>`).join('');
+  }
+
   let formatted = text;
 
-  // Auto-link plain URLs like gravoz.com or https://... if not already in <a>
+  // Auto-link plain URLs if not already in <a>
   formatted = formatted.replace(
     /(?<!href=["'])(https?:\/\/[^\s<>"']+)/gi,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 500;">$1</a>'
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
   );
   formatted = formatted.replace(
     /(?<!href=["']|https?:\/\/)\b((?:[a-zA-Z0-9-]+\.)+(?:com|org|net|io|co|sa|gov|edu|info|ae|me))\b(\/[^\s<>"']*)?/gi,
-    '<a href="https://$1$2" target="_blank" rel="noopener noreferrer" style="color: #2563eb; text-decoration: underline; font-weight: 500;">$1$2</a>'
-  );
-  formatted = formatted.replace(
-    /<a\s+(?!style=)([^>]+)>/gi,
-    '<a style="color: #2563eb; text-decoration: underline; font-weight: 500;" target="_blank" rel="noopener noreferrer" $1>'
+    '<a href="https://$1$2" target="_blank" rel="noopener noreferrer">$1$2</a>'
   );
 
   return formatted;
