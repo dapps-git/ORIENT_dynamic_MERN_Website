@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollAnimation from '@/components/ScrollAnimation';
-import ProductsCatalogClient from '@/components/products/ProductsCatalogClient';
+import ProductsCatalogClient, { DivisionCard } from '@/components/products/ProductsCatalogClient';
 
 export const metadata: Metadata = {
   title: 'Industrial Products & Engineering Supply Solutions in Saudi Arabia — Orient Energy',
@@ -23,13 +23,37 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default function ProductsPage() {
+async function getCategories(): Promise<DivisionCard[]> {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api";
+  try {
+    const res = await fetch(`${apiUrl}/categories`, { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        return data.data.map((cat: any) => ({
+          id: cat.slug || cat._id,
+          slug: cat.slug,
+          name: cat.name,
+          image: cat.image && cat.image.trim() ? cat.image : '',
+          productCount: cat.productCount !== undefined ? cat.productCount : 0,
+        }));
+      }
+    }
+  } catch (err) {
+    console.error("Error fetching categories in ProductsPage SSR:", err);
+  }
+  return [];
+}
+
+export default async function ProductsPage() {
+  const initialDivisions = await getCategories();
+
   return (
     <>
       <ScrollAnimation />
       <Navbar />
       <main>
-        <ProductsCatalogClient />
+        <ProductsCatalogClient initialDivisions={initialDivisions} />
       </main>
       <Footer />
     </>

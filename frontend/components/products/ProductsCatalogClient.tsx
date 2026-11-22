@@ -92,15 +92,48 @@ const FAQ_ITEMS = [
   },
 ];
 
-export default function ProductsCatalogClient() {
+const mergeDivisions = (staticList: DivisionCard[], dynamicList: DivisionCard[]): DivisionCard[] => {
+  if (!dynamicList || dynamicList.length === 0) return staticList;
+
+  const dynMap = new Map<string, DivisionCard>();
+  dynamicList.forEach((dyn) => {
+    if (dyn.slug) dynMap.set(dyn.slug, dyn);
+    if (dyn.id) dynMap.set(dyn.id, dyn);
+  });
+
+  const merged = staticList.map((st) => {
+    const dyn = dynMap.get(st.slug) || dynMap.get(st.id);
+    if (dyn && dyn.image && dyn.image.trim()) {
+      return {
+        ...st,
+        name: dyn.name || st.name,
+        image: dyn.image,
+        productCount: dyn.productCount !== undefined ? dyn.productCount : st.productCount,
+      };
+    }
+    return st;
+  });
+
+  // Include any extra categories created in admin not already in the static list
+  const existingSlugs = new Set(merged.map((m) => m.slug));
+  const extras = dynamicList.filter((d) => d.slug && !existingSlugs.has(d.slug));
+  return [...merged, ...extras];
+};
+
+export default function ProductsCatalogClient({ initialDivisions }: { initialDivisions?: DivisionCard[] } = {}) {
   const [divisions, setDivisions] = useState<DivisionCard[]>(() => {
+    // 1. If server passed dynamic categories (SSR), use them directly so static is completely replaced immediately
+    if (initialDivisions && initialDivisions.length > 0) {
+      return mergeDivisions(DEFAULT_DIVISIONS, initialDivisions);
+    }
+    // 2. If client has cached dynamic categories in localStorage, use them immediately with zero flash
     if (typeof window !== 'undefined') {
       try {
         const local = localStorage.getItem('orient_custom_divisions');
         if (local) {
           const parsed = JSON.parse(local);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            return parsed;
+            return mergeDivisions(DEFAULT_DIVISIONS, parsed);
           }
         }
       } catch {}
@@ -118,7 +151,7 @@ export default function ProductsCatalogClient() {
         if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           const backendCats: any[] = data.data;
           setDivisions(() => {
-            const mappedBackend = backendCats.map((cat: any) => {
+            const mappedBackend: DivisionCard[] = backendCats.map((cat: any) => {
               const matchedDef = DEFAULT_DIVISIONS.find((d) => d.slug === cat.slug || d.id === cat.slug);
               return {
                 id: cat.slug || cat._id,
@@ -128,12 +161,13 @@ export default function ProductsCatalogClient() {
                 productCount: cat.productCount !== undefined ? cat.productCount : (matchedDef?.productCount || 0),
               };
             });
+            const merged = mergeDivisions(DEFAULT_DIVISIONS, mappedBackend);
             if (typeof window !== 'undefined') {
               try {
-                localStorage.setItem('orient_custom_divisions', JSON.stringify(mappedBackend));
+                localStorage.setItem('orient_custom_divisions', JSON.stringify(merged));
               } catch {}
             }
-            return mappedBackend;
+            return merged;
           });
         }
       })
@@ -143,10 +177,11 @@ export default function ProductsCatalogClient() {
           .then((res) => res.json())
           .then((data) => {
             if (data.success && Array.isArray(data.data) && data.data.length > 0) {
-              setDivisions(data.data);
+              const merged = mergeDivisions(DEFAULT_DIVISIONS, data.data);
+              setDivisions(merged);
               if (typeof window !== 'undefined') {
                 try {
-                  localStorage.setItem('orient_custom_divisions', JSON.stringify(data.data));
+                  localStorage.setItem('orient_custom_divisions', JSON.stringify(merged));
                 } catch {}
               }
             }
@@ -155,7 +190,7 @@ export default function ProductsCatalogClient() {
             const local = localStorage.getItem('orient_custom_divisions');
             if (local) {
               try {
-                setDivisions(JSON.parse(local));
+                setDivisions(mergeDivisions(DEFAULT_DIVISIONS, JSON.parse(local)));
               } catch {}
             }
           });
@@ -280,32 +315,12 @@ export default function ProductsCatalogClient() {
                 }}
               >
                 {/* Division Product Collage Image Container */}
-                <div
-                  style={{
-                    height: '220px',
-                    width: '100%',
-                    position: 'relative',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '16px 20px',
-                    backgroundColor: '#ffffff',
-                  }}
-                >
+                <div className="division-card-img-wrap">
                   <Image
                     src={div.image || '/categories/all-fittings.jpeg'}
                     alt={div.name}
                     width={320}
                     height={200}
-                    style={{
-                      maxHeight: '190px',
-                      maxWidth: '100%',
-                      width: 'auto',
-                      height: 'auto',
-                      objectFit: 'contain',
-                      display: 'block',
-                      transition: 'transform 0.35s ease',
-                    }}
                     className="division-card-img"
                   />
                 </div>
@@ -472,6 +487,30 @@ export default function ProductsCatalogClient() {
       </section>
 
       <style>{`
+        .division-card-img-wrap {
+          height: 220px;
+          width: 100%;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px 20px;
+          background-color: #ffffff;
+          overflow: hidden !important;
+          box-sizing: border-box;
+        }
+
+        .division-card-img {
+          max-width: 100% !important;
+          max-height: 100% !important;
+          width: auto !important;
+          height: auto !important;
+          object-fit: contain !important;
+          display: block !important;
+          margin: 0 auto !important;
+          transition: transform 0.35s ease;
+        }
+
         .division-showcase-card:hover {
           transform: translateY(-6px);
           box-shadow: 0 16px 36px rgba(11, 122, 61, 0.18) !important;
@@ -479,7 +518,7 @@ export default function ProductsCatalogClient() {
         }
 
         .division-showcase-card:hover .division-card-img {
-          transform: scale(1.05);
+          transform: scale(1.04);
         }
 
         .division-showcase-card:hover .division-card-arrow-circle {
@@ -491,6 +530,11 @@ export default function ProductsCatalogClient() {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 18px !important;
           }
+
+          .division-card-img-wrap {
+            height: 200px !important;
+            padding: 14px 18px !important;
+          }
         }
 
         @media (max-width: 640px) {
@@ -499,8 +543,19 @@ export default function ProductsCatalogClient() {
             gap: 16px !important;
           }
 
-          .division-showcase-card div:first-child {
+          .division-card-img-wrap {
             height: 180px !important;
+            padding: 12px 14px !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+          }
+
+          .division-card-img {
+            max-width: 100% !important;
+            max-height: 100% !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
           }
         }
       `}</style>
