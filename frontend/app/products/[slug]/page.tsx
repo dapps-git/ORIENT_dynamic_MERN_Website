@@ -70,7 +70,7 @@ async function getCategoryBrands(categoryType: 'bearings' | 'filterings'): Promi
         return [...dynamicList, ...remainder];
       }
     }
-  } catch {}
+  } catch { }
   return fallback;
 }
 
@@ -104,76 +104,76 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
               s.includes('filters.jpg') ||
               s.includes('pumps-motors.jpg')
             ) {
-              return true;
-            }
-            return false;
-          }
           return true;
-        };
-
-        const mappedCatProducts = (cat.products || []).map((p: any) => {
-          const rawImgs: string[] = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
-          const dynamicOnly = rawImgs.filter((img) => !isStaticPlaceholder(img));
-          const finalImages = dynamicOnly.length > 0 ? dynamicOnly : (rawImgs.length > 0 ? rawImgs : ['/categories/all-fittings.jpeg']);
-          const finalCover = dynamicOnly.length > 0
-            ? (!isStaticPlaceholder(p.image) ? p.image : dynamicOnly[0])
-            : (p.image || finalImages[0] || '/categories/all-fittings.jpeg');
-
-          return {
-            id: p._id ? String(p._id) : p.slug,
-            title: p.title,
-            slug: p.slug || getProductSlug(p.title),
-            image: finalCover,
-            images: finalImages,
-            category: p.categoryName || cat.name,
-            features: p.features || [],
-            shortDescription: p.shortDescription || '',
-            fullDescription: p.fullDescription || '',
-            whatsappMessage: p.whatsappMessage,
-          };
-        });
-
-        const productsList = Array.isArray(cat.products)
-          ? mappedCatProducts
-          : (staticDiv?.products || []);
-
-        return {
-          id: cat.slug || resolvedId,
-          name: cat.name || staticDiv?.name || '',
-          headline: cat.headline || staticDiv?.headline || cat.name,
-          description:
-            cat.detailedDescriptions && cat.detailedDescriptions.length > 0
-              ? cat.detailedDescriptions
-              : cat.description
-              ? [cat.description]
-              : staticDiv?.description || [],
-          subcategoriesTitle: cat.subcategoriesTitle || staticDiv?.subcategoriesTitle,
-          subcategories:
-            cat.slug === 'mechanical-division' || resolvedId === 'mechanical-division'
-              ? undefined
-              : cat.subcategories && cat.subcategories.length > 0
-              ? cat.subcategories.filter((s: any) => s.image && s.image.trim() !== '')
-              : staticDiv?.subcategories,
-          productRangeTitle: cat.productRangeTitle || staticDiv?.productRangeTitle,
-          productRange:
-            cat.productRange && cat.productRange.length > 0
-              ? cat.productRange
-              : staticDiv?.productRange,
-          applicationsTitle: cat.applicationsTitle || staticDiv?.applicationsTitle,
-          applications:
-            cat.applications && cat.applications.length > 0
-              ? cat.applications
-              : staticDiv?.applications,
-          pills: cat.pills && cat.pills.length > 0 ? cat.pills : staticDiv?.pills,
-          products: productsList,
-        };
+        }
+        return false;
       }
+      return true;
+    };
+
+    const mappedCatProducts = (cat.products || []).map((p: any) => {
+      const rawImgs: string[] = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+      const dynamicOnly = rawImgs.filter((img) => !isStaticPlaceholder(img));
+      const finalImages = dynamicOnly.length > 0 ? dynamicOnly : (rawImgs.length > 0 ? rawImgs : ['/categories/all-fittings.jpeg']);
+      const finalCover = dynamicOnly.length > 0
+        ? (!isStaticPlaceholder(p.image) ? p.image : dynamicOnly[0])
+        : (p.image || finalImages[0] || '/categories/all-fittings.jpeg');
+
+      return {
+        id: p._id ? String(p._id) : p.slug,
+        title: p.title,
+        slug: p.slug || getProductSlug(p.title),
+        image: finalCover,
+        images: finalImages,
+        category: p.categoryName || cat.name,
+        features: p.features || [],
+        shortDescription: p.shortDescription || '',
+        fullDescription: p.fullDescription || '',
+        whatsappMessage: p.whatsappMessage,
+      };
+    });
+
+    const productsList = Array.isArray(cat.products)
+      ? mappedCatProducts
+      : (staticDiv?.products || []);
+
+    return {
+      id: cat.slug || resolvedId,
+      name: cat.name || staticDiv?.name || '',
+      headline: cat.headline || staticDiv?.headline || cat.name,
+      description:
+        cat.detailedDescriptions && cat.detailedDescriptions.length > 0
+          ? cat.detailedDescriptions
+          : cat.description
+            ? [cat.description]
+            : staticDiv?.description || [],
+      subcategoriesTitle: cat.subcategoriesTitle || staticDiv?.subcategoriesTitle,
+      subcategories:
+        cat.slug === 'mechanical-division' || resolvedId === 'mechanical-division'
+          ? undefined
+          : cat.subcategories && cat.subcategories.length > 0
+            ? cat.subcategories.filter((s: any) => s.image && s.image.trim() !== '')
+            : staticDiv?.subcategories,
+      productRangeTitle: cat.productRangeTitle || staticDiv?.productRangeTitle,
+      productRange:
+        cat.productRange && cat.productRange.length > 0
+          ? cat.productRange
+          : staticDiv?.productRange,
+      applicationsTitle: cat.applicationsTitle || staticDiv?.applicationsTitle,
+      applications:
+        cat.applications && cat.applications.length > 0
+          ? cat.applications
+          : staticDiv?.applications,
+      pills: cat.pills && cat.pills.length > 0 ? cat.pills : staticDiv?.pills,
+      products: productsList,
+    };
+  }
     }
   } catch {
-    // Backend offline: fallback to staticDiv
-  }
+  // Backend offline: fallback to staticDiv
+}
 
-  return staticDiv;
+return staticDiv;
 }
 
 export async function generateStaticParams() {
@@ -259,8 +259,8 @@ export default async function ProductDivisionInnerPage({
   const categoryBrands = isBearings
     ? await getCategoryBrands('bearings')
     : isFilters
-    ? await getCategoryBrands('filterings')
-    : null;
+      ? await getCategoryBrands('filterings')
+      : null;
 
   return (
     <>

@@ -78,22 +78,6 @@ const SHOWCASE_PRODUCTS: ShowcaseProduct[] = [
     image: '/uploads/butterflyvalve.jpg',
     href: '/product/butterfly-valve',
   },
-  {
-    id: 'prod-carbonsteel',
-    title: 'Carbon Steel Seamless & ERW Pipes',
-    slug: 'carbon-steel-seamless-erw-pipes',
-    category: 'Pipe Fittings and Flanges',
-    image: '/uploads/carbonsteel.webp',
-    href: '/product/carbon-steel-seamless-erw-pipes',
-  },
-  {
-    id: 'prod-victor',
-    title: 'Victor Oxygen Regulator',
-    slug: 'victor-oxygen-regulator',
-    category: 'Welding Division',
-    image: '/uploads/victoroxygenregulator.jpg',
-    href: '/product/victor-oxygen-regulator',
-  },
 ];
 
 const chunkArray = <T,>(arr: T[], size: number): T[][] => {
@@ -104,166 +88,14 @@ const chunkArray = <T,>(arr: T[], size: number): T[][] => {
   return chunks;
 };
 
-const isStaticImage = (u?: string): boolean => {
-  if (!u) return true;
-  const s = u.trim();
-  if (
-    s.startsWith('http://') ||
-    s.startsWith('https://') ||
-    s.startsWith('data:image/') ||
-    s.startsWith('blob:')
-  ) {
-    if (
-      s.includes('/products/') ||
-      s.includes('/categories/') ||
-      s.includes('all-fittings.jpeg') ||
-      s.includes('bearings.jpg') ||
-      s.includes('filters.jpg') ||
-      s.includes('pumps-motors.jpg')
-    ) {
-      return true;
-    }
-    return false;
-  }
-  return true;
-};
-
 export default function FeaturedProductsShowcase() {
-  const [products, setProducts] = useState<ShowcaseProduct[]>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const deletedRaw = localStorage.getItem('orient_deleted_product_slugs');
-        const deletedSet = new Set(deletedRaw ? JSON.parse(deletedRaw) : []);
-        let baseList = SHOWCASE_PRODUCTS.filter((item) => !deletedSet.has(item.slug));
-        if (baseList.length === 0) {
-          baseList = [...SHOWCASE_PRODUCTS];
-        }
-
-        const saved = localStorage.getItem('orient_admin_products');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            return baseList.map((item) => {
-              const match = parsed.find(
-                (p: any) =>
-                  p.slug === item.slug ||
-                  (p.title && p.title.toLowerCase().trim() === item.title.toLowerCase().trim())
-              );
-              if (match) {
-                const raw = Array.isArray(match.images) && match.images.length > 0 ? match.images : (match.image ? [match.image] : []);
-                const dyn = raw.filter((u: string) => !isStaticImage(u));
-                const newImg = dyn.length > 0 ? (!isStaticImage(match.image) ? match.image : dyn[0]) : null;
-                if (newImg) {
-                  return { ...item, image: newImg };
-                }
-              }
-              return item;
-            });
-          }
-        }
-        return baseList;
-      } catch {}
-    }
-    return SHOWCASE_PRODUCTS;
-  });
+  const products = SHOWCASE_PRODUCTS;
   const [desktopSlide, setDesktopSlide] = useState(0);
   const [mobileSlide, setMobileSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  useEffect(() => {
-    let deletedSet = new Set<string>();
-    if (typeof window !== 'undefined') {
-      try {
-        const deletedRaw = localStorage.getItem('orient_deleted_product_slugs');
-        if (deletedRaw) {
-          deletedSet = new Set(JSON.parse(deletedRaw));
-        }
-      } catch {}
-    }
-
-    // 1. Sync updated images from localStorage if present without removing showcase items
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem('orient_admin_products');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setProducts((prev) => {
-              const current = prev.length > 0 ? prev : SHOWCASE_PRODUCTS;
-              return current.map((item) => {
-                const match = parsed.find(
-                  (p: any) =>
-                    p.slug === item.slug ||
-                    (p.title && p.title.toLowerCase().trim() === item.title.toLowerCase().trim())
-                );
-                if (match) {
-                  const raw = Array.isArray(match.images) && match.images.length > 0 ? match.images : (match.image ? [match.image] : []);
-                  const dyn = raw.filter((u: string) => !isStaticImage(u));
-                  const newImg = dyn.length > 0 ? (!isStaticImage(match.image) ? match.image : dyn[0]) : null;
-                  if (newImg) {
-                    return { ...item, image: newImg };
-                  }
-                }
-                return item;
-              });
-            });
-          }
-        }
-      } catch {}
-    }
-
-    // 2. Fetch backend updates: update images & merge any backend featured products
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api";
-    fetch(`${apiUrl}/products`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
-          const backendProducts: any[] = data.data;
-
-          setProducts((prev) => {
-            const current = prev.length > 0 ? prev : SHOWCASE_PRODUCTS;
-            // Update image URLs for showcase items if backend has newer images
-            const updated = current.map((item) => {
-              const match = backendProducts.find(
-                (p: any) =>
-                  p.slug === item.slug ||
-                  (p.title && p.title.toLowerCase().trim() === item.title.toLowerCase().trim())
-              );
-              if (match) {
-                const raw = Array.isArray(match.images) && match.images.length > 0 ? match.images : (match.image ? [match.image] : []);
-                const dyn = raw.filter((u: string) => !isStaticImage(u));
-                const newImg = dyn.length > 0 ? (!isStaticImage(match.image) ? match.image : dyn[0]) : null;
-                if (newImg) {
-                  return { ...item, image: newImg };
-                }
-              }
-              return item;
-            });
-
-            // If backend has products marked isFeatured, include them as well
-            const extraFeatured: ShowcaseProduct[] = backendProducts
-              .filter((p: any) => (p.isFeatured || p.featured) && !deletedSet.has(p.slug))
-              .filter((p: any) => !updated.some((u) => u.slug === p.slug || (p.title && u.title.toLowerCase().trim() === p.title.toLowerCase().trim())))
-              .map((p: any) => ({
-                id: p._id || p.id || `feat-${p.slug}`,
-                title: p.title || p.name || 'Featured Product',
-                slug: p.slug,
-                category: typeof p.category === 'string' ? p.category : (p.category?.name || 'Featured'),
-                image: (Array.isArray(p.images) && p.images[0]) || p.image || '/images/placeholder.png',
-                href: `/product/${p.slug}`,
-              }));
-
-            const finalProducts = [...updated, ...extraFeatured];
-            return finalProducts.length > 0 ? finalProducts : SHOWCASE_PRODUCTS;
-          });
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  const activeProducts = products && products.length > 0 ? products : SHOWCASE_PRODUCTS;
-  const desktopSlides = chunkArray(activeProducts, 4);
-  const mobileSlides = chunkArray(activeProducts, 2);
+  const desktopSlides = chunkArray(products, 4);
+  const mobileSlides = chunkArray(products, 2);
 
   // Touch gesture state
   const touchStartX = useRef<number>(0);
@@ -619,6 +451,7 @@ export default function FeaturedProductsShowcase() {
                               display: 'block',
                             }}
                             className="product-box-thumb"
+                            priority
                           />
                         </div>
 

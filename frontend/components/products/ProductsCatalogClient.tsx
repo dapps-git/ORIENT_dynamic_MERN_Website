@@ -136,7 +136,7 @@ export default function ProductsCatalogClient({ initialDivisions }: { initialDiv
             return mergeDivisions(DEFAULT_DIVISIONS, parsed);
           }
         }
-      } catch {}
+      } catch { }
     }
     return DEFAULT_DIVISIONS;
   });
@@ -165,7 +165,7 @@ export default function ProductsCatalogClient({ initialDivisions }: { initialDiv
             if (typeof window !== 'undefined') {
               try {
                 localStorage.setItem('orient_custom_divisions', JSON.stringify(merged));
-              } catch {}
+              } catch { }
             }
             return merged;
           });
@@ -182,7 +182,7 @@ export default function ProductsCatalogClient({ initialDivisions }: { initialDiv
               if (typeof window !== 'undefined') {
                 try {
                   localStorage.setItem('orient_custom_divisions', JSON.stringify(merged));
-                } catch {}
+                } catch { }
               }
             }
           })
@@ -191,7 +191,7 @@ export default function ProductsCatalogClient({ initialDivisions }: { initialDiv
             if (local) {
               try {
                 setDivisions(mergeDivisions(DEFAULT_DIVISIONS, JSON.parse(local)));
-              } catch {}
+              } catch { }
             }
           });
       });
