@@ -20,13 +20,18 @@ export const metadata: Metadata = {
   ],
 };
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 async function getCategories(): Promise<DivisionCard[]> {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api";
   try {
-    const res = await fetch(`${apiUrl}/categories`, { cache: 'no-store' });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1800);
+    const res = await fetch(`${apiUrl}/categories`, {
+      signal: controller.signal,
+      next: { revalidate: 60 },
+    });
+    clearTimeout(timeoutId);
     if (res.ok) {
       const data = await res.json();
       if (data.success && Array.isArray(data.data) && data.data.length > 0) {

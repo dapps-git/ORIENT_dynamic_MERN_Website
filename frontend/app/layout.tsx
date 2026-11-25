@@ -5,10 +5,12 @@ import FloatingContact from '@/components/FloatingContact';
 import PageLoader from '@/components/PageLoader';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://orientenergyco.com'),
   title: 'Orient Energy — Industrial Supply & Engineering Solutions in Saudi Arabia',
   description: 'Reliable industrial supply and engineering solutions in Saudi Arabia for oil & gas, energy, marine, drilling, and infrastructure projects.',
   keywords: 'industrial supply, engineering solutions, Saudi Arabia, oil gas, marine, Orient Energy, OETC',
   openGraph: {
+    url: 'https://orientenergyco.com',
     title: 'Orient Energy — Industrial Supply & Engineering Solutions',
     description: 'Reliable industrial supply and engineering solutions in Saudi Arabia.',
     siteName: 'Orient Energy',

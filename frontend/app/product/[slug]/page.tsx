@@ -14,8 +14,7 @@ import {
 } from '@/lib/divisionsData';
 import ProductInnerClient from './ProductInnerClient';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 const WHATSAPP_PHONE = '966552400778';
 
@@ -28,11 +27,15 @@ interface ProductDetailPageData {
 async function getProductData(slug: string): Promise<ProductDetailPageData | null> {
   const cleanSlug = slug.toLowerCase();
 
-  // 1. Try fetching from backend API first
+  // 1. Try fetching from backend API first with fast timeout so cold Render never blocks page load
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1800);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/products/${cleanSlug}`, {
-      cache: 'no-store',
+      signal: controller.signal,
+      next: { revalidate: 60 },
     });
+    clearTimeout(timeoutId);
     if (res.ok) {
       const data = await res.json();
       if (data.success && data.data) {
@@ -95,8 +98,8 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
             p.features && p.features.length > 0
               ? p.features
               : p.specifications && p.specifications.length > 0
-              ? p.specifications.map((s: any) => `${s.label}: ${s.value}`)
-              : [
+                ? p.specifications.map((s: any) => `${s.label}: ${s.value}`)
+                : [
                   'High Pressure & Industrial Grade Specification',
                   'Aramco & SABIC Approved Quality Standards',
                   'Anti-Corrosive Protective Surface Finish',
@@ -113,8 +116,8 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
           secondaryKeywords: Array.isArray(p.secondaryKeywords)
             ? p.secondaryKeywords
             : typeof p.secondaryKeywords === 'string'
-            ? p.secondaryKeywords.split(',').map((s: string) => s.trim()).filter(Boolean)
-            : [],
+              ? p.secondaryKeywords.split(',').map((s: string) => s.trim()).filter(Boolean)
+              : [],
           imageAlt: p.imageAlt || p.title,
           imageTitle: p.imageTitle || p.title,
           canonicalUrl: p.canonicalUrl || '',
@@ -124,37 +127,37 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
         const related: ProductItem[] =
           p.relatedProducts && p.relatedProducts.length > 0
             ? p.relatedProducts.map((rel: any) => {
-                const relRaw: string[] = Array.isArray(rel.images) && rel.images.length > 0 ? rel.images : (rel.image ? [rel.image] : []);
-                const relDynamic = relRaw.filter((u: string) => !isStaticPlaceholder(u));
-                const relCover = relDynamic.length > 0
-                  ? (!isStaticPlaceholder(rel.image) ? rel.image : relDynamic[0])
-                  : (rel.image || relRaw[0] || '/categories/all-fittings.jpeg');
-                return {
-                  id: rel._id || rel.slug,
-                  title: rel.title,
-                  slug: rel.slug || getProductSlug(rel.title),
-                  image: relCover,
-                  images: relDynamic.length > 0 ? relDynamic : relRaw,
-                  category: rel.categoryName || matchedDivision.name,
-                  divisionSlug: matchedDivision.id,
-                  divisionName: matchedDivision.name,
-                };
-              })
+              const relRaw: string[] = Array.isArray(rel.images) && rel.images.length > 0 ? rel.images : (rel.image ? [rel.image] : []);
+              const relDynamic = relRaw.filter((u: string) => !isStaticPlaceholder(u));
+              const relCover = relDynamic.length > 0
+                ? (!isStaticPlaceholder(rel.image) ? rel.image : relDynamic[0])
+                : (rel.image || relRaw[0] || '/categories/all-fittings.jpeg');
+              return {
+                id: rel._id || rel.slug,
+                title: rel.title,
+                slug: rel.slug || getProductSlug(rel.title),
+                image: relCover,
+                images: relDynamic.length > 0 ? relDynamic : relRaw,
+                category: rel.categoryName || matchedDivision.name,
+                divisionSlug: matchedDivision.id,
+                divisionName: matchedDivision.name,
+              };
+            })
             : (() => {
-                const sameCat = matchedDivision.products.filter(
-                  (item) =>
-                    (item.slug || getProductSlug(item.title)) !== cleanSlug &&
-                    item.category &&
-                    product.category &&
-                    item.category === product.category
-                );
-                const otherCat = matchedDivision.products.filter(
-                  (item) =>
-                    (item.slug || getProductSlug(item.title)) !== cleanSlug &&
-                    (!product.category || item.category !== product.category)
-                );
-                return [...sameCat, ...otherCat].slice(0, 4);
-              })()
+              const sameCat = matchedDivision.products.filter(
+                (item) =>
+                  (item.slug || getProductSlug(item.title)) !== cleanSlug &&
+                  item.category &&
+                  product.category &&
+                  item.category === product.category
+              );
+              const otherCat = matchedDivision.products.filter(
+                (item) =>
+                  (item.slug || getProductSlug(item.title)) !== cleanSlug &&
+                  (!product.category || item.category !== product.category)
+              );
+              return [...sameCat, ...otherCat].slice(0, 4);
+            })()
 
         return { product, division: matchedDivision, related };
       }
@@ -193,6 +196,19 @@ async function getProductData(slug: string): Promise<ProductDetailPageData | nul
   return null;
 }
 
+export async function generateStaticParams() {
+  const topSlugs: { slug: string }[] = [];
+  DIVISIONS_DATA.forEach((d) => {
+    (d.products || []).slice(0, 3).forEach((p) => {
+      const s = p.slug || getProductSlug(p.title);
+      if (s) {
+        topSlugs.push({ slug: s });
+      }
+    });
+  });
+  return topSlugs;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -219,8 +235,8 @@ export async function generateMetadata({
     product.metaDescription && product.metaDescription.trim()
       ? product.metaDescription.trim()
       : product.shortDescription && product.shortDescription.trim()
-      ? product.shortDescription.trim()
-      : `Procure genuine ${product.title} from Orient Energy Trading Company. High-grade industrial certification, Aramco-standard compliance, and fast logistics across Saudi Arabia.`;
+        ? product.shortDescription.trim()
+        : `Procure genuine ${product.title} from Orient Energy Trading Company. High-grade industrial certification, Aramco-standard compliance, and fast logistics across Saudi Arabia.`;
 
   const keywordsList = [
     product.focusKeyword,
@@ -282,7 +298,7 @@ export default async function ProductDetailPage({
 
   const waMessage = encodeURIComponent(
     product.whatsappMessage ||
-      `Hello Orient Energy Trading Co., I would like to order or request a quote for: ${product.title} (${product.category || division.name}).`
+    `Hello Orient Energy Trading Co., I would like to order or request a quote for: ${product.title} (${product.category || division.name}).`
   );
   const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${waMessage}`;
 

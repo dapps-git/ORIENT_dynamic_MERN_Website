@@ -11,6 +11,10 @@ const APPROVED_LOGOS = [
   { src: '/logos/ohsas-18001.webp', alt: 'OHSAS 18001' },
   { src: '/logos/iadc.webp', alt: 'IADC' },
   { src: '/logos/achilles.webp', alt: 'Achilles' },
+  { src: '/logos/taqa.webp', alt: 'TAQA' },
+  { src: '/logos/kca-deutag.webp', alt: 'KCA Deutag' },
+  { src: '/logos/alkhorayef.webp', alt: 'Alkhorayef' },
+  { src: '/logos/hp.webp', alt: 'Helmerich & Payne (H&P)' },
 ];
 
 export default function ApprovedBySection() {
@@ -68,7 +72,7 @@ export default function ApprovedBySection() {
           </div>
         </div>
 
-        {/* Logos Grid: 9 in a row on desktop, strictly 3 in one row on mobile — NO square box, enlarged logos */}
+        {/* Logos Grid: centered flex rows on desktop/tablet, 3 in one row on mobile — NO square box, enlarged logos */}
         <div className="approved-logos-grid">
           {APPROVED_LOGOS.map((item, idx) => (
             <div key={idx} className="approved-logo-item" title={item.alt}>
@@ -87,16 +91,16 @@ export default function ApprovedBySection() {
 
       <style>{`
         .approved-logos-grid {
-          display: grid;
-          grid-template-columns: repeat(9, 1fr);
-          gap: 24px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
           align-items: center;
-          justify-items: center;
+          gap: 20px 24px;
           width: 100%;
         }
 
         .approved-logo-item {
-          width: 100%;
+          width: calc((100% - 6 * 24px) / 7);
           height: 80px;
           display: flex;
           align-items: center;
@@ -127,10 +131,10 @@ export default function ApprovedBySection() {
 
         @media (max-width: 1100px) and (min-width: 769px) {
           .approved-logos-grid {
-            grid-template-columns: repeat(5, 1fr) !important;
             gap: 20px !important;
           }
           .approved-logo-item {
+            width: calc((100% - 4 * 20px) / 5) !important;
             height: 74px !important;
           }
           .approved-logo-img {
@@ -138,18 +142,21 @@ export default function ApprovedBySection() {
           }
         }
 
-        /* Mobile View: Strictly 3 in One Row (3x3 grid) without any square box, enlarged */
+        /* Mobile View: Strictly 3 in One Row without any square box, enlarged */
         @media (max-width: 768px) {
           .approved-by-section {
             padding: 24px 0 28px !important;
           }
 
           .approved-logos-grid {
+            display: grid !important;
             grid-template-columns: repeat(3, 1fr) !important;
             gap: 16px 12px !important;
+            justify-items: center !important;
           }
 
           .approved-logo-item {
+            width: 100% !important;
             height: 62px !important;
             padding: 4px !important;
             background: transparent !important;

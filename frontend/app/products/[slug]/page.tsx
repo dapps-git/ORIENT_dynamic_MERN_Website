@@ -7,8 +7,7 @@ import Footer from '@/components/Footer';
 import ScrollAnimation from '@/components/ScrollAnimation';
 import { DIVISIONS_DATA, DivisionData, getProductSlug } from '@/lib/divisionsData';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 const WHATSAPP_PHONE = '966552400778';
 
@@ -57,9 +56,13 @@ const FILTERS_BRANDS_LOGOS = [
 async function getCategoryBrands(categoryType: 'bearings' | 'filterings'): Promise<{ name: string; logo: string }[]> {
   const fallback = categoryType === 'bearings' ? BEARINGS_BRANDS_LOGOS : FILTERS_BRANDS_LOGOS;
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1800);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/brands?category=${categoryType}&active=true`, {
-      cache: 'no-store',
+      signal: controller.signal,
+      next: { revalidate: 60 },
     });
+    clearTimeout(timeoutId);
     if (res.ok) {
       const data = await res.json();
       if (data.success && Array.isArray(data.data) && data.data.length > 0) {
@@ -79,9 +82,13 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
   const staticDiv = DIVISIONS_DATA.find((d) => d.id === resolvedId);
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1800);
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://orient-dynamic-mern-website.onrender.com/api"}/categories/${resolvedId}`, {
-      cache: 'no-store',
+      signal: controller.signal,
+      next: { revalidate: 60 },
     });
+    clearTimeout(timeoutId);
     if (res.ok) {
       const data = await res.json();
       if (data.success && data.data) {
@@ -104,88 +111,86 @@ async function getDivisionAsync(slug: string): Promise<DivisionData | undefined>
               s.includes('filters.jpg') ||
               s.includes('pumps-motors.jpg')
             ) {
+              return true;
+            }
+            return false;
+          }
           return true;
-        }
-        return false;
+        };
+
+        const mappedCatProducts = (cat.products || []).map((p: any) => {
+          const rawImgs: string[] = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
+          const dynamicOnly = rawImgs.filter((img) => !isStaticPlaceholder(img));
+          const finalImages = dynamicOnly.length > 0 ? dynamicOnly : (rawImgs.length > 0 ? rawImgs : ['/categories/all-fittings.jpeg']);
+          const finalCover = dynamicOnly.length > 0
+            ? (!isStaticPlaceholder(p.image) ? p.image : dynamicOnly[0])
+            : (p.image || finalImages[0] || '/categories/all-fittings.jpeg');
+
+          return {
+            id: p._id ? String(p._id) : p.slug,
+            title: p.title,
+            slug: p.slug || getProductSlug(p.title),
+            image: finalCover,
+            images: finalImages,
+            category: p.categoryName || cat.name,
+            features: p.features || [],
+            shortDescription: p.shortDescription || '',
+            fullDescription: p.fullDescription || '',
+            whatsappMessage: p.whatsappMessage,
+          };
+        });
+
+        const productsList = Array.isArray(cat.products)
+          ? mappedCatProducts
+          : (staticDiv?.products || []);
+
+        return {
+          id: cat.slug || resolvedId,
+          name: cat.name || staticDiv?.name || '',
+          headline: cat.headline || staticDiv?.headline || cat.name,
+          description:
+            cat.detailedDescriptions && cat.detailedDescriptions.length > 0
+              ? cat.detailedDescriptions
+              : cat.description
+                ? [cat.description]
+                : staticDiv?.description || [],
+          subcategoriesTitle: cat.subcategoriesTitle || staticDiv?.subcategoriesTitle,
+          subcategories:
+            cat.slug === 'mechanical-division' || resolvedId === 'mechanical-division'
+              ? undefined
+              : cat.subcategories && cat.subcategories.length > 0
+                ? cat.subcategories.filter((s: any) => s.image && s.image.trim() !== '')
+                : staticDiv?.subcategories,
+          productRangeTitle: cat.productRangeTitle || staticDiv?.productRangeTitle,
+          productRange:
+            cat.productRange && cat.productRange.length > 0
+              ? cat.productRange
+              : staticDiv?.productRange,
+          applicationsTitle: cat.applicationsTitle || staticDiv?.applicationsTitle,
+          applications:
+            cat.applications && cat.applications.length > 0
+              ? cat.applications
+              : staticDiv?.applications,
+          pills: cat.pills && cat.pills.length > 0 ? cat.pills : staticDiv?.pills,
+          products: productsList,
+        };
       }
-      return true;
-    };
-
-    const mappedCatProducts = (cat.products || []).map((p: any) => {
-      const rawImgs: string[] = Array.isArray(p.images) && p.images.length > 0 ? p.images : (p.image ? [p.image] : []);
-      const dynamicOnly = rawImgs.filter((img) => !isStaticPlaceholder(img));
-      const finalImages = dynamicOnly.length > 0 ? dynamicOnly : (rawImgs.length > 0 ? rawImgs : ['/categories/all-fittings.jpeg']);
-      const finalCover = dynamicOnly.length > 0
-        ? (!isStaticPlaceholder(p.image) ? p.image : dynamicOnly[0])
-        : (p.image || finalImages[0] || '/categories/all-fittings.jpeg');
-
-      return {
-        id: p._id ? String(p._id) : p.slug,
-        title: p.title,
-        slug: p.slug || getProductSlug(p.title),
-        image: finalCover,
-        images: finalImages,
-        category: p.categoryName || cat.name,
-        features: p.features || [],
-        shortDescription: p.shortDescription || '',
-        fullDescription: p.fullDescription || '',
-        whatsappMessage: p.whatsappMessage,
-      };
-    });
-
-    const productsList = Array.isArray(cat.products)
-      ? mappedCatProducts
-      : (staticDiv?.products || []);
-
-    return {
-      id: cat.slug || resolvedId,
-      name: cat.name || staticDiv?.name || '',
-      headline: cat.headline || staticDiv?.headline || cat.name,
-      description:
-        cat.detailedDescriptions && cat.detailedDescriptions.length > 0
-          ? cat.detailedDescriptions
-          : cat.description
-            ? [cat.description]
-            : staticDiv?.description || [],
-      subcategoriesTitle: cat.subcategoriesTitle || staticDiv?.subcategoriesTitle,
-      subcategories:
-        cat.slug === 'mechanical-division' || resolvedId === 'mechanical-division'
-          ? undefined
-          : cat.subcategories && cat.subcategories.length > 0
-            ? cat.subcategories.filter((s: any) => s.image && s.image.trim() !== '')
-            : staticDiv?.subcategories,
-      productRangeTitle: cat.productRangeTitle || staticDiv?.productRangeTitle,
-      productRange:
-        cat.productRange && cat.productRange.length > 0
-          ? cat.productRange
-          : staticDiv?.productRange,
-      applicationsTitle: cat.applicationsTitle || staticDiv?.applicationsTitle,
-      applications:
-        cat.applications && cat.applications.length > 0
-          ? cat.applications
-          : staticDiv?.applications,
-      pills: cat.pills && cat.pills.length > 0 ? cat.pills : staticDiv?.pills,
-      products: productsList,
-    };
-  }
     }
   } catch {
-  // Backend offline: fallback to staticDiv
-}
+    // Backend offline: fallback to staticDiv
+  }
 
-return staticDiv;
+  return staticDiv;
 }
 
 export async function generateStaticParams() {
   const baseSlugs = DIVISIONS_DATA.map((d) => ({
     slug: d.id,
   }));
-  return [
-    ...baseSlugs,
-    { slug: 'pipe-fittings-and-flanges' },
-    { slug: 'pipe-fittings-flanges' },
-    { slug: 'pumps-motors' },
-  ];
+  const aliasSlugs = Object.keys(SLUG_ALIASES).map((slug) => ({ slug }));
+  const combined = [...baseSlugs, ...aliasSlugs];
+  const unique = Array.from(new Set(combined.map((s) => s.slug))).map((slug) => ({ slug }));
+  return unique;
 }
 
 export async function generateMetadata({
