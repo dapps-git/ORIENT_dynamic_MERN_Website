@@ -34,28 +34,49 @@ app.use((req, _res, next) => {
   next();
 });
 
-// Universal CORS Middleware with preflight handling
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  } else {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  }
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+// CORS configuration for orientenergyco.com, admin.orientenergyco.com, and local dev
+const parseEnvOrigins = (value?: string): string[] =>
+  value
+    ? value
+        .split(',')
+        .map((o) => o.trim().replace(/\/+$/, ''))
+        .filter(Boolean)
+    : [];
 
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-  next();
-});
+const allowedOrigins = Array.from(
+  new Set([
+    'https://orientenergyco.com',
+    'https://www.orientenergyco.com',
+    'http://orientenergyco.com',
+    'http://www.orientenergyco.com',
+    'https://admin.orientenergyco.com',
+    'http://admin.orientenergyco.com',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    ...parseEnvOrigins(process.env.CLIENT_URL),
+    ...parseEnvOrigins(process.env.ADMIN_URL),
+  ])
+);
 
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+    const normalizedOrigin = origin.replace(/\/+$/, '');
+    if (allowedOrigins.includes(normalizedOrigin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true }));

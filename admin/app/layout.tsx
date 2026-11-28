@@ -2,8 +2,18 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://admin.orientenergyco.com'),
   title: "Orient Energy — Operations & Admin Portal",
   description: "Orient Energy Trading Company administrative portal for catalog and inquiry management",
+  icons: {
+    icon: '/logo-emblem-transparent.png',
+    shortcut: '/logo-emblem-transparent.png',
+    apple: '/logo-emblem-transparent.png',
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({

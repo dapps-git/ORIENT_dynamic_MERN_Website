@@ -10,6 +10,18 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'orientenergyco.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.orientenergyco.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'admin.orientenergyco.com',
+      },
     ],
   },
 };

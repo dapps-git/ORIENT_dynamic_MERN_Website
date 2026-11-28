@@ -35,27 +35,43 @@ app.use((req, _res, next) => {
     }
     next();
 });
-// Universal CORS Middleware with preflight handling
-app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (origin) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-    else {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-    }
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(204);
-    }
-    next();
-});
-app.use((0, cors_1.default)({
-    origin: true,
-    credentials: true
-}));
+// CORS configuration for orientenergyco.com, admin.orientenergyco.com, and local dev
+const parseEnvOrigins = (value) => value
+    ? value
+        .split(',')
+        .map((o) => o.trim().replace(/\/+$/, ''))
+        .filter(Boolean)
+    : [];
+const allowedOrigins = Array.from(new Set([
+    'https://orientenergyco.com',
+    'https://www.orientenergyco.com',
+    'http://orientenergyco.com',
+    'http://www.orientenergyco.com',
+    'https://admin.orientenergyco.com',
+    'http://admin.orientenergyco.com',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    ...parseEnvOrigins(process.env.CLIENT_URL),
+    ...parseEnvOrigins(process.env.ADMIN_URL),
+]));
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin) {
+            return callback(null, true);
+        }
+        const normalizedOrigin = origin.replace(/\/+$/, '');
+        if (allowedOrigins.includes(normalizedOrigin)) {
+            return callback(null, true);
+        }
+        return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+    optionsSuccessStatus: 204,
+};
+app.use((0, cors_1.default)(corsOptions));
+app.options('*', (0, cors_1.default)(corsOptions));
 app.use(express_1.default.json({ limit: '20mb' }));
 app.use(express_1.default.urlencoded({ extended: true }));
 // Health checks - works at /, /health, /api, /api/health
