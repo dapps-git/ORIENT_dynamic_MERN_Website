@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   title: 'Orient Energy — Industrial Supply & Engineering Solutions in Saudi Arabia',
   description: 'Reliable industrial supply and engineering solutions in Saudi Arabia for oil & gas, energy, marine, drilling, and infrastructure projects.',
   keywords: 'industrial supply, engineering solutions, Saudi Arabia, oil gas, marine, Orient Energy, OETC',
+  icons: {
+    icon: '/logo-emblem-transparent.png',
+    shortcut: '/logo-emblem-transparent.png',
+    apple: '/logo-emblem-transparent.png',
+  },
   openGraph: {
     url: 'https://orientenergyco.com',
     title: 'Orient Energy — Industrial Supply & Engineering Solutions',
